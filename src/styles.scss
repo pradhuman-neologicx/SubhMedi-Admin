@@ -1,5 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
 
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif !important;
+  line-height: 1.6 !important;
+  font-size: 16px !important;
+  box-sizing: border-box !important;
+}
 
 
 
@@ -38,3 +55,12 @@
   display: none !important;
 }
 
+
+
+.login {
+  width: 100%;
+  height: 100%;
+  // background-color: #36a292;
+  // background: linear-gradient(90deg, #36a292, #63d6b0, #a0eddf);
+  background: linear-gradient(90deg, #36a292, rgba(54, 162, 146, 0.5));
+}
