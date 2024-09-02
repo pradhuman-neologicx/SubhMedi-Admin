@@ -22,7 +22,7 @@ export class EmployeeService {
  
 
 
-  
+
    getOngoingProject(search:any): Observable<any> {
     var user= this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
@@ -37,7 +37,10 @@ export class EmployeeService {
     return this.apiservice.post(`ongoing-projects`,body,   headers );
   }
 
-  
+  GetState() {
+    return this.apiservice.get('states');
+  }
+
 
 
 

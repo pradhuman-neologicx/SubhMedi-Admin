@@ -109,6 +109,7 @@ export class OongoingComponent {
     });
     
     this.getOngoingproject(0);
+    this.getState();
 
 
 
@@ -121,7 +122,14 @@ export class OongoingComponent {
 
 
 
-
+  stateList: any = [];
+  getState() {
+    this.employeeService.GetState().subscribe((response: any) => {
+      if (response.statusCode === 200) {
+        this.stateList = response.data;
+      }
+    });
+  }
   citylist: any = [];
   StateCode: any = [];
   StateName: any = [];

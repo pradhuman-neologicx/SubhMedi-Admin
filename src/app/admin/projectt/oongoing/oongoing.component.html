@@ -221,10 +221,14 @@
                                 #State formControlName="State"
                               
                                 [ngClass]="{ 'is-invalid':createproductform.controls['State'].errors  && (createproductform.controls['State'].touched || createproductform.controls['State'].dirty)  }">
-                                <!-- <option *ngFor="let state of stateList"
-                                    value="{{state.isoCode}}-{{state.name}}">
-                                    {{ state.name }}
-                                </option> -->
+                                <option 
+                                *ngFor="let state of stateList" [value]="state.code">
+                                        {{ state.name }}
+<!--                                 
+                                *ngFor="let state of stateList"
+                                    value="{{state.name}}">
+                                    {{ state.name }} -->
+                                </option>
                             </select>
                             <div class="error-message"
                                 *ngIf="createproductform?.get('State')?.hasError('required') && (createproductform?.get('State')?.dirty || createproductform?.get('State')?.touched)">
