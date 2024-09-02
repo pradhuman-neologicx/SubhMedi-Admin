@@ -14,7 +14,7 @@ interface MenuItem {
 
 @Component({
   selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
+  templateUrl:'./sidenav.component.html',
   styleUrl: './sidenav.component.scss'
 })
 export class SidenavComponent {

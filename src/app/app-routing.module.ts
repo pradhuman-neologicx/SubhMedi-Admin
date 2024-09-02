@@ -1,22 +1,49 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
-import { ProComponent } from './admin/pro/pro.component';
 import { PartiesComponent } from './admin/parties/parties.component';
+import { ForgotPasswordComponent } from './admin/loginpages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './admin/loginpages/reset-password/reset-password.component';
+import { SigninComponent } from './admin/loginpages/signin/signin.component';
+import { LoginpagesComponent } from './admin/loginpages/loginpages.component';
 
 const routes: Routes = [
 
   {
-    path: 'admin',
+    path: '',
+
+    component: LoginpagesComponent,
+    children: [
+      { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
+      { path: 'sign_in', component: SigninComponent },
+      { path: 'forgot_password', component: ForgotPasswordComponent },
+      { path: 'reset_password', component: ResetPasswordComponent },
+      // { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
+      // { path: 'sign_in', component: SigninComponent },
+      // { path: 'forgot_password', component: ForgotPasswordComponent },
+      // { path: 'reset_password', component: ResetPasswordComponent },
+    ],
+  },
+  {
+    path: '',
 
     component: AdminComponent,
     children: [
-      { path: '', redirectTo: 'pro', pathMatch: 'full' },
-      { path: 'pro', component: ProComponent },
-      { path: 'parties', component: PartiesComponent },
-    
+      { path: '', redirectTo: 'parties', pathMatch: 'full' },
+      {
+        path: 'parties',
+        component: PartiesComponent,
+      },
+
+
+      // {
+      //   path: 'student',
+      //   component: StudentComponent,
+      // },
+
     ],
   },
+
 
 
 ];

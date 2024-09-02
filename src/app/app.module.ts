@@ -1,42 +1,51 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatExpansionModule} from '@angular/material/expansion';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AdminComponent } from './admin/admin.component';
 import { SidenavComponent } from './admin/sidenav/sidenav.component';
 import { SidenavHeaderComponent } from './admin/sidenav-header/sidenav-header.component';
-import {MatIconModule} from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import { ProComponent } from './admin/pro/pro.component';
 import { PartiesComponent } from './admin/parties/parties.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from './mat/mat.module';
+import { MatMenuModule } from '@angular/material/menu';
+import { DatePipe } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule, } from '@angular/common/http';
+import { LoadingInterceptor } from './core/services/loading.interceptor';
+import { LoginpagesComponent } from './admin/loginpages/loginpages.component';
+import { ForgotPasswordComponent } from './admin/loginpages/forgot-password/forgot-password.component';
+import { ApiService } from './core/services/api.service';
+import { DataService } from './core/services/data.service';
+import { JwtService } from './core/services/jwt.service';
+import { SigninComponent } from './admin/loginpages/signin/signin.component';
 @NgModule({
   declarations: [
     AppComponent,
     AdminComponent,
     SidenavComponent,
     SidenavHeaderComponent,
-    ProComponent,
-    PartiesComponent
+    PartiesComponent,
+    LoginpagesComponent,
+    ForgotPasswordComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatExpansionModule,
-    MatListModule,
-    MatIconModule,
-    MatSidenavModule,
     BrowserAnimationsModule,
+    FormsModule,
     ReactiveFormsModule,
-    MatMenuModule
+    MaterialModule,
+    MatMenuModule,
+    HttpClientModule,
   ],
   providers: [
-    provideAnimationsAsync()
+    DataService,
+    ApiService,
+    JwtService,
+    DatePipe, 
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
