@@ -19,6 +19,14 @@ import { ApiService } from './core/services/api.service';
 import { DataService } from './core/services/data.service';
 import { JwtService } from './core/services/jwt.service';
 import { SigninComponent } from './admin/loginpages/signin/signin.component';
+import { ProjecttComponent } from './admin/projectt/projectt.component';
+import { CcompletedComponent } from './admin/projectt/ccompleted/ccompleted.component';
+import { OongoingComponent } from './admin/projectt/oongoing/oongoing.component';
+import { EmployeeService } from './core/services/Employee.service';
+
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +37,13 @@ import { SigninComponent } from './admin/loginpages/signin/signin.component';
     LoginpagesComponent,
     ForgotPasswordComponent,
     SigninComponent,
+    ProjecttComponent,
+    OongoingComponent,
+    CcompletedComponent,
+  
+ 
+
+   
     ],
   imports: [
     BrowserModule,
@@ -45,6 +60,7 @@ import { SigninComponent } from './admin/loginpages/signin/signin.component';
     ApiService,
     JwtService,
     DatePipe, 
+    EmployeeService,
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

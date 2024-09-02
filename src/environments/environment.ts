@@ -40,16 +40,16 @@ export const environment = {
   // feesurl: 'http://159.65.148.17:8080/api/',
 
   
-  api_url: 'https://synthesisbikaner.org:8081/api/',
-  coursefile_url: 'https://synthesisbikaner.org:8081/',
-  batchfile_url: 'https://synthesisbikaner.org:8081/',
-  studentattendancefile_url: 'https://synthesisbikaner.org:8081/',
-  emoloyeeattendancefile_url: 'https://synthesisbikaner.org:8081/',
-  employeefile_url: 'https://synthesisbikaner.org:8081/',
-  file_url: 'https://synthesisbikaner.org:8081/',
-  undefinedurl:'https://synthesisbikaner.org:8081undefined',
-  onboarded_url: 'https://synthesisbikaner.org:8081/api/',
-  feesurl: 'https://synthesisbikaner.org:8081/api/',
+  api_url: 'https://construction-app.mobilogicx.com/api/',
+  // coursefile_url: 'https://synthesisbikaner.org:8081/',
+  // batchfile_url: 'https://synthesisbikaner.org:8081/',
+  // studentattendancefile_url: 'https://synthesisbikaner.org:8081/',
+  // emoloyeeattendancefile_url: 'https://synthesisbikaner.org:8081/',
+  // employeefile_url: 'https://synthesisbikaner.org:8081/',
+  // file_url: 'https://synthesisbikaner.org:8081/',
+  // undefinedurl:'https://synthesisbikaner.org:8081undefined',
+  // onboarded_url: 'https://synthesisbikaner.org:8081/api/',
+  // feesurl: 'https://synthesisbikaner.org:8081/api/',
   
   // firebase: {
   //   apiKey: "AIzaSyDRP2ZiJBYXgumIvSzrRl32dgiFpVoNotE",

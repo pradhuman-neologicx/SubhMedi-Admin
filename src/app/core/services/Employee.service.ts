@@ -20,19 +20,41 @@ export class EmployeeService {
     private jwtService: JwtService
   ) { }
  
-   getUserDetails(userid: any): Observable<any> {
+
+
+  
+   getOngoingProject(search:any): Observable<any> {
+    var user= this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      // 'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
     const body={
-      "userId":userid
+      "user_id":user,
+       "search":search!=undefined?search:""
   }
-    return this.apiservice.post(`auth/getProfileById`,body,   headers );
+    return this.apiservice.post(`ongoing-projects`,body,   headers );
   }
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Method to update user status
 updateUserStatus(userId: string, isActive: boolean): Observable<any> {

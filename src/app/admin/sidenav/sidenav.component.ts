@@ -87,13 +87,13 @@ export class SidenavComponent {
         index: 1,
         icon: 'home',
         label: 'Project',
-        route: '/admin/pro',
+        route: 'project',
       },
       {
         index: 2,
         icon: 'analytics',
         label: 'parties',
-        route: '/admin/parties',
+        route: 'parties',
       },
       // {
       //   index: 5,

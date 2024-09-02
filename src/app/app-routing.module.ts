@@ -6,6 +6,9 @@ import { ForgotPasswordComponent } from './admin/loginpages/forgot-password/forg
 import { ResetPasswordComponent } from './admin/loginpages/reset-password/reset-password.component';
 import { SigninComponent } from './admin/loginpages/signin/signin.component';
 import { LoginpagesComponent } from './admin/loginpages/loginpages.component';
+import { ProjecttComponent } from './admin/projectt/projectt.component';
+import { OongoingComponent } from './admin/projectt/oongoing/oongoing.component';
+import { CcompletedComponent } from './admin/projectt/ccompleted/ccompleted.component';
 
 const routes: Routes = [
 
@@ -35,6 +38,31 @@ const routes: Routes = [
         component: PartiesComponent,
       },
 
+      {
+        path: 'project',
+        component: ProjecttComponent,
+        // canActivate: [AuthGuard],
+      
+            children: [
+              { path: '', redirectTo: 'ongoing', pathMatch: 'full' },
+              {
+                path: 'ongoing',
+                component: OongoingComponent,
+                // canActivate: [AuthGuard],
+              },
+              {
+                path: 'completed',
+                component: CcompletedComponent,
+                // canActivate: [AuthGuard],
+              },
+            
+    
+            
+            ],
+          
+       
+      },
+
 
       // {
       //   path: 'student',
@@ -43,6 +71,9 @@ const routes: Routes = [
 
     ],
   },
+
+
+
 
 
 
