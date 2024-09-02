@@ -28,8 +28,8 @@ import { SigninComponent } from './admin/loginpages/signin/signin.component';
     PartiesComponent,
     LoginpagesComponent,
     ForgotPasswordComponent,
-    SigninComponent
-  ],
+    SigninComponent,
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
