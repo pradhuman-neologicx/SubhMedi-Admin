@@ -93,7 +93,7 @@ export class SidenavComponent {
         index: 2,
         icon: 'analytics',
         label: 'parties',
-        route: '/admin/parties',
+        route: '/parties',
       },
       // {
       //   index: 5,

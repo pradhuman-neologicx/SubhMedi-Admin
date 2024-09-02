@@ -19,6 +19,8 @@ import { ApiService } from './core/services/api.service';
 import { DataService } from './core/services/data.service';
 import { JwtService } from './core/services/jwt.service';
 import { SigninComponent } from './admin/loginpages/signin/signin.component';
+import { OtpComponent } from './admin/loginpages/otp/otp.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +31,8 @@ import { SigninComponent } from './admin/loginpages/signin/signin.component';
     LoginpagesComponent,
     ForgotPasswordComponent,
     SigninComponent,
+    OtpComponent,
+    SpinnerComponent
     ],
   imports: [
     BrowserModule,

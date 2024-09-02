@@ -1,8 +1,7 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { OtpVerify, SendOtp, SignINRes, SignIn } from 'src/app/core/model-class/login-signup';
+import { Component } from '@angular/core';
+import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SendOtp, OtpVerify } from 'src/app/core/model-class/login-signup';
 import { Validations } from 'src/app/core/model-class/validations';
 import { ApiService } from 'src/app/core/services/api.service';
 import { DataService } from 'src/app/core/services/data.service';
@@ -10,48 +9,27 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 import { LoginService } from 'src/app/core/services/login.service';
 
 @Component({
-  selector: 'app-signin',
-  templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.scss'],
-  animations: [
-    trigger('succesfullyMesaage', [
-      state('void', style({
-        transform: 'translateX(-30%)',
-        opacity: 0
-      })),
-      transition(':enter, :leave', [
-        animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)')
-      ])
-    ]),
-    trigger('slideIn', [
-      state('void', style({
-        transform: 'translateX(100%)',
-        opacity: 0
-      })),
-      transition(':enter', [
-        animate('0.5s ease-out', style({
-          transform: 'translateX(0)', // Final position for slide-in effect
-          opacity: 1 // Final opacity
-        }))
-      ])
-    ]),
-  ]
+  selector: 'app-otp',
+  templateUrl: './otp.component.html',
+  styleUrl: './otp.component.scss'
 })
-export class SigninComponent {
+
+
+
+export class OtpComponent{
   title = "Login";
-  Email!: string;
+  Email: string = '';
   activeLink: string = 'Login';
   isEmailCorrect: boolean = false;
   otp: string = '';
-  openSecondsuccess: boolean = false;
   NewOTP: SendOtp = new SendOtp();
   OtpVerify: OtpVerify = new OtpVerify();
   validation: Validations = new Validations();
 
   onSubmit() {
-    if (this.signinform.valid) {
+    if (this.ForgotForm.valid) {
       // Handle form submission here
-      console.log(this.signinform.value);
+      console.log(this.ForgotForm.value);
     }
     // You can perform form submission and validation here.
     if (this.Email && this.otp) {
@@ -69,7 +47,7 @@ export class SigninComponent {
     }
   }
 
-  signinform!: FormGroup;
+  ForgotForm!: FormGroup;
   EmailControl!: AbstractControl;
   loginAS!: number;
   constructor(
@@ -83,7 +61,7 @@ export class SigninComponent {
   ) { }
   ngOnInit() {
     this.loginAS = this.jwtService.getLoginAs();
-    this.signinform = this.formBuilder.group({
+    this.ForgotForm = this.formBuilder.group({
       Email: [
         '',
         [
@@ -110,14 +88,14 @@ export class SigninComponent {
 
 
   // onContinue() {
-  //   if (this.signinform.get('email')?.valid && this.signinform.get('email')?.value.length > 0) {
+  //   if (this.ForgotForm.get('email')?.valid && this.ForgotForm.get('email')?.value.length > 0) {
   //     this.showOTPField = true;
   //   }
   // }
 
 
   get verifyOtp() {
-    return this.signinform.controls;
+    return this.ForgotForm.controls;
   }
 
   // Declare a variable to store the user ID
@@ -126,10 +104,10 @@ export class SigninComponent {
   otpValue: string = '';
   VerifyEmail() {
     this.erroroutput = false;
-    if (this.signinform.valid) {
-      this.signinform.get('otp')?.clearValidators();
-      if (this.signinform.get('Email')?.value !== undefined) {
-        this.NewOTP.email = this.signinform.get('Email')?.value;
+    if(this.ForgotForm.valid){
+      this.ForgotForm.get('otp')?.clearValidators();
+      if (this.ForgotForm.get('Email')?.value !== undefined) {
+        this.NewOTP.email = this.ForgotForm.get('Email')?.value;
         const headers = { 'content-type': 'application/json' };
         const body = JSON.stringify(this.NewOTP);
         console.log(body);
@@ -138,9 +116,9 @@ export class SigninComponent {
           console.log(response);
           if (response.status === 200) {
             this.EmailInput = true;
-            this.signinform.get('otp')?.setValidators([Validators.required]);
-            this.signinform.get('otp')?.updateValueAndValidity();
-            console.log("email verify");
+            this.ForgotForm.get('otp')?.setValidators([Validators.required]);
+            this.ForgotForm.get('otp')?.updateValueAndValidity();
+          console.log("email verify");
             this.showOTPField = true;
             this.showEditButton = true;
             this.erroroutput = false;
@@ -152,53 +130,45 @@ export class SigninComponent {
         this.erroroutput = true;
         this.errorMessage = 'Please enter email';
       }
-    } else {
-      this.signinform.markAllAsTouched();
+    }else{
+      this.ForgotForm.markAllAsTouched();
     }
-
+  
   }
 
-
+ 
 
 
   // verfiy otp
   VerifyOtp() {
     this.erroroutput = false;
-    if (this.signinform.valid) {
-      this.OtpVerify.email = this.signinform.get('Email')?.value;
-      this.OtpVerify.otp = parseInt(this.signinform.get('otp')?.value);
-      const headers = { 'content-type': 'application/json' };
-      const body = JSON.stringify(this.OtpVerify);
-      console.log(body);
-
-      this.loginService.VerifyOTP(body, headers).subscribe((response: any) => {
-        console.log("otp failed");
-        this.errorMessage = response.message;
-        if (response.status === 200) {
-          console.log("otp success")
-          setTimeout(() => {
-            this.openSecondsuccess = true;
-            setTimeout(() => {
-              this.openSecondsuccess = false;
-            }, 1800);
-          }, 200);
-          this.jwtService.saveToken(response.access_token);
-          this.jwtService.savepanelUserId(response.data.user_id);
-          this.jwtService.savePartyId(response.data.party_id);
-          this.jwtService.saveName(response.data.name);
-          this.jwtService.saveType(response.data.type);
-          this.router.navigate(['/parties']);
-          this.erroroutput = false;
-        } else {
-          this.erroroutput = true;
-        }
-      });
+    if (this.ForgotForm.valid) {
+        this.OtpVerify.email = this.Email;
+        this.OtpVerify.otp = parseInt(this.ForgotForm.get('otp')?.value);
+        const headers = { 'content-type': 'application/json' };
+        const body = JSON.stringify(this.OtpVerify);
+        console.log(body);
+        
+        this.loginService.VerifyOTP(body, headers).subscribe((response: any) => {
+            console.log("hi");
+            this.errorMessage = response.message;
+            if (response.statusCode === 200) {
+                console.log(response.data.user_id);
+                this.jwtService.saveToken(response.data.token);
+                this.jwtService.savepanelUserId(response.data.userid);
+                this.dataService.changeMessage({ message: "reset" });
+                this.router.navigate(["reset_password"]);
+                this.erroroutput = false;
+            } else {
+                this.erroroutput = true;
+            }
+        });
     } else {
-      this.erroroutput = true;
-      this.errorMessage = 'You are using expire otp';
-      this.signinform.markAllAsTouched();
+        this.erroroutput = true;
+        this.errorMessage = 'You are using expire otp';
+        this.ForgotForm.markAllAsTouched();
     }
-  }
+}
 
 
 
@@ -220,35 +190,16 @@ export class SigninComponent {
   }
   showEditButton: boolean = false;
   resetForm() {
-    this.signinform.reset();
+    this.ForgotForm.reset();
     this.showEditButton = false;
     this.showOTPField = false;
     this.EmailInput = false;
   }
   markAllAsTouched() {
-    for (const control in this.signinform.controls) {
-      if (this.signinform.controls.hasOwnProperty(control)) {
-        this.signinform.controls[control].markAsTouched();
+    for (const control in this.ForgotForm.controls) {
+      if (this.ForgotForm.controls.hasOwnProperty(control)) {
+        this.ForgotForm.controls[control].markAsTouched();
       }
     }
   }
-  closeModal() {
-    this.openSecondsuccess = false;
-  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

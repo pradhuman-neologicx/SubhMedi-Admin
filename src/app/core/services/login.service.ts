@@ -16,46 +16,15 @@ export class LoginService {
     private jwtService: JwtService
   ) { }
 
-  Login(formData: any, headers: any) {
-    return this.apiservice.post("auth/logIn", formData, headers);
-  }
-  GetOtp(formData: any, headers: any) {
-    return this.apiservice.post("auth/sendOtp", formData, headers);
-  }
+  
 
 
-  ForgetOptVerify(formData: any, headers: any) {
-    return this.apiservice.post("auth/verifyOtp", formData, headers);
+Emailverify(formData: any, headers: any) {
+    return this.apiservice.post("login", formData,headers);
   }
 
-
-  ResetPassword(formData: any, headers: any) {
-    return this.apiservice.put("auth/resetPassword", formData, headers);
-  }
-
-
-
-  studentlogin(formData: any, headers: any) {
-    return this.apiservice.post("studentAuth/logIn", formData, headers);
-  }
-
-
-
-  StudentGetOtp(formData: any, headers: any) {
-    return this.apiservice.post("studentAuth/sendOtp", formData, headers);
-  }
-
-  StudentOptVerify(formData: any, headers: any) {
-    return this.apiservice.post("studentAuth/verifyOtp", formData, headers);
-  }
-
-
-  ResetPasswordStudent(formData: any, headers: any) {
-    return this.apiservice.put("studentAuth/resetPassword", formData, headers);
-  }
-
-  updateBatchStudent(body:any, headers: any) {
-    return this.apiservice.post("students/update-student-batch", body, headers);
+  VerifyOTP(formData: any, headers: any) {
+    return this.apiservice.post("verifyOtp", formData, headers);
   }
 
 }
