@@ -6,28 +6,28 @@
         </div>
 
 
-        <form [formGroup]="signinform" (ngSubmit)="onSubmit()">
-            <div class="mb-3" *ngIf="!signinform.get('Email')?.disabled && !showOTPField">
+        <form [formGroup]="ForgotForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
                 <label class="d-block text-capitalize form-label form-lable-custom" for="Email">Enter Your Email</label>
                 <input type="text" class="d-block  form-control form-input-custom" formControlName="Email"
-                    placeholder="Enter Your Email"
-                    [ngClass]="{ 'is-invalid':signinform.controls['Email'].errors && (signinform.controls['Email'].touched || signinform.controls['Email'].dirty) }">
+                    placeholder="Enter Your Email"        [readonly]="ForgotForm.get('Email')?.disabled || showOTPField"
+                    [ngClass]="{ 'is-invalid':ForgotForm.controls['Email'].errors && (ForgotForm.controls['Email'].touched || ForgotForm.controls['Email'].dirty) }">
                 <div class="text-danger error-message"
-                    *ngIf="signinform.controls['Email'].errors && (signinform.controls['Email'].touched || signinform.controls['Email'].dirty)">
-                    <p class="fw-light    text-danger" *ngIf="signinform.controls['Email'].errors['required']">
+                    *ngIf="ForgotForm.controls['Email'].errors && (ForgotForm.controls['Email'].touched || ForgotForm.controls['Email'].dirty)">
+                    <p class="fw-light    text-danger" *ngIf="ForgotForm.controls['Email'].errors['required']">
                         Email is required</p>
-                    <p class="fw-light  text-danger" *ngIf="signinform.controls['Email'].errors['pattern']">
+                    <p class="fw-light  text-danger" *ngIf="ForgotForm.controls['Email'].errors['pattern']">
                         Please Enter correct email</p>
                 </div>
             </div>
             <!-- new code for otp -->
             <div class="mb-3"
-                *ngIf="showOTPField && signinform.get('Email')?.valid && signinform.get('Email')?.value.length">
+                *ngIf="showOTPField && ForgotForm.get('Email')?.valid && ForgotForm.get('Email')?.value.length">
                 <label for="otp" class="form-label">Enter OTP</label>
                 <input type="text" class="form-control input-custom" formControlName="otp"
-                    [ngClass]="{ 'is-invalid': signinform.get('otp')!.errors && !matched && (signinform.get('otp')!.touched || signinform.get('otp')!.dirty) }">
+                    [ngClass]="{ 'is-invalid': ForgotForm.get('otp')!.errors && !matched && (ForgotForm.get('otp')!.touched || ForgotForm.get('otp')!.dirty) }">
                 <div class="text-danger"
-                    *ngIf="signinform.get('otp')?.hasError('required') && (signinform.get('otp')?.touched || signinform.get('otp')?.dirty)">
+                    *ngIf="ForgotForm.get('otp')?.hasError('required') && (ForgotForm.get('otp')?.touched || ForgotForm.get('otp')?.dirty)">
                     <p class="fw-light fs-5 text-end text-danger mb-0">OTP is required</p>
                 </div>
                 <div class="text-end d-flex align-items-center justify-content-end">
@@ -51,7 +51,7 @@
     </div>
 </div>
 
-<!-- Create Employer forms start -->
+<!-- Create Employer forms start
 <div *ngIf="openSecondsuccess"
         class="your-animation-class modal-container-success"
         [@slideIn]
@@ -61,8 +61,8 @@
         <div>
             <div class=" p-4 d-flex justify-content-between align-items-center success-content">
                 <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
-                <p class="text-green-900 text-capitalize">Login 
+                <p class="text-green-900 text-capitalize">{{ successName }}
                     successfully</p>
             </div>
         </div>
-    </div>
+    </div> -->

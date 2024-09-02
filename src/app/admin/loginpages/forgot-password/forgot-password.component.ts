@@ -100,86 +100,86 @@ export class ForgotPasswordComponent implements OnInit {
   userid!: string
   // verify user
   otpValue: string = '';
-  VerifyUser() {
-    this.erroroutput = false;
-    if(this.ForgotForm.valid){
-      this.ForgotForm.get('otp')?.clearValidators();
-      if (this.ForgotForm.get('Email')?.value !== undefined) {
-        this.NewOTP.email = this.ForgotForm.get('Email')?.value;
-        const headers = { 'content-type': 'application/json' };
-        const body = JSON.stringify(this.NewOTP);
-        console.log(body);
-        this.loginService.GetOtp(body, headers).subscribe((response: any) => {
-          this.errorMessage = response.message;
-          console.log(response);
-          if (response.statusCode === 200) {
-            this.EmailInput = true;
-            this.ForgotForm.get('otp')?.setValidators([Validators.required]);
-            this.ForgotForm.get('otp')?.updateValueAndValidity();
-            // this.otpValue = response.data.otp;
-            this.userid = response.data.userId;
-            this.startTimer();
-            this.showOTPField = true;
-            this.showEditButton = true;
-            this.erroroutput = false;
-          } else {
-            this.erroroutput = true;
-          }
-        });
-      } else {
-        this.erroroutput = true;
-        this.errorMessage = 'Please enter email';
-      }
-    }else{
-      this.ForgotForm.markAllAsTouched();
-    }
+  // VerifyUser() {
+  //   this.erroroutput = false;
+  //   if(this.ForgotForm.valid){
+  //     this.ForgotForm.get('otp')?.clearValidators();
+  //     if (this.ForgotForm.get('Email')?.value !== undefined) {
+  //       this.NewOTP.email = this.ForgotForm.get('Email')?.value;
+  //       const headers = { 'content-type': 'application/json' };
+  //       const body = JSON.stringify(this.NewOTP);
+  //       console.log(body);
+  //       this.loginService.GetOtp(body, headers).subscribe((response: any) => {
+  //         this.errorMessage = response.message;
+  //         console.log(response);
+  //         if (response.statusCode === 200) {
+  //           this.EmailInput = true;
+  //           this.ForgotForm.get('otp')?.setValidators([Validators.required]);
+  //           this.ForgotForm.get('otp')?.updateValueAndValidity();
+  //           // this.otpValue = response.data.otp;
+  //           this.userid = response.data.userId;
+  //           this.startTimer();
+  //           this.showOTPField = true;
+  //           this.showEditButton = true;
+  //           this.erroroutput = false;
+  //         } else {
+  //           this.erroroutput = true;
+  //         }
+  //       });
+  //     } else {
+  //       this.erroroutput = true;
+  //       this.errorMessage = 'Please enter email';
+  //     }
+  //   }else{
+  //     this.ForgotForm.markAllAsTouched();
+  //   }
   
-  }
+  // }
 
   // ...
 
   // verfiy otp
-  VerifyOtp() {
-    this.erroroutput = false;
-    if(this.ForgotForm.valid){
-      if (this.ForgotForm.get('Email')?.value !== undefined) {
-        if (this.ForgotForm.get('otp')?.value !== undefined) {
-          this.OtpVerify.userId = this.userid;
-          this.OtpVerify.otp = parseInt(this.ForgotForm.get('otp')?.value);
-          const headers = { 'content-type': 'application/json' };
-          const body = JSON.stringify(this.OtpVerify);
-          console.log(body);
-          this.loginService
-            .ForgetOptVerify(body, headers).subscribe((response: any) => {
-              console.log("hi");
-              this.errorMessage = response.message;
-              if (response.statusCode === 200) {
-                console.log(response.data.user_id);
-                this.jwtService.saveToken(response.data.token);  
-                this.jwtService.savepanelUserId(response.data.userid);
-                this.dataService.changeMessage({ message: "reset" });
-                this.router.navigate(["reset_password",]);
-                this.erroroutput = false;
-              } else {
-                this.erroroutput = true;
+  // VerifyOtp() {
+  //   this.erroroutput = false;
+  //   if(this.ForgotForm.valid){
+  //     if (this.ForgotForm.get('Email')?.value !== undefined) {
+  //       if (this.ForgotForm.get('otp')?.value !== undefined) {
+  //         this.OtpVerify.userId = this.userid;
+  //         this.OtpVerify.otp = parseInt(this.ForgotForm.get('otp')?.value);
+  //         const headers = { 'content-type': 'application/json' };
+  //         const body = JSON.stringify(this.OtpVerify);
+  //         console.log(body);
+  //         this.loginService
+  //           .ForgetOptVerify(body, headers).subscribe((response: any) => {
+  //             console.log("hi");
+  //             this.errorMessage = response.message;
+  //             if (response.statusCode === 200) {
+  //               console.log(response.data.user_id);
+  //               this.jwtService.saveToken(response.data.token);  
+  //               this.jwtService.savepanelUserId(response.data.userid);
+  //               this.dataService.changeMessage({ message: "reset" });
+  //               this.router.navigate(["reset_password",]);
+  //               this.erroroutput = false;
+  //             } else {
+  //               this.erroroutput = true;
   
-              }
-            });
-        } else {
-          this.erroroutput = true;
-          this.errorMessage = 'Please enter otp';
-        }
-      }
-      else {
-        this.erroroutput = true;
+  //             }
+  //           });
+  //       } else {
+  //         this.erroroutput = true;
+  //         this.errorMessage = 'Please enter otp';
+  //       }
+  //     }
+  //     else {
+  //       this.erroroutput = true;
   
-        this.errorMessage = 'You are using expire otp';
-      }
-    }else{
-      this.ForgotForm.markAllAsTouched()
-    }
+  //       this.errorMessage = 'You are using expire otp';
+  //     }
+  //   }else{
+  //     this.ForgotForm.markAllAsTouched()
+  //   }
    
-  }
+  // }
 
   timer: number = 60;
   disableResend: boolean = true;

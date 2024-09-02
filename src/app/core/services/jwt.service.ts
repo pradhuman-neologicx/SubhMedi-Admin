@@ -67,6 +67,10 @@ getRoles() {
     window.localStorage['name'] = name;
   }
 
+
+  
+  
+
   getSessionStartdate(): string {
     return window.localStorage['Sessionstartdate'];
   }
@@ -83,13 +87,36 @@ getRoles() {
     window.localStorage['SessionEnddate'] = Session;
   }
 
-  getpanelUserId(): String {
+  getpanelUserId(): Number {
     return window.localStorage['panel_user_id'];
   }
 
-  savepanelUserId(userid: String) {
+  savepanelUserId(userid: Number) {
     window.localStorage['panel_user_id'] = userid;
   }
+
+
+  getpanelPartyId(): Number {
+    return window.localStorage['Party_id'];
+  }
+
+  savePartyId(Party_id: Number) {
+    window.localStorage['Party_id'] = Party_id;
+  }
+
+
+
+
+  getType(): String {
+    return window.localStorage['Type'];
+  }
+
+  saveType(Type: String) {
+    window.localStorage['Type'] = Type;
+  }
+
+
+
 
   getToken(): String {
     return window.localStorage['Token'];

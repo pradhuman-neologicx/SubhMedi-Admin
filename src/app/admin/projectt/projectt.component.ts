@@ -1,12 +1,9 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 import { JwtService } from 'src/app/core/services/jwt.service';
-import { saveAs } from 'file-saver';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-projectt',
@@ -46,7 +43,6 @@ import { environment } from 'src/environments/environment';
       private jwtService: JwtService,
       private router: Router,
       private route: ActivatedRoute,
-      private httpClient: HttpClient,
     ) {
       const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
       this.url1 = router.url.slice(0).split(urlDelimitators)[3];

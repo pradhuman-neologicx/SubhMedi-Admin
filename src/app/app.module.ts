@@ -19,6 +19,8 @@ import { ApiService } from './core/services/api.service';
 import { DataService } from './core/services/data.service';
 import { JwtService } from './core/services/jwt.service';
 import { SigninComponent } from './admin/loginpages/signin/signin.component';
+import { OtpComponent } from './admin/loginpages/otp/otp.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 import { ProjecttComponent } from './admin/projectt/projectt.component';
 import { CcompletedComponent } from './admin/projectt/ccompleted/ccompleted.component';
 import { OongoingComponent } from './admin/projectt/oongoing/oongoing.component';
@@ -37,6 +39,8 @@ import { EmployeeService } from './core/services/Employee.service';
     LoginpagesComponent,
     ForgotPasswordComponent,
     SigninComponent,
+    OtpComponent,
+    SpinnerComponent,
     ProjecttComponent,
     OongoingComponent,
     CcompletedComponent,

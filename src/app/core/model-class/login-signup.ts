@@ -34,7 +34,7 @@ export class SendOtpNew {
   mobilenumber!: string;
 }
 export class OtpVerify {
-  userId!: string;
+  email!: string;
   otp!: number;
 }
 

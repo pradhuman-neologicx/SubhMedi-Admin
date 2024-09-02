@@ -139,132 +139,27 @@ body {
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 12px;
+  display: inline;
+  display: block;
+  margin: 6px auto;
   box-shadow: 1px 0px 5px 0px rgba(0, 0, 0, 0.3);
 }
 
 
-
-
-// unsuccess
-.icon-unsuccess {
-  border: 1px solid red;
-  border-radius: 50%;
-  color: red;
-}
-
-.icon-unsuccess i {
-  font-size: 18px;
-  padding: 7px 8px 7px 8px;
-}
-
-
-.unsuccess-content {
-  border-left: 5px solid red;
-}
-
-
-
-
-
-.nav-pills .nav-link.active,
-.nav-pills .show>.nav-link,
-.nav-link.active {
-  background-color: #36a292 !important;
-  // color: ##36a292 !important;
-
-  // width: 100%;
-  // height: 81px;
-  // font-size: 22px;
-}
-
-.nav-pills .nav-link,
-.nav-pills .hide>.nav-link,
-.nav-link.active {
-  background-color: #fff !important;
-  // color: ##36a292 !important;
-}
-
-.nav-pills .nav-link {
-  color: #36a292;
-}
-
-
-
-.table-card {
-  margin-top: 20px;
-  box-shadow: 1px 0px 5px 0px rgba(0, 0, 0, 0.63);
-
-}
-
-.table-detail-new {
-  margin-top: 10px;
-}
-.table-card .table-responsive .table th {
-  padding: 10px 17px !important;
-
-}
-
-.table-card .table-responsive .table td {
-  padding: 10px 18px !important;
-
-}
-
-.table-new-heading {
-  color: #36a292;
-  white-space: nowrap;
-}
-
-
-
-table.table thead.table-header th {
-  background-color: #36a292;
-  /* Specificity override */
-  color: white;
-  font-weight: 400;
-}
-
-
-
-
-.btn-custom-primary {
-  color: #fff;
-  padding: 4px 12px;
+.login-border-text {
   display: inline-block;
-  // border-radius: 3px;
-  font-size: 16px !important;
-  // margin-bottom: 8px;
-  border: 1px solid#36a292;
-  background-color:#36a292;
+  border-bottom: 2px solid #36a292;
+  font-size: 30px !important;
 }
 
-.btn-custom-primary:hover {
-  color: #fff;
-  padding: 4px 12px;
-  display: inline-block;
-  // border-radius: 3px;
-  font-size: 16px !important;
-  // margin-bottom: 8px;
-  border: 1px solid#36a292;
-  background-color:#36a292;
+.login-screen-img {
+  width: 100%;
+  height: 402px;
+  border-radius: 10px;
+  // object-fit: cover;
 }
 
-.btn-custom-primary .btn-check:checked+.btn,
-.btn.active,
-.btn.show,
-.btn:first-child:active,
-:not(.btn-check)+.btn:active {
-  margin-bottom: 8px;
-  border: 1px solid#36a292 !important;
-  background-color: #36a292;
-}
-
-.modal-content {
-  position: absolute;
-  top: 20%;
-}
-
-
-
+// modal css start **********************************/
 .modal-container {
   position: fixed;
   top: 0;
@@ -275,7 +170,7 @@ table.table thead.table-header th {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 99;
+  z-index: 999;
 }
 
 .modal-content-50 {
@@ -283,6 +178,16 @@ table.table thead.table-header th {
   margin-left: 106px;
 }
 
+
+.modal-title {
+  font-size: 22px !important;
+  color: #ffb600;
+}
+
+.modal-title1 {
+  font-size: 22px !important;
+  color: #000;
+}
 
 
 
@@ -313,10 +218,104 @@ table.table thead.table-header th {
   margin-bottom: 40px;
 }
 
-
-
-
-
-.tt-color{
-  color: #36a292;
+.offcanvs-content-width {
+  width: 100%;
+  // max-height: 100vh;
+  // overflow-y: auto;
+  // margin-bottom: 40px;
 }
+
+.offcanvs-content-width{
+  width: 100%;
+  height: 83vh;
+  overflow: auto;
+}
+.offcanvs-content-width:hover {
+  overflow-y: scroll;
+}
+
+.offcanvs-content{
+  position: absolute;
+  top: 0;
+  right: 0%;
+  // height: 100vh;
+  // overflow-y: scroll;
+  // scrollbar-width: none; /* For Firefox */
+  // -ms-overflow-style: none;  
+}
+
+.offcanvs-content::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+
+.modal-content {
+  position: absolute;
+  top: 20%;
+}
+
+
+.modal-container-success {
+  position: fixed;
+  top: 12%;
+  right: 2%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999999;
+  box-shadow: -2px 3px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.icon-success {
+  border: 1px solid green;
+  border-radius: 50%;
+  color: green;
+}
+
+.icon-success i {
+  font-size: 18px;
+  padding: 6px 6px 6px 8px;
+}
+
+
+.success-content {
+  border-left: 5px solid green;
+}
+
+
+
+.icon-unsuccess {
+  border: 1px solid red;
+  border-radius: 50%;
+  color: red;
+}
+
+.icon-unsuccess i {
+  font-size: 18px;
+  padding: 7px 8px 7px 8px;
+}
+
+
+.unsuccess-content {
+  border-left: 5px solid red;
+}
+
+
+.form-lable-custom {
+  font-size: 16px;
+  margin-bottom: 10px;
+  // color:#ffb600;
+  display: block;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.form-input-custom {
+  font-size: 16px;
+  padding: 8px 8px;
+  display: block;
+  white-space: break-spaces;
+  border: 1px solid #36a292;
+}
+//   modal css end **********************************/
