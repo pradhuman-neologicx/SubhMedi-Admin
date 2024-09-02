@@ -25,6 +25,7 @@ import { ProjecttComponent } from './admin/projectt/projectt.component';
 import { CcompletedComponent } from './admin/projectt/ccompleted/ccompleted.component';
 import { OongoingComponent } from './admin/projectt/oongoing/oongoing.component';
 import { EmployeeService } from './core/services/Employee.service';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
 
 
 
@@ -44,6 +45,7 @@ import { EmployeeService } from './core/services/Employee.service';
     ProjecttComponent,
     OongoingComponent,
     CcompletedComponent,
+    DashboardComponent,
   
  
 

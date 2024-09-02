@@ -1,9 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-}
+@use '@angular/material' as mat;
+// @import "~@ng-select/ng-select/themes/default.theme.css";
+// @use 'sass:map';
+@include mat.core();
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// $dark-primary: #999999;
+// .lightTheme {
+//   $light-primary: mat.define-palette(mat.$deep-purple-palette);
+//   $light-accent: mat.define-palette(mat.$red-palette);
+//   $light-warn: mat.define-palette(mat.$teal-palette);
+
+
+//   $light-theme: mat.define-light-theme((color:(primary:$light-primary, accent:$light-accent, warn:$light-warn,
+//         )));
+//   @include mat.all-component-themes($light-theme);
+//   // .card .custom-card {
+//   //     background-color: #fff;
+//   //     color: #000;
+//   // }
+
+//   @import 'customtheme.scss';
+
+// }
+
+// .darkTheme {
+//   $dark-primary: mat.define-palette(mat.$blue-grey-palette);
+//   $dark-accent: mat.define-palette(mat.$red-palette);
+//   $dark-warn: mat.define-palette(mat.$teal-palette);
+//   $dark-theme: mat.define-dark-theme((color:(primary:$dark-primary , accent:$dark-accent, warn:$dark-warn,
+//         )));
+//   @include mat.all-component-themes($dark-theme);
+
+//   mat-card {
+//     color: #fff;
+//   }
+
+//   // .custom-card {
+//   //     background-color: #000;
+//   //     color: #fff;
+//   // }
+
+//   @import 'customtheme.scss';
+
+// }
+
+
+
+
+
+// .orangeTheme {
+//   $orange-primary: mat.define-palette(mat.$orange-palette);
+//   $orange-accent: mat.define-palette(mat.$red-palette);
+//   $orange-warn: mat.define-palette(mat.$teal-palette);
+//   $orange-theme: mat.define-light-theme((color:(primary:$orange-primary, accent:$orange-accent, warn:$orange-warn,
+//         )));
+//   @include mat.all-component-themes($orange-theme);
+//   @import 'customtheme.scss';
+
+
+
+// }
+
+$primary-color: red;
+$light-primary: #d45812;
+
+$light-primary: rgb(103, 58, 183);
 
 html,
 body {
@@ -29,6 +93,7 @@ body {
 .custom-scrollbar {
   overflow-y: auto;
   height: 90vh;
+  background-color: #fff;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -319,3 +384,92 @@ body {
   border: 1px solid #36a292;
 }
 //   modal css end **********************************/
+
+
+.admin-container {
+  background-color: #f0f2f5 !important;
+}
+
+mat-sidenav,
+mat-sidenav-content {
+  transition: all 500ms ease-in-out;
+}
+
+.mat-drawer-container {
+  overflow-x: hidden !important;
+  // display: inline-block !important;
+}
+
+
+.sidenav-header {
+  padding-top: 24px;
+  text-align: center;
+}
+
+mat-toolbar {
+  position: relative;
+  z-index: 5;
+}
+
+.content {
+  padding: 24px;
+}
+
+mat-sidenav-container {
+  height: calc(100vh - 65px);
+}
+
+.admin-theme-logo {
+  height: 57px;
+  width: 100px;
+}
+
+.header button {
+  margin-left: 42px;
+}
+
+.mat-drawer-side {
+  box-shadow: none;
+  border-right-color: var(--mat-sidenav-container-divider-color);
+  border-right-width: 0px !important;
+  border-right-style: solid;
+  border-radius: 0 !important;
+}
+
+.mat-drawer.mat-drawer-side {
+  z-index: 1 !important;
+}
+
+
+.mat-expansion-panel{
+  border-radius: 0 !important;
+}
+
+
+.mat-expansion-panel-header {
+  padding: 0 24px 0 0 !important;
+  border-radius: 0 !important;
+  box-shadow: 0;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 0px 0px 20px !important;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: none !important;
+}
+
+.mat-expansion-panel-header.mat-expanded .mat-expansion-indicator::after {
+  font-weight: bold;
+  color: #000 !important;
+}
+
+.mat-expansion-panel{
+  background-color: #fff !important;
+}
+
+.mat-mdc-nav-list .mat-mdc-list-item{
+  border-radius: 0 !important;
+  margin-bottom: 10px;
+}

@@ -9,6 +9,7 @@ import { OtpComponent } from './admin/loginpages/otp/otp.component';
 import { ProjecttComponent } from './admin/projectt/projectt.component';
 import { OongoingComponent } from './admin/projectt/oongoing/oongoing.component';
 import { CcompletedComponent } from './admin/projectt/ccompleted/ccompleted.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
 
 const routes: Routes = [
 
@@ -28,7 +29,11 @@ const routes: Routes = [
 
     component: AdminComponent,
     children: [
-      { path: '', redirectTo: 'parties', pathMatch: 'full' },
+      { path: '', redirectTo: 'DashboardComponent', pathMatch: 'full' },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+      },
       {
         path: 'parties',
         component: PartiesComponent,
