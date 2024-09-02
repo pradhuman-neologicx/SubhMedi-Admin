@@ -1,0 +1,47 @@
+<div class="container mx-auto mb-4 ">
+    <div class="d-flex justify-content-between align-items-center">
+        <h5 class="text-primary table-heading-detail"> Projects </h5>
+        <div>
+            <!-- <button 
+          class="btn btn-primary main-btnfs px-4 py-2">Migrate All </button> -->
+
+        </div>
+    </div>
+</div>
+
+
+<ul class="nav nav-pills mb-5" id="pills-tab" role="tablist">
+    <li class="nav-item me-4" role="presentation">
+        <button class="nav-link active px-5" id="pills-collect-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+            type="button" role="tab" aria-controls="pills-home" aria-selected="true"  (click)="NavigationTab(1)">Ongoing</button>
+    </li>
+    <li class="nav-item me-4" role="presentation">
+        <button class="nav-link px-5" id="pills-feestatus-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
+            type="button" role="tab" aria-controls="pills-profile" aria-selected="false" (click)="NavigationTab(2)">Completed</button>
+    </li>
+    <!-- <li class="nav-item" role="presentation">
+        <button class="nav-link px-5" id="transaction-tab" data-bs-toggle="pill" data-bs-target="#pills-transcationtab"
+            type="button" role="tab" aria-controls="pills-transcationtab" aria-selected="false" (click)="NavigationTab(3)">Daily Transaction</button>
+    </li> -->
+
+<!-- <li class="nav-item mx-5" role="presentation">
+    <button class="nav-link px-5" id="pills-otherFee-tab" data-bs-toggle="pill" data-bs-target="#pills-other"
+        type="button" role="tab" aria-controls="pills-other" aria-selected="false" (click)="NavigationTab(3)">Other Fees</button>
+</li> -->
+<!-- <button class="btn btn-success main-btnfs px-4 py-2 ms-auto me-4" (click)="downloadFile()"> Pending Fees List Export</button> -->
+</ul>
+<router-outlet></router-outlet>
+
+<!-- <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-collect-tab">
+    <app-collect-tab></app-collect-tab>
+
+    </div>
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-feestatus-tab">
+
+<app-fee-status-tab></app-fee-status-tab>
+    </div>
+        <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-otherFee-tab">
+            <app-other-fee-tab></app-other-fee-tab>
+        </div>
+</div> -->

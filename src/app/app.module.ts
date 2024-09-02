@@ -21,6 +21,14 @@ import { JwtService } from './core/services/jwt.service';
 import { SigninComponent } from './admin/loginpages/signin/signin.component';
 import { OtpComponent } from './admin/loginpages/otp/otp.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { ProjecttComponent } from './admin/projectt/projectt.component';
+import { CcompletedComponent } from './admin/projectt/ccompleted/ccompleted.component';
+import { OongoingComponent } from './admin/projectt/oongoing/oongoing.component';
+import { EmployeeService } from './core/services/Employee.service';
+
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +40,14 @@ import { SpinnerComponent } from './spinner/spinner.component';
     ForgotPasswordComponent,
     SigninComponent,
     OtpComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    ProjecttComponent,
+    OongoingComponent,
+    CcompletedComponent,
+  
+ 
+
+   
     ],
   imports: [
     BrowserModule,
@@ -49,6 +64,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     ApiService,
     JwtService,
     DatePipe, 
+    EmployeeService,
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
