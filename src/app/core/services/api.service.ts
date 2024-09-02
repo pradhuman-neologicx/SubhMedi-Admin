@@ -34,9 +34,9 @@ export class ApiService {
   //     .pipe(map((response: any) => response["routesModel"]));
 
   // }
-  get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
+  get(path: string, header: any): Observable<any> {
     return this.http
-      .get(`${environment.api_url}${path}`, { params })
+      .get(`${environment.api_url}${path}`,  { headers: header })
       .pipe(catchError(this.formatErrors));
     // }else{
     //   return window.alert("Connection Offline");

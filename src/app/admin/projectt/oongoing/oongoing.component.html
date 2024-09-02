@@ -113,16 +113,16 @@
 
                         <td>{{ i + 1 }}</td>
                         <td>
-                            <p>{{ product.orderID }}</p>
+                            <p>{{ product.name }}</p>
                         </td>
                         <td>
-                            <p>{{ product.customer }}</p>
+                            <p>{{ product.total_in }}</p>
                         </td>
                         <td>
-                            <p>{{ product.bookingdate }}</p>
+                            <p>{{ product.total_out }}</p>
                         </td>
                         <td>
-                            <p>{{ product.paid }}</p>
+                            <p>{{ product.description }}</p>
                         </td>
 
 
@@ -221,13 +221,8 @@
                                 #State formControlName="State"
                               
                                 [ngClass]="{ 'is-invalid':createproductform.controls['State'].errors  && (createproductform.controls['State'].touched || createproductform.controls['State'].dirty)  }">
-                                <option 
-                                *ngFor="let state of stateList" [value]="state.code">
-                                        {{ state.name }}
-<!--                                 
-                                *ngFor="let state of stateList"
-                                    value="{{state.name}}">
-                                    {{ state.name }} -->
+                                <option *ngFor="let state of stateList" [value]="state.id">
+                                    {{ state.name }}
                                 </option>
                             </select>
                             <div class="error-message"
@@ -271,9 +266,9 @@
                                 Select Client</label>
                             <select class="form-select form-input-custom" formControlName="SelectClient"
                                 [ngClass]="{ 'is-invalid': createproductform.controls['SelectClient'].errors && (createproductform.controls['SelectClient'].touched || createproductform.controls['SelectClient'].dirty) }">
-                                <option value="Starter">Starter </option>
-                                <option value="MainCourse">Main Course</option>
-                                <option value="Dessert">Dessert</option>
+                                <option *ngFor="let client of clientList" [value]="client.id">
+                                    {{ client.name }}
+                                </option>
                             </select>
                             <div class="text-danger error-message"
                                 *ngIf="createproductform.controls['SelectClient'].errors && (createproductform.controls['SelectClient'].touched || createproductform.controls['SelectClient'].dirty)">
@@ -293,9 +288,10 @@
                                 Select Staff</label>
                             <select class="form-select form-input-custom" formControlName="Selectstaff"
                                 [ngClass]="{ 'is-invalid': createproductform.controls['Selectstaff'].errors && (createproductform.controls['Selectstaff'].touched || createproductform.controls['Selectstaff'].dirty) }">
-                                <option value="Starter">Starter </option>
-                                <option value="MainCourse">Main Course</option>
-                                <option value="Dessert">Dessert</option>
+                                <option *ngFor="let staff of staffList" [value]="staff.id">
+                                    {{ staff.name }}
+                                </option>
+                              
                             </select>
                             <div class="text-danger error-message"
                                 *ngIf="createproductform.controls['Selectstaff'].errors && (createproductform.controls['Selectstaff'].touched || createproductform.controls['Selectstaff'].dirty)">

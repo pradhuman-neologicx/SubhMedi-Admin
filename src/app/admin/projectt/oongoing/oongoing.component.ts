@@ -110,6 +110,8 @@ export class OongoingComponent {
     
     this.getOngoingproject(0);
     this.getState();
+    this.getStaff();
+    this.postclient();
 
 
 
@@ -127,6 +129,22 @@ export class OongoingComponent {
     this.employeeService.GetState().subscribe((response: any) => {
       if (response.statusCode === 200) {
         this.stateList = response.data;
+      }
+    });
+  }
+  staffList: any = [];
+  getStaff() {
+    this.employeeService.GetStaff().subscribe((response: any) => {
+      if (response.status === 200) {
+        this.staffList = response.staffs;
+      }
+    });
+  }
+  clientList: any = [];
+  postclient() {
+    this.employeeService.getClientParties().subscribe((response: any) => {
+      if (response.status === 200) {
+        this.clientList = response.parties;
       }
     });
   }

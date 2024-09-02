@@ -38,11 +38,42 @@ export class EmployeeService {
   }
 
   GetState() {
-    return this.apiservice.get('states');
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.apiservice.get("states",headers);
+  }
+  GetStaff() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.apiservice.get("staffs", headers);
   }
 
 
+  getClientParties(): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
 
+    const body = {
+      type: 'client',
+      user_id: user,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers );
+  }
+}
 
 
 
@@ -60,112 +91,6 @@ export class EmployeeService {
 
 
 // Method to update user status
-updateUserStatus(userId: string, isActive: boolean): Observable<any> {
-  const body = {
-    "user_id": userId,
-    "isActive": isActive.toString() // Convert boolean to string
-  };
-  const token = this.jwtService.getToken();
-
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  });
-console.log(body);
-console.log(headers);
-  return this.apiservice.put("auth/updateStatus", body, headers);
-}
-
-updateUser(formData: FormData) {
-  const token = this.jwtService.getToken();
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`,
-    'content-type': 'multipart/form-data' 
-  });
-
-return this.apiservice.put("auth/updateUser", formData, headers)
-}
-
-
-
-
-  createEmployee(formData: any){
-    const headers = { 'content-type': 'multipart/form-data' };
-    return this.apiservice.postWithoutHeader("auth/createUsers", formData);
-  }
-  
-  GetRoles() {
-    return this.apiservice.get("auth/getUserManagementRoles");
-  }
-
-  GetNewRegistrationA() {
-    return this.apiservice.get("auth/getUsers");
-  }
-
-  GetUsers() {
-    return this.apiservice.get("auth/getUsers");
-  }
-
-  getProfiledetails(formData: any){
-    const headers = { 'content-type': 'application/json' };
-    return this.apiservice.post("auth/getProfileById", formData,headers);
-  }
-
-
-
-  updateEmployee(formData: any,headers: any){
-    return this.apiservice.put("auth/updateUser", formData,headers);
-  }
-  
-  getsubjects() {
-    return this.apiservice.get("masters/getSubjects");
-  }
-
-  Createmapbatches(body: any){
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.apiservice.post("batch/getMappedAndUnmappedBatches", body,headers);
-  }
-  getclassrooms() {
-    return this.apiservice.get("masters/classrooms");
-  }
-  
-  getteachersbysubjectid(body: any){
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.apiservice.post("masters/getTeachersBySubjectId", body,headers);
-  }
- 
-  mapclassroonwithbatch(body: any){
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.apiservice.post("batch/map-classroom-batches", body,headers);
-  }
-
-  BulkuploadEmployeeapi(formData:any){
-    const headers = { 'content-type': 'application/json' };
-    return this.apiservice.postWithoutHeader("imports/import-employees",formData);
-  }
-
-
-  BulkuploadBatchesapi(formData:any){
-    const headers = { 'content-type': 'application/json' };
-    return this.apiservice.postWithoutHeader("imports/import-batches",formData);
-  }
-
-
-  BulkuploadCourseapi(formData:any){
-    const headers = { 'content-type': 'application/json' };
-    return this.apiservice.postWithoutHeader("imports/import-courses",formData);
-  }
-
-  
-
-  
-  GetsubjectlistApi(body:any){
-    return this.apiservice.get("masters/getSubjects",body);
-  }
-
-  updatePasswrodApi(formData: any, headers: any) {
-    return this.apiservice.put("auth/updatePassword", formData, headers);
-  }
 
  
-}
+
