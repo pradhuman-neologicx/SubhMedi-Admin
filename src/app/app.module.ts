@@ -27,6 +27,12 @@ import { OongoingComponent } from './admin/projectt/oongoing/oongoing.component'
 import { EmployeeService } from './core/services/Employee.service';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ProjecthomeComponent } from './admin/projecthome/projecthome.component';
+import { HomepartiesComponent } from './admin/projecthome/homeparties/homeparties.component';
+import { HometransactionsComponent } from './admin/projecthome/hometransactions/hometransactions.component';
+import { HomeattendanceComponent } from './admin/projecthome/homeattendance/homeattendance.component';
+import { HomematerialComponent } from './admin/projecthome/homematerial/homematerial.component';
+
 
 
 
@@ -46,6 +52,13 @@ import { NgxPaginationModule } from 'ngx-pagination';
     OongoingComponent,
     CcompletedComponent,
     DashboardComponent,
+    ProjecthomeComponent,
+    HomepartiesComponent,
+    HometransactionsComponent,
+    HomeattendanceComponent,
+    HomematerialComponent,
+
+ 
   
  
 

@@ -1,0 +1,21 @@
+.row {
+    display: flex;
+    justify-content: space-between; /* Adds space between the cards */
+  }
+  
+  .custom-card {
+    margin-right: 15px; /* Adds margin to the right side */
+    width: 95%;
+    text-align: center;
+  }
+  
+  
+  .card-text2{
+color: red;
+  }
+   
+  .card-text{
+color: green;
+  }
+   
+  

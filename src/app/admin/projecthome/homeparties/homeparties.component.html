@@ -1,0 +1,337 @@
+
+<!-- <div class="container" *ngIf="StudentTable!=undefined">
+    <div class="card border-0 mb-4 py-0 tabel-card" *ngIf="StudentTable.length>0">
+        <div class="d-flex justify-content-between align-items-center my-3">
+            <div class="d-flex  align-items-center">
+                <span class="me-1 show-entery-text">Show</span>
+                <select class="form-control form-select show-entries-select" (change)="onTableSizeChange($event)">
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                        {{ size }}
+                    </option>
+                </select>
+                <span class="ms-1 show-entery-text">entries</span>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <form [formGroup]="searchbarform" class="d-flex align-items-center">
+                    <span class="me-1">Search:</span>
+                    <div>
+                        <input type="text" class="form-control search-user position-relative" type="text"
+                            autocomplete="off" formControlName="searchbar"
+                            [ngClass]="{ 'is-invalid':searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }">
+                        <div class="text-danger error-message d-block"
+                            *ngIf="searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty)">
+                            <p class="fw-light  text-danger search-required"
+                                *ngIf="searchbarform.controls['searchbar'].errors['required']">
+                                This is required</p>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary search-btn ms-2" (click)="searchfun()"><span><i
+                                class="fa-solid fa-magnifying-glass form-control-feedback"></i></span>
+                    </button>
+                    <button class="btn btn-primary search-btn ms-2" (click)="resetsearchbar()" type="submit"
+                        *ngIf="showreset==true"><span><i
+                                class="fa-solid fa-rotate-right form-control-feedback"></i></span>
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+        <table class="table table-hover">
+            <thead class="table-header-trailer">
+                <tr>
+                    <th>
+                        <p class="table-heading table-new-heading">Roll No.</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Student Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Batch Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Course Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Course Content</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Delivery Mode</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Shift</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Action</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of StudentTable | paginate: {itemsPerPage: tableSize!='all'?tableSize:totalRecords,
+                    currentPage: page, totalItems: totalRecords};index as i">
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{student.rollNumber }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize td-width table-detail-new">{{
+                            student.studentName }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                            student.batch.batchCode}}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">{{
+                            student.course.name}}</p>
+                    </td>
+
+                    <td>
+                        <p class="table-detail text-capitalize td-width table-detail-new">{{
+                        student.courseContent.name }}</p>
+                    </td>
+
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">{{
+                            student.deliveryMode.name }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">{{
+                            student.shift.name }}</p>
+                    </td>
+                    <td>
+                        <p>
+                            <button mat-icon-button  class="p-0">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center">
+            <span class="showalltext" *ngIf="totalRecords!=undefined">Showing
+                {{(tableSize*(page-1))>0?tableSize*(page-1)+1:1}} to
+                {{(tableSize*(page))<=totalRecords?tableSize*(page):totalRecords}} of
+                    {{totalRecords!=undefined?totalRecords:""}} entries</span>
+                    <pagination-controls previousLabel="Prev" nextLabel="Next" [responsive]=true
+                        (pageChange)="onTableDataChange($event)" target="_top"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" *ngIf="StudentTable!=undefined">
+    <div class="card border-0 mb-4 py-0 tabel-card" *ngIf="StudentTable.length==0">
+        <div class="d-flex justify-content-between align-items-center my-3">
+            <div class="d-flex  align-items-center">
+                <span class="me-1 show-entery-text">Show</span>
+                <select class="form-control form-select show-entries-select" (change)="onTableSizeChange($event)">
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                        {{ size }}
+                    </option>
+                </select>
+                <span class="ms-1 show-entery-text">entries</span>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <form [formGroup]="searchbarform" class="d-flex align-items-center">
+                    <span class="me-1">Search:</span>
+                    <div>
+                        <input type="text" class="form-control search-user position-relative" type="text"
+                            autocomplete="off" formControlName="searchbar"
+                            [ngClass]="{ 'is-invalid':searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }">
+                        <div class="text-danger error-message d-block"
+                            *ngIf="searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty)">
+                            <p class="fw-light  text-danger search-required"
+                                *ngIf="searchbarform.controls['searchbar'].errors['required']">
+                                This is required</p>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary search-btn ms-2" (click)="searchfun()"><span><i
+                                class="fa-solid fa-magnifying-glass form-control-feedback"></i></span>
+                    </button>
+                    <button class="btn btn-primary search-btn ms-2" (click)="resetsearchbar()" type="submit"
+                        *ngIf="showreset==true"><span><i
+                                class="fa-solid fa-rotate-right form-control-feedback"></i></span>
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+        <table class="table table-hover">
+            <thead class="table-header-trailer">
+                <tr>
+                    <th>
+                        <p class="table-heading table-new-heading">Roll No.</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Student Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Batch Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Course Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Course Content</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Delivery Mode</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Shift</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Action</p>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+
+        <div class="card-body text-center">
+            <h1> No Data Available</h1>
+        </div>
+    </div>
+</div>
+
+ -->
+
+ <div class="row">
+    <!-- Card for Advance Paid -->
+    <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+      <div class="card custom-card border-0 cursor h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Advance Paid</h5>
+          <p class="card-text">{{ totalAdvancePaid }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Card for Pending to Pay -->
+    <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+      <div class="card custom-card border-0 cursor h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Pending to Pay</h5>
+          <p class="card-text2">{{ totalToPay }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+
+
+
+<div class="container">
+
+
+
+
+    <div class="card border-0 mb-4 py-0 tabel-card">
+
+
+
+
+        <form [formGroup]="FilterForm">
+            <div class="row mb-2">
+                <div class="col-lg-6">
+                    <input type="text" class="form-control px-4 py-2 mt-2 ml-2" placeholder="Search by name" #filter
+                        formControlName="filter"
+                        [ngClass]="{ 'is-invalid':FilterForm.controls['filter'].errors && (FilterForm.controls['filter'].touched || FilterForm.controls['filter'].dirty) }">
+                    <div class="text-danger error-message"
+                        *ngIf="FilterForm.controls['filter'].errors && ( FilterForm.controls['filter'].touched ||  FilterForm.controls['filter'].dirty)">
+                        <p class="fw-light  text-danger" *ngIf="FilterForm.controls['filter'].errors['required']">
+                            Name is required</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2" type="button" (click)="getpartyproject(1)">Search</button>
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2" type="submit"
+                        *ngIf="showStudent!=undefined" (click)="resetFilter()">Reset</button>
+                </div>
+            </div>
+        </form>
+
+
+
+
+
+        <table class="table table-hover">
+            <thead class="table-header-trailer">
+                <tr>
+                    <th>
+                        <p class="table-heading table-new-heading">Serial No.</p>
+                    </th>
+
+                    <th>
+                        <p class="table-heading table-new-heading">Project Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Project Type</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Amount</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Status</p>
+                    </th>
+
+                    <th>
+                        <p class="table-heading table-new-heading">Action</p>
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let party of projectpartiestable; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{party.name }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize td-width table-detail-new">{{
+                            party.type }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                            party.amount}}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                             'status-to-pay': party.status === 'to pay',
+                             'status-to-receive': party.status === 'to receive',
+
+                           }">
+                            {{ party.status }}
+                        </p>
+                    </td>
+
+
+                    <td>
+                        <p>
+                            <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item>View Details</button>
+                                <button mat-menu-item>Edit Details</button>
+                            </mat-menu>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

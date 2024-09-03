@@ -90,13 +90,14 @@ export class SidenavComponent {
         route: 'dashboard',
       },
       {
-        index: 12,
+        index: 2,
         icon: 'home',
         label: 'Project',
         route: 'project',
       },
+     
       {
-        index: 3,
+        index: 4,
         icon: 'analytics',
         label: 'parties',
         route: 'parties',
