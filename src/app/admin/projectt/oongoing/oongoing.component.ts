@@ -1,7 +1,9 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { projects } from 'src/app/core/model-class/employee';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
+import { JwtService } from 'src/app/core/services/jwt.service';
 
 
 @Component({
@@ -80,11 +82,12 @@ export class OongoingComponent {
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
+    private jwtService: JwtService
   ) { }
 
 
   ngOnInit(): void {
-
+    this.user_id= this.jwtService.getpanelUserId();
     this.FilterForm = this.formBuilder.group({
       filter: ['', [Validators.required]],
     });
@@ -100,18 +103,21 @@ export class OongoingComponent {
     });
     this.createproductform = this.formBuilder.group({
       projectname: ["", [Validators.required,]],
-      Address: ["", [Validators.required,]],
-      State: ["", [Validators.required,]],
-      City: ["", [Validators.required,]],
+      Address: [""],
+      State: [""],
+      City: [""],
       SelectClient: ["", [Validators.required,]],
-      Selectstaff: ["", [Validators.required,]],
-      description: ["", [Validators.required,]],
+      Selectstaff: [""],
+      description: [""],
+      StartDate: [""],
+      endDate: [""],
     });
     
     this.getOngoingproject(0);
     this.getState();
     this.getStaff();
     this.postclient();
+    this.checkUserRole();
   
 
     
@@ -124,8 +130,15 @@ export class OongoingComponent {
 
 
   }
-
-
+  Type!: string;
+  checkUserRole() {
+    this.Type = localStorage.getItem('Type') || '';
+    if (this.Type === 'admin') {
+      this.createproductform.get('Selectstaff')?.setValidators(Validators.required);
+    } else if (this.Type === 'staff') {
+      this.createproductform.removeControl('Selectstaff');
+    }
+  }
 
   stateList: any = [];
   // getState() {
@@ -222,39 +235,79 @@ export class OongoingComponent {
       }
     });
   }
-  citylist: any = [];
-  StateCode: any = [];
-  StateName: any = [];
-
-  // GetCityByState(value: any) {
-  //   console.log(value);
-  //   if (value != undefined && value.length > 0) {
-  //     let [code, name] = value.split('-');
-  //     this.StateCode = code.trim();
-  //     this.StateName = name.trim();
-  //     console.log("Code:", code.trim());  // Output: Code: AN
-  //     console.log("Name:", name.trim());
-  //   }
-  //   if (this.StateCode != undefined && this.StateCode.length > 0) {
-  //     this.getCityByStateCode(this.StateCode);
-  //   }
-  // }
-
  
 
+  
 
-  // getCityByStateCode(StateCode: any) {
-  //   this.employeeService.GetCities("IN", StateCode).subscribe((response: any) => {
-  //     if (response.statusCode === 200) {
-  //       console.log(response.cities);
 
-  //       // Filter cities based on state code
-  //       this.citylist = response.data;
 
-  //       console.log(this.citylist);
-  //     }
-  //   });
-  // }
+
+
+  projects: projects = new projects();
+  user_id: any
+  createprojects() {
+    console.log(this.createproductform.get('projectname')?.value)
+    console.log(this.createproductform.get('Address')?.value)
+    console.log(this.createproductform.get('State')?.value)
+    console.log(this.createproductform.get('City')?.value)
+    console.log(this.createproductform.get('description')?.value)
+    console.log(this.createproductform.get('StartDate')?.value)
+    console.log(this.createproductform.get('endDate')?.value)
+    console.log(this.createproductform.get('Selectstaff')?.value)
+    console.log(this.createproductform.get('SelectClient')?.value)
+    if (this.createproductform.valid) {
+      this.projects.name = this.createproductform.get('projectname')?.value;
+      this.projects.address = this.createproductform.get('Address')?.value;
+      this.projects.state_id = this.createproductform.get('State')?.value;
+      this.projects.city_id = this.createproductform.get('City')?.value;
+      this.projects.assign_to_id = this.createproductform.get('Selectstaff')?.value;
+      this.projects.party_id = this.createproductform.get('SelectClient')?.value;
+      this.projects.description = this.createproductform.get('description')?.value;
+      this.projects.start_date = this.createproductform.get('StartDate')?.value;
+      this.projects.end_date = this.createproductform.get('endDate')?.value;
+       this.projects.user_id = this.user_id
+     // Conditionally set assign_to_id based on user role
+     if (this.Type === 'admin') {
+      if (this.createproductform.get('Selectstaff')?.value) {
+        this.projects.assign_to_id = this.createproductform.get('Selectstaff')?.value;
+      } else {
+        console.error('Select Staff is required for admin users.');
+        return; 
+      }
+    }
+
+      const body = JSON.stringify(this.projects);
+      console.log(body);
+      this.employeeService.createProject(body).subscribe((response: any) => {
+        console.log(response);
+        if (response.status === 200) {
+          this.closeModal();
+          // this.successName = 'Batch';
+          // this.ngOnInit();
+          this.getOngoingproject(0);
+          // this.dataService.changeMessage({ message: "projects Created" });
+          // this.router.navigate(['/master/projects']);
+          setTimeout(() => {
+            // this.openSecondsuccess = true;
+            setTimeout(() => {
+              // this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+
+        } else {
+          // this.submitted = false;
+        }
+
+      });
+
+    }
+  }
+
+
+
+
+
+
 
 
 

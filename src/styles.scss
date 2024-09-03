@@ -19,7 +19,7 @@
 //   @include mat.all-component-themes($light-theme);
 //   // .card .custom-card {
 //   //     background-color: #fff;
-//   //     color: #000;
+//   //     color: #36a292;
 //   // }
 
 //   @import 'customtheme.scss';
@@ -39,7 +39,7 @@
 //   }
 
 //   // .custom-card {
-//   //     background-color: #000;
+//   //     background-color: #36a292;
 //   //     color: #fff;
 //   // }
 
@@ -251,7 +251,7 @@ body {
 
 .modal-title1 {
   font-size: 22px !important;
-  color: #000;
+  color: #36a292;
 }
 
 
@@ -462,7 +462,7 @@ mat-sidenav-container {
 
 .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator::after {
   font-weight: bold;
-  color: #000 !important;
+  color: #36a292 !important;
 }
 
 .mat-expansion-panel{
@@ -506,4 +506,42 @@ mat-sidenav-container {
 
 .status-settled {
   color: #36a292; /* Replace with the desired color for "settled" */
+}
+.table-card {
+  margin-top: 20px;
+  box-shadow: 1px 0px 5px 0px rgba(0, 0, 0, 0.63);
+
+}
+
+
+
+.table-card .table-responsive .table th {
+  padding: 10px 17px !important;
+
+}
+
+.table-card .table-responsive .table td {
+  padding: 10px 18px !important;
+
+}
+
+.tabel-card {
+  padding: 18px;
+}
+
+.table-new-heading {
+  color: #36a292;
+  white-space: nowrap;
+}
+
+
+
+table.table thead.table-header th {
+  background-color: #36a292;
+  /* Specificity override */
+  color: white;
+  font-weight: 400;
+}
+.table-detail-new {
+  margin-top: 10px;
 }

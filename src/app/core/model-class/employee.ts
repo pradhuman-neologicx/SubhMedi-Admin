@@ -25,3 +25,20 @@ export class Employee {
     sessionId!: string;
     userId!: string;
   }
+
+
+
+
+  export class projects {
+    name!: string
+    start_date!: any
+    end_date!: any
+    description!: string
+    state_id!: any
+    city_id!: any
+    address!: string
+    user_id!: any
+    assign_to_id: any;
+    party_id: any;
+  
+  }

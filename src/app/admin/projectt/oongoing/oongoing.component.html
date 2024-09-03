@@ -197,7 +197,7 @@
                         <div class="mb-3 ">
                             <label class="d-block text-capitalize form-label form-lable-custom"
                                 for="Address">Address</label>
-                            <input type="number" class="d-block form-control form-input-custom"
+                            <input type="text" class="d-block form-control form-input-custom"
                                 formControlName="Address" 
                                 [ngClass]="{ 'is-invalid':createproductform.controls['Address'].errors && (createproductform.controls['Address'].touched || createproductform.controls['Address'].dirty) }">
                             <div class="text-danger error-message"
@@ -241,7 +241,7 @@
                                 class="form-control form-input-modal form-select"
                                 #City formControlName="City"
                                 [ngClass]="{ 'is-invalid':createproductform.controls['City'].errors  && (createproductform.controls['City'].touched || createproductform.controls['City'].dirty)  }">
-                                <option *ngFor="let city of citiesList" [value]="city.name"> <!-- Bind to citiesList and use city.name -->
+                                <option *ngFor="let city of citiesList" [value]="city.id"> <!-- Bind to citiesList and use city.name -->
                                     {{ city.name }}
                                 </option>
                             </select>
@@ -259,7 +259,7 @@
 
 
 
-                        <div class="mb-3 ">
+                         <div class="mb-3 ">
                             <label class="d-block text-capitalize form-label form-lable-custom" for="SelectClient">
                                 Select Client</label>
                             <select class="form-select form-input-custom" formControlName="SelectClient"
@@ -275,13 +275,14 @@
                                     Select Client is required
                                 </p>
                             </div>
-                        </div>
+                        </div> 
+
+                   
+                        
 
 
 
-
-
-                        <div class="mb-3 ">
+                        <div  *ngIf="Type === 'admin'"class="mb-3 ">
                             <label class="d-block text-capitalize form-label form-lable-custom" for="Selectstaff">
                                 Select Staff</label>
                             <select class="form-select form-input-custom" formControlName="Selectstaff"
@@ -320,12 +321,32 @@
                             </div>
                         </div>
 
+
+
+
+                        <div class="mb-3">
+                            <label for="StartDate"
+                              class="form-label form-lable-custom">Start Date</label>
+                            <input type="date" class="form-control form-input-custom"  onkeydown="return false"
+                              formControlName="StartDate">
+                            </div>
+                        <div class="mb-3">
+                            <label for="endDate"
+                              class="form-label form-lable-custom">End Date</label>
+                            <input type="date" class="form-control form-input-custom"  onkeydown="return false"
+                              formControlName="endDate">
+                           
+                          </div>
+
+
+
+
                        
 
                         <div class="modal-footer text-end">
                             <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
                               (click)="closeModal()">Cancel</button>
-                            <button class="btn btn-custom-primary  px-4 py-2"  type="submit" >Create</button>
+                            <button class="btn btn-custom-primary  px-4 py-2"  type="submit" (click)="createprojects()" >Create</button>
                           </div>
 
                     </form>
