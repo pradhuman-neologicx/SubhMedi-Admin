@@ -298,6 +298,10 @@ console.log(url);
   url
  );
 }
+
+GetpartytableApi(headers: any) {
+  return this.apiservice.get("parties",headers);
+}
 }
 
 
