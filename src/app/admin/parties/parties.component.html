@@ -1,7 +1,7 @@
 <div class="container mx-auto mb-4 ">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="text-primary table-heading-detail">Students</h1>
-        <button class="btn btn-success main-btnfs px-3 py-2">Create New Party</button>
+        <button class="btn btn-success main-btnfs px-3 py-2" (click)="OpenCreateModal()">Create New Party</button>
     </div>
 </div>
 
@@ -215,11 +215,14 @@
 
 
 
- <div class="container">
+<div class="container">
     <div class="card border-0 mb-4 py-0 tabel-card">
         <table class="table table-hover">
             <thead class="table-header-trailer">
                 <tr>
+                    <th>
+                        <p>Serial No.</p>
+                    </th>
 
                     <th>
                         <p class="table-heading table-new-heading">Name</p>
@@ -241,7 +244,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let party of partiestable">
+                <tr *ngFor="let party of partiestable; let i = index">
+                    <td>{{ i + 1 }}</td>
                     <td>
                         <p class="table-detail text-capitalize table-detail-new">
                             {{party.name }}</p>
@@ -255,12 +259,19 @@
                             party.amount}}</p>
                     </td>
                     <td>
-                        <p class="table-detail text-capitalize table-detail-new">{{
-                            party.status}}</p>
+                        <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                             'status-to-pay': party.status === 'to pay',
+                             'status-to-receive': party.status === 'to receive',
+                             'status-settled': party.status === 'settled'
+                           }">
+                            {{ party.status }}
+                        </p>
                     </td>
+
+
                     <td>
                         <p>
-                            <button mat-icon-button  class="p-0">
+                            <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
 
@@ -277,3 +288,130 @@
 </div>
 
 
+<div *ngIf="Createpartyopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-50" [@fadeIn]>
+        <div>
+            <form [formGroup]="CreatepartyForm">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                        <h5 class="modal-title pt-1">Create Party</h5>
+                        <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                            type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+
+
+                    <div class="modal-content-width card-body mb-0">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="PartyName" class="form-label form-lable-custom">Party Name</label>
+                                <input type="text" class="form-control form-input-custom" formControlName="PartyName"
+                                    [ngClass]="{ 'is-invalid':CreatepartyForm.controls['PartyName'].errors && (CreatepartyForm.controls['PartyName'].touched || CreatepartyForm.controls['PartyName'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="CreatepartyForm.controls['PartyName'].errors && (CreatepartyForm.controls['PartyName'].touched || CreatepartyForm.controls['PartyName'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="CreatepartyForm.controls['PartyName'].errors['required']">Course
+                                        Name
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="PartyType" class="form-label form-lable-custom">Party Type</label>
+                                <select type="text" class="d-block  form-select form-control form-input-custom"
+                                    formControlName="PartyType" #PartyType
+                                    [ngClass]="{ 'is-invalid':CreatepartyForm.controls['PartyType'].errors && (CreatepartyForm.controls['PartyType'].touched || CreatepartyForm.controls['PartyType'].dirty) }">
+                                    <option *ngFor="let party of PartTypeList" [value]="party.id">
+                                        {{ party.name }}
+                                    </option>
+                                </select>
+                                <div class="text-danger error-message"
+                                    *ngIf="CreatepartyForm.controls['PartyType'].errors && (CreatepartyForm.controls['PartyType'].touched || CreatepartyForm.controls['PartyType'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="CreatepartyForm.controls['PartyType'].errors['required']">ParTy Type
+                                        Type
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="PhoneNumber" class="form-label form-lable-custom">Phone Number</label>
+                                <input type="text" class="form-control form-input-custom" formControlName="PhoneNumber">
+
+                            </div>
+
+                            <!-- gst details  -->
+
+                            <div class="text-end mb-3">
+                                <button class="btn btn-primary px-2 py-2" (click)="toggleGstDetails()">
+                                    <span>
+                                        <i class="fa-solid" [ngClass]="showGstDetails ? 'fa-minus' : 'fa-plus'"></i>
+                                    </span>
+                                    GST Details
+                                </button>
+                            </div>
+
+
+                            <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showGstDetails">
+                                <div class="row mx-0">
+
+                                    <div class="col-lg-6">
+                                        <label for="GSTNumber" class="form-label form-lable-custom">GST Number</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="GSTNumber"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['GSTNumber'].errors && (CreatepartyForm.controls['GSTNumber'].touched || CreatepartyForm.controls['GSTNumber'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['GSTNumber'].errors && (CreatepartyForm.controls['GSTNumber'].touched || CreatepartyForm.controls['GSTNumber'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['GSTNumber'].errors['required']">GST Number is Requried</p>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-lg-6">
+                                        <label for="LegalBusinessName" class="form-label form-lable-custom">Legal Business Name</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="LegalBusinessName"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['LegalBusinessName'].errors && (CreatepartyForm.controls['LegalBusinessName'].touched || CreatepartyForm.controls['LegalBusinessName'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['LegalBusinessName'].errors && (CreatepartyForm.controls['LegalBusinessName'].touched || CreatepartyForm.controls['LegalBusinessName'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['LegalBusinessName'].errors['required']">Legal Business Name is Requried</p>
+                                        </div>
+                                    </div>
+
+                                    
+
+
+                                </div>
+
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer text-end me-4">
+                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                            (click)="closeModal()">Cancel</button>
+                        <button class="btn btn-primary main-btnfs px-4 py-2" type="submit"
+                            (click)="CratenewPartyFun();">Create</button>
+                    </div>
+                    <div class="text-end error-message" *ngIf="!submitted">
+                        <p class="fw-light text-danger">{{errorMessage}}</p>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

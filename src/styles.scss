@@ -246,7 +246,7 @@ body {
 
 .modal-title {
   font-size: 22px !important;
-  color: #ffb600;
+  color: #36a292;
 }
 
 .modal-title1 {
@@ -473,7 +473,14 @@ mat-sidenav-container {
   border-radius: 0 !important;
   margin-bottom: 10px;
 }
+.mat-mdc-menu-panel{
+  background-color: #fff !important;
+  font-family: 'Montserrat', 'Roboto', 'sans-serif' !important;
+}
 
+.mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text{
+  font-family: 'Montserrat', 'Roboto', 'sans-serif' !important;
+}
 
 
 
@@ -487,3 +494,16 @@ mat-sidenav-container {
   font-size: 16px;
 }
 
+// status of parties 
+.status-to-pay {
+  color: red; /* Replace with the desired color for "to pay" */
+}
+
+.status-to-receive {
+  
+  color:green; /* Replace with the desired color for "to receive" */
+}
+
+.status-settled {
+  color: #36a292; /* Replace with the desired color for "settled" */
+}

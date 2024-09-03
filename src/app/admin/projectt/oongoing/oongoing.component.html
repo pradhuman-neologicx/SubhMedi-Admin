@@ -113,16 +113,16 @@
 
                         <td>{{ i + 1 }}</td>
                         <td>
-                            <p>{{ product.orderID }}</p>
+                            <p>{{ product.name }}</p>
                         </td>
                         <td>
-                            <p>{{ product.customer }}</p>
+                            <p>{{ product.total_in }}</p>
                         </td>
                         <td>
-                            <p>{{ product.bookingdate }}</p>
+                            <p>{{ product.total_out }}</p>
                         </td>
                         <td>
-                            <p>{{ product.paid }}</p>
+                            <p>{{ product.description }}</p>
                         </td>
 
 
@@ -164,7 +164,7 @@
 
 <div *ngIf="projectgopen" class="your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
     aria-modal="true">
-    <div class="modal-content modal-content-50" [@fadeIn]>
+    <div class="modal-content modal-content-50">
         <div class="card">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h5 class="modal-title pt-1 mb-0 tt-color">Create Project</h5>
@@ -219,12 +219,13 @@
                             <select
                                 class="form-control form-input-modal form-select"
                                 #State formControlName="State"
-                              
-                                [ngClass]="{ 'is-invalid':createproductform.controls['State'].errors  && (createproductform.controls['State'].touched || createproductform.controls['State'].dirty)  }">
-                                <!-- <option *ngFor="let state of stateList"
-                                    value="{{state.isoCode}}-{{state.name}}">
-                                    {{ state.name }}
-                                </option> -->
+                                (change)="onStateChange($event)"
+                                [ngClass]="{ 'is-invalid':createproductform.controls['State'].errors  && (createproductform.controls['State'].touched || createproductform.controls['State'].dirty)  }"
+                             > 
+        <option *ngFor="let state of stateList" [value]="state.id"> 
+            {{ state.name }}
+        </option>
+                             
                             </select>
                             <div class="error-message"
                                 *ngIf="createproductform?.get('State')?.hasError('required') && (createproductform?.get('State')?.dirty || createproductform?.get('State')?.touched)">
@@ -240,13 +241,9 @@
                                 class="form-control form-input-modal form-select"
                                 #City formControlName="City"
                                 [ngClass]="{ 'is-invalid':createproductform.controls['City'].errors  && (createproductform.controls['City'].touched || createproductform.controls['City'].dirty)  }">
-                                <option disabled="true"
-                                    value="Select your city">Select your
-                                    city</option>
-                                <!-- <option *ngFor="let city of citylist"
-                                    value="{{city.name}}">
+                                <option *ngFor="let city of citiesList" [value]="city.name"> <!-- Bind to citiesList and use city.name -->
                                     {{ city.name }}
-                                </option> -->
+                                </option>
                             </select>
                             <div class="error-message"
                                 *ngIf="createproductform?.get('City')?.hasError('required') && (createproductform?.get('City')?.dirty || createproductform?.get('City')?.touched)">
@@ -267,9 +264,9 @@
                                 Select Client</label>
                             <select class="form-select form-input-custom" formControlName="SelectClient"
                                 [ngClass]="{ 'is-invalid': createproductform.controls['SelectClient'].errors && (createproductform.controls['SelectClient'].touched || createproductform.controls['SelectClient'].dirty) }">
-                                <option value="Starter">Starter </option>
-                                <option value="MainCourse">Main Course</option>
-                                <option value="Dessert">Dessert</option>
+                                <option *ngFor="let client of clientList" [value]="client.id">
+                                    {{ client.name }}
+                                </option>
                             </select>
                             <div class="text-danger error-message"
                                 *ngIf="createproductform.controls['SelectClient'].errors && (createproductform.controls['SelectClient'].touched || createproductform.controls['SelectClient'].dirty)">
@@ -289,9 +286,10 @@
                                 Select Staff</label>
                             <select class="form-select form-input-custom" formControlName="Selectstaff"
                                 [ngClass]="{ 'is-invalid': createproductform.controls['Selectstaff'].errors && (createproductform.controls['Selectstaff'].touched || createproductform.controls['Selectstaff'].dirty) }">
-                                <option value="Starter">Starter </option>
-                                <option value="MainCourse">Main Course</option>
-                                <option value="Dessert">Dessert</option>
+                                <option *ngFor="let staff of staffList" [value]="staff.id">
+                                    {{ staff.name }}
+                                </option>
+                              
                             </select>
                             <div class="text-danger error-message"
                                 *ngIf="createproductform.controls['Selectstaff'].errors && (createproductform.controls['Selectstaff'].touched || createproductform.controls['Selectstaff'].dirty)">

@@ -176,12 +176,6 @@ export class SigninComponent {
         this.errorMessage = response.message;
         if (response.status === 200) {
           console.log("otp success")
-          setTimeout(() => {
-            this.openSecondsuccess = true;
-            setTimeout(() => {
-              this.openSecondsuccess = false;
-            }, 1800);
-          }, 200);
           this.jwtService.saveToken(response.access_token);
           this.jwtService.savepanelUserId(response.data.user_id);
           this.jwtService.savePartyId(response.data.party_id);
