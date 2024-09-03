@@ -94,8 +94,23 @@ export class EmployeeService {
     // Make the POST request to the server
     return this.apiservice.post(`list-parties`, body,  headers );
   }
-}
 
+
+  createProject(requestbody: any): Observable<any> {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    // Make the POST request to the server
+    return this.apiservice.post(`projects`, requestbody,  headers );
+  }
+  
+
+
+}
 
 
 
