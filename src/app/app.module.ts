@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './mat/mat.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { DatePipe } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule, } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoadingInterceptor } from './core/services/loading.interceptor';
 import { LoginpagesComponent } from './admin/loginpages/loginpages.component';
 import { ForgotPasswordComponent } from './admin/loginpages/forgot-password/forgot-password.component';
@@ -25,7 +25,8 @@ import { ProjecttComponent } from './admin/projectt/projectt.component';
 import { CcompletedComponent } from './admin/projectt/ccompleted/ccompleted.component';
 import { OongoingComponent } from './admin/projectt/oongoing/oongoing.component';
 import { EmployeeService } from './core/services/Employee.service';
-
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -44,6 +45,7 @@ import { EmployeeService } from './core/services/Employee.service';
     ProjecttComponent,
     OongoingComponent,
     CcompletedComponent,
+    DashboardComponent,
   
  
 
@@ -56,8 +58,9 @@ import { EmployeeService } from './core/services/Employee.service';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    MatMenuModule,
     HttpClientModule,
+    MatMenuModule,
+    NgxPaginationModule
   ],
   providers: [
     DataService,

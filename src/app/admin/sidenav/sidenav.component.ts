@@ -86,15 +86,23 @@ export class SidenavComponent {
       {
         index: 1,
         icon: 'home',
+        label: 'Dashboard',
+        route: 'dashboard',
+      },
+      {
+        index: 12,
+        icon: 'home',
         label: 'Project',
         route: 'project',
       },
       {
-        index: 2,
+        index: 3,
         icon: 'analytics',
         label: 'parties',
         route: 'parties',
       },
+
+      
       // {
       //   index: 5,
       //   icon: 'analytics',

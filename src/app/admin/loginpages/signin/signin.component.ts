@@ -187,7 +187,7 @@ export class SigninComponent {
           this.jwtService.savePartyId(response.data.party_id);
           this.jwtService.saveName(response.data.name);
           this.jwtService.saveType(response.data.type);
-          this.router.navigate(['/parties']);
+          this.router.navigate(['/dashboard'], { queryParams: { success: 'true' } });
           this.erroroutput = false;
         } else {
           this.erroroutput = true;
