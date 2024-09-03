@@ -2,6 +2,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Createparty } from 'src/app/core/model-class/parties';
+import { Validations } from 'src/app/core/model-class/validations';
 import { CourseService } from 'src/app/core/services/course.service';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
@@ -253,8 +254,28 @@ export class PartiesComponent {
 
 
   showGstDetails = false;
-  toggleGstDetails() {
+  toggleGstDetails(): void {
     this.showGstDetails = !this.showGstDetails;
+
+    if (this.showGstDetails) {
+      // Add required validators
+      this.CreatepartyForm.get('GSTNumber')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('LegalBusinessName')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('State')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('BillingAddress')?.setValidators([Validators.required]);
+    } else {
+      // Remove validators
+      this.CreatepartyForm.get('GSTNumber')?.clearValidators();
+      this.CreatepartyForm.get('LegalBusinessName')?.clearValidators();
+      this.CreatepartyForm.get('State')?.clearValidators();
+      this.CreatepartyForm.get('BillingAddress')?.clearValidators();
+    }
+
+    // Update the form to revalidate fields
+    this.CreatepartyForm.get('GSTNumber')?.updateValueAndValidity();
+    this.CreatepartyForm.get('LegalBusinessName')?.updateValueAndValidity();
+    this.CreatepartyForm.get('State')?.updateValueAndValidity();
+    this.CreatepartyForm.get('BillingAddress')?.updateValueAndValidity();
   }
 
   showopeningDetails = false;
@@ -262,11 +283,40 @@ export class PartiesComponent {
     this.showopeningDetails = !this.showopeningDetails;
   }
 
-
   showbankdetails = false;
-  togglebankdetails() {
+  togglebankdetails(): void {
     this.showbankdetails = !this.showbankdetails;
+
+    if (this.showbankdetails) {
+      // Add required validators
+      this.CreatepartyForm.get('AccountholderName')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('AccountNumber')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('IFSCCode')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('BankName')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('BankAddress')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('IBANNumber')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('UPI')?.setValidators([Validators.required]);
+    } else {
+      // Remove validators
+      this.CreatepartyForm.get('AccountholderName')?.clearValidators();
+      this.CreatepartyForm.get('AccountNumber')?.clearValidators();
+      this.CreatepartyForm.get('IFSCCode')?.clearValidators();
+      this.CreatepartyForm.get('BankName')?.clearValidators();
+      this.CreatepartyForm.get('BankAddress')?.clearValidators();
+      this.CreatepartyForm.get('IBANNumber')?.clearValidators();
+      this.CreatepartyForm.get('UPI')?.clearValidators();
+    }
+
+    // Update the form to revalidate fields
+    this.CreatepartyForm.get('AccountholderName')?.updateValueAndValidity();
+    this.CreatepartyForm.get('AccountNumber')?.updateValueAndValidity();
+    this.CreatepartyForm.get('IFSCCode')?.updateValueAndValidity();
+    this.CreatepartyForm.get('BankName')?.updateValueAndValidity();
+    this.CreatepartyForm.get('BankAddress')?.updateValueAndValidity();
+    this.CreatepartyForm.get('IBANNumber')?.updateValueAndValidity();
+    this.CreatepartyForm.get('UPI')?.updateValueAndValidity();
   }
+
 
 
   getState() {
@@ -446,9 +496,6 @@ export class PartiesComponent {
     }
   }
 
-
-
-
-
-
 }
+
+
