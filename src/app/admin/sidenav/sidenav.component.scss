@@ -218,8 +218,8 @@ mat-sidenav-content {
 
 .selected-menu-items {
   border-left: 3px solid;
-  border-left-color: #1d1f5e;
-  background-color: #fff !important;
+  border-left-color: #36a292;
+  background-color: #36a292 !important;
   border-radius:0 !important;
   margin-bottom: 10px;
 }
@@ -228,18 +228,18 @@ mat-sidenav-content {
 
 
 .selected-menu-items .mat-icon {
-  color: #1d1f5e !important;
+  color: #fff !important;
 }
 
 
 .selected-menu-items span {
-  color: #1d1f5e !important;
+  color: #fff !important;
 }
 
 .selected-submenu span {
-  color: #1d1f5e !important;
+  color: #fff !important;
 }
 
 .selected-submenu .mat-icon {
-  color: #1d1f5e !important;
+  color: #fff !important;
 }

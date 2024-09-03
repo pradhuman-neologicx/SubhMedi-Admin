@@ -1,7 +1,7 @@
 <div class="container mx-auto mb-4 ">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="text-primary table-heading-detail">Students</h1>
-        <button class="btn btn-success main-btnfs px-3 py-2" (click)="OpenCreateModal()">Create New Party</button>
+        <button class="btn btn-primary main-btnfs px-3 py-2" (click)="OpenCreateModal()">Create New Party</button>
     </div>
 </div>
 
@@ -321,7 +321,7 @@
                             <div class="col-lg-12 col-md-12 mb-3">
                                 <label for="PartyType" class="form-label form-lable-custom">Party Type</label>
                                 <select type="text" class="d-block  form-select form-control form-input-custom"
-                                    formControlName="PartyType" #PartyType
+                                    formControlName="PartyType" #PartyType (change)="staffselect(PartyType.value)"
                                     [ngClass]="{ 'is-invalid':CreatepartyForm.controls['PartyType'].errors && (CreatepartyForm.controls['PartyType'].touched || CreatepartyForm.controls['PartyType'].dirty) }">
                                     <option *ngFor="let party of PartTypeList" [value]="party.id">
                                         {{ party.name }}
@@ -336,29 +336,45 @@
                                 </div>
                             </div>
 
+                            <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeName=='staff'">
+                                <label for="Email" class="form-label form-lable-custom">Email</label>
+                                <input type="email" class="form-control form-input-custom" formControlName="Email"
+                                    [ngClass]="{ 'is-invalid':CreatepartyForm.controls['PhoneNumber'].errors && (CreatepartyForm.controls['Email'].touched || CreatepartyForm.controls['Email'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="CreatepartyForm.controls['Email'].errors && (CreatepartyForm.controls['Email'].touched || CreatepartyForm.controls['Email'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="CreatepartyForm.controls['Email'].errors['required']">GST
+                                        Number is Requried</p>
+                                </div>
+
+                            </div>
+
 
                             <div class="col-lg-12 col-md-12 mb-3">
                                 <label for="PhoneNumber" class="form-label form-lable-custom">Phone Number</label>
-                                <input type="text" class="form-control form-input-custom" formControlName="PhoneNumber">
+                                <input type="number" class="form-control form-input-custom"
+                                    formControlName="PhoneNumber"
+                                    [ngClass]="{ 'is-invalid':CreatepartyForm.controls['PhoneNumber'].errors && (CreatepartyForm.controls['PhoneNumber'].touched || CreatepartyForm.controls['PhoneNumber'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="CreatepartyForm.controls['PhoneNumber'].errors && (CreatepartyForm.controls['PhoneNumber'].touched || CreatepartyForm.controls['PhoneNumber'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="CreatepartyForm.controls['PhoneNumber'].errors['required']">GST
+                                        Number is Requried</p>
+                                </div>
 
                             </div>
 
-                            <!-- gst details  -->
-
-                            <div class="text-end mb-3">
-                                <button class="btn btn-primary px-2 py-2" (click)="toggleGstDetails()">
-                                    <span>
-                                        <i class="fa-solid" [ngClass]="showGstDetails ? 'fa-minus' : 'fa-plus'"></i>
-                                    </span>
-                                    GST Details
-                                </button>
-                            </div>
 
 
+                            <!-- gst details start ------------------------------------------- -->
+
+
+
+                            <!-- gst details start ------------------------------------------- -->
                             <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showGstDetails">
                                 <div class="row mx-0">
-
-                                    <div class="col-lg-6">
+                                    <h1 class="heading-party">Gst Details</h1>
+                                    <div class="col-lg-6 mb-3">
                                         <label for="GSTNumber" class="form-label form-lable-custom">GST Number</label>
                                         <input type="text" class="form-control form-input-custom"
                                             formControlName="GSTNumber"
@@ -366,38 +382,246 @@
                                         <div class="text-danger error-message"
                                             *ngIf="CreatepartyForm.controls['GSTNumber'].errors && (CreatepartyForm.controls['GSTNumber'].touched || CreatepartyForm.controls['GSTNumber'].dirty)">
                                             <p class="fw-light text-danger"
-                                                *ngIf="CreatepartyForm.controls['GSTNumber'].errors['required']">GST Number is Requried</p>
+                                                *ngIf="CreatepartyForm.controls['GSTNumber'].errors['required']">GST
+                                                Number is Requried</p>
                                         </div>
                                     </div>
 
 
-                                    <div class="col-lg-6">
-                                        <label for="LegalBusinessName" class="form-label form-lable-custom">Legal Business Name</label>
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="LegalBusinessName" class="form-label form-lable-custom">Legal
+                                            Business Name</label>
                                         <input type="text" class="form-control form-input-custom"
                                             formControlName="LegalBusinessName"
                                             [ngClass]="{ 'is-invalid':CreatepartyForm.controls['LegalBusinessName'].errors && (CreatepartyForm.controls['LegalBusinessName'].touched || CreatepartyForm.controls['LegalBusinessName'].dirty) }">
                                         <div class="text-danger error-message"
                                             *ngIf="CreatepartyForm.controls['LegalBusinessName'].errors && (CreatepartyForm.controls['LegalBusinessName'].touched || CreatepartyForm.controls['LegalBusinessName'].dirty)">
                                             <p class="fw-light text-danger"
-                                                *ngIf="CreatepartyForm.controls['LegalBusinessName'].errors['required']">Legal Business Name is Requried</p>
+                                                *ngIf="CreatepartyForm.controls['LegalBusinessName'].errors['required']">
+                                                Legal Business Name is Requried</p>
                                         </div>
                                     </div>
 
-                                    
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="State" class="form-label form-lable-custom">State Of Supply</label>
+                                        <select class="form-control form-input-custom form-select" #State
+                                            formControlName="State" (change)="onStateChange($event)"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['State'].errors  && (CreatepartyForm.controls['State'].touched || CreatepartyForm.controls['State'].dirty)  }">
+                                            <option *ngFor="let state of stateList" [value]="state.id">
+                                                {{ state.name }}
+                                            </option>
+                                        </select>
+                                        <div class="error-message"
+                                            *ngIf="CreatepartyForm?.get('State')?.hasError('required') && (CreatepartyForm?.get('State')?.dirty || CreatepartyForm?.get('State')?.touched)">
+                                            <p class="fw-light  text-danger"> State is
+                                                required</p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="BillingAddress" class="form-label form-lable-custom">Billing
+                                            Address</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="BillingAddress"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['BillingAddress'].errors && (CreatepartyForm.controls['BillingAddress'].touched || CreatepartyForm.controls['BillingAddress'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['BillingAddress'].errors && (CreatepartyForm.controls['BillingAddress'].touched || CreatepartyForm.controls['BillingAddress'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['BillingAddress'].errors['required']">
+                                                Billing Address is Requried</p>
+                                        </div>
+                                    </div>
+
 
 
                                 </div>
 
                             </div>
+                            <!-- gst details end ------------------------------------------- -->
+
+
+                            <!-- opening balance details------------------------------------------- -->
+                            <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showopeningDetails">
+                                <div class="row mx-0">
+                                    <h1 class="heading-party">Opening Balance</h1>
+                                    <div class="col-lg-10 mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="form-check ms-2">
+                                                <label class="form-check-label" for="partypayement">
+                                                    <input class="form-check-input" type="radio" name="partypayement"
+                                                        formControlName="partypayement" id="partypayementfirst" checked
+                                                        [value]="true"
+                                                        [ngClass]="{ 'is-invalid':CreatepartyForm.controls['partypayement'].errors && (CreatepartyForm.controls['partypayement'].touched || CreatepartyForm.controls['partypayement'].dirty) }">
+                                                    Party will Pay
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check  ms-2">
+                                                <label class="form-check-label" for="partypayement">
+                                                    <input class="form-check-input" type="radio" name="partypayement"
+                                                        formControlName="partypayement" id="partypayementsecond"
+                                                        [value]="false"
+                                                        [ngClass]="{ 'is-invalid':CreatepartyForm.controls['partypayement'].errors && (CreatepartyForm.controls['partypayement'].touched || CreatepartyForm.controls['partypayement'].dirty) }">
+                                                    Party Will Receive
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="partyamount" class="form-label form-lable-custom">Amount</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="partyamount"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['partyamount'].errors && (CreatepartyForm.controls['partyamount'].touched || CreatepartyForm.controls['partyamount'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['partyamount'].errors && (CreatepartyForm.controls['partyamount'].touched || CreatepartyForm.controls['partyamount'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['partyamount'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- opening details end ------------------------------------------- -->
+
+                            <!-- Bank  details start------------------------------------------- -->
+                            <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showbankdetails">
+                                <div class="row mx-0">
+                                    <h1 class="heading-party">Bank Details</h1>
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="AccountholderName" class="form-label form-lable-custom">Account
+                                            holder Name</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="AccountholderName"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['AccountholderName'].errors && (CreatepartyForm.controls['AccountholderName'].touched || CreatepartyForm.controls['AccountholderName'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['AccountholderName'].errors && (CreatepartyForm.controls['AccountholderName'].touched || CreatepartyForm.controls['AccountholderName'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['AccountholderName'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="AccountNumber" class="form-label form-lable-custom">Account
+                                            Number</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="AccountNumber"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['AccountNumber'].errors && (CreatepartyForm.controls['AccountNumber'].touched || CreatepartyForm.controls['AccountNumber'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['AccountNumber'].errors && (CreatepartyForm.controls['AccountNumber'].touched || CreatepartyForm.controls['AccountNumber'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['AccountNumber'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="IFSCCode" class="form-label form-lable-custom">IFSC Code</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="IFSCCode"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['IFSCCode'].errors && (CreatepartyForm.controls['IFSCCode'].touched || CreatepartyForm.controls['IFSCCode'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['IFSCCode'].errors && (CreatepartyForm.controls['IFSCCode'].touched || CreatepartyForm.controls['IFSCCode'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['IFSCCode'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="BankName" class="form-label form-lable-custom">Bank Name</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="BankName"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['BankName'].errors && (CreatepartyForm.controls['BankName'].touched || CreatepartyForm.controls['BankName'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['BankName'].errors && (CreatepartyForm.controls['BankName'].touched || CreatepartyForm.controls['BankName'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['BankName'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="BankAddress" class="form-label form-lable-custom">Bank
+                                            Address</label>
+                                        <textarea class="form-control form-input-modal form-input-custom" rows="3"
+                                            formControlName="BankAddress"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['BankAddress'].errors && (CreatepartyForm.controls['BankAddress'].touched || CreatepartyForm.controls['BankAddress'].dirty) }"></textarea>
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['BankAddress'].errors && (CreatepartyForm.controls['BankAddress'].touched || CreatepartyForm.controls['BankAddress'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['BankAddress'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="IBANNumber" class="form-label form-lable-custom">IBAN Number
+                                        </label>
+                                        <input class="form-control form-input-modal form-input-custom"
+                                            formControlName="IBANNumber"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['IBANNumber'].errors && (CreatepartyForm.controls['IBANNumber'].touched || CreatepartyForm.controls['IBANNumber'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['IBANNumber'].errors && (CreatepartyForm.controls['IBANNumber'].touched || CreatepartyForm.controls['IBANNumber'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['IBANNumber'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
 
 
 
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="UPI" class="form-label form-lable-custom">UPI ID
+                                        </label>
+                                        <input class="form-control form-input-modal form-input-custom"
+                                            formControlName="UPI"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['UPI'].errors && (CreatepartyForm.controls['UPI'].touched || CreatepartyForm.controls['UPI'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['UPI'].errors && (CreatepartyForm.controls['UPI'].touched || CreatepartyForm.controls['UPI'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['UPI'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bank  details end ------------------------------------------- -->
 
+                        </div>
 
+                        <div class="text-end mb-3">
+                            <button class="btn btn-primary px-2 py-2 me-3" (click)="toggleGstDetails()">
+                                <span>
+                                    <i class="fa-solid" [ngClass]="showGstDetails ? 'fa-minus' : 'fa-plus'"></i>
+                                </span>
+                                GST Details
+                            </button>
+                            <button class="btn btn-primary px-2 py-2 me-3" (click)="toggleopeningbalance()">
+                                <span>
+                                    <i class="fa-solid" [ngClass]="showopeningDetails ? 'fa-minus' : 'fa-plus'"></i>
+                                </span>
+                                opening Balance
+                            </button>
 
+                            <button class="btn btn-primary px-2 py-2" (click)="togglebankdetails()">
+                                <span>
+                                    <i class="fa-solid" [ngClass]="showbankdetails ? 'fa-minus' : 'fa-plus'"></i>
+                                </span>
+                                Bank Details
+                            </button>
 
 
                         </div>
+
+
 
                     </div>
                     <div class="modal-footer text-end me-4">
@@ -411,7 +635,22 @@
                     </div>
 
                 </div>
+
+
             </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div *ngIf="openSecondsuccess" class="your-animation-class modal-container-success" [@slideIn]
+    aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div>
+        <div class=" p-4 d-flex justify-content-between align-items-center success-content">
+            <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+            <p class="text-green-900 text-capitalize mb-0">
+                Login successfully</p>
         </div>
     </div>
 </div>

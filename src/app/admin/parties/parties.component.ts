@@ -1,7 +1,9 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Createparty } from 'src/app/core/model-class/parties';
 import { CourseService } from 'src/app/core/services/course.service';
+import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
@@ -53,6 +55,7 @@ export class PartiesComponent {
     private formBuilder: FormBuilder,
     private courseService: CourseService,
     private jwtService: JwtService,
+    private employeeService: EmployeeService,
   ) { }
   sessionId: any;
   searchbarform!: FormGroup;
@@ -71,11 +74,26 @@ export class PartiesComponent {
     this.CreatepartyForm = this.formBuilder.group({
       PartyName: ["", [Validators.required,]],
       PartyType: ["", [Validators.required,]],
-      PhoneNumber: ["",]
+      PhoneNumber: ["",],
+      Email: ["",],
+      GSTNumber: ["",],
+      LegalBusinessName: ["",],
+      State: [""],
+      partypayement: [""],
+      partyamount: [""],
+      BillingAddress: [""],
+      AccountholderName: [""],
+      AccountNumber: [""],
+      IFSCCode: [""],
+      BankName: [""],
+      IBANNumber: [""],
+      BankAddress: [""],
+      UPI: [""],
     });
 
 
     this.Getpartytablefun();
+    this.getState();
     this.GetPartyType();
   }
   // StudentTable: any;
@@ -112,7 +130,7 @@ export class PartiesComponent {
   //   this.searchbarform.get("searchbar")?.setValue("");
   //   this.searchbarform.markAsUntouched();
 
-   
+
   //   this.type=type;
   //   this.courseService.Getstudenttts(
   //     this.sessionId,
@@ -127,7 +145,7 @@ export class PartiesComponent {
   //     this.StudentTable = response.data.students;
   //   });
   // }
-  
+
   showreset: any = false
 
   resetsearchbar() {
@@ -144,7 +162,7 @@ export class PartiesComponent {
   //   }else{
   //     this.getstudentsfunpagination(this.type);
   //   }
-   
+
   // }
 
   // onTableDataChange(event: any) {
@@ -189,7 +207,7 @@ export class PartiesComponent {
   //       console.error('An error occurred:', error);
   //     });
   // }
-  
+
 
   Getpartytablefun() {
     this.courseService.GetpartytableApi().subscribe((response: any) => {
@@ -200,19 +218,17 @@ export class PartiesComponent {
   }
   CreatepartyForm!: FormGroup;
   Createpartyopen: boolean = false;
-  OpenCreateModal(){
-    this.Createpartyopen=true;
+  OpenCreateModal() {
+    this.Createpartyopen = true;
   }
-  closeModal(){
-    this.Createpartyopen= false;
+  closeModal() {
+    this.Createpartyopen = false;
   }
 
   submitted: any;
   errorMessage: any;
-  CratenewPartyFun(){
 
-  }
-
+  Createparty: Createparty = new Createparty();
 
 
   PartTypeList: any;
@@ -222,16 +238,217 @@ export class PartiesComponent {
         this.PartTypeList = response.party_types;
       }
       console.log(this.PartTypeList);
-
     });
+  }
+  partyTypeName: any
+  staffselect(value: any) {
+    var newlist = this.PartTypeList.filter((courseType: any) => courseType.id == value);
+
+    console.log(newlist);
+    if (newlist.length > 0) {
+      this.partyTypeName = newlist[0].name;
+    }
   }
 
 
 
   showGstDetails = false;
-
   toggleGstDetails() {
     this.showGstDetails = !this.showGstDetails;
   }
+
+  showopeningDetails = false;
+  toggleopeningbalance() {
+    this.showopeningDetails = !this.showopeningDetails;
+  }
+
+
+  showbankdetails = false;
+  togglebankdetails() {
+    this.showbankdetails = !this.showbankdetails;
+  }
+
+
+  getState() {
+    this.employeeService.GetState().subscribe((response: any) => {
+      if (response.status === 200) {
+        this.stateList = response.data;
+      } else {
+        console.error('Failed to load states', response);
+      }
+    });
+  }
+  stateList: any = [];
+  citiesList: any = [];
+  onStateChange(event: Event) {
+
+    const selectedStateId = (event.target as HTMLSelectElement).value;
+
+    if (selectedStateId) {
+      console.log('Selected State ID:', selectedStateId);
+      this.getcities(selectedStateId);
+    } else {
+      this.citiesList = [];
+    }
+  }
+  getcities(state_id: any) {
+    this.employeeService.getCity(state_id).subscribe(
+      (response: any) => {
+        if (response && response.data && Array.isArray(response.data)) {
+          this.citiesList = response.data; // Set the cities list from response
+          console.log('Cities loaded successfully:', this.citiesList);
+        } else {
+          console.error('Failed to load cities, unexpected response:', response);
+        }
+      },
+      (error: any) => {
+        // Log the entire error object to understand its structure
+        console.error('Error fetching cities:', error);
+
+        // Safely check and log error details
+        if (error && error.error) {
+          console.error('Error details:', error.error);
+        } else if (error && error.message) {
+          console.error('Error message:', error.message); // Log error message if available
+        } else {
+          console.error('Unexpected error format:', error); // Handle completely unexpected formats
+        }
+      }
+    );
+  }
+  successName: any = "";
+  openSecondsuccess = false;
+  CratenewPartyFun() {
+    if (this.CreatepartyForm.valid) {
+      var gst_details = [];
+      if (this.CreatepartyForm.get('LegalBusinessName')?.value != undefined
+        && this.CreatepartyForm.get('BillingAddress')?.value != undefined
+        && this.CreatepartyForm.get('State')?.value != undefined
+        && this.CreatepartyForm.get('GSTNumber')?.value != undefined) {
+          if (this.CreatepartyForm.get('LegalBusinessName')?.value.length>0
+          && this.CreatepartyForm.get('BillingAddress')?.value.length>0
+          && this.CreatepartyForm.get('State')?.value.length>0
+          && this.CreatepartyForm.get('GSTNumber')?.value.length>0) {
+        gst_details.push({
+          "business_name": this.CreatepartyForm.get('LegalBusinessName')?.value,
+          "billing_address": this.CreatepartyForm.get('BillingAddress')?.value,
+          "state_id": this.CreatepartyForm.get('State')?.value,
+          "gst_number": this.CreatepartyForm.get('GSTNumber')?.value,
+        })
+      }
+    }
+
+      var opening_balance = [];
+
+
+      if (this.CreatepartyForm.get('partypayement')?.value != undefined
+        && this.CreatepartyForm.get('partypayement')?.value != undefined
+        && this.CreatepartyForm.get('partyamount')?.value != undefined) {
+          if (this.CreatepartyForm.get('partypayement')?.value.length>0
+        && this.CreatepartyForm.get('partypayement')?.value.length>0
+        && this.CreatepartyForm.get('partyamount')?.value.length>0) {
+        opening_balance.push({
+          "will_pay": this.CreatepartyForm.get('partypayement')?.value == true ? true : false,
+          "will_receive": this.CreatepartyForm.get('partypayement')?.value == false ? true : false,
+          "amount": this.CreatepartyForm.get('partyamount')?.value,
+        })
+      }
+    }
+
+      var bank_details = [];
+      if (this.CreatepartyForm.get('AccountholderName')?.value != undefined
+        && this.CreatepartyForm.get('BankName')?.value != undefined
+        && this.CreatepartyForm.get('IFSCCode')?.value != undefined
+        && this.CreatepartyForm.get('AccountNumber')?.value != undefined
+        && this.CreatepartyForm.get('BankAddress')?.value != undefined
+        && this.CreatepartyForm.get('IBANNumber')?.value != undefined
+        && this.CreatepartyForm.get('UPI')?.value != undefined
+      ) {
+        if (this.CreatepartyForm.get('AccountholderName')?.value.lenght>0
+        && this.CreatepartyForm.get('BankName')?.value.lenght>0
+        && this.CreatepartyForm.get('IFSCCode')?.value.lenght>0
+        && this.CreatepartyForm.get('AccountNumber')?.value.lenght>0
+        && this.CreatepartyForm.get('BankAddress')?.value.lenght>0
+        && this.CreatepartyForm.get('IBANNumber')?.value.lenght>0
+        && this.CreatepartyForm.get('UPI')?.value.lenght>0
+      ) {
+        bank_details.push({
+          "account_holder_name": this.CreatepartyForm.get('AccountholderName')?.value,
+          "bank_name": this.CreatepartyForm.get('BankName')?.value,
+          "ifsc_code": this.CreatepartyForm.get('IFSCCode')?.value,
+          "account_no": this.CreatepartyForm.get('AccountNumber')?.value,
+          "bank_address": this.CreatepartyForm.get('BankAddress')?.value,
+          "iban_no": this.CreatepartyForm.get('IBANNumber')?.value,
+          "upi_id": this.CreatepartyForm.get('UPI')?.value,
+        })
+      }
+    }
+      // var body =
+      // {
+      //   "name": this.CreatepartyForm.get('PartyName')?.value,
+      //   "type_id": this.CreatepartyForm.get('PartyType')?.value,
+      //   "email": this.CreatepartyForm.get('Email')?.value,
+      //   "mobile": this.CreatepartyForm.get('PhoneNumber')?.value,
+      //   "opening_balance": opening_balance,
+      //   "gst_details": gstdetails, 
+      //   if(bank_details.length>0){
+      //     "bank_details": bank_details,
+      //   }
+
+      // };
+      this.Createparty.name = this.CreatepartyForm.get('PartyName')?.value
+      this.Createparty.type_id = this.CreatepartyForm.get('PartyType')?.value
+      this.Createparty.email = this.CreatepartyForm.get('Email')?.value
+      this.Createparty.mobile = this.CreatepartyForm.get('PhoneNumber')?.value
+      if (gst_details.length > 0) {
+        this.Createparty.gst_details = gst_details;
+
+      }
+
+      if (opening_balance.length > 0) {
+        this.Createparty.opening_balance = opening_balance;
+
+      }
+      if (bank_details.length > 0) {
+        this.Createparty.bank_details = bank_details;
+
+      }
+      const body = JSON.stringify(this.Createparty);
+      console.log(body);
+      this.courseService.createPartyApi(body).subscribe((response: any) => {
+        if (typeof response.message === 'object' && response.message !== null && !Array.isArray(response.message))
+       { this.errorMessage = JSON.stringify(response.message);}else {
+        this.errorMessage = response.message;
+       }
+        console.log(response);
+        if (response.status === 200) {
+          console.log("success");
+          this.closeModal();
+          this.successName = 'Party Create';
+          this.ngOnInit();
+          this.Getpartytablefun;
+          setTimeout(() => {
+            this.openSecondsuccess = true;
+            setTimeout(() => {
+              this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+
+        } else {
+          this.submitted = false;
+        }
+
+      });
+    }
+    else {
+      this.errorMessage = 'fill all the details Correctly';
+      this.CreatepartyForm.markAllAsTouched();
+    }
+  }
+
+
+
+
+
 
 }
