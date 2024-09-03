@@ -46,6 +46,27 @@ export class EmployeeService {
     });
     return this.apiservice.get("states",headers);
   }
+
+
+
+  getCity(state_id: any): Observable<any> {
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    const body = {
+      state_id: state_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`cities`, body,  headers );
+  }
+
+
+
+
   GetStaff() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({

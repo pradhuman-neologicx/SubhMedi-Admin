@@ -112,6 +112,9 @@ export class OongoingComponent {
     this.getState();
     this.getStaff();
     this.postclient();
+  
+
+    
 
 
 
@@ -125,13 +128,84 @@ export class OongoingComponent {
 
 
   stateList: any = [];
+  // getState() {
+  //   this.employeeService.GetState().subscribe((response: any) => {
+  //     if (response.statusCode === 200) {
+  //       this.stateList = response.data;
+  //     }
+  //   });
+  // }
+  citiesList: any = [];
+  //  getcities(state_id: any) {
+  //   this.employeeService.getCity(state_id).subscribe(
+  //     (response: any) => {
+  //       if (response.statusCode === 200) {
+  //         this.citiesList = response.data;
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching cities:', error);
+  //     }
+  //   );
+  // }
+
+
+
   getState() {
     this.employeeService.GetState().subscribe((response: any) => {
-      if (response.statusCode === 200) {
+      if (response.status === 200) {
         this.stateList = response.data;
+      } else {
+        console.error('Failed to load states', response);
       }
     });
   }
+
+
+  onStateChange(event: Event) {
+   
+    const selectedStateId = (event.target as HTMLSelectElement).value;
+  
+    if (selectedStateId) {
+      console.log('Selected State ID:', selectedStateId); 
+      this.getcities(selectedStateId); 
+    } else {
+      this.citiesList = []; 
+    }
+  }
+ 
+  getcities(state_id: any) {
+    this.employeeService.getCity(state_id).subscribe(
+      (response: any) => {
+        if (response && response.data && Array.isArray(response.data)) {
+          this.citiesList = response.data; // Set the cities list from response
+          console.log('Cities loaded successfully:', this.citiesList);
+        } else {
+          console.error('Failed to load cities, unexpected response:', response);
+        }
+      },
+      (error: any) => {
+        // Log the entire error object to understand its structure
+        console.error('Error fetching cities:', error);
+  
+        // Safely check and log error details
+        if (error && error.error) {
+          console.error('Error details:', error.error);
+        } else if (error && error.message) {
+          console.error('Error message:', error.message); // Log error message if available
+        } else {
+          console.error('Unexpected error format:', error); // Handle completely unexpected formats
+        }
+      }
+    );
+  }
+  
+  
+
+
+
+
+
   staffList: any = [];
   getStaff() {
     this.employeeService.GetStaff().subscribe((response: any) => {
