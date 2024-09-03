@@ -33,16 +33,6 @@ export class CourseService {
     return this.apiservice.post("course/createCourse", formData,headers);
   }
 
-GetCourseType() {
-  return this.apiservice.get("course/getCourseTypes");
-}
-
-GetClasses() {
-  return this.apiservice.get("course/getClasses");
-}
-GetNewCourses() {
-  return this.apiservice.get("course/getCourseList");
-}
 
 createEmployee():  Observable<any>{
   return this.apiservice.post('course/createCourse',{},{}); 
@@ -52,17 +42,7 @@ createEmployee():  Observable<any>{
 
 
 // Anushka Batches API //
-Getbatch() {
-  return this.apiservice.get("batch/getBatchesList");
-}
-GetbatchName() {
-  return this.apiservice.get("course/getCourseList");
-}
 
-
-GetRollnumberApi(id:any){
-  return this.apiservice.get("students/students-by-batch/"+id);
-}
 
 
 // GetRollnumberApi(){
@@ -70,13 +50,6 @@ GetRollnumberApi(id:any){
 // }
 
 
-
-GetbatchMode() {
-  return this.apiservice.get("batch/getDeliveryList");
-}
-GetbatchShift() {
-  return this.apiservice.get("batch/getShiftList");
-}
 
 UpdateBatchestatus(batchId: string, isActive: boolean): Observable<any> {
   const body = {
@@ -89,20 +62,12 @@ PostBatches(formData: any){
   const headers = { 'content-type': 'application/json' };
   return this.apiservice.post("batch/createBatch", formData,headers);
 }
-GetCurrentSessionID() {
-  return this.apiservice.get("masters/getCurrentSessions");
 
-}
 updateBatch(body:any){
   const headers = { 'content-type': 'application/json' };
   return this.apiservice.put("batch/updateBatch",body,headers);
 }
 
-
-// anushka code for sessions //
-Getsessions(){
-  return this.apiservice.get("sessions/getSessions");
-}
 updatesessionStatus(sessionId: string, isActive: boolean): Observable<any> {
   const body = {
     "sessionId": sessionId,
@@ -125,17 +90,12 @@ updateSession(body:any){
 
 
 
-Getbatchlist() {
-  return this.apiservice.get("batch/getBatchesList");
-}
 Getbatchassign(body:any){
   const headers = { 'content-type': 'application/json' };
   return this.apiservice.post("batch/getAssignedBatch",body,headers);
 }
 
-GetFloorType() {
-  return this.apiservice.get("batch/getActiveFloorInchargeUsers");
-}
+
 Getbatchesfloor(body:any){
   const headers = { 'content-type': 'application/json' };
   return this.apiservice.post("batch/getActiveNotAssignedBatch",body,headers);
@@ -154,9 +114,7 @@ Singleassignuserfloor(body:any){
 }
 
 // api code for dispatch material //
-GetUnits() {
-  return this.apiservice.get("dispatch-units/units");
-}
+
 
 Addunitspost(body:any){
   const headers = { 'content-type': 'application/json' };
@@ -195,9 +153,7 @@ updatetest(body:any,testId:any){
   const headers = { 'content-type': 'application/json' };
   return this.apiservice.put("test-series/update-test/"+testId,body,headers);
 }
-GetfeeCourses() {
-  return this.apiservice.get("masters/fee-courses-components");
-}
+
 
 getCourseNameid(body:any){
   const headers = { 'content-type': 'application/json' };
@@ -209,99 +165,23 @@ getCourseNameid(body:any){
 
 
 
-
-Getstudenttts(sessionId:any,courseId:any,BatchId:any) {
-    
-  let url = 'students/get-students/' + sessionId;
-  if (courseId != undefined && BatchId == undefined) {
-     url = url + '?courseId=' + courseId;
-
-  } else if (BatchId != undefined && courseId == undefined) {
- 
-    url = url + '?batchId=' + BatchId;
-  } else if (BatchId != undefined && courseId != undefined) {
-
-   //  url = url + '?from=' + from+'&to='+to;
-    if (courseId.length > 0 && BatchId.length <= 0) {
-      url = url + '?courseId=' + courseId;
-    } else if (BatchId.length > 0 && courseId.length <= 0) {
-      url = url + '?batchId=' + BatchId;
-    } else if (BatchId.length > 0 && courseId.length > 0) {
-      url = url + '?courseId=' + courseId + '&batchId=' + BatchId;
-    }
-  }
-  console.log(url);
-   return this.apiservice.get(
-    url
-   );
-}
-
-
-
-
-
-  Getstudentpagination(sessionId:any,courseId:any,BatchId:any,tableSize:any, page:any) {
-    
-    let url = 'students/get-students/' + sessionId+'?limit=' +tableSize+ "&page=" +page;
-    if (courseId != undefined && BatchId == undefined) {
-       url = url + '&courseId=' + courseId;
-  
-    } else if (BatchId != undefined && courseId == undefined) {
-   
-      url = url + '&batchId=' + BatchId;
-    } else if (BatchId != undefined && courseId != undefined) {
-  
-     //  url = url + '?from=' + from+'&to='+to;
-      if (courseId.length > 0 && BatchId.length <= 0) {
-        url = url + '&courseId=' + courseId;
-      } else if (BatchId.length > 0 && courseId.length <= 0) {
-        url = url + '&batchId=' + BatchId;
-      } else if (BatchId.length > 0 && courseId.length > 0) {
-        url = url + '&courseId=' + courseId + '&batchId=' + BatchId;
-      }
-    }
-
-
-
-  console.log(url);
-   return this.apiservice.get(
-    url
-   );
- }
-
-
- Getstudentsearch(sessionId:any,courseId:any,BatchId:any,tableSize:any, page:any,searchText:any) {
-    
-  let url = 'students/get-students/' +sessionId+'?limit=' +tableSize+ "&page=" +page+ "&search="+searchText;
-  if (courseId != undefined && BatchId == undefined) {
-     url = url + '&courseId=' + courseId;
-
-  } else if (BatchId != undefined && courseId == undefined) {
- 
-    url = url + '&batchId=' + BatchId;
-  } else if (BatchId != undefined && courseId != undefined) {
-
-   //  url = url + '?from=' + from+'&to='+to;
-    if (courseId.length > 0 && BatchId.length <= 0) {
-      url = url + '&courseId=' + courseId;
-    } else if (BatchId.length > 0 && courseId.length <= 0) {
-      url = url + '&batchId=' + BatchId;
-    } else if (BatchId.length > 0 && courseId.length > 0) {
-      url = url + '&courseId=' + courseId + '&batchId=' + BatchId;
-    }
-  }
-
-
-
-console.log(url);
- return this.apiservice.get(
-  url
- );
-}
-
-GetpartytableApi(headers: any) {
+GetpartytableApi() {
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
   return this.apiservice.get("parties",headers);
 }
+GetpartyTypetableApi() {
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  return this.apiservice.get("party-types",headers);
+}
+
 }
 
 
