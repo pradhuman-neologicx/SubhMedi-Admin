@@ -33,6 +33,9 @@ import { HometransactionsComponent } from './admin/projecthome/hometransactions/
 import { HomeattendanceComponent } from './admin/projecthome/homeattendance/homeattendance.component';
 import { HomematerialComponent } from './admin/projecthome/homematerial/homematerial.component';
 import { ProjectbalanceComponent } from './admin/projectbalance/projectbalance.component';
+import { MastersComponent } from './admin/masters/masters.component';
+import { UnitsComponent } from './admin/masters/units/units.component';
+import { MaterialsComponent } from './admin/masters/materials/materials.component';
 
 
 
@@ -59,6 +62,9 @@ import { ProjectbalanceComponent } from './admin/projectbalance/projectbalance.c
     HomeattendanceComponent,
     HomematerialComponent,
     ProjectbalanceComponent,
+    MastersComponent,
+    UnitsComponent,
+    MaterialsComponent,
 
  
   

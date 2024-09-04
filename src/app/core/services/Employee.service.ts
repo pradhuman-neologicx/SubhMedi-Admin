@@ -174,6 +174,18 @@ export class EmployeeService {
   
 
 
+  GetunitsApi() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.apiservice.get("get-all-units",headers);
+  }
+
+
+
+
 }
 
 
