@@ -1,6 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { projects } from 'src/app/core/model-class/employee';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
@@ -82,8 +83,11 @@ export class OongoingComponent {
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
-    private jwtService: JwtService
-  ) { }
+    private jwtService: JwtService,
+    private router: Router
+  ) { 
+    // this.url1 = router.url.slice(0).split(urlDelimitators)[4];
+   }
 
 
   ngOnInit(): void {
@@ -260,7 +264,7 @@ export class OongoingComponent {
       this.projects.address = this.createproductform.get('Address')?.value;
       this.projects.state_id = this.createproductform.get('State')?.value;
       this.projects.city_id = this.createproductform.get('City')?.value;
-      this.projects.assign_to_id = this.createproductform.get('Selectstaff')?.value;
+      // this.projects.assign_to_id = this.createproductform.get('Selectstaff')?.value;
       this.projects.party_id = this.createproductform.get('SelectClient')?.value;
       this.projects.description = this.createproductform.get('description')?.value;
       this.projects.start_date = this.createproductform.get('StartDate')?.value;
@@ -314,6 +318,20 @@ export class OongoingComponent {
 
 
 
+
+  viewmmodal(id: any) {
+    // Log the project_id to the console
+    console.log('Project ID:', id);
+    
+    // Navigate to the desired route with the project_id
+    this.router.navigate(['/project_home', id]); 
+  }
+
+  showGstDetails = false;
+
+  toggleGstDetails() {
+    this.showGstDetails = !this.showGstDetails;
+  }
 
 
 

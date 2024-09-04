@@ -10,6 +10,11 @@ import { ProjecttComponent } from './admin/projectt/projectt.component';
 import { OongoingComponent } from './admin/projectt/oongoing/oongoing.component';
 import { CcompletedComponent } from './admin/projectt/ccompleted/ccompleted.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { ProjecthomeComponent } from './admin/projecthome/projecthome.component';
+import { HomepartiesComponent } from './admin/projecthome/homeparties/homeparties.component';
+import { HometransactionsComponent } from './admin/projecthome/hometransactions/hometransactions.component';
+import { HomeattendanceComponent } from './admin/projecthome/homeattendance/homeattendance.component';
+import { HomematerialComponent } from './admin/projecthome/homematerial/homematerial.component';
 
 const routes: Routes = [
 
@@ -63,6 +68,47 @@ const routes: Routes = [
           
        
       },
+
+
+
+      {
+        path: 'project_home/:id',
+        component: ProjecthomeComponent,
+        // canActivate: [AuthGuard],
+      
+            children: [
+              { path: '', redirectTo: 'project_parties', pathMatch: 'full' },
+              {
+                path: 'project_parties',
+                component: HomepartiesComponent,
+                // canActivate: [AuthGuard],
+              },
+              {
+                path: 'project_transactions',
+                component: HometransactionsComponent,
+                // canActivate: [AuthGuard],
+              },
+              {
+                path: 'project_attendance',
+                component: HomeattendanceComponent,
+                // canActivate: [AuthGuard],
+              },
+              {
+                path: 'project_material',
+                component: HomematerialComponent,
+                // canActivate: [AuthGuard],
+              },
+            
+    
+            
+            ],
+          
+       
+      },
+
+
+
+
 
 
       // {

@@ -37,6 +37,31 @@ export class EmployeeService {
     return this.apiservice.post(`ongoing-projects`,body,   headers );
   }
 
+
+
+
+  getProjectParties(project_id: any, search: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    const body = {
+      'user_id': user,
+      'project_id': project_id,
+      "search":search!=undefined?search:""
+    };
+  
+    return this.apiservice.post(`project-parties`, body,  headers );
+  }
+  
+
+
+
+
+
   GetState() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
