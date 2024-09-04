@@ -192,11 +192,34 @@ createPartyApi(body:any,): Observable<any> {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
   });
-
-
-
   return this.apiservice.post(`parties`, body,  headers );
 }
+
+UpdatePartyApi(body:any,): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  return this.apiservice.post(`edit-party-data`, body,  headers );
+}
+
+getPartyByIdAPI(PartyId:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  const body = {
+    "party_id":PartyId,
+    "user_id": user,
+  };
+
+  return this.apiservice.post(`get-party-data`, body,  headers );
+}
+
 
 }
 
