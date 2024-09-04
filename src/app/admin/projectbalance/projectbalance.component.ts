@@ -286,43 +286,22 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     }
   
 
+   
+
+
     isAtLeastOneFieldFilled(): boolean {
-      const startDate = this.FilterForm.get('StartDate')?.value;
-      const endDate = this.FilterForm.get('enddate')?.value;
-      const dateRange = this.FilterForm.get('daterange')?.value;
-  
-      // Check if at least one field is filled
-      return startDate || endDate || (dateRange && dateRange !== 'all');
+      // Checking if at least one of the form fields is not empty
+      return (
+        this.FilterForm.get('StartDate')?.value ||
+        this.FilterForm.get('enddate')?.value ||
+        this.FilterForm.get('daterange')?.value
+      );
     }
-
-
-    // getpartyprojectbalance() {
-    //   // Calling the getProjectPartiesBalance API with the extracted IDs
-    //   this.employeeService
-    //     .getProjectPartiesBalance(this.projectID, this.partyID)
-    //     .subscribe(
-    //       (response: any) => {
-    //         this.name = response.party.name
-    //         this.type = response.party.type
-    //         this.amount = response.party.amount
-    //         this.status = response.party.status
-    //         this.partryecievetable = response.party_received
-    //         this.partypaidtable = response.party_paid
-    //         this.subcontractortable = response.subcontractor
-    //         this.otherexpensetable = response.other_expense
-    //         this.salarytable = response.attendanceData
-    //         this.materialpurchasetable = response.material_purchase
-    //       },
-    //       (error: any) => {
-    //         console.error('Error fetching project party balance:', error);
-         
-    //       }
-    //     );
-    // }
-    
   
     getpartyprojectbalance(type: any) {
-     
+      // if (!this.isAtLeastOneFieldFilled()) {
+      
+      // }
       if (type === 0) {
       
 
@@ -386,6 +365,8 @@ else {
   
   
   
+
+
 
 
 

@@ -1,19 +1,36 @@
 <div class="row">
     <!-- Card for Advance Paid -->
     <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
-      <div class="card custom-card border-0 cursor h-100">
+      <div class="card custom-card border-0">
         <div class="card-body">
-          <h6 class="card-title text-primary">name</h6>
-          <p class="card-text">{{ name }}</p>
-          <h6 class="card-title text-primary">Type</h6>
-          <p class="card-text">{{ type }}</p> 
-           <h6 class="card-title text-primary">amount</h6>
-          <p class="card-text">{{ amount }}</p>
-          <h6 class="card-title text-primary">status</h6>
-          <p class="card-text2">{{ status }}</p>
+          <!-- First Row: Name and Type -->
+          <div class="row">
+            <div class="col-6">
+              <h6 class="card-title2 text-primary">Name</h6>
+              <p class="card-text">{{ name }}</p>
+            </div>
+            <div class="col-6">
+              <h6 class="card-title2 text-primary">Type</h6>
+              <p class="card-text">{{ type }}</p>
+            </div>
+          </div>
+  
+          <!-- Second Row: Amount and Status -->
+          <div class="row mt-2">
+            <div class="col-6">
+              <h6 class="card-title2 text-primary">Amount</h6>
+              <p class="card-text">{{ amount }}</p>
+            </div>
+            <div class="col-6">
+              <h6 class="card-title2 text-primary">Status</h6>
+              <p class="card-text2">{{ status }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+  
   
  
   
@@ -28,16 +45,18 @@
     <form [formGroup]="FilterForm">
         <div class="row mb-2">
 
-            <div class="col-lg-4">
-                <label for="StartDate">Start Date</label>
+            <div class="col-lg-3">
+                <label class="form-label form-lable-custom"
+                for="StartDate">Start Date</label>
                 <input type="date" class="form-control"  onkeydown="return false"
                   placeholder="Start Date" formControlName="StartDate"
                   [max]="FilterForm.controls['enddate'].value"
         >
               </div>
 
-              <div class="col-lg-4">
-                <label for="enddate">End Date </label>
+              <div class="col-lg-3">
+                <label class="form-label form-lable-custom
+                "for="enddate">End Date </label>
                 <input type="date" class="form-control"  onkeydown="return false"
                   placeholder="End Date" formControlName="enddate"
                   [min]="FilterForm.controls['StartDate'].value"
@@ -45,16 +64,17 @@
               </div>
 
 
-              <div class="col-lg-4">
+              <div class="col-lg-3">
                 <label
-                  class="d-block text-capitalize form-label form-lable-custom"
+                  class="form-label form-lable-custom"
                   for="daterange">Date Range</label>
                 <select
-                  class="d-block  form-select form-control form-input-custom"
-                 
-                  formControlName="daterange"
+                  class="form-select form-control"
+                 #daterange
+                  formControlName="daterange">
 >
-                  <option value="all">All</option>
+                  <option [selected]="true" value="all">All</option>
+             
                   <option value="today">Today</option>
                   <option value="this_week">This Week (Mon-Today)</option>
                   <option value="last_week">Last Week (Mon-Sun)</option>
@@ -64,14 +84,18 @@
               
               </div>
 
-
-            <div class="col-lg-6">
-                <button class="btn btn-primary main-btnfs px-4 py-2 mt-2" type="button" (click)="getpartyprojectbalance(1)">Search</button>
-                <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2" type="submit"
+              <!-- [disabled]="!isAtLeastOneFieldFilled()" -->
+            <div class="col-lg-3 mt-3">
+                <button class="btn btn-primary main-btnfsss px-4 py-2 me-2" type="button" (click)="getpartyprojectbalance(1)" >Search</button>
+                <button class="btn btn-primary main-btnfsss px-4 py-2" type="submit"
                    (click)="resetFilter()">Reset</button>
+
+
+             
+               
             </div>
         </div>
-    </form> 
+    </form> <br>
 
 
 

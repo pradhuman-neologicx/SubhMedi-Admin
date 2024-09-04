@@ -5,17 +5,29 @@
   
   .custom-card {
     margin-right: 15px; /* Adds margin to the right side */
-    width: 98%;
- 
-  }
+     }
+  .card-body {
+  width: 100%; /* Adds margin to the right side */
+     }
   
+     .main-btnfsss {
+        font-size: 16px;
+        margin-top: 18px;
+      }
+
   
   .card-text2{
 color: red;
+font-size: 18px;
+  }
+  
+  .card-title2{
+font-size: 22px;
   }
    
   .card-text{
 color: green;
+font-size: 18px;
   }
    
   
