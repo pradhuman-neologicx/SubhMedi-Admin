@@ -15,6 +15,7 @@ import { HomepartiesComponent } from './admin/projecthome/homeparties/homepartie
 import { HometransactionsComponent } from './admin/projecthome/hometransactions/hometransactions.component';
 import { HomeattendanceComponent } from './admin/projecthome/homeattendance/homeattendance.component';
 import { HomematerialComponent } from './admin/projecthome/homematerial/homematerial.component';
+import { ProjectbalanceComponent } from './admin/projectbalance/projectbalance.component';
 
 const routes: Routes = [
 
@@ -105,6 +106,21 @@ const routes: Routes = [
           
        
       },
+
+
+
+
+      {
+        path: 'projectpartybalance/:id/:party_id',
+        component: ProjectbalanceComponent,
+        // canActivate: [AuthGuard],
+      
+        
+          
+       
+      },
+
+
 
 
 

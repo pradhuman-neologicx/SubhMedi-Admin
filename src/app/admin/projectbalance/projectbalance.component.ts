@@ -1,10 +1,636 @@
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { projects } from 'src/app/core/model-class/employee';
+import { EmployeeService } from 'src/app/core/services/Employee.service';
+import { JwtService } from 'src/app/core/services/jwt.service';
+
 
 @Component({
   selector: 'app-projectbalance',
   templateUrl: './projectbalance.component.html',
   styleUrl: './projectbalance.component.scss'
 })
-export class ProjectbalanceComponent {
 
-}
+
+  export class ProjectbalanceComponent {
+    FilterForm!: FormGroup;
+  
+    showreset: any = false
+    searchText: any;
+    tableSize: any = 10;
+    tableSizes: any = [10, 20, 50, 100, 'all'];
+    totalRecords: any;
+    page: number = 1;
+    searchbarform!: FormGroup;
+    CreateliveexamForm!: FormGroup;
+    createproductform!: FormGroup;
+  
+    orderviewform!: FormGroup;
+  
+    projectgopen: boolean = false;
+    addeventOpen: boolean = false;
+    deleteeventOpen: boolean = false;
+  
+    projectiD : any
+    constructor(
+      private formBuilder: FormBuilder,
+      private employeeService: EmployeeService,
+      private jwtService: JwtService,
+      private router: Router,
+      private route: ActivatedRoute
+    ) {
+      // const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
+      // this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
+      // const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
+      // const urlSegments = this.router.url.split(urlDelimitators);
+      // this.projectID = urlSegments[2]; // Assuming 'id' is at index 2
+      // this.partyID = urlSegments[3]; // Assuming 'party_id' is at index 3
+     
+     }
+  
+     projectID: any;
+     partyID: any;
+    ngOnInit(): void {
+    // Retrieve both IDs using paramMap
+    this.projectID = this.route.snapshot.paramMap.get('id');
+    this.partyID = this.route.snapshot.paramMap.get('party_id');
+    console.log('Project ID:', this.projectID);
+    console.log('Party ID:', this.partyID);
+      this.user_id= this.jwtService.getpanelUserId();
+
+
+      this.FilterForm = this.formBuilder.group({
+        StartDate: [''],
+        enddate: [''],
+        daterange: [''],
+      });
+  
+  
+  
+      this.createproductform = this.formBuilder.group({
+        projectname: ["", [Validators.required,]],
+        Address: [""],
+        State: [""],
+        City: [""],
+        SelectClient: ["", [Validators.required,]],
+        Selectstaff: [""],
+        description: [""],
+        StartDate: [""],
+        endDate: [""],
+      });
+     
+  
+  
+      this.getpartyprojectbalance(0);
+      this.getState();
+      this.getStaff();
+      this.postclient();
+      this.checkUserRole();
+    
+  
+      
+  
+  
+  
+  
+  
+  
+  
+  
+    }
+    paginatedCourses = [
+      {
+        advancePaid: '5000 USD',
+      
+      },
+      {
+       
+        pendingToPay: '1000 USD'
+      },
+     
+      // Add more items as needed
+    ];
+    
+    idString: any;
+    partyType: any
+    id: any;
+    Type!: string;
+    checkUserRole() {
+      this.Type = localStorage.getItem('Type') || '';
+      if (this.Type === 'admin') {
+        this.createproductform.get('Selectstaff')?.setValidators(Validators.required);
+      } else if (this.Type === 'staff') {
+        this.createproductform.removeControl('Selectstaff');
+      }
+    }
+  
+    stateList: any = [];
+    // getState() {
+    //   this.employeeService.GetState().subscribe((response: any) => {
+    //     if (response.statusCode === 200) {
+    //       this.stateList = response.data;
+    //     }
+    //   });
+    // }
+    citiesList: any = [];
+    //  getcities(state_id: any) {
+    //   this.employeeService.getCity(state_id).subscribe(
+    //     (response: any) => {
+    //       if (response.statusCode === 200) {
+    //         this.citiesList = response.data;
+    //       }
+    //     },
+    //     (error) => {
+    //       console.error('Error fetching cities:', error);
+    //     }
+    //   );
+    // }
+  
+  
+  
+    getState() {
+      this.employeeService.GetState().subscribe((response: any) => {
+        if (response.status === 200) {
+          this.stateList = response.data;
+        } else {
+          console.error('Failed to load states', response);
+        }
+      });
+    }
+  
+
+    viewmmodal(id: any) {
+      // Log the project_id to the console
+      console.log('Project ID:', id);
+      
+      // Navigate to the desired route with the project_id
+      this.router.navigate(['/projectpartybalance', id]); 
+    }
+  
+
+
+
+
+  
+    onStateChange(event: Event) {
+     
+      const selectedStateId = (event.target as HTMLSelectElement).value;
+    
+      if (selectedStateId) {
+        console.log('Selected State ID:', selectedStateId); 
+        this.getcities(selectedStateId); 
+      } else {
+        this.citiesList = []; 
+      }
+    }
+   
+    getcities(state_id: any) {
+      this.employeeService.getCity(state_id).subscribe(
+        (response: any) => {
+          if (response && response.data && Array.isArray(response.data)) {
+            this.citiesList = response.data; // Set the cities list from response
+            console.log('Cities loaded successfully:', this.citiesList);
+          } else {
+            console.error('Failed to load cities, unexpected response:', response);
+          }
+        },
+        (error: any) => {
+          // Log the entire error object to understand its structure
+          console.error('Error fetching cities:', error);
+    
+          // Safely check and log error details
+          if (error && error.error) {
+            console.error('Error details:', error.error);
+          } else if (error && error.message) {
+            console.error('Error message:', error.message); // Log error message if available
+          } else {
+            console.error('Unexpected error format:', error); // Handle completely unexpected formats
+          }
+        }
+      );
+    }
+    
+    
+  
+  
+  
+  
+  
+    staffList: any = [];
+    getStaff() {
+      this.employeeService.GetStaff().subscribe((response: any) => {
+        if (response.status === 200) {
+          this.staffList = response.staffs;
+        }
+      });
+    }
+    clientList: any = [];
+    postclient() {
+      this.employeeService.getClientParties().subscribe((response: any) => {
+        if (response.status === 200) {
+          this.clientList = response.parties;
+        }
+      });
+    }
+   
+  
+    
+  
+  
+  
+  
+  
+    projects: projects = new projects();
+    user_id: any
+   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    partryecievetable: any
+    partypaidtable: any
+    salarytable: any
+    otherexpensetable: any
+    materialpurchasetable: any
+    subcontractortable: any
+    
+    name: any
+    type: any
+    amount: any
+    status: any
+  
+
+
+    dateValidator(formGroup: any) {
+      const StartDate = formGroup.get('StartDate').value;
+      const enddate = formGroup.get('enddate').value;
+      if (StartDate && enddate) {
+        if (enddate <= StartDate) {
+          return { invalidDateSequence: true };
+        }
+      }
+      return null;
+    }
+  
+
+    isAtLeastOneFieldFilled(): boolean {
+      const startDate = this.FilterForm.get('StartDate')?.value;
+      const endDate = this.FilterForm.get('enddate')?.value;
+      const dateRange = this.FilterForm.get('daterange')?.value;
+  
+      // Check if at least one field is filled
+      return startDate || endDate || (dateRange && dateRange !== 'all');
+    }
+
+
+    // getpartyprojectbalance() {
+    //   // Calling the getProjectPartiesBalance API with the extracted IDs
+    //   this.employeeService
+    //     .getProjectPartiesBalance(this.projectID, this.partyID)
+    //     .subscribe(
+    //       (response: any) => {
+    //         this.name = response.party.name
+    //         this.type = response.party.type
+    //         this.amount = response.party.amount
+    //         this.status = response.party.status
+    //         this.partryecievetable = response.party_received
+    //         this.partypaidtable = response.party_paid
+    //         this.subcontractortable = response.subcontractor
+    //         this.otherexpensetable = response.other_expense
+    //         this.salarytable = response.attendanceData
+    //         this.materialpurchasetable = response.material_purchase
+    //       },
+    //       (error: any) => {
+    //         console.error('Error fetching project party balance:', error);
+         
+    //       }
+    //     );
+    // }
+    
+  
+    getpartyprojectbalance(type: any) {
+     
+      if (type === 0) {
+      
+
+        this.employeeService
+          .getProjectPartiesBalance(this.projectID, this.partyID,this.FilterForm.get('daterange')?.value,this.FilterForm.get('StartDate')?.value ,this.FilterForm.get('enddate')?.value)
+          .subscribe(
+            (response: any) => {
+              // Handling the response data
+              this.name = response.party?.name ;
+              this.type = response.party?.type ;
+              this.amount = response.party?.amount ;
+              this.status = response.party?.status ;
+              this.partryecievetable = response.party_received ;
+              this.partypaidtable = response.party_paid ;
+              this.subcontractortable = response.subcontractor ;
+              this.otherexpensetable = response.other_expense ;
+              this.salarytable = response.attendanceData ;
+              this.materialpurchasetable = response.material_purchase ;
+            },
+            (error: any) => {
+              console.error('Error fetching project party balance:', error);
+              // Handle the error scenario
+            }
+          );
+} 
+else {
+        // With search condition; ensure the form is valid
+        if (this.FilterForm.valid) {
+          this.employeeService
+            .getProjectPartiesBalance(
+              this.projectID,
+              this.partyID,
+              this.FilterForm.get('daterange')?.value,this.FilterForm.get('StartDate')?.value ,this.FilterForm.get('enddate')?.value
+            )
+            .subscribe(
+              (response: any) => {
+                // Handling the response data
+                this.name = response.party?.name ;
+                this.type = response.party?.type ;
+                this.amount = response.party?.amount ;
+                this.status = response.party?.status ;
+                this.partryecievetable = response.party_received ;
+                this.partypaidtable = response.party_paid ;
+                this.subcontractortable = response.subcontractor ;
+                this.otherexpensetable = response.other_expense ;
+                this.salarytable = response.attendanceData ;
+                this.materialpurchasetable = response.material_purchase ;
+              },
+              (error: any) => {
+                console.error('Error fetching project party balance:', error);
+                // Handle the error scenario
+              }
+            );
+        } else {
+          // Mark form fields as touched to display validation errors
+          this.FilterForm.markAllAsTouched();
+        }
+      }
+    }
+    
+  
+  
+  
+
+
+
+  
+  
+    table_heading = [
+      {
+        heading0: "Serial No.",
+        heading1: "Project Name",
+        heading2: "Project Type",
+        heading3: "Amount",
+        heading4: "Status",
+        heading5: "Action",
+      },
+    ];
+  
+  
+  
+    searchfun() { }
+    resetsearchbar() { }
+    onTableSizeChange(event: any): void {
+      this.tableSize = event.target.value;
+      console.log(event.target.value);
+      this.page = 1;
+      // if (this.searchbarform.valid && this.showreset==true) {
+      //   this.searchfun()
+      // }else{
+      //   this.getstudentsfunpagination(this.type);
+      // }
+  
+    }
+    onTableDataChange(event: any) {
+      this.page = event;
+    }
+  
+  
+    addeventmmodal() {
+      this.addeventOpen = true;
+    }
+    deleteeventmmodal() {
+      this.deleteeventOpen = true;
+    }
+    projectcreatemodal() {
+      this.projectgopen = true;
+    }
+    closeModal() {
+      this.projectgopen = false;
+    
+    }
+    ClickModalconent(event: Event): void {
+      event.stopPropagation();
+    }
+    ClickexamupdateModalconent(event: Event): void {
+      event.stopPropagation();
+    }
+    onCheckboxChange(event: any, rowData: any) {
+      if (event.target.checked) {
+        // Handle selection
+        console.log('Row selected:', rowData);
+      } else {
+        // Handle deselection
+        console.log('Row deselected:', rowData);
+      }
+    }
+  
+  
+  
+  
+  
+  
+    showStudent: any;
+    // getfeesmanagementByFilter(name: any) {
+    //   // Check if the form is valid
+    //   if (this.FilterForm.valid) {
+    //     // Log the search term
+    //     console.log(name);
+  
+    //     // Check if the search term is not undefined and has a length greater than 0
+    //     if (name !== undefined && name.toString().length > 0) {
+    //       this.showStudent = true; // Show student-related UI elements if needed
+  
+    //       // Prepare the body for the API request
+    //       const body = {
+    //         sessionId: this.sessionId, // Ensure sessionId is defined correctly in your component
+    //       };
+  
+    //       // Call the service to get filtered data
+    //       this.feesManagementService
+    //         .getfeesStudentmanagementByFilter(
+    //           body,
+    //           undefined,
+    //           name,
+    //           undefined,
+    //           undefined,
+    //           undefined
+    //         )
+    //         .subscribe(
+    //           (response: any) => {
+    //             // Set the data for the table
+    //             this.productTable = response.data || [];
+  
+    //             // Optional: Handle empty state or any additional UI updates
+    //             if (!response.data || response.data.length === 0) {
+    //               console.log('No data available');
+    //               // You can display a message or handle the empty state here
+    //             }
+    //           },
+    //           (error) => {
+    //             console.error('Error fetching filtered data:', error);
+    //             // Optionally, handle errors like showing a message to the user
+    //             this.productTable = []; // Clear the table data on error
+    //           }
+    //         );
+    //     } else {
+    //       // Reset the table when the input is empty
+    //       this.productTable = [];
+    //     }
+    //   } else {
+    //     // Mark all form controls as touched to show validation errors
+    //     this.FilterForm.markAllAsTouched();
+    //   }
+    // }
+  
+    resetFilter() {
+      window.location.reload();
+    }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    Bulkuploadform!: FormGroup;
+    Excel: boolean = false;
+  
+    OpenExcel() {
+      this.Excel = true;
+    }
+  
+    selectedFileName: string | null = null;
+    selectedfile: any;
+    openFileUpload() {
+      const uploadInput = document.getElementById('uploadInput');
+      if (uploadInput) {
+        uploadInput.click();
+      }
+    }
+  
+    handleFileInput(event: any) {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+          this.selectedFileName = file.name;
+          this.selectedfile = file;
+        } else {
+          console.error('Only Excel files are allowed.');
+        }
+      }
+    }
+  
+    removeFile() {
+      this.selectedFileName = null;
+      this.selectedfile = undefined;
+      const uploadInput = document.getElementById('uploadInput') as HTMLInputElement;
+      if (uploadInput) {
+        uploadInput.value = '';
+      }
+    }
+  
+  
+    BulkUploadExcel: boolean = false;
+    UploadSampleFile() {
+      if (this.selectedFileName) {
+        this.Excel = false;
+        this.BulkUploadExcel = true;
+      } else {
+        console.log("Please select a file before proceeding.");
+      }
+  
+    }
+  
+  
+  
+    // downloadcourseFile(): void {
+    //   const url = `${environment.coursefile_url}download/course`;
+    //   this.httpClient.get(url, { responseType: 'blob' })
+    //     .subscribe(
+    //       (blob: Blob) => {
+    //         const fileName = 'synthesis_courses.xlsx'; // Specify the file name
+    //         saveAs(blob,fileName);
+    //       },
+    //       (error: any) => {
+    //         console.error('Failed to download the file.', error);
+    //         // Handle error as needed
+    //       }
+    //     );
+    // }
+    downloadcourseFile() { }
+  
+    // BulkuploadCourseFun() {
+    //   if (this.Bulkuploadform.valid) {
+    //     const formData: FormData = new FormData();
+    //     if (this.selectedfile != undefined) {
+    //       const file = this.selectedfile;
+    //       formData.append("xlsx", file, file.name);
+    //       console.log(formData);
+  
+    //       this.employeeService.BulkuploadCourseapi(formData).subscribe((response: any) => {
+    //         this.errorMessage = response.errorMessage;
+    //         if (response.statusCode === 200 || response.statusCode === 201) {
+    //           console.log(response);
+    //           this.closeModal();
+    //           this.successName = 'Upload Bulk';
+    //           this.openSecondsuccess = true;
+    //           this.removeFile();
+    //           this.ngOnInit();
+    //           this.getNewCourses();
+    //           setTimeout(() => {
+    //             this.openSecondsuccess = true;
+    //             setTimeout(() => {
+    //               this.openSecondsuccess = false;
+    //             }, 1800);
+    //           }, 200);
+  
+    //         } else {
+    //           this.submitted = false;
+    //         }
+    //       });
+    //     }
+    //     else {
+    //       console.log("Please Select file");
+    //       // Handle the case where no file is selected or form is invalid
+    //     }
+  
+    //   }
+    //   else {
+    //     this.Bulkuploadform.markAllAsTouched();
+    //   }
+    // }
+  
+  
+  
+  }
+

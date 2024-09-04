@@ -128,19 +128,9 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     //   });
     // }
     citiesList: any = [];
-    //  getcities(state_id: any) {
-    //   this.employeeService.getCity(state_id).subscribe(
-    //     (response: any) => {
-    //       if (response.statusCode === 200) {
-    //         this.citiesList = response.data;
-    //       }
-    //     },
-    //     (error) => {
-    //       console.error('Error fetching cities:', error);
-    //     }
-    //   );
-    // }
-  
+
+
+   
   
   
     getState() {
@@ -153,6 +143,26 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       });
     }
   
+
+    viewmmodal(party_id: any) {
+      // Check if IDs are valid before proceeding
+      if (!this.projectiD|| !party_id) {
+        // console.error('Invalid IDs:', { this.projectiD, party_id });
+        return; // Exit the function if IDs are invalid
+      }
+    
+      // Log the IDs
+      console.log('Project ID:', this.projectiD, 'Party ID:', party_id);
+    
+      // Navigate to the desired route with both IDs
+      this.router.navigate(['/projectpartybalance', this.projectiD, party_id]);
+    }
+    
+  
+
+
+
+
   
     onStateChange(event: Event) {
      
