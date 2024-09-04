@@ -292,7 +292,7 @@ body {
 
 .offcanvs-content-width{
   width: 100%;
-  height: 83vh;
+  height: 100vh;
   overflow: auto;
 }
 .offcanvs-content-width:hover {
@@ -425,7 +425,7 @@ mat-sidenav-container {
 }
 
 .header button {
-  margin-left: 42px;
+  margin-left: 100%;
 }
 
 .mat-drawer-side {

@@ -182,8 +182,22 @@ GetpartyTypetableApi() {
   return this.apiservice.get("party-types",headers);
 }
 
+
+
+
+createPartyApi(body:any,): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+
+
+
+  return this.apiservice.post(`parties`, body,  headers );
 }
 
-
+}
 
 
