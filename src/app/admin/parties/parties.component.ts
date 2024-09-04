@@ -58,6 +58,7 @@ export class PartiesComponent {
     private jwtService: JwtService,
     private employeeService: EmployeeService,
   ) { }
+  validation: Validations = new Validations();
   sessionId: any;
   searchbarform!: FormGroup;
   FilterForm!: FormGroup;
@@ -75,7 +76,7 @@ export class PartiesComponent {
     this.CreatepartyForm = this.formBuilder.group({
       PartyName: ["", [Validators.required,]],
       PartyType: ["", [Validators.required,]],
-      PhoneNumber: ["",],
+      PhoneNumber: ["",Validators.pattern(this.validation.mobile_pattern),],
       Email: ["",],
       GSTNumber: ["",],
       LegalBusinessName: ["",],
@@ -248,8 +249,24 @@ export class PartiesComponent {
     console.log(newlist);
     if (newlist.length > 0) {
       this.partyTypeName = newlist[0].name;
+      this.updateEmailValidators();
     }
   }
+
+  updateEmailValidators() {
+
+
+    if (this.partyTypeName === 'staff') {
+      this.CreatepartyForm.get('Email')?.setValidators([Validators.required,Validators.pattern(this.validation.email_pattern),]);
+
+    } else {
+      this.CreatepartyForm.get('Email')?.clearValidators();
+
+    }
+
+    this.CreatepartyForm.get('Email')?.updateValueAndValidity();
+  }
+
 
 
 
@@ -258,8 +275,9 @@ export class PartiesComponent {
     this.showGstDetails = !this.showGstDetails;
 
     if (this.showGstDetails) {
+      const gstPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}[Z]{1}[A-Z0-9]{1}$/;
       // Add required validators
-      this.CreatepartyForm.get('GSTNumber')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('GSTNumber')?.setValidators([Validators.required,Validators.pattern(gstPattern)]);
       this.CreatepartyForm.get('LegalBusinessName')?.setValidators([Validators.required]);
       this.CreatepartyForm.get('State')?.setValidators([Validators.required]);
       this.CreatepartyForm.get('BillingAddress')?.setValidators([Validators.required]);
@@ -281,6 +299,23 @@ export class PartiesComponent {
   showopeningDetails = false;
   toggleopeningbalance() {
     this.showopeningDetails = !this.showopeningDetails;
+    
+    if (this.showopeningDetails) {
+
+      // Add required validators
+      this.CreatepartyForm.get('partypayement')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('partyamount')?.setValidators([Validators.required]);
+    } else {
+      // Remove validators
+      this.CreatepartyForm.get('partypayement')?.clearValidators();
+      this.CreatepartyForm.get('partyamount')?.clearValidators();
+    }
+
+    // Update the form to revalidate fields
+    this.CreatepartyForm.get('partypayement')?.updateValueAndValidity();
+    this.CreatepartyForm.get('partyamount')?.updateValueAndValidity();
+
   }
 
   showbankdetails = false;
@@ -288,10 +323,13 @@ export class PartiesComponent {
     this.showbankdetails = !this.showbankdetails;
 
     if (this.showbankdetails) {
+      const IFSCCodePattern = /^[A-Z]{4}[0-9]{7}$/;  
+      const AccountNumberPattern = /^[0-9]{9,18}$/; // Pattern for Account Number    
+
       // Add required validators
       this.CreatepartyForm.get('AccountholderName')?.setValidators([Validators.required]);
-      this.CreatepartyForm.get('AccountNumber')?.setValidators([Validators.required]);
-      this.CreatepartyForm.get('IFSCCode')?.setValidators([Validators.required]);
+      this.CreatepartyForm.get('AccountNumber')?.setValidators([Validators.required,Validators.pattern(AccountNumberPattern)]);
+      this.CreatepartyForm.get('IFSCCode')?.setValidators([Validators.required,Validators.pattern(IFSCCodePattern)]);
       this.CreatepartyForm.get('BankName')?.setValidators([Validators.required]);
       this.CreatepartyForm.get('BankAddress')?.setValidators([Validators.required]);
       this.CreatepartyForm.get('IBANNumber')?.setValidators([Validators.required]);
@@ -484,8 +522,6 @@ export class PartiesComponent {
             }, 1800);
           }, 200);
 
-        } else {
-          this.submitted = false;
         }
 
       });
