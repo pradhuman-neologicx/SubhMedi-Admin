@@ -221,6 +221,141 @@ getPartyByIdAPI(PartyId:any): Observable<any> {
 }
 
 
+
+
+// Attendnace  api integration  **********************************************************************/
+
+
+
+
+getAttendacneAPI(PartyId:any,userId:any,Date:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  const body = {
+    "project_id":PartyId,
+    "user_id": userId,
+    "date":Date
+  };
+
+  return this.apiservice.post(`attendance`, body,  headers );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
