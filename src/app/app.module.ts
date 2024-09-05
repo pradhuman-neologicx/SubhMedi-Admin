@@ -37,7 +37,7 @@ import { MastersComponent } from './admin/masters/masters.component';
 import { UnitsComponent } from './admin/masters/units/units.component';
 import { MaterialsComponent } from './admin/masters/materials/materials.component';
 import { AttendanceComponent } from './admin/attendance/attendance.component';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
@@ -82,8 +82,10 @@ import { AttendanceComponent } from './admin/attendance/attendance.component';
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
+    NgSelectModule,
     MatMenuModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+   
   ],
   providers: [
     DataService,

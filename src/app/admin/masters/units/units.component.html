@@ -1,11 +1,10 @@
-
 <div class="container mx-auto mb-4 ">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="text-primary table-heading-detail">Units</h1>
-        <button class="btn btn-primary main-btnfs px-3 py-2">Add Units</button>
+        <button class="btn btn-primary main-btnfs px-3 py-2" (click)="OpenCreateModal()">Add Units</button>
     </div>
-</div> 
-  
+</div>
+
 
 
 
@@ -31,10 +30,10 @@
                     </th>
 
                     <th>
-                        <p class="table-heading table-new-heading">Project Name</p>
+                        <p class="table-heading table-new-heading">Name</p>
                     </th>
-              
-                 
+
+
                     <th>
                         <p class="table-heading table-new-heading">Status</p>
                     </th>
@@ -52,14 +51,18 @@
                         <p class="table-detail text-capitalize table-detail-new">
                             {{units.name }}</p>
                     </td>
-                 
-                  
+
                     <td>
-                        <p class="table-detail text-capitalize table-detail-new" 
-                        >
+                        <p
+                            [ngClass]="{'active-status':units.is_active== 1 ? 1 : 0,'deactive-status':units.is_active == 1 ? 0 : 1}">
+                            {{ units.is_active == 1 ? "active" :
+                            "deactive" }}
+                        </td>
+                    <!-- <td>
+                        <p class="table-detail text-capitalize table-detail-new">
                             {{ units.is_active }}
                         </p>
-                    </td>
+                    </td> -->
 
 
                     <td>
@@ -69,8 +72,15 @@
                             </button>
 
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item >View Details</button>
-                                <button mat-menu-item >Edit Details</button>
+                                <!-- <button mat-menu-item>View Details</button> -->
+                                <button mat-menu-item (click)="OpenEditModal(units)">Edit Details</button>
+                                <button mat-menu-item
+                                *ngIf="units.is_active; else inactiveButton"
+                                (click)="Status(units.id,0)">Deactivate</button>
+                            <ng-template #inactiveButton>
+                                <button mat-menu-item
+                                    (click)="Status(units.id, 1)">Activate</button>
+                            </ng-template>
                             </mat-menu>
                         </p>
                     </td>
@@ -84,7 +94,7 @@
 
 
 
-<!-- 
+
 <div *ngIf="Creatunitopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
     aria-modal="true">
     <div class="modal-content modal-content-50" [@fadeIn]>
@@ -92,7 +102,7 @@
             <form [formGroup]="unitsformscreate">
                 <div class="card">
                     <div class="card-header bg-white d-flex justify-content-between algin-items-center">
-                        <h5 class="modal-title pt-1">Create Party</h5>
+                        <h5 class="modal-title pt-1">Create Units</h5>
                         <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
                             type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
                     </div>
@@ -102,13 +112,13 @@
                     <div class="modal-content-width card-body mb-0">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 mb-3">
-                                <label for="PartyName" class="form-label form-lable-custom">Party Name</label>
-                                <input type="text" class="form-control form-input-custom" formControlName="PartyName"
-                                    [ngClass]="{ 'is-invalid':unitsformscreate.controls['PartyName'].errors && (unitsformscreate.controls['PartyName'].touched || unitsformscreate.controls['PartyName'].dirty) }">
+                                <label for="unitsname" class="form-label form-lable-custom">Units Name</label>
+                                <input type="text" class="form-control form-input-custom" formControlName="unitsname"
+                                    [ngClass]="{ 'is-invalid':unitsformscreate.controls['unitsname'].errors && (unitsformscreate.controls['unitsname'].touched || unitsformscreate.controls['unitsname'].dirty) }">
                                 <div class="text-danger error-message"
-                                    *ngIf="unitsformscreate.controls['PartyName'].errors && (unitsformscreate.controls['PartyName'].touched || unitsformscreate.controls['PartyName'].dirty)">
+                                    *ngIf="unitsformscreate.controls['unitsname'].errors && (unitsformscreate.controls['unitsname'].touched || unitsformscreate.controls['unitsname'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="unitsformscreate.controls['PartyName'].errors['required']">Course
+                                        *ngIf="unitsformscreate.controls['unitsname'].errors['required']">
                                         Name
                                         is Requried</p>
                                 </div>
@@ -116,21 +126,91 @@
 
 
 
-                    </div>
-                    <div class="modal-footer text-end me-4">
-                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
-                            (click)="closeModal()">Cancel</button>
-                        <button class="btn btn-primary main-btnfs px-4 py-2" type="submit"
-                            (click)="CratenewPartyFun();">Create</button>
-                    </div>
-                    <div class="text-end error-message" *ngIf="!submitted">
-                        <p class="fw-light text-danger">{{errorMessage}}</p>
-                    </div>
+                        </div>
+                        <div class="modal-footer text-end me-4">
+                            <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                                (click)="closeModal()">Cancel</button>
+                            <button class="btn btn-primary main-btnfs px-4 py-2" type="submit"
+                                (click)="createunits();">Create</button>
+                        </div>
+                        <div class="text-end error-message" *ngIf="!submitted">
+                            <p class="fw-light text-danger">{{errorMessage}}</p>
+                        </div>
 
-                </div>
+                    </div>
+                    </div>
 
 
             </form>
+
         </div>
     </div>
-</div> -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="updateunitopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-50" [@fadeIn]>
+        <div>
+            <form [formGroup]="unitsformupdate">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                        <h5 class="modal-title pt-1">Update Units</h5>
+                        <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                            type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+
+
+                    <div class="modal-content-width card-body mb-0">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="unitsname" class="form-label form-lable-custom">Units Name</label>
+                                <input type="text" class="form-control form-input-custom" formControlName="unitsname"
+                                    [ngClass]="{ 'is-invalid':unitsformupdate.controls['unitsname'].errors && (unitsformupdate.controls['unitsname'].touched || unitsformupdate.controls['unitsname'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="unitsformupdate.controls['unitsname'].errors && (unitsformupdate.controls['unitsname'].touched || unitsformupdate.controls['unitsname'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="unitsformupdate.controls['unitsname'].errors['required']">
+                                        Name
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="modal-footer text-end me-4">
+                            <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                                (click)="closeModal()">Cancel</button>
+                            <button class="btn btn-primary main-btnfs px-4 py-2" type="submit"
+                                (click)="updateunits();">Update</button>
+                        </div>
+                        <div class="text-end error-message" *ngIf="!submitted">
+                            <p class="fw-light text-danger">{{errorMessage}}</p>
+                        </div>
+
+                    </div>
+                    </div>
+
+
+            </form>
+
+        </div>
+    </div>
+</div>

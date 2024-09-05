@@ -228,7 +228,7 @@ getPartyByIdAPI(PartyId:any): Observable<any> {
 
 
 
-getAttendacneAPI(PartyId:any,userId:any,Date:any): Observable<any> {
+getAttendacneAPI(projectId:any,userId:any,Date:any): Observable<any> {
   const user = this.jwtService.getpanelUserId();
   const token = this.jwtService.getToken();
   const headers = new HttpHeaders({
@@ -236,7 +236,7 @@ getAttendacneAPI(PartyId:any,userId:any,Date:any): Observable<any> {
     'Content-Type': 'application/json'
   });
   const body = {
-    "project_id":PartyId,
+    "project_id":projectId,
     "user_id": userId,
     "date":Date
   };

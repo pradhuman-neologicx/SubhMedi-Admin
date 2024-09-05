@@ -18,7 +18,8 @@
                 <div class="card-body pb-0">
                     <h1 class="attendance-m-heading pb-0 border-bottom text-center pb-0">Present
                         Employees</h1>
-                    <p class="text-center mt-3 mb-2">10</p>
+                    <p class="text-center mt-3 mb-2">                    <p
+                        class="text-center mt-3 mb-2">{{ totalPresent !== undefined && totalPresent !== null ? totalPresent : 'Not available' }}</p>
                 </div>
             </div>
         </div>
@@ -27,7 +28,7 @@
                 <div class="card-body pb-0">
                     <h1 class="attendance-m-heading pb-0 border-bottom text-center">Absent
                     </h1>
-                    <p class="text-center mt-3 mb-2">200</p>
+                    <p class="text-center mt-3 mb-2">{{ totalAbsent !== undefined && totalAbsent !== null ? totalAbsent : 'Not available' }}</p>
                 </div>
             </div>
         </div>
@@ -35,7 +36,7 @@
             <div class="card border-0 my-3">
                 <div class="card-body pb-0">
                     <h1 class="attendance-m-heading pb-0 border-bottom text-center">Day's salary</h1>
-                    <p class="text-center mt-3 mb-2">2000</p>
+                    <p class="text-center mt-3 mb-2">{{ totalNetAmount !== undefined && totalNetAmount !== null ? (totalNetAmount | currency) : 'Not available' }}</p>
                 </div>
             </div>
         </div>

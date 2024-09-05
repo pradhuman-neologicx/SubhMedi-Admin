@@ -42,3 +42,17 @@ export class Employee {
     party_id: any;
   
   }
+
+
+
+  export class units {
+    name!: string;
+    unit_id!: string;
+  }
+  export class material {
+    name!: string;
+    unit_id!: string;
+    material_id!: string;
+    description!: string;
+  }
+ 

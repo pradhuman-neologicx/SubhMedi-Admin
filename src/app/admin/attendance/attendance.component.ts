@@ -62,6 +62,8 @@ export class AttendanceComponent {
     private router: Router,
     private datePipe: DatePipe) {
     this.maxDate = new Date();
+    const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
+    this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
 
   }
 
@@ -108,13 +110,28 @@ this.GetPartyType();
 
 
   showreset: any = false;
-
+  totalPresent:number = 0;
+  totalAbsent:number = 0;
+  totalNetAmount:number = 0;
 workertable:any
   Attendancetable: any;
+  projectiD : any;
   GetAttendanceFun() {
-    this.courseService.getAttendacneAPI("16","17","2024-09-05").subscribe((response: any) => {
+    // staticid "16","17","2024-09-05"
+    
+
+const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
+const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
+
+    this.courseService.getAttendacneAPI("16",this.userId,formattedDate).subscribe((response: any) => {
+      console.log(this.CalendarForm.get('Caledardate')?.value);
+      console.log(this.projectiD);
       if (response.status === 200) {
         this.Attendancetable = response.data;
+        this.totalPresent = response.total_present ?? 0;
+        this.totalAbsent = response.total_absent ?? 0;
+        this.totalNetAmount = response.total_net_amount ?? 0;
+        console.log(this.totalPresent);
         this.workertable = this.Attendancetable.flatMap((attendance: any) => attendance.workforces || []);
       }
     });

@@ -117,6 +117,12 @@ export class SidenavComponent {
         label: 'Units',
         route: 'units',
       },
+      {
+        index: 1,
+        icon: 'import_contacts',
+        label: 'Materials',
+        route: 'materials',
+      },
 
       {
         index: 5,
