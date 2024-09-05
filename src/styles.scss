@@ -504,6 +504,14 @@ mat-sidenav-container {
   color:green; /* Replace with the desired color for "to receive" */
 }
 
+
+.active-status{
+  color: green;
+}
+.deactive-status{
+  color: red;
+}
+
 .status-settled {
   color: #36a292; /* Replace with the desired color for "settled" */
 }

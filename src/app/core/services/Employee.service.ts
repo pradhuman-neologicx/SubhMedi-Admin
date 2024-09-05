@@ -38,8 +38,35 @@ export class EmployeeService {
   }
 
 
+  changestatus(unit_id: string, status: any): Observable<any> {
+    var user= this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    const body = {
+      "unit_id": unit_id,
+      "status": status
+    };
+    return this.apiservice.post(`change-unit-status`,body,   headers );
+  }
 
 
+
+  changesmaterialtatus(material_id: string, status: any): Observable<any> {
+    var user= this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    const body = {
+      "material_id": material_id,
+      "status": status
+    };
+    return this.apiservice.post(`change-material-status`,body,   headers );
+  }
 
 
 
@@ -184,9 +211,17 @@ export class EmployeeService {
   }
 
 
+  GetmaterialApi() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.apiservice.get("get-all-materials",headers);
+  }
 
 
-  createunits(body:any,): Observable<any> {
+  createunits(body: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
@@ -194,12 +229,61 @@ export class EmployeeService {
       'Content-Type': 'application/json'
     });
   
-  
+    
   
     return this.apiservice.post(`add-unit`, body,  headers );
   }
 
 
+  updateunits(body:any,): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    // const body = {
+    //   unit_id: unit_id,
+    // };
+  
+    return this.apiservice.post(`update-unit`, body,  headers );
+  }
+
+
+
+  updatematerials(body:any,): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    // const body = {
+    //   unit_id: unit_id,
+    // };
+  
+    return this.apiservice.post(`update-material`, body,  headers );
+  }
+
+
+
+
+
+
+
+  creatematerial(body: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+ 
+  
+    return this.apiservice.post(`add-material`, body,  headers );
+  }
 
 
 }

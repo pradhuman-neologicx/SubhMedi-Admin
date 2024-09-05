@@ -129,6 +129,11 @@ const routes: Routes = [
         component: UnitsComponent,
       
       },
+      {
+        path: 'materials',
+        component: MaterialsComponent,
+       
+      },
 
       {
         path: 'masters',

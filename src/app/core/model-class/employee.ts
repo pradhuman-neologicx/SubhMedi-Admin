@@ -47,5 +47,12 @@ export class Employee {
 
   export class units {
     name!: string;
-   
+    unit_id!: string;
   }
+  export class material {
+    name!: string;
+    unit_id!: string;
+    material_id!: string;
+    description!: string;
+  }
+ 

@@ -9,7 +9,45 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 @Component({
   selector: 'app-units',
   templateUrl: './units.component.html',
-  styleUrl: './units.component.scss'
+  styleUrl: './units.component.scss',
+  animations: [
+    trigger('succesfullyMesaage', [
+      state('void', style({
+        transform: 'translateX(-30%)',
+        opacity: 0
+      })),
+      transition(':enter, :leave', [
+        animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)')
+      ])
+    ]),
+    trigger('slideIn', [
+      state('void', style({
+        transform: 'translateX(100%)',
+        opacity: 0
+      })),
+      transition(':enter', [
+        animate('0.5s ease-out', style({
+          transform: 'translateX(0)', // Final position for slide-in effect
+          opacity: 1 // Final opacity
+        }))
+      ])
+    ]),
+
+    trigger('fadeIn', [
+      state('void', style({
+        opacity: 0,
+        transform: 'scale(0.5)' // Start with smaller size
+      })),
+      transition(':enter', [
+        animate('0.5s ease-out', style({
+          opacity: 1,
+          transform: 'scale(1)' // Final size
+        }))
+      ])
+    ])
+
+
+  ]
 })
 
 
@@ -45,7 +83,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
      }
   
-  
+     user_id:any
     ngOnInit(): void {
       this.idString = this.route.snapshot.paramMap.get('id');
       console.log(this.projectiD);
@@ -82,10 +120,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       });
      
       this.Getunitsfun();
-      this.getStaff();
-      this.postclient();
-      this.checkUserRole();
-    
+   
   
       
   
@@ -97,126 +132,61 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
   
     }
-    paginatedCourses = [
-      {
-        advancePaid: '5000 USD',
-      
-      },
-      {
-       
-        pendingToPay: '1000 USD'
-      },
-     
-      // Add more items as needed
-    ];
+  
     
     idString: any;
     id: any;
-    Type!: string;
-    checkUserRole() {
-      this.Type = localStorage.getItem('Type') || '';
-      if (this.Type === 'admin') {
-        this.unitsformscreate.get('Selectstaff')?.setValidators(Validators.required);
-      } else if (this.Type === 'staff') {
-        this.unitsformscreate.removeControl('Selectstaff');
-      }
-    }
+   
   
-    stateList: any = [];
-    // getState() {
-    //   this.employeeService.GetState().subscribe((response: any) => {
-    //     if (response.statusCode === 200) {
-    //       this.stateList = response.data;
-    //     }
-    //   });
-    // }
-    citiesList: any = [];
     submitted: any;
     errorMessage: any;
    
     Creatunitopen: boolean = false;
+    updateunitopen: boolean = false;
     OpenCreateModal() {
       this.Creatunitopen = true;
     }
     closeModal() {
       this.Creatunitopen = false;
+      this.updateunitopen = false;
     }
    
   
   
-    getState() {
-      this.employeeService.GetState().subscribe((response: any) => {
-        if (response.status === 200) {
-          this.stateList = response.data;
-        } else {
-          console.error('Failed to load states', response);
-        }
-      });
-    }
-  
+   
 
-    viewmmodal(party_id: any) {
-      // Check if IDs are valid before proceeding
-      if (!this.projectiD|| !party_id) {
-        // console.error('Invalid IDs:', { this.projectiD, party_id });
-        return; // Exit the function if IDs are invalid
-      }
-    
-      // Log the IDs
-      console.log('Project ID:', this.projectiD, 'Party ID:', party_id);
-    
-      // Navigate to the desired route with both IDs
-      this.router.navigate(['/projectpartybalance', this.projectiD, party_id]);
-    }
-    
+   
   
     unitstable:any
     Getunitsfun() {
       this.employeeService.GetunitsApi().subscribe((response: any) => {
         if (response.status === 200) {
           this.unitstable = response.data;
+          // this.fillformdate(response.data);
         }
       });
     }
-
-
+ 
   
-    onStateChange(event: Event) {
+    async Status(unit_id: string, is_active: any) {
+      const actionMessage = is_active ? 'activated' : 'deactivated'; 
      
-      const selectedStateId = (event.target as HTMLSelectElement).value;
-    
-      if (selectedStateId) {
-        console.log('Selected State ID:', selectedStateId); 
-        this.getcities(selectedStateId); 
-      } else {
-        this.citiesList = []; 
-      }
-    }
-   
-    getcities(state_id: any) {
-      this.employeeService.getCity(state_id).subscribe(
-        (response: any) => {
-          if (response && response.data && Array.isArray(response.data)) {
-            this.citiesList = response.data; // Set the cities list from response
-            console.log('Cities loaded successfully:', this.citiesList);
-          } else {
-            console.error('Failed to load cities, unexpected response:', response);
+      this.employeeService.changestatus(unit_id, is_active)
+      
+        .subscribe((response: any) => {
+          console.log(response);
+          if (response.status=== 200) {
+            // this.successName = actionMessage;
+            this.Getunitsfun();
+            setTimeout(() => {
+              // this.openSecondsuccess = true;
+              setTimeout(() => {
+                // this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
           }
         },
-        (error: any) => {
-          // Log the entire error object to understand its structure
-          console.error('Error fetching cities:', error);
-    
-          // Safely check and log error details
-          if (error && error.error) {
-            console.error('Error details:', error.error);
-          } else if (error && error.message) {
-            console.error('Error message:', error.message); // Log error message if available
-          } else {
-            console.error('Unexpected error format:', error); // Handle completely unexpected formats
-          }
-        }
-      );
+        );
     }
     
     
@@ -261,39 +231,85 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 
 
   
-  
-  
-    staffList: any = [];
-    getStaff() {
-      this.employeeService.GetStaff().subscribe((response: any) => {
-        if (response.status === 200) {
-          this.staffList = response.staffs;
-        }
-      });
-    }
-    clientList: any = [];
-    postclient() {
-      this.employeeService.getClientParties().subscribe((response: any) => {
-        if (response.status === 200) {
-          this.clientList = response.parties;
-        }
-      });
-    }
-   
-  
     
   
+
+    updateunits() {
+      console.log(this.unitsformupdate.get('unitsname')?.value)
+    
+     
+      if (this.unitsformupdate.valid) {
+        this.units.name = this.unitsformupdate.get('unitsname')?.value;
+        this.units.unit_id = this.unit_id
+     
+        const body = JSON.stringify(this.units);
+        console.log(body);
+        this.employeeService.updateunits(body).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200) {
+            this.closeModal();
+            // this.successName = 'Batch';
+            // this.ngOnInit();
+            this.Getunitsfun();
+            // this.dataService.changeMessage({ message: "units Created" });
+            // this.router.navigate(['/master/units']);
+            setTimeout(() => {
+              // this.openSecondsuccess = true;
+              setTimeout(() => {
+                // this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+  
+          } else {
+            // this.submitted = false;
+          }
+  
+        });
+  
+      }
+    }
+
+
+
   
   
   
   
     units: units = new units();
-    user_id: any
+   
+    unit_id: any
    
   
   
   
   
+   
+    
+    unitsformupdate!:FormGroup;
+    OpenEditModal(units: any): void {
+      this.unit_id = units.id;
+  
+      try {
+        if (!units || !units.id) {
+          console.error('unit ID is undefined or null.');
+          return;
+        }
+  
+        this.updateunitopen = true;
+        this.unitsformupdate = this.formBuilder.group({
+          unitsname: [units.name,[Validators.required,]],
+        
+        });
+       
+  
+      } catch (error) {
+        console.error('An error occurred while opening edit modal:', error);
+  
+      }
+    }
+
+
+
   
   
   
