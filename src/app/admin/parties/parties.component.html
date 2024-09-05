@@ -277,7 +277,7 @@
 
                             <mat-menu #menu="matMenu">
                                 <button mat-menu-item>View Details</button>
-                                <button mat-menu-item>Edit Details</button>
+                                <button mat-menu-item (click)="OpenEditModal(party)">Edit Details</button>
                             </mat-menu>
                         </p>
                     </td>
@@ -311,7 +311,7 @@
                                 <div class="text-danger error-message"
                                     *ngIf="CreatepartyForm.controls['PartyName'].errors && (CreatepartyForm.controls['PartyName'].touched || CreatepartyForm.controls['PartyName'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="CreatepartyForm.controls['PartyName'].errors['required']">Course
+                                        *ngIf="CreatepartyForm.controls['PartyName'].errors['required']">Party
                                         Name
                                         is Requried</p>
                                 </div>
@@ -331,7 +331,7 @@
                                     *ngIf="CreatepartyForm.controls['PartyType'].errors && (CreatepartyForm.controls['PartyType'].touched || CreatepartyForm.controls['PartyType'].dirty)">
                                     <p class="fw-light text-danger"
                                         *ngIf="CreatepartyForm.controls['PartyType'].errors['required']">ParTy Type
-                                        Type
+
                                         is Requried</p>
                                 </div>
                             </div>
@@ -339,12 +339,13 @@
                             <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeName=='staff'">
                                 <label for="Email" class="form-label form-lable-custom">Email</label>
                                 <input type="email" class="form-control form-input-custom" formControlName="Email"
-                                    [ngClass]="{ 'is-invalid':CreatepartyForm.controls['PhoneNumber'].errors && (CreatepartyForm.controls['Email'].touched || CreatepartyForm.controls['Email'].dirty) }">
+                                    [ngClass]="{ 'is-invalid':CreatepartyForm.controls['Email'].errors && (CreatepartyForm.controls['Email'].touched || CreatepartyForm.controls['Email'].dirty) }">
                                 <div class="text-danger error-message"
                                     *ngIf="CreatepartyForm.controls['Email'].errors && (CreatepartyForm.controls['Email'].touched || CreatepartyForm.controls['Email'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="CreatepartyForm.controls['Email'].errors['required']">GST
-                                        Number is Requried</p>
+                                        *ngIf="CreatepartyForm.controls['Email'].errors['required']">Email is Requried</p>
+                                        <p class="fw-light text-danger"
+                                        *ngIf="CreatepartyForm.controls['Email'].errors['pattern']">Please Enter Valid Email</p>
                                 </div>
 
                             </div>
@@ -358,8 +359,8 @@
                                 <div class="text-danger error-message"
                                     *ngIf="CreatepartyForm.controls['PhoneNumber'].errors && (CreatepartyForm.controls['PhoneNumber'].touched || CreatepartyForm.controls['PhoneNumber'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="CreatepartyForm.controls['PhoneNumber'].errors['required']">GST
-                                        Number is Requried</p>
+                                        *ngIf="CreatepartyForm.controls['PhoneNumber'].errors['pattern']">Please
+                                        Enter Correct Phone Number</p>
                                 </div>
 
                             </div>
@@ -378,30 +379,21 @@
                                         <label for="GSTNumber" class="form-label form-lable-custom">GST Number</label>
                                         <input type="text" class="form-control form-input-custom"
                                             formControlName="GSTNumber"
-                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['GSTNumber'].errors && (CreatepartyForm.controls['GSTNumber'].touched || CreatepartyForm.controls['GSTNumber'].dirty) }">
+                                            [ngClass]="{ 'is-invalid': CreatepartyForm.controls['GSTNumber'].errors && (CreatepartyForm.controls['GSTNumber'].touched || CreatepartyForm.controls['GSTNumber'].dirty) }">
                                         <div class="text-danger error-message"
                                             *ngIf="CreatepartyForm.controls['GSTNumber'].errors && (CreatepartyForm.controls['GSTNumber'].touched || CreatepartyForm.controls['GSTNumber'].dirty)">
                                             <p class="fw-light text-danger"
                                                 *ngIf="CreatepartyForm.controls['GSTNumber'].errors['required']">GST
-                                                Number is Requried</p>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-lg-6 mb-3">
-                                        <label for="LegalBusinessName" class="form-label form-lable-custom">Legal
-                                            Business Name</label>
-                                        <input type="text" class="form-control form-input-custom"
-                                            formControlName="LegalBusinessName"
-                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['LegalBusinessName'].errors && (CreatepartyForm.controls['LegalBusinessName'].touched || CreatepartyForm.controls['LegalBusinessName'].dirty) }">
-                                        <div class="text-danger error-message"
-                                            *ngIf="CreatepartyForm.controls['LegalBusinessName'].errors && (CreatepartyForm.controls['LegalBusinessName'].touched || CreatepartyForm.controls['LegalBusinessName'].dirty)">
+                                                Number is Required</p>
                                             <p class="fw-light text-danger"
-                                                *ngIf="CreatepartyForm.controls['LegalBusinessName'].errors['required']">
-                                                Legal Business Name is Requried</p>
+                                                *ngIf="CreatepartyForm.controls['GSTNumber'].errors['pattern']">
+                                                Please Enter Valid Gst Number </p>
                                         </div>
+                                        <p class="suggest-content-validation text-primary">"Note: GST number should be
+                                            exactly 15 characters long, starting with 2 digits for the state code,
+                                            followed by 10 alphanumeric characters, then 'Z', and ending with an
+                                            alphanumeric check code. Example: 08AAAAA0000A1Z5",</p>
                                     </div>
-
                                     <div class="col-lg-6 mb-3">
                                         <label for="State" class="form-label form-lable-custom">State Of Supply</label>
                                         <select class="form-control form-input-custom form-select" #State
@@ -418,6 +410,24 @@
                                         </div>
 
                                     </div>
+
+
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="LegalBusinessName" class="form-label form-lable-custom">Legal
+                                            Business Name</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="LegalBusinessName"
+                                            [ngClass]="{ 'is-invalid':CreatepartyForm.controls['LegalBusinessName'].errors && (CreatepartyForm.controls['LegalBusinessName'].touched || CreatepartyForm.controls['LegalBusinessName'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['LegalBusinessName'].errors && (CreatepartyForm.controls['LegalBusinessName'].touched || CreatepartyForm.controls['LegalBusinessName'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['LegalBusinessName'].errors['required']">
+                                                Legal Business Name is Requried</p>
+                                        </div>
+                                    </div>
+
+
 
                                     <div class="col-lg-6 mb-3">
                                         <label for="BillingAddress" class="form-label form-lable-custom">Billing
@@ -466,19 +476,27 @@
                                                     Party Will Receive
                                                 </label>
                                             </div>
+
+                                        </div>
+                                        <div class="text-danger error-message"
+                                            *ngIf="CreatepartyForm.controls['partypayement'].errors && (CreatepartyForm.controls['partypayement'].touched || CreatepartyForm.controls['partypayement'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="CreatepartyForm.controls['partypayement'].errors['required']">
+                                                This is
+                                                is Requried</p>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 mb-3">
                                         <label for="partyamount" class="form-label form-lable-custom">Amount</label>
-                                        <input type="text" class="form-control form-input-custom"
+                                        <input type="number" class="form-control form-input-custom"
                                             formControlName="partyamount"
                                             [ngClass]="{ 'is-invalid':CreatepartyForm.controls['partyamount'].errors && (CreatepartyForm.controls['partyamount'].touched || CreatepartyForm.controls['partyamount'].dirty) }">
                                         <div class="text-danger error-message"
                                             *ngIf="CreatepartyForm.controls['partyamount'].errors && (CreatepartyForm.controls['partyamount'].touched || CreatepartyForm.controls['partyamount'].dirty)">
                                             <p class="fw-light text-danger"
                                                 *ngIf="CreatepartyForm.controls['partyamount'].errors['required']">
-                                                This is
+                                                Amount is
                                                 is Requried</p>
                                         </div>
                                     </div>
@@ -507,7 +525,7 @@
                                     <div class="col-lg-6 col-md-6 mb-3">
                                         <label for="AccountNumber" class="form-label form-lable-custom">Account
                                             Number</label>
-                                        <input type="text" class="form-control form-input-custom"
+                                        <input type="number" class="form-control form-input-custom"
                                             formControlName="AccountNumber"
                                             [ngClass]="{ 'is-invalid':CreatepartyForm.controls['AccountNumber'].errors && (CreatepartyForm.controls['AccountNumber'].touched || CreatepartyForm.controls['AccountNumber'].dirty) }">
                                         <div class="text-danger error-message"
@@ -516,7 +534,9 @@
                                                 *ngIf="CreatepartyForm.controls['AccountNumber'].errors['required']">
                                                 This is
                                                 is Requried</p>
+                                                <p class="fw-light text-danger" *ngIf="CreatepartyForm.controls['AccountNumber'].errors['pattern']">Please Enter a Valid Account Number</p>
                                         </div>
+                                        <p class="suggest-content-validation text-primary"> Note:Account Number should be between 9 to 18 digits
                                     </div>
                                     <div class="col-lg-6 col-md-6 mb-3">
                                         <label for="IFSCCode" class="form-label form-lable-custom">IFSC Code</label>
@@ -529,7 +549,11 @@
                                                 *ngIf="CreatepartyForm.controls['IFSCCode'].errors['required']">
                                                 This is
                                                 is Requried</p>
+                                                <p class="fw-light text-danger" *ngIf="CreatepartyForm.controls['IFSCCode'].errors['pattern']">Please Enter a Valid IFSC Code</p>
                                         </div>
+                                        <p class="suggest-content-validation text-primary"> 'Note: IFSC code should be
+                                            11 characters long, with the format XXXX0YYYYYY where X are uppercase
+                                            letters and Y are alphanumeric characters. Example: SBIN0001234',</p>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 mb-3">
@@ -641,6 +665,430 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- party edit form  -->
+<div *ngIf="Editpartyopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-50" [@fadeIn]>
+        <div>
+            <form [formGroup]="UpdatepartyForm">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                        <h5 class="modal-title pt-1">Edit Party</h5>
+                        <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                            type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+
+
+                    <div class="modal-content-width card-body mb-0">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="PartyName" class="form-label form-lable-custom">Party Name</label>
+                                <input type="text" class="form-control form-input-custom" formControlName="PartyName"
+                                    [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['PartyName'].errors && (UpdatepartyForm.controls['PartyName'].touched || UpdatepartyForm.controls['PartyName'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="UpdatepartyForm.controls['PartyName'].errors && (UpdatepartyForm.controls['PartyName'].touched || UpdatepartyForm.controls['PartyName'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="UpdatepartyForm.controls['PartyName'].errors['required']">Party
+                                        Name
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="PartyType" class="form-label form-lable-custom">Party Type</label>
+                                <select type="text" class="d-block  form-select form-control form-input-custom"
+                                    formControlName="PartyType" #PartyType (change)="staffselect(PartyType.value)"
+                                    [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['PartyType'].errors && (UpdatepartyForm.controls['PartyType'].touched || UpdatepartyForm.controls['PartyType'].dirty) }">
+                                    <option *ngFor="let party of PartTypeList" [value]="party.id">
+                                        {{ party.name }}
+                                    </option>
+                                </select>
+                                <div class="text-danger error-message"
+                                    *ngIf="UpdatepartyForm.controls['PartyType'].errors && (UpdatepartyForm.controls['PartyType'].touched || UpdatepartyForm.controls['PartyType'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="UpdatepartyForm.controls['PartyType'].errors['required']">ParTy Type
+
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeName=='staff'">
+                                <label for="Email" class="form-label form-lable-custom">Email</label>
+                                <input type="email" class="form-control form-input-custom" formControlName="Email"
+                                    [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['Email'].errors && (UpdatepartyForm.controls['Email'].touched || UpdatepartyForm.controls['Email'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="UpdatepartyForm.controls['Email'].errors && (UpdatepartyForm.controls['Email'].touched || UpdatepartyForm.controls['Email'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="UpdatepartyForm.controls['Email'].errors['required']">Email is Requried</p>
+                                        <p class="fw-light text-danger"
+                                        *ngIf="UpdatepartyForm.controls['Email'].errors['pattern']">Please Enter Valid Email</p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="PhoneNumber" class="form-label form-lable-custom">Phone Number</label>
+                                <input type="number" class="form-control form-input-custom"
+                                    formControlName="PhoneNumber"
+                                    [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['PhoneNumber'].errors && (UpdatepartyForm.controls['PhoneNumber'].touched || UpdatepartyForm.controls['PhoneNumber'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="UpdatepartyForm.controls['PhoneNumber'].errors && (UpdatepartyForm.controls['PhoneNumber'].touched || UpdatepartyForm.controls['PhoneNumber'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="UpdatepartyForm.controls['PhoneNumber'].errors['pattern']">Please
+                                        Enter Correct Phone Number</p>
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- gst details start ------------------------------------------- -->
+
+
+
+                            <!-- gst details start ------------------------------------------- -->
+                            <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showGstDetailsUpdate">
+                                <div class="row mx-0">
+                                    <h1 class="heading-party">Gst Details</h1>
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="GSTNumber" class="form-label form-lable-custom">GST Number</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="GSTNumber"
+                                            [ngClass]="{ 'is-invalid': UpdatepartyForm.controls['GSTNumber'].errors && (UpdatepartyForm.controls['GSTNumber'].touched || UpdatepartyForm.controls['GSTNumber'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['GSTNumber'].errors && (UpdatepartyForm.controls['GSTNumber'].touched || UpdatepartyForm.controls['GSTNumber'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['GSTNumber'].errors['required']">GST
+                                                Number is Required</p>
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['GSTNumber'].errors['pattern']">
+                                                Please Enter Valid Gst Number </p>
+                                        </div>
+                                        <p class="suggest-content-validation text-primary">"Note: GST number should be
+                                            exactly 15 characters long, starting with 2 digits for the state code,
+                                            followed by 10 alphanumeric characters, then 'Z', and ending with an
+                                            alphanumeric check code. Example: 08AAAAA0000A1Z5",</p>
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="State" class="form-label form-lable-custom">State Of Supply</label>
+                                        <select class="form-control form-input-custom form-select" #State
+                                            formControlName="State" (change)="onStateChange($event)"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['State'].errors  && (UpdatepartyForm.controls['State'].touched || UpdatepartyForm.controls['State'].dirty)  }">
+                                            <option *ngFor="let state of stateList" [value]="state.id">
+                                                {{ state.name }}
+                                            </option>
+                                        </select>
+                                        <div class="error-message"
+                                            *ngIf="UpdatepartyForm?.get('State')?.hasError('required') && (UpdatepartyForm?.get('State')?.dirty || UpdatepartyForm?.get('State')?.touched)">
+                                            <p class="fw-light  text-danger"> State is
+                                                required</p>
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="LegalBusinessName" class="form-label form-lable-custom">Legal
+                                            Business Name</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="LegalBusinessName"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['LegalBusinessName'].errors && (UpdatepartyForm.controls['LegalBusinessName'].touched || UpdatepartyForm.controls['LegalBusinessName'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['LegalBusinessName'].errors && (UpdatepartyForm.controls['LegalBusinessName'].touched || UpdatepartyForm.controls['LegalBusinessName'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['LegalBusinessName'].errors['required']">
+                                                Legal Business Name is Requried</p>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="BillingAddress" class="form-label form-lable-custom">Billing
+                                            Address</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="BillingAddress"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['BillingAddress'].errors && (UpdatepartyForm.controls['BillingAddress'].touched || UpdatepartyForm.controls['BillingAddress'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['BillingAddress'].errors && (UpdatepartyForm.controls['BillingAddress'].touched || UpdatepartyForm.controls['BillingAddress'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['BillingAddress'].errors['required']">
+                                                Billing Address is Requried</p>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+                            <!-- gst details end ------------------------------------------- -->
+
+
+                            <!-- opening balance details------------------------------------------- -->
+                            <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showopeningDetailsUpdate">
+                                <div class="row mx-0">
+                                    <h1 class="heading-party">Opening Balance</h1>
+                                    <div class="col-lg-10 mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="form-check ms-2">
+                                                <label class="form-check-label" for="partypayement">
+                                                    <input class="form-check-input" type="radio" name="partypayement"
+                                                        formControlName="partypayement" id="partypayementfirst" checked
+                                                        [value]="true"
+                                                        [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['partypayement'].errors && (UpdatepartyForm.controls['partypayement'].touched || UpdatepartyForm.controls['partypayement'].dirty) }">
+                                                    Party will Pay
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check  ms-2">
+                                                <label class="form-check-label" for="partypayement">
+                                                    <input class="form-check-input" type="radio" name="partypayement"
+                                                        formControlName="partypayement" id="partypayementsecond"
+                                                        [value]="false"
+                                                        [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['partypayement'].errors && (UpdatepartyForm.controls['partypayement'].touched || UpdatepartyForm.controls['partypayement'].dirty) }">
+                                                    Party Will Receive
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['partypayement'].errors && (UpdatepartyForm.controls['partypayement'].touched || UpdatepartyForm.controls['partypayement'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['partypayement'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="partyamount" class="form-label form-lable-custom">Amount</label>
+                                        <input type="number" class="form-control form-input-custom"
+                                            formControlName="partyamount"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['partyamount'].errors && (UpdatepartyForm.controls['partyamount'].touched || UpdatepartyForm.controls['partyamount'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['partyamount'].errors && (UpdatepartyForm.controls['partyamount'].touched || UpdatepartyForm.controls['partyamount'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['partyamount'].errors['required']">
+                                                Amount is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- opening details end ------------------------------------------- -->
+
+                            <!-- Bank  details start------------------------------------------- -->
+                            <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showbankdetailsUpdate">
+                                <div class="row mx-0">
+                                    <h1 class="heading-party">Bank Details</h1>
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="AccountholderName" class="form-label form-lable-custom">Account
+                                            holder Name</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="AccountholderName"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['AccountholderName'].errors && (UpdatepartyForm.controls['AccountholderName'].touched || UpdatepartyForm.controls['AccountholderName'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['AccountholderName'].errors && (UpdatepartyForm.controls['AccountholderName'].touched || UpdatepartyForm.controls['AccountholderName'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['AccountholderName'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="AccountNumber" class="form-label form-lable-custom">Account
+                                            Number</label>
+                                        <input type="number" class="form-control form-input-custom"
+                                            formControlName="AccountNumber"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['AccountNumber'].errors && (UpdatepartyForm.controls['AccountNumber'].touched || UpdatepartyForm.controls['AccountNumber'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['AccountNumber'].errors && (UpdatepartyForm.controls['AccountNumber'].touched || UpdatepartyForm.controls['AccountNumber'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['AccountNumber'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                                <p class="fw-light text-danger" *ngIf="UpdatepartyForm.controls['AccountNumber'].errors['pattern']">Please Enter a Valid Account Number</p>
+                                        </div>
+                                        <p class="suggest-content-validation text-primary"> Note:Account Number should be between 9 to 18 digits
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="IFSCCode" class="form-label form-lable-custom">IFSC Code</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="IFSCCode"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['IFSCCode'].errors && (UpdatepartyForm.controls['IFSCCode'].touched || UpdatepartyForm.controls['IFSCCode'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['IFSCCode'].errors && (UpdatepartyForm.controls['IFSCCode'].touched || UpdatepartyForm.controls['IFSCCode'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['IFSCCode'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                                <p class="fw-light text-danger" *ngIf="UpdatepartyForm.controls['IFSCCode'].errors['pattern']">Please Enter a Valid IFSC Code</p>
+                                        </div>
+                                        <p class="suggest-content-validation text-primary"> 'Note: IFSC code should be
+                                            11 characters long, with the format XXXX0YYYYYY where X are uppercase
+                                            letters and Y are alphanumeric characters. Example: SBIN0001234',</p>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="BankName" class="form-label form-lable-custom">Bank Name</label>
+                                        <input type="text" class="form-control form-input-custom"
+                                            formControlName="BankName"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['BankName'].errors && (UpdatepartyForm.controls['BankName'].touched || UpdatepartyForm.controls['BankName'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['BankName'].errors && (UpdatepartyForm.controls['BankName'].touched || UpdatepartyForm.controls['BankName'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['BankName'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="BankAddress" class="form-label form-lable-custom">Bank
+                                            Address</label>
+                                        <textarea class="form-control form-input-modal form-input-custom" rows="3"
+                                            formControlName="BankAddress"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['BankAddress'].errors && (UpdatepartyForm.controls['BankAddress'].touched || UpdatepartyForm.controls['BankAddress'].dirty) }"></textarea>
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['BankAddress'].errors && (UpdatepartyForm.controls['BankAddress'].touched || UpdatepartyForm.controls['BankAddress'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['BankAddress'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="IBANNumber" class="form-label form-lable-custom">IBAN Number
+                                        </label>
+                                        <input class="form-control form-input-modal form-input-custom"
+                                            formControlName="IBANNumber"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['IBANNumber'].errors && (UpdatepartyForm.controls['IBANNumber'].touched || UpdatepartyForm.controls['IBANNumber'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['IBANNumber'].errors && (UpdatepartyForm.controls['IBANNumber'].touched || UpdatepartyForm.controls['IBANNumber'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['IBANNumber'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-lg-6 col-md-6 mb-3">
+                                        <label for="UPI" class="form-label form-lable-custom">UPI ID
+                                        </label>
+                                        <input class="form-control form-input-modal form-input-custom"
+                                            formControlName="UPI"
+                                            [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['UPI'].errors && (UpdatepartyForm.controls['UPI'].touched || UpdatepartyForm.controls['UPI'].dirty) }">
+                                        <div class="text-danger error-message"
+                                            *ngIf="UpdatepartyForm.controls['UPI'].errors && (UpdatepartyForm.controls['UPI'].touched || UpdatepartyForm.controls['UPI'].dirty)">
+                                            <p class="fw-light text-danger"
+                                                *ngIf="UpdatepartyForm.controls['UPI'].errors['required']">
+                                                This is
+                                                is Requried</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bank  details end ------------------------------------------- -->
+
+                        </div>
+
+                        <div class="text-end mb-3">
+                            <button class="btn btn-primary px-2 py-2 me-3" (click)="toggleGstDetailsUpdate()">
+                                <span>
+                                    <i class="fa-solid" [ngClass]="showGstDetailsUpdate ? 'fa-minus' : 'fa-plus'"></i>
+                                </span>
+                                GST Details
+                            </button>
+                            <button class="btn btn-primary px-2 py-2 me-3" (click)="toggleopeningbalanceUpdate()">
+                                <span>
+                                    <i class="fa-solid" [ngClass]="showopeningDetailsUpdate ? 'fa-minus' : 'fa-plus'"></i>
+                                </span>
+                                opening Balance
+                            </button>
+
+                            <button class="btn btn-primary px-2 py-2" (click)="togglebankdetailsUpdate()">
+                                <span>
+                                    <i class="fa-solid" [ngClass]="showbankdetailsUpdate ? 'fa-minus' : 'fa-plus'"></i>
+                                </span>
+                                Bank Details
+                            </button>
+
+
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer text-end me-4">
+                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                            (click)="closeModal()">Cancel</button>
+                        <button class="btn btn-primary main-btnfs px-4 py-2" type="submit"
+                            (click)="CratenewPartyFun();">Update</button>
+                    </div>
+                    <div class="text-end error-message" *ngIf="!submitted">
+                        <p class="fw-light text-danger">{{errorMessage}}</p>
+                    </div>
+
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
