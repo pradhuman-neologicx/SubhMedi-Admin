@@ -418,7 +418,14 @@
                                     <!-- Discount Field -->
                                     <div class="col-md-6">
                                         <input type="text" class="form-control" placeholder="Discount"
-                                            formControlName="discount">
+                                            formControlName="discount" >
+                                            <div
+                                            class="text-danger error-message"
+                                            *ngIf="materials.controls[i].get('discount')?.invalid && (materials.controls[i].get('discount')?.touched || materials.controls[i].get('discount')?.dirty) && materials.controls[i].get('discount')?.errors?.['required']">
+                                            <p
+                                                class="fw-light text-danger">This
+                                                is Required</p>
+                                        </div>
 
                                     </div>
 
@@ -426,14 +433,26 @@
                                     <div class="col-md-6">
                                         <input type="text" class="form-control" placeholder="Quantity"
                                             formControlName="units">
-
+                                            <div
+                                            class="text-danger error-message"
+                                            *ngIf="materials.controls[i].get('units')?.invalid && (materials.controls[i].get('units')?.touched || materials.controls[i].get('units')?.dirty) && materials.controls[i].get('units')?.errors?.['required']">
+                                            <p
+                                                class="fw-light text-danger">This
+                                                is Required</p>
+                                        </div>
                                     </div>
 
                                     <!-- Units Range Field -->
                                     <div class="col-md-6">
                                         <input type="text" class="form-control" placeholder="Unit Rate"
                                             formControlName="unitsRange">
-
+                                            <div
+                                            class="text-danger error-message"
+                                            *ngIf="materials.controls[i].get('unitsRange')?.invalid && (materials.controls[i].get('unitsRange')?.touched || materials.controls[i].get('unitsRange')?.dirty) && materials.controls[i].get('unitsRange')?.errors?.['required']">
+                                            <p
+                                                class="fw-light text-danger">This
+                                                is Required</p>
+                                        </div>
                                     </div>
 
                                     <!-- Sub Total Field -->
