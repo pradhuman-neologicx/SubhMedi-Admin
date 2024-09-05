@@ -36,7 +36,7 @@ import { ProjectbalanceComponent } from './admin/projectbalance/projectbalance.c
 import { MastersComponent } from './admin/masters/masters.component';
 import { UnitsComponent } from './admin/masters/units/units.component';
 import { MaterialsComponent } from './admin/masters/materials/materials.component';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
@@ -80,8 +80,10 @@ import { MaterialsComponent } from './admin/masters/materials/materials.componen
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
+    NgSelectModule,
     MatMenuModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+   
   ],
   providers: [
     DataService,

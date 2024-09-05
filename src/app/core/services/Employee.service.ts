@@ -211,6 +211,28 @@ export class EmployeeService {
   }
 
 
+
+  GetpartynamelistApi() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.apiservice.get("suppliers",headers);
+  }
+
+
+
+  GetmattlistApi() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.apiservice.get("get-materials",headers);
+  }
+
+
   GetmaterialApi() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
@@ -283,6 +305,22 @@ export class EmployeeService {
  
   
     return this.apiservice.post(`add-material`, body,  headers );
+  }
+
+
+
+  purchasematerials(body:any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    
+
+    // Make the POST request to the server
+    return this.apiservice.post(`purchase-materials`, body,  headers );
   }
 
 
