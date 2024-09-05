@@ -42,3 +42,10 @@ export class Employee {
     party_id: any;
   
   }
+
+
+
+  export class units {
+    name!: string;
+   
+  }

@@ -2,7 +2,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { projects } from 'src/app/core/model-class/employee';
+import { units} from 'src/app/core/model-class/employee';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
@@ -25,7 +25,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     page: number = 1;
     searchbarform!: FormGroup;
     CreateliveexamForm!: FormGroup;
-    createproductform!: FormGroup;
+    unitsformscreate!: FormGroup;
   
     orderviewform!: FormGroup;
   
@@ -63,7 +63,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.searchbarform = this.formBuilder.group({
         searchbar: ["", [Validators.required,]]
       });
-      this.createproductform = this.formBuilder.group({
+      this.unitsformscreate = this.formBuilder.group({
         projectname: ["", [Validators.required,]],
         Address: [""],
         State: [""],
@@ -76,7 +76,10 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       });
      
   
-  
+      this.unitsformscreate = this.formBuilder.group({
+        unitsname: ["", [Validators.required,]],
+      
+      });
      
       this.Getunitsfun();
       this.getStaff();
@@ -113,9 +116,9 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     checkUserRole() {
       this.Type = localStorage.getItem('Type') || '';
       if (this.Type === 'admin') {
-        this.createproductform.get('Selectstaff')?.setValidators(Validators.required);
+        this.unitsformscreate.get('Selectstaff')?.setValidators(Validators.required);
       } else if (this.Type === 'staff') {
-        this.createproductform.removeControl('Selectstaff');
+        this.unitsformscreate.removeControl('Selectstaff');
       }
     }
   
@@ -128,8 +131,16 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     //   });
     // }
     citiesList: any = [];
-
-
+    submitted: any;
+    errorMessage: any;
+   
+    Creatunitopen: boolean = false;
+    OpenCreateModal() {
+      this.Creatunitopen = true;
+    }
+    closeModal() {
+      this.Creatunitopen = false;
+    }
    
   
   
@@ -211,6 +222,44 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     
   
   
+    createunits() {
+      console.log(this.unitsformscreate.get('unitsname')?.value)
+    
+     
+      if (this.unitsformscreate.valid) {
+        this.units.name = this.unitsformscreate.get('unitsname')?.value;
+     
+        const body = JSON.stringify(this.units);
+        console.log(body);
+        this.employeeService.createunits(body).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200) {
+            this.closeModal();
+            // this.successName = 'Batch';
+            // this.ngOnInit();
+            this.Getunitsfun();
+            // this.dataService.changeMessage({ message: "units Created" });
+            // this.router.navigate(['/master/units']);
+            setTimeout(() => {
+              // this.openSecondsuccess = true;
+              setTimeout(() => {
+                // this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+  
+          } else {
+            // this.submitted = false;
+          }
+  
+        });
+  
+      }
+    }
+
+
+
+
+
   
   
   
@@ -238,7 +287,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
   
   
-    projects: projects = new projects();
+    units: units = new units();
     user_id: any
    
   
@@ -335,10 +384,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     projectcreatemodal() {
       this.projectgopen = true;
     }
-    closeModal() {
-      this.projectgopen = false;
-    
-    }
+   
     ClickModalconent(event: Event): void {
       event.stopPropagation();
     }
