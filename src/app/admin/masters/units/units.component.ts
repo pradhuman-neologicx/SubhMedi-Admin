@@ -6,15 +6,15 @@ import { projects } from 'src/app/core/model-class/employee';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
-
 @Component({
-  selector: 'app-homeparties',
-  templateUrl: './homeparties.component.html',
-  styleUrl: './homeparties.component.scss'
+  selector: 'app-units',
+  templateUrl: './units.component.html',
+  styleUrl: './units.component.scss'
 })
 
 
-  export class HomepartiesComponent {
+
+  export class UnitsComponent {
     FilterForm!: FormGroup;
   
     showreset: any = false
@@ -77,8 +77,8 @@ import { JwtService } from 'src/app/core/services/jwt.service';
      
   
   
-      this.getpartyproject(0);
-      this.getState();
+     
+      this.Getunitsfun();
       this.getStaff();
       this.postclient();
       this.checkUserRole();
@@ -159,8 +159,14 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     }
     
   
-
-
+    unitstable:any
+    Getunitsfun() {
+      this.employeeService.GetunitsApi().subscribe((response: any) => {
+        if (response.status === 200) {
+          this.unitstable = response.data;
+        }
+      });
+    }
 
 
   

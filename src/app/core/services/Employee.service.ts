@@ -40,6 +40,45 @@ export class EmployeeService {
 
 
 
+
+
+
+  getProjectPartiesBalance(projectId: any, partyId: any, date_range?: any, start_date?: string, end_date?: string): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Retrieving the user ID
+    const token = this.jwtService.getToken(); // Retrieving the token
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    // Creating the body object with optional fields
+    const body = {
+      'user_id': user,
+      'project_id': projectId,
+      'party_id': partyId,
+      ...(date_range ? { 'date_range': date_range } : {}),
+      ...(start_date ? { 'start_date': start_date } : {}),
+      ...(end_date ? { 'end_date': end_date } : {}),
+   
+     
+     
+    };
+    console.log('Request Body:', body);
+  
+    // Sending the POST request with the constructed body and headers
+    return this.apiservice.post('project-party-detail', body, headers);
+  }
+  
+
+
+
+
+
+
+
+
+
+
   getProjectParties(project_id: any, search: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
@@ -133,6 +172,18 @@ export class EmployeeService {
     return this.apiservice.post(`projects`, requestbody,  headers );
   }
   
+
+
+  GetunitsApi() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.apiservice.get("get-all-units",headers);
+  }
+
+
 
 
 }

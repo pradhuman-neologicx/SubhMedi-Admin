@@ -8,13 +8,13 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 
 
 @Component({
-  selector: 'app-homeparties',
-  templateUrl: './homeparties.component.html',
-  styleUrl: './homeparties.component.scss'
+  selector: 'app-projectbalance',
+  templateUrl: './projectbalance.component.html',
+  styleUrl: './projectbalance.component.scss'
 })
 
 
-  export class HomepartiesComponent {
+  export class ProjectbalanceComponent {
     FilterForm!: FormGroup;
   
     showreset: any = false
@@ -41,28 +41,34 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       private router: Router,
       private route: ActivatedRoute
     ) {
-      const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
-      this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
+      // const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
+      // this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
+      // const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
+      // const urlSegments = this.router.url.split(urlDelimitators);
+      // this.projectID = urlSegments[2]; // Assuming 'id' is at index 2
+      // this.partyID = urlSegments[3]; // Assuming 'party_id' is at index 3
+     
      }
   
-  
+     projectID: any;
+     partyID: any;
     ngOnInit(): void {
-      this.idString = this.route.snapshot.paramMap.get('id');
-      console.log(this.projectiD);
+    // Retrieve both IDs using paramMap
+    this.projectID = this.route.snapshot.paramMap.get('id');
+    this.partyID = this.route.snapshot.paramMap.get('party_id');
+    console.log('Project ID:', this.projectID);
+    console.log('Party ID:', this.partyID);
       this.user_id= this.jwtService.getpanelUserId();
+
+
       this.FilterForm = this.formBuilder.group({
-        filter: ['', [Validators.required]],
+        StartDate: [''],
+        enddate: [''],
+        daterange: [''],
       });
   
   
-      this.Bulkuploadform = this.formBuilder.group({
-        UploadFile: ["", [
-          Validators.required,
-        ],],
-      });
-      this.searchbarform = this.formBuilder.group({
-        searchbar: ["", [Validators.required,]]
-      });
+  
       this.createproductform = this.formBuilder.group({
         projectname: ["", [Validators.required,]],
         Address: [""],
@@ -77,7 +83,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
      
   
   
-      this.getpartyproject(0);
+      this.getpartyprojectbalance(0);
       this.getState();
       this.getStaff();
       this.postclient();
@@ -108,6 +114,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     ];
     
     idString: any;
+    partyType: any
     id: any;
     Type!: string;
     checkUserRole() {
@@ -128,9 +135,19 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     //   });
     // }
     citiesList: any = [];
-
-
-   
+    //  getcities(state_id: any) {
+    //   this.employeeService.getCity(state_id).subscribe(
+    //     (response: any) => {
+    //       if (response.statusCode === 200) {
+    //         this.citiesList = response.data;
+    //       }
+    //     },
+    //     (error) => {
+    //       console.error('Error fetching cities:', error);
+    //     }
+    //   );
+    // }
+  
   
   
     getState() {
@@ -144,20 +161,13 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     }
   
 
-    viewmmodal(party_id: any) {
-      // Check if IDs are valid before proceeding
-      if (!this.projectiD|| !party_id) {
-        // console.error('Invalid IDs:', { this.projectiD, party_id });
-        return; // Exit the function if IDs are invalid
-      }
-    
-      // Log the IDs
-      console.log('Project ID:', this.projectiD, 'Party ID:', party_id);
-    
-      // Navigate to the desired route with both IDs
-      this.router.navigate(['/projectpartybalance', this.projectiD, party_id]);
+    viewmmodal(id: any) {
+      // Log the project_id to the console
+      console.log('Project ID:', id);
+      
+      // Navigate to the desired route with the project_id
+      this.router.navigate(['/projectpartybalance', id]); 
     }
-    
   
 
 
@@ -250,43 +260,116 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
   
   
-    projectpartiestable: any
-    totalToPay: number = 0;
-    totalAdvancePaid: number = 0;
-
-    getpartyproject(type: any) {
-      const searchValue = this.FilterForm.get('filter')?.value ?? "";
+    partryecievetable: any
+    partypaidtable: any
+    salarytable: any
+    otherexpensetable: any
+    materialpurchasetable: any
+    subcontractortable: any
     
-      if (type == 0) {
-        // Init or without search
+    name: any
+    type: any
+    amount: any
+    status: any
+  
+
+
+    dateValidator(formGroup: any) {
+      const StartDate = formGroup.get('StartDate').value;
+      const enddate = formGroup.get('enddate').value;
+      if (StartDate && enddate) {
+        if (enddate <= StartDate) {
+          return { invalidDateSequence: true };
+        }
+      }
+      return null;
+    }
+  
+
+   
+
+
+    isAtLeastOneFieldFilled(): boolean {
+      // Checking if at least one of the form fields is not empty
+      return (
+        this.FilterForm.get('StartDate')?.value ||
+        this.FilterForm.get('enddate')?.value ||
+        this.FilterForm.get('daterange')?.value
+      );
+    }
+  
+    getpartyprojectbalance(type: any) {
+      // if (!this.isAtLeastOneFieldFilled()) {
+      
+      // }
+      if (type === 0) {
+      
+
         this.employeeService
-          .getProjectParties(this.projectiD, searchValue)
-          .subscribe((response: any) => {
-            this.totalToPay = response.total_to_pay || 0;
-            this.totalAdvancePaid = response.total_advance_paid || 0;
-            this.projectpartiestable = response.parties;
-          });
-      } else {
-        // With search
+          .getProjectPartiesBalance(this.projectID, this.partyID,this.FilterForm.get('daterange')?.value,this.FilterForm.get('StartDate')?.value ,this.FilterForm.get('enddate')?.value)
+          .subscribe(
+            (response: any) => {
+              // Handling the response data
+              this.name = response.party?.name ;
+              this.type = response.party?.type ;
+              this.amount = response.party?.amount ;
+              this.status = response.party?.status ;
+              this.partryecievetable = response.party_received ;
+              this.partypaidtable = response.party_paid ;
+              this.subcontractortable = response.subcontractor ;
+              this.otherexpensetable = response.other_expense ;
+              this.salarytable = response.attendanceData ;
+              this.materialpurchasetable = response.material_purchase ;
+            },
+            (error: any) => {
+              console.error('Error fetching project party balance:', error);
+              // Handle the error scenario
+            }
+          );
+} 
+else {
+        // With search condition; ensure the form is valid
         if (this.FilterForm.valid) {
           this.employeeService
-            .getProjectParties(this.projectiD, searchValue)
-            .subscribe((response: any) => {
-              this.totalToPay = response.total_to_pay || 0;
-              this.totalAdvancePaid = response.total_advance_paid || 0;
-              this.projectpartiestable = response.parties
-            });
+            .getProjectPartiesBalance(
+              this.projectID,
+              this.partyID,
+              this.FilterForm.get('daterange')?.value,this.FilterForm.get('StartDate')?.value ,this.FilterForm.get('enddate')?.value
+            )
+            .subscribe(
+              (response: any) => {
+                // Handling the response data
+                this.name = response.party?.name ;
+                this.type = response.party?.type ;
+                this.amount = response.party?.amount ;
+                this.status = response.party?.status ;
+                this.partryecievetable = response.party_received ;
+                this.partypaidtable = response.party_paid ;
+                this.subcontractortable = response.subcontractor ;
+                this.otherexpensetable = response.other_expense ;
+                this.salarytable = response.attendanceData ;
+                this.materialpurchasetable = response.material_purchase ;
+              },
+              (error: any) => {
+                console.error('Error fetching project party balance:', error);
+                // Handle the error scenario
+              }
+            );
         } else {
+          // Mark form fields as touched to display validation errors
           this.FilterForm.markAllAsTouched();
         }
       }
     }
     
   
-   
   
   
-  
+
+
+
+
+
   
   
     table_heading = [
@@ -531,3 +614,4 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
   
   }
+

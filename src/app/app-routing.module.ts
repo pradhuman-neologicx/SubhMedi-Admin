@@ -15,6 +15,10 @@ import { HomepartiesComponent } from './admin/projecthome/homeparties/homepartie
 import { HometransactionsComponent } from './admin/projecthome/hometransactions/hometransactions.component';
 import { HomeattendanceComponent } from './admin/projecthome/homeattendance/homeattendance.component';
 import { HomematerialComponent } from './admin/projecthome/homematerial/homematerial.component';
+import { ProjectbalanceComponent } from './admin/projectbalance/projectbalance.component';
+import { MastersComponent } from './admin/masters/masters.component';
+import { UnitsComponent } from './admin/masters/units/units.component';
+import { MaterialsComponent } from './admin/masters/materials/materials.component';
 
 const routes: Routes = [
 
@@ -108,6 +112,50 @@ const routes: Routes = [
 
 
 
+
+      {
+        path: 'projectpartybalance/:id/:party_id',
+        component: ProjectbalanceComponent,
+        // canActivate: [AuthGuard],
+      
+        
+          
+       
+      },
+
+
+      {
+        path: 'units',
+        component: UnitsComponent,
+      
+      },
+
+      {
+        path: 'masters',
+
+        component: MastersComponent,
+
+        children: [
+          { path: '', redirectTo: 'units', pathMatch: 'full' },
+          {
+            path: 'units',
+            component: UnitsComponent,
+          
+          },
+
+          {
+            path: 'materials',
+            component: MaterialsComponent,
+           
+          },
+
+        
+        
+
+         
+
+        ],
+      },
 
 
 

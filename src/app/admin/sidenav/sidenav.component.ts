@@ -103,6 +103,44 @@ export class SidenavComponent {
         route: 'parties',
       },
 
+
+      {
+        index: 1,
+        icon: 'import_contacts',
+        label: 'Units',
+        route: 'units',
+      },
+
+      {
+        index: 5,
+        icon: 'supervisor_account',
+        label: 'Masters',
+        route: 'masters',
+        subItems: [
+          {
+            index: 1,
+            icon: 'import_contacts',
+            label: 'Units',
+            route: 'masters/units',
+          },
+
+          {
+            index: 2,
+            icon: 'group',
+            label: 'Materials',
+            route: 'masters/materials',
+          },
+
+        
+
+         
+
+        
+        ],
+      },
+
+
+
       
       // {
       //   index: 5,

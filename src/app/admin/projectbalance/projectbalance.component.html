@@ -1,0 +1,657 @@
+<div class="row">
+    <!-- Card for Advance Paid -->
+    <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+      <div class="card custom-card border-0">
+        <div class="card-body">
+          <!-- First Row: Name and Type -->
+          <div class="row">
+            <div class="col-6">
+              <h6 class="card-title2 text-primary">Name</h6>
+              <p class="card-text">{{ name }}</p>
+            </div>
+            <div class="col-6">
+              <h6 class="card-title2 text-primary">Type</h6>
+              <p class="card-text">{{ type }}</p>
+            </div>
+          </div>
+  
+          <!-- Second Row: Amount and Status -->
+          <div class="row mt-2">
+            <div class="col-6">
+              <h6 class="card-title2 text-primary">Amount</h6>
+              <p class="card-text">{{ amount }}</p>
+            </div>
+            <div class="col-6">
+              <h6 class="card-title2 text-primary">Status</h6>
+              <p class="card-text2">{{ status }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+ 
+  
+  
+
+
+
+
+<div class="container">
+
+
+    <form [formGroup]="FilterForm">
+        <div class="row mb-2">
+
+            <div class="col-lg-3">
+                <label class="form-label form-lable-custom"
+                for="StartDate">Start Date</label>
+                <input type="date" class="form-control"  onkeydown="return false"
+                  placeholder="Start Date" formControlName="StartDate"
+                  [max]="FilterForm.controls['enddate'].value"
+        >
+              </div>
+
+              <div class="col-lg-3">
+                <label class="form-label form-lable-custom
+                "for="enddate">End Date </label>
+                <input type="date" class="form-control"  onkeydown="return false"
+                  placeholder="End Date" formControlName="enddate"
+                  [min]="FilterForm.controls['StartDate'].value"
+  >
+              </div>
+
+
+              <div class="col-lg-3">
+                <label
+                  class="form-label form-lable-custom"
+                  for="daterange">Date Range</label>
+                <select
+                  class="form-select form-control"
+                 #daterange
+                  formControlName="daterange">
+>
+                  <option [selected]="true" value="all">All</option>
+             
+                  <option value="today">Today</option>
+                  <option value="this_week">This Week (Mon-Today)</option>
+                  <option value="last_week">Last Week (Mon-Sun)</option>
+                  <option value="this_month">This Month</option>
+                  <option value="last_month">Last Month</option>
+                </select>
+              
+              </div>
+
+              <!-- [disabled]="!isAtLeastOneFieldFilled()" -->
+            <div class="col-lg-3 mt-3">
+                <button class="btn btn-primary main-btnfsss px-4 py-2 me-2" type="button" (click)="getpartyprojectbalance(1)" >Search</button>
+                <button class="btn btn-primary main-btnfsss px-4 py-2" type="submit"
+                   (click)="resetFilter()">Reset</button>
+
+
+             
+               
+            </div>
+        </div>
+    </form> <br>
+
+
+
+    <div class="d-flex justify-content-between">
+
+
+
+     
+    
+
+
+
+
+
+
+
+        <ul class="nav attendance-tabs nav-pills mb-3" id="pills-tab" role="tablist">
+            <!-- <li class="nav-item me-3" role="presentation">
+                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#regular" type="button">Regular
+                    Test</button>
+
+            </li> -->
+            <li class="nav-item me-3" role="presentation">
+                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#party_received" type="button">Party Received
+                </button>
+            </li>
+
+
+            <li class="nav-item me-3" role="presentation">
+                <button class="nav-link " data-bs-toggle="pill" data-bs-target="#party_paid" type="button">Party Paid
+                    </button>
+            </li>
+        
+            <li class="nav-item me-3" role="presentation">
+                <button class="nav-link " data-bs-toggle="pill" data-bs-target="#otherexpense" type="button">Other Expense
+                    </button>
+            </li>
+         
+            <li class="nav-item me-3" role="presentation" *ngIf="type ===  'material supplier'">
+                <button class="nav-link " data-bs-toggle="pill" data-bs-target="#materialpurchase" type="button">Material Purchase
+                    </button>
+            </li>
+         
+            <li class="nav-item me-3" role="presentation"  *ngIf="type ===  'sub contractor'" >
+                <button class="nav-link " data-bs-toggle="pill" data-bs-target="#subcontractor" type="button">Subcontractor
+                    </button>
+            </li>
+         
+            <li class="nav-item me-3" role="presentation" *ngIf="type ===  'staff'|| type ===  'labour contractor'|| type ===  'labour' ">
+                <button class="nav-link " data-bs-toggle="pill" data-bs-target="#salary" type="button">Salary
+                    </button>
+            </li>
+
+        </ul>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="tab-content" id="pills-tabContent">
+    <div class="card border-0 mb-4 py-0 tabel-card tab-pane  fade show active" id="party_received">
+          <table class="table table-hover">
+            <thead class="table-header-trailer">
+                <tr>
+                    <th>
+                        <p class="table-heading table-new-heading">Serial No.</p>
+                    </th>
+
+                    <th>
+                        <p class="table-heading table-new-heading">From</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">To</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Party Type</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Date</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Amount</p>
+                    </th>
+
+                    <th>
+                        <p class="table-heading table-new-heading">Action</p>
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let party of partryecievetable; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{party.party_name1 }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{party.party_name12 }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize td-width table-detail-new">{{
+                            party.type }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                            party.date}}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                            party.amount}}</p>
+                    </td>
+                    <!-- <td>
+                        <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                             'status-to-pay': party.status === 'to pay',
+                             'status-to-receive': party.status === 'to receive',
+                             'status-settled': party.status === 'settled'
+                           }">
+                            {{ party.status }}
+                        </p>
+                    </td> -->
+
+
+                    <td>
+                        <p>
+                            <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item>View Details</button>
+                                <button mat-menu-item>Edit Details</button>
+                            </mat-menu>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="card border-0 mb-4 py-0 tabel-card tab-pane fade" id="party_paid">
+        <table class="table table-hover">
+          <thead class="table-header-trailer">
+              <tr>
+                  <th>
+                      <p class="table-heading table-new-heading">Serial No.</p>
+                  </th>
+
+                  <th>
+                      <p class="table-heading table-new-heading">From</p>
+                  </th>
+                  <th>
+                      <p class="table-heading table-new-heading">To</p>
+                  </th>
+                  <th>
+                      <p class="table-heading table-new-heading">Party Type</p>
+                  </th>
+                  <th>
+                      <p class="table-heading table-new-heading">Date</p>
+                  </th>
+                  <th>
+                      <p class="table-heading table-new-heading">Amount</p>
+                  </th>
+
+                  <th>
+                      <p class="table-heading table-new-heading">Action</p>
+                  </th>
+
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let party of partypaidtable; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                      <p class="table-detail text-capitalize table-detail-new">
+                          {{party.party_name1 }}</p>
+                  </td>
+                  <td>
+                      <p class="table-detail text-capitalize table-detail-new">
+                          {{party.party_name12 }}</p>
+                  </td>
+                  <td>
+                      <p class="table-detail text-capitalize td-width table-detail-new">{{
+                          party.type }}</p>
+                  </td>
+                  <td>
+                      <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                          party.date}}</p>
+                  </td>
+                  <td>
+                      <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                          party.amount}}</p>
+                  </td>
+                  <!-- <td>
+                      <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                           'status-to-pay': party.status === 'to pay',
+                           'status-to-receive': party.status === 'to receive',
+                           'status-settled': party.status === 'settled'
+                         }">
+                          {{ party.status }}
+                      </p>
+                  </td> -->
+
+
+                  <td>
+                      <p>
+                          <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                              <mat-icon>more_vert</mat-icon>
+                          </button>
+
+                          <mat-menu #menu="matMenu">
+                              <button mat-menu-item>View Details</button>
+                              <button mat-menu-item>Edit Details</button>
+                          </mat-menu>
+                      </p>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+    <div class="card border-0 mb-4 py-0 tabel-card tab-pane fade" id="salary">
+        <table class="table table-hover">
+          <thead class="table-header-trailer">
+              <tr>
+                  <th>
+                      <p class="table-heading table-new-heading">Serial No.</p>
+                  </th>
+
+                  <th>
+                      <p class="table-heading table-new-heading">From</p>
+                  </th>
+                  <th>
+                      <p class="table-heading table-new-heading">To</p>
+                  </th>
+                  <th>
+                      <p class="table-heading table-new-heading">Party Type</p>
+                  </th>
+                  <th>
+                      <p class="table-heading table-new-heading">Date</p>
+                  </th>
+                  <th>
+                      <p class="table-heading table-new-heading">Amount</p>
+                  </th>
+
+                  <th>
+                      <p class="table-heading table-new-heading">Action</p>
+                  </th>
+
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let party of salarytable; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                      <p class="table-detail text-capitalize table-detail-new">
+                          {{party.party_name1 }}</p>
+                  </td>
+                  <td>
+                      <p class="table-detail text-capitalize table-detail-new">
+                          {{party.party_name12 }}</p>
+                  </td>
+                  <td>
+                      <p class="table-detail text-capitalize td-width table-detail-new">{{
+                          party.type }}</p>
+                  </td>
+                  <td>
+                      <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                          party.date}}</p>
+                  </td>
+                  <td>
+                      <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                          party.amount}}</p>
+                  </td>
+                  <!-- <td>
+                      <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                           'status-to-pay': party.status === 'to pay',
+                           'status-to-receive': party.status === 'to receive',
+                           'status-settled': party.status === 'settled'
+                         }">
+                          {{ party.status }}
+                      </p>
+                  </td> -->
+
+
+                  <td>
+                      <p>
+                          <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                              <mat-icon>more_vert</mat-icon>
+                          </button>
+
+                          <mat-menu #menu="matMenu">
+                              <button mat-menu-item>View Details</button>
+                              <button mat-menu-item>Edit Details</button>
+                          </mat-menu>
+                      </p>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+
+
+  <div class="card border-0 mb-4 py-0 tabel-card tab-pane fade" id="otherexpense">
+    <table class="table table-hover">
+      <thead class="table-header-trailer">
+          <tr>
+              <th>
+                  <p class="table-heading table-new-heading">Serial No.</p>
+              </th>
+
+              <th>
+                  <p class="table-heading table-new-heading">From</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">To</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">Party Type</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">Date</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">Amount</p>
+              </th>
+
+              <th>
+                  <p class="table-heading table-new-heading">Action</p>
+              </th>
+
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let party of otherexpensetable; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                  <p class="table-detail text-capitalize table-detail-new">
+                      {{party.party_name1 }}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize table-detail-new">
+                      {{party.party_name12 }}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize td-width table-detail-new">{{
+                      party.type }}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                      party.date}}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                      party.amount}}</p>
+              </td>
+              <!-- <td>
+                  <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                       'status-to-pay': party.status === 'to pay',
+                       'status-to-receive': party.status === 'to receive',
+                       'status-settled': party.status === 'settled'
+                     }">
+                      {{ party.status }}
+                  </p>
+              </td> -->
+
+
+              <td>
+                  <p>
+                      <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                          <mat-icon>more_vert</mat-icon>
+                      </button>
+
+                      <mat-menu #menu="matMenu">
+                          <button mat-menu-item>View Details</button>
+                          <button mat-menu-item>Edit Details</button>
+                      </mat-menu>
+                  </p>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+
+
+
+<div class="card border-0 mb-4 py-0 tabel-card tab-pane fade" id="materialpurchase">
+    <table class="table table-hover">
+      <thead class="table-header-trailer">
+          <tr>
+              <th>
+                  <p class="table-heading table-new-heading">Serial No.</p>
+              </th>
+
+           
+              <th>
+                  <p class="table-heading table-new-heading">Party Name</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">Party Type</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">Date</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">Amount</p>
+              </th>
+
+              <th>
+                  <p class="table-heading table-new-heading">Action</p>
+              </th>
+
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let party of materialpurchasetable; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                  <p class="table-detail text-capitalize table-detail-new">
+                      {{party.name }}</p>
+              </td>
+            
+              <td>
+                  <p class="table-detail text-capitalize td-width table-detail-new">{{
+                      party.type }}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                      party.date}}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                      party.total_amount}}</p>
+              </td>
+              <!-- <td>
+                  <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                       'status-to-pay': party.status === 'to pay',
+                       'status-to-receive': party.status === 'to receive',
+                       'status-settled': party.status === 'settled'
+                     }">
+                      {{ party.status }}
+                  </p>
+              </td> -->
+
+
+              <td>
+                  <p>
+                      <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                          <mat-icon>more_vert</mat-icon>
+                      </button>
+
+                      <mat-menu #menu="matMenu">
+                          <button mat-menu-item>View Details</button>
+                          <button mat-menu-item>Edit Details</button>
+                      </mat-menu>
+                  </p>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+
+
+
+<div class="card border-0 mb-4 py-0 tabel-card tab-pane fade" id="subcontractor">
+    <table class="table table-hover">
+      <thead class="table-header-trailer">
+          <tr>
+              <th>
+                  <p class="table-heading table-new-heading">Serial No.</p>
+              </th>
+
+              <th>
+                  <p class="table-heading table-new-heading">From</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">To</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">Party Type</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">Date</p>
+              </th>
+              <th>
+                  <p class="table-heading table-new-heading">Amount</p>
+              </th>
+
+              <th>
+                  <p class="table-heading table-new-heading">Action</p>
+              </th>
+
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let party of otherexpensetable; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                  <p class="table-detail text-capitalize table-detail-new">
+                      {{party.party_name1 }}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize table-detail-new">
+                      {{party.party_name12 }}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize td-width table-detail-new">{{
+                      party.type }}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                      party.date}}</p>
+              </td>
+              <td>
+                  <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                      party.amount}}</p>
+              </td>
+              <!-- <td>
+                  <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                       'status-to-pay': party.status === 'to pay',
+                       'status-to-receive': party.status === 'to receive',
+                       'status-settled': party.status === 'settled'
+                     }">
+                      {{ party.status }}
+                  </p>
+              </td> -->
+
+
+              <td>
+                  <p>
+                      <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                          <mat-icon>more_vert</mat-icon>
+                      </button>
+
+                      <mat-menu #menu="matMenu">
+                          <button mat-menu-item>View Details</button>
+                          <button mat-menu-item>Edit Details</button>
+                      </mat-menu>
+                  </p>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+
+
+</div>
+</div>
