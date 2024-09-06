@@ -25,7 +25,7 @@
             <label class="form-label form-lable-custom"
                 for="selectpartyname">
                 Select Party Name</label>
-            <select class="form-select form-input-custom" formControlName="selectpartyname"
+            <select class="form-select form-input-custom" formControlName="selectpartyname" #selectpartyname (change)="onchange(selectpartyname.value)"
                 [ngClass]="{ 'is-invalid': paymentinform.controls['selectpartyname'].errors && (paymentinform.controls['selectpartyname'].touched || paymentinform.controls['selectpartyname'].dirty) }">
                 <option *ngFor="let party of partynamelist" [value]="party.id">
                 {{ party.name }}
@@ -57,7 +57,14 @@
 
 
 
-
+        <div class="mb-3 ">
+            <label class="d-block text-capitalize form-label form-lable-custom" for="Balance">
+              Total Balance
+            </label>
+            <input type="text" class="d-block form-control form-input-custom"  
+                formControlName="Balance"  [readOnly]="true" >
+         
+        </div>
 
 
 
@@ -78,6 +85,19 @@
                 </p>
             </div>
         </div>
+
+
+
+
+
+
+       
+
+
+
+
+
+
 
 
 
@@ -274,7 +294,7 @@
                 <div *ngIf="imageUrl" class="image-container">
                     <div class="black-layer"></div>
                     <img [src]="imageUrl" alt="Profile Preview" class="Profile-image" />
-                    
+
                 </div>
             </div>
             <!-- <div class="text-danger error-message"
@@ -290,4 +310,35 @@
 
     </form>
 
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="openSecondsuccess"
+  class="your-animation-class modal-container-success" [@slideIn]
+  aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div>
+    <div
+      class=" p-4 d-flex justify-content-between align-items-center success-content">
+      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+      <p class="text-green-900 text-capitalize">{{ successName }}
+        successfully</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="open">
+  <div class="modal">
+    <!-- Modal content -->
+    <ng-content></ng-content>
+    <button (click)="close()">Close Modal</button>
+  </div>
 </div>

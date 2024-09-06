@@ -10,13 +10,52 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 @Component({
   selector: 'app-hometransactions',
   templateUrl: './hometransactions.component.html',
-  styleUrl: './hometransactions.component.scss'
+  styleUrl: './hometransactions.component.scss',
+  animations: [
+    trigger('succesfullyMesaage', [
+      state('void', style({
+        transform: 'translateX(-30%)',
+        opacity: 0
+      })),
+      transition(':enter, :leave', [
+        animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)')
+      ])
+    ]),
+    trigger('slideIn', [
+      state('void', style({
+        transform: 'translateX(100%)', 
+        opacity: 0 
+      })),
+      transition(':enter', [
+        animate('0.5s ease-out', style({
+          transform: 'translateX(0)', // Final position for slide-in effect
+          opacity: 1 // Final opacity
+        }))
+      ])
+    ]),  
+
+    trigger('fadeIn', [
+      state('void', style({
+        opacity: 0,
+        transform: 'scale(0.5)' // Start with smaller size
+      })),
+      transition(':enter', [
+        animate('0.5s ease-out', style({
+          opacity: 1,
+          transform: 'scale(1)' // Final size
+        }))
+      ])
+    ])
+    
+
+  ]
 })
 
 
   export class HometransactionsComponent {
     FilterForm!: FormGroup;
-  
+    successName: any = "";
+    openSecondsuccess: boolean = false;
     showreset: any = false
     searchText: any;
     tableSize: any = 10;
@@ -433,7 +472,7 @@ else {
       this.addsubcontractorform.get('Reference')?.updateValueAndValidity();
 
     }
-   
+    @Output() closeModalEvent = new EventEmitter<void>();
   
     addsubcontractoropen: boolean = false;
     addpaymentinopen: boolean = false;
@@ -446,7 +485,7 @@ else {
     closeModal() {
       this.addsubcontractoropen = false;
       this.addpaymentinopen = false;
-    
+      this.closeModalEvent.emit();
     }
     toggleAMatDetails() {
       this.showreaddmaterialDetails = !this.showreaddmaterialDetails;
@@ -655,13 +694,13 @@ else {
     paymentinadd() {
      
     
-    this.clickadd = this.generateUniqueId();
+    this.clickin = this.generateUniqueId();
     
-    this.addmodelEvent.emit(this.clickadd)
+    this.addmodelEvent.emit(this.clickin)
       } 
 
 
-
+clickin:string = '0'
 
 clickadd:string = '0'
     Createadd() {
@@ -699,7 +738,14 @@ this.addmodelEvent.emit(this.clickadd)
   selectEventHanderIn($event: any) {
     this.selectedIn = $event;
     if (this.selectedIn == 'close') {
+      this.successName = 'Transaction';
       this.closeModal()
+      setTimeout(() => {
+        this.openSecondsuccess = true;
+        setTimeout(() => {
+          this.openSecondsuccess = false;
+        }, 1800);
+      }, 200);
     }else{
       this.errorMessage=this.selectedIn;
     }

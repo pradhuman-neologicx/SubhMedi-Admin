@@ -287,7 +287,7 @@ role="dialog" aria-modal="true">
             <div class="row">
             
                 <div>
-                    <app-paymentout [paymentintype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-paymentout>
+                    <app-paymentout [paymentintype]="clickin"  (selectedIn)="selectEventHanderIn($event)"></app-paymentout>
                 </div>
             </div>
 
@@ -312,4 +312,18 @@ role="dialog" aria-modal="true">
 
 
 </div>
+</div>
+
+
+<div *ngIf="openSecondsuccess"
+  class="your-animation-class modal-container-success" [@slideIn]
+  aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div>
+    <div
+      class=" p-4 d-flex justify-content-between align-items-center success-content">
+      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+      <p class="text-green-900 text-capitalize">{{ successName }}
+        successfully</p>
+    </div>
+  </div>
 </div>

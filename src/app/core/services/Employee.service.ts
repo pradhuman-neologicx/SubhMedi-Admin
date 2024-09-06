@@ -417,7 +417,24 @@ export class EmployeeService {
 
 
 
-
+  getbalance(project_id: any, party_id:any): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    const body = {
+      'user_id': user,
+      'project_id': project_id,
+      'party_id': party_id,
+   
+    };
+  
+    return this.apiservice.post(`salary-amount`, body,  headers );
+  }
+  
 
 
   creatematerial(body: any): Observable<any> {

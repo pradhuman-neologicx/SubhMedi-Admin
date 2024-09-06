@@ -9,12 +9,50 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 @Component({
   selector: 'app-paymentout',
   templateUrl: './paymentout.component.html',
-  styleUrl: './paymentout.component.scss'
+  styleUrl: './paymentout.component.scss',
+  animations: [
+    trigger('succesfullyMesaage', [
+      state('void', style({
+        transform: 'translateX(-30%)',
+        opacity: 0
+      })),
+      transition(':enter, :leave', [
+        animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)')
+      ])
+    ]),
+    trigger('slideIn', [
+      state('void', style({
+        transform: 'translateX(100%)', 
+        opacity: 0 
+      })),
+      transition(':enter', [
+        animate('0.5s ease-out', style({
+          transform: 'translateX(0)', // Final position for slide-in effect
+          opacity: 1 // Final opacity
+        }))
+      ])
+    ]),  
+
+    trigger('fadeIn', [
+      state('void', style({
+        opacity: 0,
+        transform: 'scale(0.5)' // Start with smaller size
+      })),
+      transition(':enter', [
+        animate('0.5s ease-out', style({
+          opacity: 1,
+          transform: 'scale(1)' // Final size
+        }))
+      ])
+    ])
+    
+
+  ]
 })
 
 
   export class PaymentoutComponent {
-  
+    openSecondsuccess: boolean = false;
     @Input() paymentintype!: string;
     paymentinform!: FormGroup;
   
@@ -78,6 +116,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
        cheque: ["",Validators.required],
        description: [""],
        profileimage: ['',],
+       Balance: ['',],
   
       
      
@@ -198,6 +237,25 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         }
       });
     }
+
+    balanceamoujnt:any
+    getbalanceparty() {
+      this.employeeService.getbalance(this.projectiD,this.partyid).subscribe((response: any) => {
+        if (response.status === 200) {
+          
+          this.balanceamoujnt = response.parties
+
+          this.paymentinform.get("Balance")?.setValue(response.parties!=undefined?response.parties.length>0?response.parties[0].balance:0:0)
+        }
+      });
+    }
+
+    partyid:any
+    onchange(partyid:any){
+      this.partyid =partyid
+this.getbalanceparty()
+    }
+
     getunitslist:any
     Getunitsn() {
       this.employeeService.Getunitsformarray().subscribe((response: any) => {
@@ -339,7 +397,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     }
     closeModal() {
       this.addsubcontractoropen = false;
-    
+      this.closeModalEvent.emit();
     }
    
    
@@ -359,11 +417,13 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
   
   
-  
-  
+    close() {
+      this.closeModalEvent.emit();
+    }
+    @Output() closeModalEvent = new EventEmitter<void>();
+    @Input() open: boolean = false;
 
-
-    
+  successName: any = "";
   errorMessage: any;
   submitted!: boolean;
   @Output() selectedIn = new EventEmitter<string>();
@@ -415,6 +475,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         if (response.status === 200) {
           this.closeModal();
           this.selectedIn.emit('close');
+          this.successName = 'Payment In';
           this.ngOnInit();
   
           // Save profile picture URL
@@ -423,9 +484,9 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
           // Optionally display success message
           setTimeout(() => {
-            // this.openSecondsuccess = true;
+            this.openSecondsuccess = true;
             setTimeout(() => {
-              // this.openSecondsuccess = false;
+              this.openSecondsuccess = false;
             }, 1800);
           }, 200);
         } else {
