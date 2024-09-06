@@ -1,0 +1,12 @@
+.custom-btn {
+    border: 1px solid #dedede;
+}
+
+.custom-btn .btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active{
+    background-color: transparent !important;
+    border-color: transparent !important;
+}

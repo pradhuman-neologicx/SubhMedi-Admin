@@ -154,12 +154,18 @@ export class HomeattendanceComponent {
 
   ViewDetailopen: boolean = false;
 
-  OpenViewDetails(): void {
+  OpenViewDetails(partyId:any): void {
     this.ViewDetailopen = true;
+    this.currentpartyId=partyId;
+  }
+
+  closeviewdetial(){
+    this.ViewDetailopen=false;
   }
 
   closeModal() {
-    this.ViewDetailopen = false;
+    this.MarkPresent = false; 
+    this.Markabsent = false; 
     this.addworkeropen = false;
     this.addworkforceopen = false;
   }
@@ -409,6 +415,177 @@ this.GetStafflabourcontractorfun(id);
       this.addworkforceform.markAllAsTouched();
     }
   }
+
+
+  // mark present 
+  MarkPresent: boolean = false;
+  Markabsent: boolean = false;
+  OpenMarkpresent(partyId:any,type:any) {
+    this.MarkPresent = true; 
+    this.attendancetype=type;
+    if(type==0){
+      this.currentpartyId=partyId;
+    }
+    else{
+      this.currentworkforceId=partyId;
+    }
+  }
+
+
+  OpenMarkAbsent(partyId:any,type:any) {
+    this.Markabsent = true; 
+    this.attendancetype=type;
+    if(type==0){
+      this.currentpartyId=partyId;
+    }
+    else{
+      this.currentworkforceId=partyId;
+    }
+  }
+
+currentpartyId:any;
+currentworkforceId:any;
+attendancetype:any;
+
+
+
+
+
+
+  MarkAttendancepresentFun() {
+      const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
+      const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
+     var body
+      if(this.attendancetype==0){
+         body = {
+          "project_id": this.projectiD,
+          "user_id": this.userId,
+          "party_id":this.currentpartyId,
+          // "workforce_id":this.userId,
+          "date":formattedDate  ,
+          "mark_attendance": [
+            {
+              "absent": false, // true or false
+              "present": true //  true or false
+            }
+          ]          
+        }
+      }
+      else if (this.attendancetype==1){
+       body = {
+        "project_id": this.projectiD,
+        "user_id": this.userId,
+        "party_id":this.currentpartyId,
+        "workforce_id":this.currentworkforceId,
+        "date":formattedDate  ,
+        "mark_attendance": [
+          {
+            "absent": false, // true or false
+            "present": true //  true or false
+          }
+        ]          
+      }
+    }
+    console.log(body);
+      this.courseService.MarkAttendacneapi(body).subscribe((response: any) => {
+        console.log(response);
+        if (response.status === 200) {
+          console.log("success");
+          this.closeModal();
+          this.successName = 'Mark Present';
+          this.ngOnInit();
+          this.GetAttendanceFun();
+          setTimeout(() => {
+            this.openSecondsuccess = true;
+            setTimeout(() => {
+              this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+        }
+        else {
+          this.errorMessage = 'Please fill all the details correctly.';
+          this.addworkforceform.markAllAsTouched();
+        }
+      });
+ 
+  }
+
+
+
+  MarkAttendanceabsentFun() {
+    const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
+    const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
+   var body
+    if(this.attendancetype==0){
+       body = {
+        "project_id": this.projectiD,
+        "user_id": this.userId,
+        "party_id":this.currentpartyId,
+        // "workforce_id":this.userId,
+        "date":formattedDate  ,
+        "mark_attendance": [
+          {
+            "absent": true, // true or false
+            "present": false //  true or false
+          }
+        ]          
+      }
+    }
+    else if (this.attendancetype==1){
+     body = {
+      "project_id": this.projectiD,
+      "user_id": this.userId,
+      "party_id":this.currentpartyId,
+      "workforce_id":this.currentworkforceId,
+      "date":formattedDate  ,
+      "mark_attendance": [
+        {
+          "absent": true, // true or false
+          "present": false //  true or false
+        }
+      ]          
+    }
+  }
+  console.log(body);
+    this.courseService.MarkAttendacneapi(body).subscribe((response: any) => {
+      console.log(response);
+      if (response.status === 200) {
+        console.log("success");
+        this.closeModal();
+        this.successName = 'Mark Absent';
+        this.ngOnInit();
+        this.GetAttendanceFun();
+        setTimeout(() => {
+          this.openSecondsuccess = true;
+          setTimeout(() => {
+            this.openSecondsuccess = false;
+          }, 1800);
+        }, 200);
+      }
+      else {
+        this.errorMessage = 'Please fill all the details correctly.';
+        this.addworkforceform.markAllAsTouched();
+      }
+    });
+
+}
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 

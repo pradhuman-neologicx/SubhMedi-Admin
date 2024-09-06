@@ -142,14 +142,22 @@
 
                     <!-- Present Status -->
                     <td>
-                        <p class="table-detail text-capitalize ms-2 table-detail-new">
+                        <p class="table-detail text-capitalize ms-2 table-detail-new"
+                        [ngClass]="{
+                            'text-success': attendance.partyAttendance?.present, 
+                            'text-muted': !attendance.partyAttendance?.present
+                          }">
                             {{ attendance.partyAttendance?.present ? 'Present' : '-' }}
                         </p>
                     </td>
 
                     <!-- Absent Status -->
                     <td>
-                        <p class="table-detail text-capitalize ms-2 table-detail-new">
+                        <p class="table-detail text-capitalize ms-2 table-detail-new"
+                        [ngClass]="{
+                            'text-danger': attendance.partyAttendance?.absent, 
+                            'text-muted': !attendance.partyAttendance?.absent
+                          }">
                             {{ attendance.partyAttendance?.absent ? 'Absent' : '-' }}
                         </p>
                     </td>
@@ -157,13 +165,17 @@
                     <td>
                         <p>
                             <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu"
-                                *ngIf="attendance.workforces && attendance.workforces.length > 0">
+                                >
                                 <mat-icon>more_vert</mat-icon>
                             </button>
 
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="OpenViewDetails();">View Details</button>
+                                <button mat-menu-item (click)="OpenViewDetails(attendance.party_id);" *ngIf="attendance.workforces && attendance.workforces.length > 0">View Details</button>
+                                <button mat-menu-item (click)="OpenMarkpresent(attendance.party_id,0)" *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark Present</button>
+                                <button mat-menu-item (click)="OpenMarkAbsent(attendance.party_id,0);" *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark Absent</button>
                             </mat-menu>
+
+                            
                         </p>
                     </td>
 
@@ -186,7 +198,7 @@
                 <div class="card-header bg-white d-flex justify-content-between algin-items-center">
                     <h5 class="modal-title pt-1">Worker Details</h5>
                     <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
-                        (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                        (click)="closeviewdetial()"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
 
@@ -247,14 +259,25 @@
 
                                 <td>
                                     <p class="table-detail text-capitalize ms-2 table-detail-new">
-                                        <button class="btn btn-primary">Mark Present</button>
+                                      <button 
+                                        class="btn custom-btn" 
+                                        [ngClass]="{'btn-primary': worker.present, 'btn-default': !worker.present}" 
+                                        (click)="OpenMarkpresent(worker.id,1)">
+                                        Present
+                                      </button>
                                     </p>
-                                </td>
-
-                                <!-- Absent Status -->
-                                <td>
-                                    <button class="btn btn-danger">Mark Absent</button>
-                                </td>
+                                  </td>
+                                  
+                                  <!-- Absent Status -->
+                                  <td>
+                                    <button 
+                                      class="btn custom-btn" 
+                                      [ngClass]="{'btn-danger': worker.absent, 'btn-default': !worker.absent}" 
+                                      (click)="OpenMarkAbsent(worker.id,1);">
+                                      Absent
+                                    </button>
+                                  </td>
+                                  
 
 
                                 <td>
@@ -493,6 +516,99 @@
             <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
             <p class="text-green-900 text-capitalize mb-0">
                 {{successName}} successfully</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- mark present -->
+
+<div *ngIf="MarkPresent"
+    class=" your-animation-class modal-container"
+    aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-30" [@fadeIn]>
+        <div>
+            <div class="card">
+                <div
+                    class="card-header bg-white d-flex justify-content-between algin-items-center">
+                    <h5 class="modal-title pt-1">Mark present</h5>
+                    <button
+                        class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                        type="button" (click)="closeModal()"><i
+                            class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-content-width mb-2">
+                    <div class="card-body text-center ">
+                        <span class="mark-success"><i
+                                class="fa-solid fa-check"></i></span>
+                        <p class="text-capitalize mb-0 pt-2 mark-text">Are You
+                            sure ?</p>
+                        <p class="mark-text-light">You want to Mark as
+                            Present</p>
+                    </div>
+                    <div class="text-end border-top pt-3">
+                        <button
+                            class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600"
+                            type="button"
+                            (click)="closeModal()">No</button>
+                        <button
+                            class="btn btn-primary main-btnfs px-4 py-2 me-3"
+                            type="submit"
+                            (click)="MarkAttendancepresentFun()">Yes</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="Markabsent"
+    class=" your-animation-class modal-container"
+    aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-30" [@fadeIn]>
+        <div>
+            <div class="card">
+                <div
+                    class="card-header bg-white d-flex justify-content-between algin-items-center">
+                    <h5 class="modal-title pt-1">Mark Absent</h5>
+                    <button
+                        class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                        type="button" (click)="closeModal()"><i
+                            class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-content-width mb-2">
+                    <div class="card-body text-center ">
+                        <span class="mark-cross"><i
+                                class="fa-solid fa-check"></i></span>
+                        <p class="text-capitalize mb-0 pt-2 mark-text">Are You
+                            sure ?</p>
+                        <p class="mark-text-light">You want to Mark as
+                            Absent</p>
+                    </div>
+                    <div class="text-end border-top pt-3">
+                        <button
+                            class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600"
+                            type="button"
+                            (click)="closeModal()">No</button>
+                        <button
+                            class="btn btn-primary main-btnfs px-4 py-2 me-3"
+                            type="submit"
+                            (click)="MarkAttendanceabsentFun()">Yes</button>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
     </div>
 </div>
