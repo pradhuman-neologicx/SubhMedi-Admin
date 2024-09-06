@@ -266,7 +266,7 @@ export class EmployeeService {
     const body = {
       type: 'sub-contractor',
       user_id: user,
-    'project_id': project_id,
+    project_id: project_id,
     };
 
     // Make the POST request to the server
@@ -284,14 +284,41 @@ export class EmployeeService {
     });
 
     const body = {
-      type: 'other_expense',
+      type: '',
       user_id: user,
-    'project_id': project_id,
+    project_id: project_id,
     };
 
     // Make the POST request to the server
     return this.apiservice.post(`list-parties`, body,  headers );
   }
+
+
+  
+
+
+
+
+
+  getsalarytype(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: 'salary',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers );
+  }
+
+
 
 
   GetmattlistApi() {

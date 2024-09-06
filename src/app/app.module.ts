@@ -41,6 +41,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { WorkforceComponent } from './admin/masters/workforce/workforce.component';
 import { SubcontracterpayementoutComponent } from './admin/projecthome/subcontracterpayementout/subcontracterpayementout.component';
 import { OtherexpensepaymentoutComponent } from './admin/projecthome/otherexpensepaymentout/otherexpensepaymentout.component';
+import { MaterialpurchaseComponent } from './admin/projecthome/materialpurchase/materialpurchase.component';
+import { SalaryComponent } from './admin/projecthome/salary/salary.component';
+import { PettyexpenseComponent } from './admin/projecthome/pettyexpense/pettyexpense.component';
+import { MiscelaniousexpensesComponent } from './admin/projecthome/miscelaniousexpenses/miscelaniousexpenses.component';
 
 
 
@@ -73,6 +77,10 @@ import { OtherexpensepaymentoutComponent } from './admin/projecthome/otherexpens
     WorkforceComponent,
     SubcontracterpayementoutComponent,
     OtherexpensepaymentoutComponent,
+    MaterialpurchaseComponent,
+    SalaryComponent,
+    PettyexpenseComponent,
+    MiscelaniousexpensesComponent,
 
  
   

@@ -201,7 +201,7 @@
                                     (change)="onchangecategory(category.value)"
                                     [ngClass]="{ 'is-invalid': addcategoryform.controls['category'].errors && (addcategoryform.controls['category'].touched || addcategoryform.controls['category'].dirty) }">
                                     <option value="Petty Expenses">Petty Expenses</option>
-                                    <option value="Pre Medical">Miscellaneous Expenses</option>
+                                    <option value="Miscellaneous Expenses">Miscellaneous Expenses</option>
                                     <option value="Sub Contractor Payment">Sub Contractor Payment</option>
                                     <option value="Other Expense">Other Expense</option>
                                     <option value="Material Purchase">Material Purchase</option>
@@ -230,9 +230,19 @@
                         <app-otherexpensepaymentout [otherexpensetype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-otherexpensepaymentout>
                     </div>
 
+                    <div *ngIf="catergory=='Material Purchase'">
+                        <app-materialpurchase [materialpurchase]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-materialpurchase>
+                    </div>
+                    <div *ngIf="catergory=='Salary'">
+                        <app-salary [salarytype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-salary>
+                    </div>
+                    <div *ngIf="catergory=='Petty Expenses'">
+                        <app-pettyexpense [pettytype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-pettyexpense>
+                    </div>
 
-
-
+                    <div *ngIf="catergory=='Miscellaneous Expenses'">
+                        <app-miscelaniousexpenses [miscellonustype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-miscelaniousexpenses>
+                    </div>
                 </div>
 
 

@@ -6,19 +6,17 @@ import { projects } from 'src/app/core/model-class/employee';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
-
 @Component({
-  selector: 'app-otherexpensepaymentout',
-  templateUrl: './otherexpensepaymentout.component.html',
-  styleUrl: './otherexpensepaymentout.component.scss'
+  selector: 'app-salary',
+  templateUrl: './salary.component.html',
+  styleUrl: './salary.component.scss'
 })
 
 
-
-  export class OtherexpensepaymentoutComponent {
+  export class SalaryComponent {
   
-    @Input() otherexpensetype!: string;
-    addotherexpenseorm!: FormGroup;
+    @Input() salarytype!: string;
+    salarytypeform!: FormGroup;
   
   
   
@@ -39,21 +37,21 @@ import { JwtService } from 'src/app/core/services/jwt.service';
      projectID: any;
      partyID: any;
      ngOnChanges(changes: SimpleChanges) {
-      console.log('otherexpensetype updated:', this.otherexpensetype);
-      if (changes['otherexpensetype'] && changes['otherexpensetype'].currentValue !== undefined) {
-        // Initialization logic or any code you want to run when otherexpensetype updates
-        console.log('otherexpensetype updated:', changes['otherexpensetype'].currentValue);
-        this.initializeComponent(changes['otherexpensetype'].currentValue);
+      console.log('salarytype updated:', this.salarytype);
+      if (changes['salarytype'] && changes['salarytype'].currentValue !== undefined) {
+        // Initialization logic or any code you want to run when salarytype updates
+        console.log('salarytype updated:', changes['salarytype'].currentValue);
+        this.initializeComponent(changes['salarytype'].currentValue);
       }
     }
   
-    // Initialization logic based on otherexpensetype changes
-    private initializeComponent(otherexpensetypeValue: any) {
-      // Place any logic that should run when otherexpensetype changes
-      console.log('Initialization logic executed with otherexpensetype:', otherexpensetypeValue);
+    // Initialization logic based on salarytype changes
+    private initializeComponent(salarytypeValue: any) {
+      // Place any logic that should run when salarytype changes
+      console.log('Initialization logic executed with salarytype:', salarytypeValue);
       // Add more initialization steps as needed
-      if (otherexpensetypeValue!='0'|| otherexpensetypeValue !=0){
-        this.Createaddotherexpense()
+      if (salarytypeValue!='0'|| salarytypeValue !=0){
+        this.createsalarytype()
       }
       
     }
@@ -65,7 +63,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     this.partyID = this.route.snapshot.paramMap.get('party_id');
     console.log('Project ID:', this.projectID);
     console.log('Party ID:', this.partyID);
-    console.log('otherexpensetype:', this.otherexpensetype);
+    console.log('salarytype:', this.salarytype);
       this.user_id= this.jwtService.getpanelUserId();
 
 
@@ -73,23 +71,22 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
      
   
-      this.addotherexpenseorm = this.formBuilder.group({
+      this.salarytypeform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
         selectpartyname: ["", [Validators.required,]],
+       SubTotal: ['',Validators.required],
+       cheque: ["",Validators.required],
+       description: [""],
+       profileimage: ['',],
+  
+      
+     
+      
        
-        additionalcharges: [""],
-        Discount: [""],
-        Payment: [""],
       
-        cheque: [""],
+     
+ 
       
-        Notes: [""],
-        Reference: [""],
-      
-        materials: this.formBuilder.array([]) ,
-        Amount: [""],
-        profileimage: ['',],
-        SubTotal: ['',],
      
       });
      
@@ -112,16 +109,6 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
     }
 
-      // Method to remove a specific task
-  removeTask(index: number) {
-    this.materials.removeAt(index);
-  }
- 
-   // Getter for FormArray
-   get materials(): FormArray {
-    return this.addotherexpenseorm.get('materials') as FormArray;
-  }
- 
   
  
 
@@ -133,21 +120,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   //   });
   // }
 
-  // Create FormGroup for each material
-  createMaterialGroup(): FormGroup {
-    return this.formBuilder.group({
-      
-      name: ['', Validators.required],
-      subtotal: ['', Validators.required],
-  
-     
-    });
-  }
-
-  addTask() {
-    // this.materials.push(this.createMaterialGroup());
-    this.materials.insert(0, this.createMaterialGroup());
-  }
+ 
 
 
     idString: any;
@@ -218,7 +191,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 
     partynamelist:any
     Getpartynamesubcontractorfun() {
-      this.employeeService.getotherexpenseParties(this.projectiD).subscribe((response: any) => {
+      this.employeeService.getsalarytype(this.projectiD).subscribe((response: any) => {
         if (response.status === 200) {
           
           this.partynamelist = response.parties
@@ -244,7 +217,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     partypaidtable: any
     salarytable: any
     otherexpensetable: any
-    materialpurchasetable: any
+    salarytypetable: any
     subcontractortable: any
     
     name: any
@@ -289,73 +262,73 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 
     toggleADetails() {
       this.showadditionalDetails = !this.showadditionalDetails;
-      this.addotherexpenseorm.get('additionalcharges')?.clearValidators();
+      this.salarytypeform.get('additionalcharges')?.clearValidators();
       if(this.showpaymentDetails){
-        this.addotherexpenseorm.get('additionalcharges')?.setValidators([
+        this.salarytypeform.get('additionalcharges')?.setValidators([
           Validators.required,
         ]);
        
       }
     
-      this.addotherexpenseorm.get('additionalcharges')?.updateValueAndValidity();
+      this.salarytypeform.get('additionalcharges')?.updateValueAndValidity();
    
     
     }
     toggleDDetails() {
       this.showdiscountDetails = !this.showdiscountDetails;
-      this.addotherexpenseorm.get('Discount')?.clearValidators();
+      this.salarytypeform.get('Discount')?.clearValidators();
       if(this.showpaymentDetails){
-        this.addotherexpenseorm.get('Discount')?.setValidators([
+        this.salarytypeform.get('Discount')?.setValidators([
           Validators.required,
         ]);
        
       }
     
-      this.addotherexpenseorm.get('Discount')?.updateValueAndValidity();
+      this.salarytypeform.get('Discount')?.updateValueAndValidity();
    
     
     
     }
     togglePAYDetails() {
       this.showpaymentDetails = !this.showpaymentDetails;
-      this.addotherexpenseorm.get('Payment')?.clearValidators();
-      this.addotherexpenseorm.get('cheque')?.clearValidators();
+      this.salarytypeform.get('Payment')?.clearValidators();
+      this.salarytypeform.get('cheque')?.clearValidators();
       if(this.showpaymentDetails){
-        this.addotherexpenseorm.get('Payment')?.setValidators([
+        this.salarytypeform.get('Payment')?.setValidators([
           Validators.required,
         ]);
-        this.addotherexpenseorm.get('cheque')?.setValidators([
+        this.salarytypeform.get('cheque')?.setValidators([
           Validators.required,
         ]);
       }
     
-      this.addotherexpenseorm.get('Payment')?.updateValueAndValidity();
-      this.addotherexpenseorm.get('cheque')?.updateValueAndValidity();
+      this.salarytypeform.get('Payment')?.updateValueAndValidity();
+      this.salarytypeform.get('cheque')?.updateValueAndValidity();
     }
     toggleNDetails() {
       this.shownotesDetails = !this.shownotesDetails;
-      this.addotherexpenseorm.get('Notes')?.clearValidators();
+      this.salarytypeform.get('Notes')?.clearValidators();
       if(this.showpaymentDetails){
-        this.addotherexpenseorm.get('Notes')?.setValidators([
+        this.salarytypeform.get('Notes')?.setValidators([
           Validators.required,
         ]);
        
       }
     
-      this.addotherexpenseorm.get('Notes')?.updateValueAndValidity();
+      this.salarytypeform.get('Notes')?.updateValueAndValidity();
     }
     toggleRDetails() {
       this.showreferenceDetails = !this.showreferenceDetails;
       this.shownotesDetails = !this.shownotesDetails;
-      this.addotherexpenseorm.get('Reference')?.clearValidators();
+      this.salarytypeform.get('Reference')?.clearValidators();
       if(this.showpaymentDetails){
-        this.addotherexpenseorm.get('Reference')?.setValidators([
+        this.salarytypeform.get('Reference')?.setValidators([
           Validators.required,
         ]);
        
       }
     
-      this.addotherexpenseorm.get('Reference')?.updateValueAndValidity();
+      this.salarytypeform.get('Reference')?.updateValueAndValidity();
 
     }
    
@@ -368,13 +341,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.addsubcontractoropen = false;
     
     }
-    toggleAMatDetails() {
-      this.showreaddmaterialDetails = true
-      this.materials.clear(); // Clear existing FormArray controls
-      // this.materials.push(this.createMaterialGroup());
-      this.addTask(); // Add an initial task
-    }
- 
+   
    
   
   
@@ -401,47 +368,32 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   submitted!: boolean;
   @Output() selectedIn = new EventEmitter<string>();
   erroroutput: boolean = false;
-  Createaddotherexpense() {
-    if (this.addotherexpenseorm.valid) {
+  createsalarytype() {
+    if (this.salarytypeform.valid) {
     
 
       
       const formData: FormData = new FormData();
 
-      var newMateria=[];
-      for (let index = 0; index < this.materials.length; index++) {
-        const addotherexpenseorm =   this.materials.at(index);
-  
-    
-      
-        newMateria.push({
-         
-          "name": addotherexpenseorm.get('name')?.value,
-          "amount": addotherexpenseorm.get('subtotal')?.value,
-    
-        })
-      
-    }
+     
 
     
       // Append common fields
       const user = this.jwtService.getpanelUserId();
       formData.append("user_id",user.toString());
       formData.append("project_id", this.projectiD.toString());
-      formData.append("date", this.addotherexpenseorm.get("date")?.value.toString());
-      formData.append("party_id", this.addotherexpenseorm.get("selectpartyname")?.value.toString());
-      formData.append("tasks", JSON.stringify(newMateria)); // Convert materialList to JSON string if it's an object
-      formData.append("additional_charges", this.addotherexpenseorm.get("additionalcharges")?.value.toString());
-      formData.append("discount", this.addotherexpenseorm.get("Discount")?.value.toString());
-      formData.append("total_amount", this.calculateTotal().toString());
-      formData.append("category", 'other_expense');
+      formData.append("date", this.salarytypeform.get("date")?.value.toString());
+      formData.append("party_id", this.salarytypeform.get("selectpartyname")?.value.toString());
+      formData.append("amount", this.salarytypeform.get("SubTotal")?.value.toString());
+      formData.append("description", this.salarytypeform.get("description")?.value.toString());
    
-      formData.append("payment_out", this.addotherexpenseorm.get("Payment")?.value.toString());
-      formData.append("payment_method", this.addotherexpenseorm.get("cheque")?.value.toString());
+   
+      formData.append("category", 'salary');
+   
+   
+      formData.append("payment_method", this.salarytypeform.get("cheque")?.value.toString());
  
-      formData.append("notes", this.addotherexpenseorm.get("Notes")?.value.toString());
-      formData.append("reference_no", this.addotherexpenseorm.get("Reference")?.value.toString());
-      formData.append("sub_total", this.calculateSubTotal().toString());
+  
   
      
       if (this.profileimage) {
@@ -486,9 +438,9 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     } else {
       // Mark all form fields as touched to show validation errors
         this.errorMessage = 'fill all the details Correctly'
-      this.addotherexpenseorm.markAllAsTouched();
+      this.salarytypeform.markAllAsTouched();
       this.selectedIn.emit('fill all the details Correctly');
-      console.log(this.findInvalidControls(this.addotherexpenseorm));
+      console.log(this.findInvalidControls(this.salarytypeform));
     }
   }
   
@@ -505,84 +457,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   }
   
 
-  additionalCharge: number = 0;
-  discount: number = 0;
-  totalAmount: number = 0;
-
-  // Form control objects (similar to text controllers in Flutter)
-  
-
-
-
-  calculatebalanceTotal(): number {
-    
-    const totaamount = parseFloat(this.addotherexpenseorm.get("Amount")?.value ?? '') || 0;
-    const paymentout = parseFloat(this.addotherexpenseorm.get("Payment")?.value ?? '') || 0;
-  
-   
-    const total =  this.calculateTotal() - paymentout;
-  
-   
-    // this.totalAmountControl.setValue(total.toString());
-  
-    return total;
-  }
-  
-
-
-  calculateTotal(): number {
-    
-    const additionalCharge = parseFloat(this.addotherexpenseorm.get("additionalcharges")?.value ?? '') || 0;
-    const discount = parseFloat(this.addotherexpenseorm.get("Discount")?.value ?? '') || 0;
-  
-   
-    const total = this.calculateSubTotal() + additionalCharge - discount;
-  
-   
-    // this.totalAmountControl.setValue(total.toString());
-  
-    return total;
-  }
-
-
-
-   // Function to calculate subtotal
-   calculateSubTotal(): number {
-    let value: number = 0; 
-    if(this.materials.length>0){// TypeScript uses 'number' instead of 'double'
  
-      for (let index = 0; index < this.materials.length; index++) {
-        value += this.calculatePerMaterialAmount(index,1);
-      
-    }
-  }
-    
-    return value;
-  }
-  formControls: FormGroup[] = []; // Array of FormGroups for each material item
-  calculatePerMaterialAmount(index: number,type:any): number {
-    console.log(type);
-    console.log(this.materials.length);
-    
-    // Get the form control at the specified index
-    let total: number=0;
-    if(this.materials.length>0){
-
-    
-    const addotherexpenseorm =   this.materials.at(index);
-  
-    
-    // Safely parse values from the form controls, defaulting to 0 if invalid or empty
-    const subtotal: number = parseFloat(addotherexpenseorm.get('subtotal')?.value ?? '0') || 0;
-    // const unitsRange: number = parseFloat(addotherexpenseorm.get('unitsRange')?.value ?? '0') || 0;
-    // const discount: number = parseFloat(addotherexpenseorm.get('discount')?.value ?? '0') || 0;
-
-    // Perform the calculation: (qty * unitrate) - discount
-     total = subtotal;
-    }
-    return total;
-  }
-
 
 catergory:any
   onchangecategory(value:any) {

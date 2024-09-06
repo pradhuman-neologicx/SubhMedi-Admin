@@ -659,8 +659,26 @@ this.addmodelEvent.emit(this.clickadd)
     this.clickadd = this.generateUniqueId();
 
     this.addmodelEvent.emit(this.clickadd)
-  }
+  }else if (this.catergory=='Material Purchase') {
+    this.clickadd = this.generateUniqueId();
 
+    this.addmodelEvent.emit(this.clickadd)
+  }
+  else if (this.catergory=='Salary') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }
+  else if (this.catergory=='Petty Expenses') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }
+  else if (this.catergory=='Miscellaneous Expenses') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }
     }
     selectedIn!: any;
   selectEventHanderIn($event: any) {
