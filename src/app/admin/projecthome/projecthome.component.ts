@@ -47,17 +47,18 @@ currentRoute: any;
 public active!: number;
 public select: any;
 projectiD : any
-
+projectname:any
 constructor(
 
   private jwtService: JwtService,
   private router: Router,
   private route: ActivatedRoute,
 ) {
-  const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
+  const urlDelimitators = new RegExp(/[?//,;&:#$+=%]/);
   this.url1 = router.url.slice(0).split(urlDelimitators)[3];
 
   this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
+  // this.projectname = router.url.slice(0).split(urlDelimitators)[3];
   this.router.events.subscribe((event) => {
     if (event instanceof NavigationEnd) {
       // Could add more chars url:path?=;other possible
@@ -103,6 +104,7 @@ constructor(
 
 ngOnInit() {
   this.sessionId = this.jwtService.getSession();
+  this.projectname = this.route.snapshot.paramMap.get('projectName');
   //  console.log(this.url1 == 'ongoing');
   //  console.log(this.url1 == 'completed');
    if (this.url1 == 'project_parties') {
@@ -124,15 +126,15 @@ ngOnInit() {
 }
 NavigationTab(type: any) {
   if (type == 1) {
-    this.router.navigate(['/project_home/'+this.projectiD+'/project_parties']);
+    this.router.navigate(['/project_home/'+this.projectiD+'/'+this.projectname+'/project_parties']);
   } else if (type == 2) {
-    this.router.navigate(['/project_home/'+this.projectiD+'/project_transactions']);
+    this.router.navigate(['/project_home/'+this.projectiD+'/'+this.projectname+'/project_transactions']);
   } 
   else if (type == 3) {
-    this.router.navigate(['/project_home/'+this.projectiD+'/project_attendance']);
+    this.router.navigate(['/project_home/'+this.projectiD+'/'+this.projectname+'/project_attendance']);
   }
   else if (type == 4) {
-    this.router.navigate(['/project_home/'+this.projectiD+'/project_material']);
+    this.router.navigate(['/project_home/'+this.projectiD+'/'+this.projectname+'/project_material']);
   }
 }
 Active(item: any) {
