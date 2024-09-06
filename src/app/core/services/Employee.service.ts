@@ -321,6 +321,33 @@ export class EmployeeService {
 
 
 
+
+  getTransactionParty(projectId: any): Observable<any> {
+    const userId = this.jwtService.getpanelUserId(); // Get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+
+    // Construct the headers with the token for authorization
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    // Construct the URL with query parameters
+    let url = `transaction-parties`;
+    if (projectId) {
+      url += `?project_id=${projectId}&user_id=${userId}`;
+    }
+
+    console.log('Constructed URL:', url);
+
+    // Make the GET request using HttpClient
+    return this.apiservice.get(url,  headers );
+  }
+
+
+
+
+
   GetmattlistApi() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
@@ -434,6 +461,19 @@ export class EmployeeService {
 
     // Make the POST request to the server
     return this.apiservice.post(`payment-transaction-out`, body,  headers );
+  }
+  addsubcotractorpaymenin(body:any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      
+    });
+
+    
+
+    // Make the POST request to the server
+    return this.apiservice.post(`payment-transaction-in`, body,  headers );
   }
 }
 

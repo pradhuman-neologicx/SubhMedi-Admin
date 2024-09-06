@@ -27,6 +27,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     CreateliveexamForm!: FormGroup;
     addsubcontractorform!: FormGroup;
     addcategoryform!: FormGroup;
+    addpaymentinform!: FormGroup;
   
     orderviewform!: FormGroup;
   
@@ -70,10 +71,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         daterange: [''],
       });
   
-      this.addcategoryform = this.formBuilder.group({
-        category: ["", [Validators.required,]],
-      });
-  
+    
   
       this.addsubcontractorform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
@@ -438,11 +436,16 @@ else {
    
   
     addsubcontractoropen: boolean = false;
+    addpaymentinopen: boolean = false;
     transactioncreatemodal() {
       this.addsubcontractoropen = true;
     }
+    transactionpaymwentincreatemodal() {
+      this.addpaymentinopen = true;
+    }
     closeModal() {
       this.addsubcontractoropen = false;
+      this.addpaymentinopen = false;
     
     }
     toggleAMatDetails() {
@@ -648,6 +651,18 @@ else {
   
   
     @Output() addmodelEvent = new EventEmitter<string>();
+
+    paymentinadd() {
+     
+    
+    this.clickadd = this.generateUniqueId();
+    
+    this.addmodelEvent.emit(this.clickadd)
+      } 
+
+
+
+
 clickadd:string = '0'
     Createadd() {
   if (this.catergory=='Sub Contractor Payment' ){

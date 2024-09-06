@@ -45,6 +45,7 @@ import { MaterialpurchaseComponent } from './admin/projecthome/materialpurchase/
 import { SalaryComponent } from './admin/projecthome/salary/salary.component';
 import { PettyexpenseComponent } from './admin/projecthome/pettyexpense/pettyexpense.component';
 import { MiscelaniousexpensesComponent } from './admin/projecthome/miscelaniousexpenses/miscelaniousexpenses.component';
+import { PaymentoutComponent } from './admin/projecthome/paymentout/paymentout.component';
 
 
 
@@ -81,6 +82,7 @@ import { MiscelaniousexpensesComponent } from './admin/projecthome/miscelaniouse
     SalaryComponent,
     PettyexpenseComponent,
     MiscelaniousexpensesComponent,
+    PaymentoutComponent,
 
  
   
