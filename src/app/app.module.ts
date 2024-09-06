@@ -39,6 +39,8 @@ import { MaterialsComponent } from './admin/masters/materials/materials.componen
 import { AttendanceComponent } from './admin/attendance/attendance.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { WorkforceComponent } from './admin/masters/workforce/workforce.component';
+import { SubcontracterpayementoutComponent } from './admin/projecthome/subcontracterpayementout/subcontracterpayementout.component';
+import { OtherexpensepaymentoutComponent } from './admin/projecthome/otherexpensepaymentout/otherexpensepaymentout.component';
 
 
 
@@ -69,6 +71,8 @@ import { WorkforceComponent } from './admin/masters/workforce/workforce.componen
     MaterialsComponent,
     AttendanceComponent,
     WorkforceComponent,
+    SubcontracterpayementoutComponent,
+    OtherexpensepaymentoutComponent,
 
  
   

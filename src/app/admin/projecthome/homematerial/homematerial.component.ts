@@ -710,7 +710,7 @@ else {
           this.ngOnInit();
   
           // Save profile picture URL
-          this.jwtService.saveImageUrl(response.data.profilePicture);
+  
           this.clearFileWithoutevent();
   
           // Optionally display success message
