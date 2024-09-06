@@ -136,10 +136,10 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   // Create FormGroup for each material
   createMaterialGroup(materialName:any,materialId:any): FormGroup {
     return this.formBuilder.group({
-      id: [materialId, Validators.required],
-      name: [materialName, Validators.required],
-      subTotal: ['', Validators.required],
-      discount: ['', Validators.required],
+      id: [materialId],
+      name: [materialName],
+      subTotal: [''],
+      discount: [''],
       units: ['', Validators.required],
       unitsRange: ['', Validators.required]
     });
@@ -230,47 +230,11 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         }
       });
     }
-  
-  
 
 
-
-
-  
-   
- 
-    
-  
-  
-  
-  
-  
-  
-  
-    
-  
-  
-  
-  
-  
     projects: projects = new projects();
     user_id: any
    
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
     partryecievetable: any
     partypaidtable: any
     salarytable: any
@@ -283,8 +247,6 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     amount: any
     status: any
   
-
-
     dateValidator(formGroup: any) {
       const StartDate = formGroup.get('StartDate').value;
       const enddate = formGroup.get('enddate').value;
@@ -295,10 +257,6 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       }
       return null;
     }
-  
-
-   
-
 
  
     getpartyprojectbalance(type: any) {
@@ -484,6 +442,7 @@ else {
     }
     toggleAMatDetails() {
       this.showreaddmaterialDetails = !this.showreaddmaterialDetails;
+
     }
     ClickModalconent(event: Event): void {
       event.stopPropagation();
@@ -689,6 +648,9 @@ else {
   erroroutput: boolean = false;
   Createaddpurchase() {
     if (this.addpurchaseform.valid) {
+      if (this.materials.length>0) {
+
+      
       const formData: FormData = new FormData();
 
       var newMateria=[];
@@ -714,24 +676,29 @@ else {
 
     
       // Append common fields
-      formData.append("projectId", this.projectiD);
-      formData.append("date", this.addpurchaseform.get("date")?.value);
-      formData.append("partyId", this.addpurchaseform.get("selectpartyname")?.value);
-      formData.append("materialList", JSON.stringify(newMateria)); // Convert materialList to JSON string if it's an object
-      formData.append("additionalCharge", this.addpurchaseform.get("additionalcharges")?.value);
-      formData.append("discount", this.addpurchaseform.get("Discount")?.value);
-      formData.append("totalAmount", this.calculateTotal().toString());
-      formData.append("paymentOut", this.addpurchaseform.get("Payment")?.value);
-      formData.append("paymentMethod", this.addpurchaseform.get("cheque")?.value);
-      formData.append("balance", this.addpurchaseform.get("Balance")?.value);
-      formData.append("notes", this.addpurchaseform.get("Notes")?.value);
-      formData.append("referenceNumber", this.addpurchaseform.get("Reference")?.value);
-      formData.append("subTotal", this.calculateSubTotal().toString());
+      const user = this.jwtService.getpanelUserId();
+      formData.append("user_id",user.toString());
+      formData.append("project_id", this.projectiD.toString());
+      formData.append("date", this.addpurchaseform.get("date")?.value.toString());
+      formData.append("party_id", this.addpurchaseform.get("selectpartyname")?.value.toString());
+      formData.append("materials", JSON.stringify(newMateria)); // Convert materialList to JSON string if it's an object
+      formData.append("additional_charges", this.addpurchaseform.get("additionalcharges")?.value.toString());
+      formData.append("discount", this.addpurchaseform.get("Discount")?.value.toString());
+      formData.append("total_amount", this.calculateTotal().toString());
+      formData.append("payment_out", this.addpurchaseform.get("Payment")?.value.toString());
+      formData.append("payment_method", this.addpurchaseform.get("cheque")?.value.toString());
+      formData.append("balance", this.calculatebalanceTotal().toString());
+      formData.append("notes", this.addpurchaseform.get("Notes")?.value.toString());
+      formData.append("reference_no", this.addpurchaseform.get("Reference")?.value.toString());
+      formData.append("sub_total", this.calculateSubTotal().toString());
   
      
       if (this.profileimage) {
         // If image exists, add it to FormData
-        formData.append("image", this.profileimage);
+      
+
+        const file = this.profileimage;
+        formData.append("bill_image", file, file.name);
       }
   
       // Call the API service
@@ -757,14 +724,31 @@ else {
           this.submitted = false;
         }
       });
-  
+    }else {
+      // Mark all form fields as touched to show validation errors
+        this.errorMessage = 'please select at least one material'
+      this.addpurchaseform.markAllAsTouched();
+      console.log(this.findInvalidControls(this.addpurchaseform));
+    }
     } else {
       // Mark all form fields as touched to show validation errors
+        this.errorMessage = 'fill all the details Correctly'
       this.addpurchaseform.markAllAsTouched();
+      console.log(this.findInvalidControls(this.addpurchaseform));
     }
   }
   
-
+  findInvalidControls(formName: any) {
+    const invalid = [];
+    const controls = formName.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+    console.log(invalid);
+    return invalid;
+  }
   
 
   additionalCharge: number = 0;
@@ -772,25 +756,42 @@ else {
   totalAmount: number = 0;
 
   // Form control objects (similar to text controllers in Flutter)
-  additionalChargeControl = new FormControl('');
-  discountControl = new FormControl('');
-  totalAmountControl = new FormControl({value: '', disabled: true});
+  
+
+
+
+  calculatebalanceTotal(): number {
+    
+    const totaamount = parseFloat(this.addpurchaseform.get("Amount")?.value ?? '') || 0;
+    const paymentout = parseFloat(this.addpurchaseform.get("Payment")?.value ?? '') || 0;
+  
+   
+    const total =  this.calculateTotal() - paymentout;
+  
+   
+    // this.totalAmountControl.setValue(total.toString());
+  
+    return total;
+  }
+  
 
 
   calculateTotal(): number {
     
-    const additionalCharge = parseFloat(this.additionalChargeControl.value ?? '') || 0;
-    const discount = parseFloat(this.discountControl.value ?? '') || 0;
+    const additionalCharge = parseFloat(this.addpurchaseform.get("additionalcharges")?.value ?? '') || 0;
+    const discount = parseFloat(this.addpurchaseform.get("Discount")?.value ?? '') || 0;
   
    
     const total = this.calculateSubTotal() + additionalCharge - discount;
   
    
-    this.totalAmountControl.setValue(total.toString());
+    // this.totalAmountControl.setValue(total.toString());
   
     return total;
   }
-  
+
+
+
    // Function to calculate subtotal
    calculateSubTotal(): number {
     let value: number = 0; 

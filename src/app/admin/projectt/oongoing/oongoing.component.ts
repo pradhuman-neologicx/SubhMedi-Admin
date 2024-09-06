@@ -319,12 +319,14 @@ export class OongoingComponent {
 
 
 
-  viewmmodal(id: any) {
+  viewmmodal(id: any,projectname:any) {
     // Log the project_id to the console
     console.log('Project ID:', id);
     
     // Navigate to the desired route with the project_id
-    this.router.navigate(['/project_home', id]); 
+    this.router.navigate(['/project_home', id ], {
+      queryParams: { projectName: projectname },
+    }); 
   }
 
   showGstDetails = false;

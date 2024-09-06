@@ -47,24 +47,25 @@ currentRoute: any;
 public active!: number;
 public select: any;
 projectiD : any
-
+projectname:any
 constructor(
 
   private jwtService: JwtService,
   private router: Router,
   private route: ActivatedRoute,
 ) {
-  const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
+  const urlDelimitators = new RegExp(/[?//,;&:#$+=%]/);
   this.url1 = router.url.slice(0).split(urlDelimitators)[3];
 
-
+  this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
+  // this.projectname = router.url.slice(0).split(urlDelimitators)[3];
   this.router.events.subscribe((event) => {
     if (event instanceof NavigationEnd) {
       // Could add more chars url:path?=;other possible
      
     
       const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
-      this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
+      // this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
       let currentUrlPath = event.url.slice(0).split(urlDelimitators)[3];
       if (currentUrlPath == undefined) {
         this.active = 1;
@@ -103,6 +104,7 @@ constructor(
 
 ngOnInit() {
   this.sessionId = this.jwtService.getSession();
+  this.projectname = this.route.snapshot.paramMap.get('projectName');
   //  console.log(this.url1 == 'ongoing');
   //  console.log(this.url1 == 'completed');
    if (this.url1 == 'project_parties') {
