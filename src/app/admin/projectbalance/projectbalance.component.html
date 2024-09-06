@@ -335,12 +335,7 @@
                       <p class="table-heading table-new-heading">Serial No.</p>
                   </th>
 
-                  <th>
-                      <p class="table-heading table-new-heading">From</p>
-                  </th>
-                  <th>
-                      <p class="table-heading table-new-heading">To</p>
-                  </th>
+                
                   <th>
                       <p class="table-heading table-new-heading">Party Type</p>
                   </th>
@@ -360,14 +355,7 @@
           <tbody>
               <tr *ngFor="let party of salarytable; let i = index">
                   <td>{{ i + 1 }}</td>
-                  <td>
-                      <p class="table-detail text-capitalize table-detail-new">
-                          {{party.party_name1 }}</p>
-                  </td>
-                  <td>
-                      <p class="table-detail text-capitalize table-detail-new">
-                          {{party.party_name12 }}</p>
-                  </td>
+             
                   <td>
                       <p class="table-detail text-capitalize td-width table-detail-new">{{
                           party.type }}</p>
