@@ -92,7 +92,7 @@ body {
 
 .custom-scrollbar {
   overflow-y: auto;
-  height: 90vh;
+  height: 88vh;
   background-color: #fff;
 }
 
@@ -416,16 +416,17 @@ mat-toolbar {
 }
 
 mat-sidenav-container {
-  height: calc(100vh - 65px);
+  height: calc(100vh - 73px);
 }
 
 .admin-theme-logo {
   height: 57px;
   width: 100px;
+  object-fit: contain;
 }
 
 .header button {
-  margin-left: 100%;
+  margin-left: 42%;
 }
 
 .mat-drawer-side {
@@ -619,6 +620,11 @@ table.table thead.table-header th {
 }
 .tt-color {
   color:#36a292 ;
+ }
+
+ .attendance-m-heading {
+  font-size: 18px !important;
+  font-weight: 500;
  }
  .file-label-upload {
   color: gray;

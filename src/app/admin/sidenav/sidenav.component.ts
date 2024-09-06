@@ -95,6 +95,13 @@ export class SidenavComponent {
         label: 'Project',
         route: 'project',
       },
+
+      {
+        index: 3,
+        icon: 'how_to_reg',
+        label: 'Attendance',
+        route: 'attendance',
+      },
      
       {
         index: 4,

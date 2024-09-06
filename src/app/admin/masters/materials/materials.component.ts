@@ -71,7 +71,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     addeventOpen: boolean = false;
     deleteeventOpen: boolean = false;
   
-    projectiD : any
+    projectiD: any
     constructor(
       private formBuilder: FormBuilder,
       private employeeService: EmployeeService,

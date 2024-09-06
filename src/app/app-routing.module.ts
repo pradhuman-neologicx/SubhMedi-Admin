@@ -19,6 +19,7 @@ import { ProjectbalanceComponent } from './admin/projectbalance/projectbalance.c
 import { MastersComponent } from './admin/masters/masters.component';
 import { UnitsComponent } from './admin/masters/units/units.component';
 import { MaterialsComponent } from './admin/masters/materials/materials.component';
+import { AttendanceComponent } from './admin/attendance/attendance.component';
 
 const routes: Routes = [
 
@@ -46,6 +47,11 @@ const routes: Routes = [
       {
         path: 'parties',
         component: PartiesComponent,
+      },
+
+      {
+        path: 'attendance',
+        component: AttendanceComponent,
       },
 
       {
