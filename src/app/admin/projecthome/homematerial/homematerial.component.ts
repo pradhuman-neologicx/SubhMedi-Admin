@@ -136,10 +136,10 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   // Create FormGroup for each material
   createMaterialGroup(materialName:any,materialId:any): FormGroup {
     return this.formBuilder.group({
-      id: [materialId, Validators.required],
-      name: [materialName, Validators.required],
+      id: [materialId],
+      name: [materialName],
       subTotal: ['', Validators.required],
-      discount: ['', Validators.required],
+      discount: [''],
       units: ['', Validators.required],
       unitsRange: ['', Validators.required]
     });
@@ -484,6 +484,7 @@ else {
     }
     toggleAMatDetails() {
       this.showreaddmaterialDetails = !this.showreaddmaterialDetails;
+
     }
     ClickModalconent(event: Event): void {
       event.stopPropagation();
