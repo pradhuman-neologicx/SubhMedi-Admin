@@ -245,6 +245,33 @@ getAttendacneAPI(projectId:any,userId:any,Date:any): Observable<any> {
 }
 
 
+GetStaffApi(projectId:any,staff:any,): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  const body = {
+    "project_id":projectId,
+    "type": staff,
+  };
+
+  return this.apiservice.post(`get-parties-by-type`, body,  headers );
+}
+
+
+CreateWorkforceApi(body:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+;
+
+  return this.apiservice.post(`create-workforce`, body,  headers );
+}
 
 
 

@@ -2,7 +2,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { DatePipe } from '@angular/common';
 import { Component} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from 'src/app/core/services/course.service';
 import { DataService } from 'src/app/core/services/data.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
@@ -60,6 +60,7 @@ export class AttendanceComponent {
     private courseService: CourseService,
     private jwtService: JwtService,
     private router: Router,
+    private route: ActivatedRoute,
     private datePipe: DatePipe) {
     this.maxDate = new Date();
     const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
@@ -69,7 +70,9 @@ export class AttendanceComponent {
 
   AddWorkerForm!: FormGroup;
   userId: any;
+  projectID:any;
   ngOnInit(): void {
+    this.projectID = this.route.snapshot.paramMap.get('id');
     this.userId = this.jwtService.getpanelUserId();
     this.CalendarForm = this.formBuilder.group({
       Caledardate: [this.maxDate,
@@ -110,7 +113,7 @@ this.GetPartyType();
 
 
   showreset: any = false;
-  totalPresent:number = 0;
+  totalPresent:any;
   totalAbsent:number = 0;
   totalNetAmount:number = 0;
 workertable:any
@@ -123,9 +126,9 @@ workertable:any
 const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
 const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
 
-    this.courseService.getAttendacneAPI("16",this.userId,formattedDate).subscribe((response: any) => {
+    this.courseService.getAttendacneAPI(this.projectID,this.userId,formattedDate).subscribe((response: any) => {
       console.log(this.CalendarForm.get('Caledardate')?.value);
-      console.log(this.projectiD);
+      console.log(this.projectID);
       if (response.status === 200) {
         this.Attendancetable = response.data;
         this.totalPresent = response.total_present ?? 0;

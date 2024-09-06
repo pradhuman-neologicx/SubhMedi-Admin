@@ -8,9 +8,9 @@ import { DataService } from 'src/app/core/services/data.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
-  selector: 'app-homeattendance',
-  templateUrl: './homeattendance.component.html',
-  styleUrl: './homeattendance.component.scss',
+  selector: 'app-workforce',
+  templateUrl: './workforce.component.html',
+  styleUrl: './workforce.component.scss',
   animations: [
     trigger('succesfullyMesaage', [
       state('void', style({
@@ -53,7 +53,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 
 
 
-export class HomeattendanceComponent {
+export class WorkforceComponent {
   CalendarForm!: FormGroup;
   searchbarform!: FormGroup;
   maxDate: Date;
@@ -265,4 +265,3 @@ submitted: any;
 errorMessage: any;
 
 }
-

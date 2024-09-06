@@ -20,6 +20,7 @@ import { MastersComponent } from './admin/masters/masters.component';
 import { UnitsComponent } from './admin/masters/units/units.component';
 import { MaterialsComponent } from './admin/masters/materials/materials.component';
 import { AttendanceComponent } from './admin/attendance/attendance.component';
+import { WorkforceComponent } from './admin/masters/workforce/workforce.component';
 
 const routes: Routes = [
 
@@ -50,7 +51,7 @@ const routes: Routes = [
       },
 
       {
-        path: 'attendance',
+        path: 'attendance/:id',
         component: AttendanceComponent,
       },
 
@@ -157,6 +158,12 @@ const routes: Routes = [
           {
             path: 'materials',
             component: MaterialsComponent,
+           
+          },
+
+          {
+            path: 'workforce',
+            component: WorkforceComponent,
            
           },
 
