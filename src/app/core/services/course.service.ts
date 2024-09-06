@@ -324,13 +324,20 @@ MarkAttendacneapi(body:any): Observable<any> {
 }
 
 
+// update labour contractor
 
 
+UpdateLabourContratorAPI(body:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  
 
-
-
-
-
+  return this.apiservice.post(`update-attendance`, body,  headers );
+}
 
 
 

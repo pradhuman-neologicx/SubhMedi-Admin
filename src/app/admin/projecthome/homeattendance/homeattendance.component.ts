@@ -1,5 +1,5 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -73,13 +73,16 @@ export class HomeattendanceComponent {
   }
 
   AddWorkerForm!: FormGroup;
+  UpdatelabourForm!: FormGroup;
   userId: any;
   projectiD: any;
+  todayDate:any;
   ngOnInit(): void {
     // this.projectiD = this.route.snapshot.paramMap.get('id');
     this.userId = this.jwtService.getpanelUserId();
+    this.todayDate = new Date(Date.now()).toISOString().split('T')[0];
     this.CalendarForm = this.formBuilder.group({
-      Caledardate: [this.maxDate,
+      Caledardate: [this.todayDate,
       [
         Validators.required,
       ],
@@ -101,6 +104,12 @@ export class HomeattendanceComponent {
       Salary: ["", [Validators.required,]]
     });
 
+    this.UpdatelabourForm = this.formBuilder.group({
+      WorkerType: ["", [Validators.required,]],
+    });
+
+
+
     // this.GetStaffFun();
 
 
@@ -110,6 +119,18 @@ export class HomeattendanceComponent {
 
     this.GetPartyType();
     this.GetAttendanceFun();
+  }
+
+  get todayDateMax() {
+    return new Date(Date.now()).toISOString().split('T')[0];
+  }
+  newdateV:any;
+  DateChange(event:any){
+    console.log(event);
+   let newdate= formatDate(Date.parse(event),'yyyy-MM-dd','en-US');
+   this.todayDate=newdate;
+   console.log(newdate);
+   this.GetAttendanceFun();
   }
 
 
@@ -135,10 +156,10 @@ export class HomeattendanceComponent {
     // staticid "16","17","2024-09-05"
 
 
-    const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
-    const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
+    // const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
+    // const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
 
-    this.courseService.getAttendacneAPI(this.projectiD, this.userId, formattedDate).subscribe((response: any) => {
+    this.courseService.getAttendacneAPI(this.projectiD, this.userId, this.todayDate).subscribe((response: any) => {
       console.log(this.CalendarForm.get('Caledardate')?.value);
       console.log(this.projectiD);
       if (response.status === 200) {
@@ -164,6 +185,7 @@ export class HomeattendanceComponent {
   }
 
   closeModal() {
+    this.UpdateLabourContractor=false;
     this.MarkPresent = false; 
     this.Markabsent = false; 
     this.addworkeropen = false;
@@ -175,7 +197,7 @@ export class HomeattendanceComponent {
   addworkeropen: boolean = false;
 
   addworkforceopen: boolean = false;
-
+  UpdateLabourContractor: boolean = false;
 
   AddopenWorker(): void {
     this.addworkeropen = true;
@@ -184,6 +206,10 @@ export class HomeattendanceComponent {
 
   AddopenWorkeforce(): void {
     this.addworkforceopen = true;
+  }
+
+  OpenUpdatelabourcontract(){
+    this.UpdateLabourContractor = true;
   }
 
 
@@ -582,6 +608,33 @@ attendancetype:any;
 
 
 
+
+UpdateLabourContratorfun() {
+  if (this.addworkforceform.valid) {
+    const body = {
+      "worker_type": this.addworkforceform.get("WorkerType")?.value,
+      "salary": this.addworkforceform.get("Salary")?.value,
+    }
+    this.courseService.UpdateLabourContratorAPI(body).subscribe((response: any) => {
+      console.log(response);
+      if (response.status === 200) {
+        console.log("success");
+        this.closeModal();
+        this.successName = 'Create Workforce';
+        this.ngOnInit();
+        setTimeout(() => {
+          this.openSecondsuccess = true;
+          setTimeout(() => {
+            this.openSecondsuccess = false;
+          }, 1800);
+        }, 200);
+      }
+    });
+  } else {
+    this.errorMessage = 'Please fill all the details correctly.';
+    this.addworkforceform.markAllAsTouched();
+  }
+}
 
 
 
