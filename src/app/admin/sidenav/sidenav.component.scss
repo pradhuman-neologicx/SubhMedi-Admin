@@ -33,7 +33,7 @@
   .profileborder{
     height: 135px;
     width: 135px;
-    border: 6px solid #d45812;
+    border: 6px solid #36a292;
     border-radius: 50%;
     position: relative;
 }
@@ -71,7 +71,7 @@
 .shortname-big-b {
   height: 135px;
   width: 135px;
-  border: 6px solid #d45812;
+  border: 6px solid #36a292;
   border-radius: 50%;
   position: relative;
 }
@@ -94,7 +94,7 @@
 .shortname-small-b {
   height: 38px;
   width: 38px;
-  border: 3px solid #d45812;
+  border: 3px solid #36a292;
   border-radius: 50%;
   position: relative;
   margin-right:15px;
@@ -144,15 +144,15 @@
 }
 
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded .submenu-list {
-  color: #d45812 !important;
+  color: #36a292 !important;
 }
 
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded .submenu-list mat-icon {
-  color:#d45812 !important;
+  color:#36a292 !important;
 }
 
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded .submenu-list span {
-  color:#d45812 !important;
+  color:#36a292 !important;
 }
 
 :host ::ng-deep .mat-expansion-indicator::after {
@@ -161,7 +161,7 @@
 }
 
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator::after {
-  border-color: #d45812; 
+  border-color: #36a292; 
   border-style: inset !important;
 }
 
@@ -232,14 +232,17 @@ mat-sidenav-content {
 }
 
 
+
 .selected-menu-items span {
   color: #fff !important;
 }
 
 .selected-submenu span {
-  color: #fff !important;
+  color: #36a292 !important;
 }
 
 .selected-submenu .mat-icon {
-  color: #fff !important;
+  color: #36a292 !important;
 }
+
+

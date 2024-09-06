@@ -96,33 +96,33 @@ export class SidenavComponent {
         route: 'project',
       },
 
-      {
-        index: 3,
-        icon: 'how_to_reg',
-        label: 'Attendance',
-        route: 'attendance',
-      },
+      // {
+      //   index: 3,
+      //   icon: 'how_to_reg',
+      //   label: 'Attendance',
+      //   route: 'attendance',
+      // },
      
       {
-        index: 4,
+        index: 3,
         icon: 'analytics',
         label: 'parties',
         route: 'parties',
       },
 
 
-      {
-        index: 1,
-        icon: 'import_contacts',
-        label: 'Units',
-        route: 'units',
-      },
-      {
-        index: 1,
-        icon: 'import_contacts',
-        label: 'Materials',
-        route: 'materials',
-      },
+      // {
+      //   index: 1,
+      //   icon: 'import_contacts',
+      //   label: 'Units',
+      //   route: 'units',
+      // },
+      // {
+      //   index: 1,
+      //   icon: 'import_contacts',
+      //   label: 'Materials',
+      //   route: 'materials',
+      // },
 
       {
         index: 5,
@@ -144,6 +144,14 @@ export class SidenavComponent {
             route: 'masters/materials',
           },
 
+          {
+            index: 3,
+            icon: 'group',
+            label: 'Worforce',
+            route: 'masters/workforce',
+          },
+
+          
         
 
          

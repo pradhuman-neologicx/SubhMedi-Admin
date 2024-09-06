@@ -38,6 +38,7 @@ import { UnitsComponent } from './admin/masters/units/units.component';
 import { MaterialsComponent } from './admin/masters/materials/materials.component';
 import { AttendanceComponent } from './admin/attendance/attendance.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { WorkforceComponent } from './admin/masters/workforce/workforce.component';
 
 
 
@@ -67,6 +68,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     UnitsComponent,
     MaterialsComponent,
     AttendanceComponent,
+    WorkforceComponent,
 
  
   
