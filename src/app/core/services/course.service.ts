@@ -276,7 +276,34 @@ CreateWorkforceApi(body:any): Observable<any> {
 
 
 
+CreateWorkerapi(body:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+;
 
+  return this.apiservice.post(`add-party-workforce`, body,  headers );
+}
+
+
+
+GetStafflabourcontractorapi(partyid:any,projectId:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  const body = {
+    "party_id":projectId,
+    "project_id": partyid,
+  };
+
+  return this.apiservice.post(`get-workforce`, body,  headers );
+}
 
 
 

@@ -57,6 +57,7 @@ export class HomeattendanceComponent {
   CalendarForm!: FormGroup;
   searchbarform!: FormGroup;
   maxDate: Date;
+  addworkforceform!: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
     private dataService: DataService,
@@ -91,10 +92,16 @@ export class HomeattendanceComponent {
     this.AddWorkerForm = this.formBuilder.group({
       PartyType: ["", [Validators.required,]],
       StaffList: ["",],
+      Salary: ["",],
+      labourstafflist:[],
+    });
+
+    this.addworkforceform = this.formBuilder.group({
+      WorkerType: ["", [Validators.required,]],
       Salary: ["", [Validators.required,]]
     });
 
-// this.GetStaffFun();
+    // this.GetStaffFun();
 
 
 
@@ -154,16 +161,27 @@ export class HomeattendanceComponent {
   closeModal() {
     this.ViewDetailopen = false;
     this.addworkeropen = false;
+    this.addworkforceopen = false;
   }
 
 
 
   addworkeropen: boolean = false;
 
+  addworkforceopen: boolean = false;
+
 
   AddopenWorker(): void {
     this.addworkeropen = true;
   }
+
+
+  AddopenWorkeforce(): void {
+    this.addworkforceopen = true;
+  }
+
+
+
   PartTypeList: any;
 
   GetPartyType() {
@@ -174,7 +192,7 @@ export class HomeattendanceComponent {
 
         // Check if 'staff' is present in the filteredPartyTypes
         if (this.filteredPartyTypes.some((type: any) => type.name.toLowerCase() === 'staff')) {
-         
+
         }
       }
       console.log(this.PartTypeList);
@@ -193,76 +211,204 @@ export class HomeattendanceComponent {
   partyTypeName: any
   partyTypeNameupdate: any;
   staffselect(value: any) {
-    var newlist = this.PartTypeList.filter((courseType: any) => courseType.id == value);
-
-    console.log(newlist);
-    if (newlist.length > 0) {
-      this.partyTypeName = newlist[0].name;
-      if(this.partyTypeName=="staff"){
-        this.GetStaffFun();
-        this.updateEmailValidators();
-      }
+    this.partyTypeName = value
+    if (value == "staff" || value == "labour") {
+      this.GetStaffFun(value);
+      this.updateEmailValidators();
     }
+    else if (value == "labour contractor" ){
+    
+      this.GetStaffFun('labour-contractor');
+      this.updatelabourcontractor();
+    }
+
   }
 
   updateEmailValidators() {
-
+    this.AddWorkerForm.get('StaffList')?.clearValidators();
+    this.AddWorkerForm.get('Salary')?.clearValidators();
     if (this.partyTypeName === 'staff') {
       this.AddWorkerForm.get('StaffList')?.setValidators([Validators.required,]);
+      this.AddWorkerForm.get('Salary')?.setValidators([Validators.required,]);
 
     } else {
       this.AddWorkerForm.get('StaffList')?.clearValidators();
+      this.AddWorkerForm.get('Salary')?.clearValidators();
+      
 
     }
 
     this.AddWorkerForm.get('StaffList')?.updateValueAndValidity();
+    this.AddWorkerForm.get('Salary')?.updateValueAndValidity();
+  }
+
+
+
+
+
+
+
+
+
+  updatelabourcontractor() {
+    this.AddWorkerForm.get('StaffList')?.clearValidators();
+    this.AddWorkerForm.get('labourstafflist')?.clearValidators();
+    if (this.partyTypeName === 'labour contractor') {
+      this.AddWorkerForm.get('StaffList')?.setValidators([Validators.required,]);
+      this.AddWorkerForm.get('labourstafflist')?.setValidators([Validators.required,]);
+      
+
+    } else {
+      this.AddWorkerForm.get('StaffList')?.clearValidators();
+      this.AddWorkerForm.get('labourstafflist')?.clearValidators();
+      
+    }
+    this.AddWorkerForm.get('StaffList')?.updateValueAndValidity();
+    this.AddWorkerForm.get('labourstafflist')?.updateValueAndValidity();
+
   }
 
 
   // Typestafflist 
   Stafflist: any;
-  GetStaffFun() {
-    this.courseService.GetStaffApi(this.projectiD, this.partyTypeName).subscribe((response: any) => {
+  GetStaffFun(type:any) {
+    this.courseService.GetStaffApi(this.projectiD,type).subscribe((response: any) => {
       console.log(this.projectiD);
       if (response.status === 200) {
         this.Stafflist = response.parties;
       }
+       
     });
   }
+
+
+  labourcontractorstaff(id:any){
+    if (this.partyTypeName === 'labour contractor') {
+this.GetStafflabourcontractorfun(id);
+    }
+  }
+
+  labourstafflist:any;
+  GetStafflabourcontractorfun(type:any) {
+    this.courseService.GetStafflabourcontractorapi(type,this.projectiD).subscribe((response: any) => {
+      console.log(this.projectiD);
+      if (response.status === 200) {
+        this.labourstafflist= response.workforces;
+      }
+    });
+  }
+
+
+
+
+
+
+
+
   successName: any = "";
   openSecondsuccess = false;
-  CreateWorkforcefun() {
+  CreateWorkerfun() {
     if (this.AddWorkerForm.valid) {
-      const body = {
-        "worker_type":this.AddWorkerForm.get("PartyType")?.value,
-        "salary":this.AddWorkerForm.get("Salary")?.value,
+      if (this.partyTypeName  == 'staff' || this.partyTypeName  == 'labour' ) {
+
+
+        const body = {
+          "party_id": this.AddWorkerForm.get("StaffList")?.value,
+          "project_id": this.projectiD,
+          "user_id": this.userId,
+          
+          // "workforce_ids":this.AddWorkerForm.get("PartyType")?.value,
+          "amount": this.AddWorkerForm.get("Salary")?.value,
+        }
+
+        console.log(body);
+
+        this.courseService.CreateWorkerapi(body).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200) {
+            console.log("success");
+            this.closeModal();
+            this.successName = 'Create Worker';
+            this.ngOnInit();
+            this.GetAttendanceFun();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
+              setTimeout(() => {
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          }
+        });
       }
 
+      else if (this.partyTypeName  == 'labour contractor' ) {
 
 
-    this.courseService.CreateWorkforceApi(body).subscribe((response: any) => {
-      console.log(response);
-      if (response.status === 200) {
-        console.log("success");
-        this.closeModal();
-        this.successName = 'Create Worker';
-        this.ngOnInit();
-        this.GetAttendanceFun();
-        setTimeout(() => {
-          this.openSecondsuccess = true;
-          setTimeout(() => {
-            this.openSecondsuccess = false;
-          }, 1800);
-        }, 200);
+        const body = {
+          "party_id": this.AddWorkerForm.get("StaffList")?.value,
+          "project_id": this.projectiD,
+          "user_id": this.userId,
+          "workforce_ids":this.AddWorkerForm.get("labourstafflist")?.value,
+          // "amount": this.AddWorkerForm.get("Salary")?.value
+        }
+
+        console.log(body);
+
+        this.courseService.CreateWorkerapi(body).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200) {
+            console.log("success");
+            this.closeModal();
+            this.successName = 'Create Worker';
+            this.ngOnInit();
+            this.GetAttendanceFun();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
+              setTimeout(() => {
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          }
+        });
       }
-    });
-  } else {
-    this.errorMessage = 'Please fill all the details correctly.';
-    this.AddWorkerForm.markAllAsTouched();
+    } else {
+      this.errorMessage = 'Please fill all the details correctly.';
+      this.AddWorkerForm.markAllAsTouched();
+    }
   }
-}
-submitted: any;
-errorMessage: any;
+  submitted: any;
+  errorMessage: any;
+
+
+
+
+
+  CreateWorkforcefun() {
+    if (this.addworkforceform.valid) {
+      const body = {
+        "worker_type": this.addworkforceform.get("WorkerType")?.value,
+        "salary": this.addworkforceform.get("Salary")?.value,
+      }
+      this.courseService.CreateWorkforceApi(body).subscribe((response: any) => {
+        console.log(response);
+        if (response.status === 200) {
+          console.log("success");
+          this.closeModal();
+          this.successName = 'Create Workforce';
+          this.ngOnInit();
+          setTimeout(() => {
+            this.openSecondsuccess = true;
+            setTimeout(() => {
+              this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+        }
+      });
+    } else {
+      this.errorMessage = 'Please fill all the details correctly.';
+      this.addworkforceform.markAllAsTouched();
+    }
+  }
 
 }
 

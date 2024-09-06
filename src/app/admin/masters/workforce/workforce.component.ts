@@ -71,7 +71,7 @@ export class WorkforceComponent {
 
   }
 
-  AddWorkerForm!: FormGroup;
+  addworkforceform!: FormGroup;
   userId: any;
   projectiD: any;
   ngOnInit(): void {
@@ -88,9 +88,8 @@ export class WorkforceComponent {
       searchbar: ["", [Validators.required,]]
     });
 
-    this.AddWorkerForm = this.formBuilder.group({
-      PartyType: ["", [Validators.required,]],
-      StaffList: ["",],
+    this.addworkforceform = this.formBuilder.group({
+      WorkerType: ["", [Validators.required,]],
       Salary: ["", [Validators.required,]]
     });
 
@@ -194,13 +193,12 @@ export class WorkforceComponent {
   partyTypeNameupdate: any;
   staffselect(value: any) {
     var newlist = this.PartTypeList.filter((courseType: any) => courseType.id == value);
-
     console.log(newlist);
     if (newlist.length > 0) {
       this.partyTypeName = newlist[0].name;
       if(this.partyTypeName=="staff"){
         this.GetStaffFun();
-        this.updateEmailValidators();
+        // this.updateEmailValidators();
       }
     }
   }
@@ -208,14 +206,14 @@ export class WorkforceComponent {
   updateEmailValidators() {
 
     if (this.partyTypeName === 'staff') {
-      this.AddWorkerForm.get('StaffList')?.setValidators([Validators.required,]);
+      this.addworkforceform.get('StaffList')?.setValidators([Validators.required,]);
 
     } else {
-      this.AddWorkerForm.get('StaffList')?.clearValidators();
+      this.addworkforceform.get('StaffList')?.clearValidators();
 
     }
 
-    this.AddWorkerForm.get('StaffList')?.updateValueAndValidity();
+    this.addworkforceform.get('StaffList')?.updateValueAndValidity();
   }
 
 
@@ -232,22 +230,18 @@ export class WorkforceComponent {
   successName: any = "";
   openSecondsuccess = false;
   CreateWorkforcefun() {
-    if (this.AddWorkerForm.valid) {
+    if (this.addworkforceform.valid) {
       const body = {
-        "worker_type":this.AddWorkerForm.get("PartyType")?.value,
-        "salary":this.AddWorkerForm.get("Salary")?.value,
+        "worker_type":this.addworkforceform.get("WorkerType")?.value,
+        "salary":this.addworkforceform.get("Salary")?.value,
       }
-
-
-
     this.courseService.CreateWorkforceApi(body).subscribe((response: any) => {
       console.log(response);
       if (response.status === 200) {
         console.log("success");
         this.closeModal();
-        this.successName = 'Create Worker';
+        this.successName = 'Create Workforce';
         this.ngOnInit();
-        this.GetAttendanceFun();
         setTimeout(() => {
           this.openSecondsuccess = true;
           setTimeout(() => {
@@ -258,7 +252,7 @@ export class WorkforceComponent {
     });
   } else {
     this.errorMessage = 'Please fill all the details correctly.';
-    this.AddWorkerForm.markAllAsTouched();
+    this.addworkforceform.markAllAsTouched();
   }
 }
 submitted: any;

@@ -144,12 +144,12 @@ export class SidenavComponent {
             route: 'masters/materials',
           },
 
-          {
-            index: 3,
-            icon: 'group',
-            label: 'Worforce',
-            route: 'masters/workforce',
-          },
+          // {
+          //   index: 3,
+          //   icon: 'group',
+          //   label: 'Workforce',
+          //   route: 'masters/workforce',
+          // },
 
           
         
