@@ -57,14 +57,14 @@ constructor(
   const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
   this.url1 = router.url.slice(0).split(urlDelimitators)[3];
 
-
+  this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
   this.router.events.subscribe((event) => {
     if (event instanceof NavigationEnd) {
       // Could add more chars url:path?=;other possible
      
     
       const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
-      this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
+      // this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
       let currentUrlPath = event.url.slice(0).split(urlDelimitators)[3];
       if (currentUrlPath == undefined) {
         this.active = 1;

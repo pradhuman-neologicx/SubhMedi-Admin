@@ -314,7 +314,7 @@ export class EmployeeService {
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      
     });
 
     

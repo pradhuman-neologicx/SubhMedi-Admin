@@ -602,7 +602,7 @@
 
                                     <div class="col-lg-6">
                                         <label for="Balance" class="form-label form-lable-custom">Balance</label>
-                                        <input type="text" class="form-control form-input-custom"
+                                        <input type="text" class="form-control form-input-custom"  [value]="calculatebalanceTotal()"
                                             formControlName="Balance" [readOnly]="true">
                                     </div>
 
@@ -799,7 +799,7 @@
                                 <label class="d-block text-capitalize form-label form-lable-custom" for="Amount">Total
                                     Amount
                                 </label>
-                                <input type="text" class="d-block form-control form-input-custom"
+                                <input type="text" class="d-block form-control form-input-custom" [value]="calculateTotal()"
                                     formControlName="Amount" [readOnly]="true">
 
                             </div>
