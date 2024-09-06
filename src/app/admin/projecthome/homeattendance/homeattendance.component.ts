@@ -1,7 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DatePipe, formatDate } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CourseService } from 'src/app/core/services/course.service';
 import { DataService } from 'src/app/core/services/data.service';
@@ -76,7 +76,7 @@ export class HomeattendanceComponent {
   UpdatelabourForm!: FormGroup;
   userId: any;
   projectiD: any;
-  todayDate:any;
+  todayDate: any;
   ngOnInit(): void {
     // this.projectiD = this.route.snapshot.paramMap.get('id');
     this.userId = this.jwtService.getpanelUserId();
@@ -96,7 +96,7 @@ export class HomeattendanceComponent {
       PartyType: ["", [Validators.required,]],
       StaffList: ["",],
       Salary: ["",],
-      labourstafflist:[],
+      labourstafflist: [],
     });
 
     this.addworkforceform = this.formBuilder.group({
@@ -104,11 +104,8 @@ export class HomeattendanceComponent {
       Salary: ["", [Validators.required,]]
     });
 
-    this.UpdatelabourForm = this.formBuilder.group({
-      WorkerType: ["", [Validators.required,]],
-    });
 
-
+    this.getShiftfun();
 
     // this.GetStaffFun();
 
@@ -124,13 +121,13 @@ export class HomeattendanceComponent {
   get todayDateMax() {
     return new Date(Date.now()).toISOString().split('T')[0];
   }
-  newdateV:any;
-  DateChange(event:any){
+  newdateV: any;
+  DateChange(event: any) {
     console.log(event);
-   let newdate= formatDate(Date.parse(event),'yyyy-MM-dd','en-US');
-   this.todayDate=newdate;
-   console.log(newdate);
-   this.GetAttendanceFun();
+    let newdate = formatDate(Date.parse(event), 'yyyy-MM-dd', 'en-US');
+    this.todayDate = newdate;
+    console.log(newdate);
+    this.GetAttendanceFun();
   }
 
 
@@ -175,19 +172,19 @@ export class HomeattendanceComponent {
 
   ViewDetailopen: boolean = false;
 
-  OpenViewDetails(partyId:any): void {
+  OpenViewDetails(partyId: any): void {
     this.ViewDetailopen = true;
-    this.currentpartyId=partyId;
+    this.currentpartyId = partyId;
   }
 
-  closeviewdetial(){
-    this.ViewDetailopen=false;
+  closeviewdetial() {
+    this.ViewDetailopen = false;
   }
 
   closeModal() {
-    this.UpdateLabourContractor=false;
-    this.MarkPresent = false; 
-    this.Markabsent = false; 
+    this.UpdateLabourContractor = false;
+    this.MarkPresent = false;
+    this.Markabsent = false;
     this.addworkeropen = false;
     this.addworkforceopen = false;
   }
@@ -208,9 +205,7 @@ export class HomeattendanceComponent {
     this.addworkforceopen = true;
   }
 
-  OpenUpdatelabourcontract(){
-    this.UpdateLabourContractor = true;
-  }
+
 
 
 
@@ -248,8 +243,8 @@ export class HomeattendanceComponent {
       this.GetStaffFun(value);
       this.updateEmailValidators();
     }
-    else if (value == "labour contractor" ){
-    
+    else if (value == "labour contractor") {
+
       this.GetStaffFun('labour-contractor');
       this.updatelabourcontractor();
     }
@@ -266,7 +261,7 @@ export class HomeattendanceComponent {
     } else {
       this.AddWorkerForm.get('StaffList')?.clearValidators();
       this.AddWorkerForm.get('Salary')?.clearValidators();
-      
+
 
     }
 
@@ -288,12 +283,12 @@ export class HomeattendanceComponent {
     if (this.partyTypeName === 'labour contractor') {
       this.AddWorkerForm.get('StaffList')?.setValidators([Validators.required,]);
       this.AddWorkerForm.get('labourstafflist')?.setValidators([Validators.required,]);
-      
+
 
     } else {
       this.AddWorkerForm.get('StaffList')?.clearValidators();
       this.AddWorkerForm.get('labourstafflist')?.clearValidators();
-      
+
     }
     this.AddWorkerForm.get('StaffList')?.updateValueAndValidity();
     this.AddWorkerForm.get('labourstafflist')?.updateValueAndValidity();
@@ -303,29 +298,29 @@ export class HomeattendanceComponent {
 
   // Typestafflist 
   Stafflist: any;
-  GetStaffFun(type:any) {
-    this.courseService.GetStaffApi(this.projectiD,type).subscribe((response: any) => {
+  GetStaffFun(type: any) {
+    this.courseService.GetStaffApi(this.projectiD, type).subscribe((response: any) => {
       console.log(this.projectiD);
       if (response.status === 200) {
         this.Stafflist = response.parties;
       }
-       
+
     });
   }
 
 
-  labourcontractorstaff(id:any){
+  labourcontractorstaff(id: any) {
     if (this.partyTypeName === 'labour contractor') {
-this.GetStafflabourcontractorfun(id);
+      this.GetStafflabourcontractorfun(id);
     }
   }
 
-  labourstafflist:any;
-  GetStafflabourcontractorfun(type:any) {
-    this.courseService.GetStafflabourcontractorapi(type,this.projectiD).subscribe((response: any) => {
+  labourstafflist: any;
+  GetStafflabourcontractorfun(type: any) {
+    this.courseService.GetStafflabourcontractorapi(type, this.projectiD).subscribe((response: any) => {
       console.log(this.projectiD);
       if (response.status === 200) {
-        this.labourstafflist= response.workforces;
+        this.labourstafflist = response.workforces;
       }
     });
   }
@@ -341,14 +336,14 @@ this.GetStafflabourcontractorfun(id);
   openSecondsuccess = false;
   CreateWorkerfun() {
     if (this.AddWorkerForm.valid) {
-      if (this.partyTypeName  == 'staff' || this.partyTypeName  == 'labour' ) {
+      if (this.partyTypeName == 'staff' || this.partyTypeName == 'labour') {
 
 
         const body = {
           "party_id": this.AddWorkerForm.get("StaffList")?.value,
           "project_id": this.projectiD,
           "user_id": this.userId,
-          
+
           // "workforce_ids":this.AddWorkerForm.get("PartyType")?.value,
           "amount": this.AddWorkerForm.get("Salary")?.value,
         }
@@ -373,14 +368,14 @@ this.GetStafflabourcontractorfun(id);
         });
       }
 
-      else if (this.partyTypeName  == 'labour contractor' ) {
+      else if (this.partyTypeName == 'labour contractor') {
 
 
         const body = {
           "party_id": this.AddWorkerForm.get("StaffList")?.value,
           "project_id": this.projectiD,
           "user_id": this.userId,
-          "workforce_ids":this.AddWorkerForm.get("labourstafflist")?.value,
+          "workforce_ids": this.AddWorkerForm.get("labourstafflist")?.value,
           // "amount": this.AddWorkerForm.get("Salary")?.value
         }
 
@@ -446,32 +441,32 @@ this.GetStafflabourcontractorfun(id);
   // mark present 
   MarkPresent: boolean = false;
   Markabsent: boolean = false;
-  OpenMarkpresent(partyId:any,type:any) {
-    this.MarkPresent = true; 
-    this.attendancetype=type;
-    if(type==0){
-      this.currentpartyId=partyId;
+  OpenMarkpresent(partyId: any, type: any) {
+    this.MarkPresent = true;
+    this.attendancetype = type;
+    if (type == 0) {
+      this.currentpartyId = partyId;
     }
-    else{
-      this.currentworkforceId=partyId;
-    }
-  }
-
-
-  OpenMarkAbsent(partyId:any,type:any) {
-    this.Markabsent = true; 
-    this.attendancetype=type;
-    if(type==0){
-      this.currentpartyId=partyId;
-    }
-    else{
-      this.currentworkforceId=partyId;
+    else {
+      this.currentworkforceId = partyId;
     }
   }
 
-currentpartyId:any;
-currentworkforceId:any;
-attendancetype:any;
+
+  OpenMarkAbsent(partyId: any, type: any) {
+    this.Markabsent = true;
+    this.attendancetype = type;
+    if (type == 0) {
+      this.currentpartyId = partyId;
+    }
+    else {
+      this.currentworkforceId = partyId;
+    }
+  }
+
+  currentpartyId: any;
+  currentworkforceId: any;
+  attendancetype: any;
 
 
 
@@ -479,61 +474,61 @@ attendancetype:any;
 
 
   MarkAttendancepresentFun() {
-      const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
-      const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
-     var body
-      if(this.attendancetype==0){
-         body = {
-          "project_id": this.projectiD,
-          "user_id": this.userId,
-          "party_id":this.currentpartyId,
-          // "workforce_id":this.userId,
-          "date":formattedDate  ,
-          "mark_attendance": [
-            {
-              "absent": false, // true or false
-              "present": true //  true or false
-            }
-          ]          
-        }
-      }
-      else if (this.attendancetype==1){
-       body = {
+    const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
+    const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
+    var body
+    if (this.attendancetype == 0) {
+      body = {
         "project_id": this.projectiD,
         "user_id": this.userId,
-        "party_id":this.currentpartyId,
-        "workforce_id":this.currentworkforceId,
-        "date":formattedDate  ,
+        "party_id": this.currentpartyId,
+        // "workforce_id":this.userId,
+        "date": formattedDate,
         "mark_attendance": [
           {
             "absent": false, // true or false
             "present": true //  true or false
           }
-        ]          
+        ]
+      }
+    }
+    else if (this.attendancetype == 1) {
+      body = {
+        "project_id": this.projectiD,
+        "user_id": this.userId,
+        "party_id": this.currentpartyId,
+        "workforce_id": this.currentworkforceId,
+        "date": formattedDate,
+        "mark_attendance": [
+          {
+            "absent": false, // true or false
+            "present": true //  true or false
+          }
+        ]
       }
     }
     console.log(body);
-      this.courseService.MarkAttendacneapi(body).subscribe((response: any) => {
-        console.log(response);
-        if (response.status === 200) {
-          console.log("success");
-          this.closeModal();
-          this.successName = 'Mark Present';
-          this.ngOnInit();
-          this.GetAttendanceFun();
+    this.courseService.MarkAttendacneapi(body).subscribe((response: any) => {
+      console.log(response);
+      if (response.status === 200) {
+        console.log("success");
+        this.closeModal();
+        this.successName = 'Mark Present';
+        this.ngOnInit();
+        this.GetAttendanceFun();
+        setTimeout(() => {
+          this.openSecondsuccess = true;
           setTimeout(() => {
-            this.openSecondsuccess = true;
-            setTimeout(() => {
-              this.openSecondsuccess = false;
-            }, 1800);
-          }, 200);
-        }
-        else {
-          this.errorMessage = 'Please fill all the details correctly.';
-          this.addworkforceform.markAllAsTouched();
-        }
-      });
- 
+            this.openSecondsuccess = false;
+          }, 1800);
+        }, 200);
+      }
+      else {
+        this.errorMessage = 'Please fill all the details correctly.';
+        this.addworkforceform.markAllAsTouched();
+      }
+    });
+
   }
 
 
@@ -541,38 +536,38 @@ attendancetype:any;
   MarkAttendanceabsentFun() {
     const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
     const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
-   var body
-    if(this.attendancetype==0){
-       body = {
+    var body
+    if (this.attendancetype == 0) {
+      body = {
         "project_id": this.projectiD,
         "user_id": this.userId,
-        "party_id":this.currentpartyId,
+        "party_id": this.currentpartyId,
         // "workforce_id":this.userId,
-        "date":formattedDate  ,
+        "date": formattedDate,
         "mark_attendance": [
           {
             "absent": true, // true or false
             "present": false //  true or false
           }
-        ]          
+        ]
       }
     }
-    else if (this.attendancetype==1){
-     body = {
-      "project_id": this.projectiD,
-      "user_id": this.userId,
-      "party_id":this.currentpartyId,
-      "workforce_id":this.currentworkforceId,
-      "date":formattedDate  ,
-      "mark_attendance": [
-        {
-          "absent": true, // true or false
-          "present": false //  true or false
-        }
-      ]          
+    else if (this.attendancetype == 1) {
+      body = {
+        "project_id": this.projectiD,
+        "user_id": this.userId,
+        "party_id": this.currentpartyId,
+        "workforce_id": this.currentworkforceId,
+        "date": formattedDate,
+        "mark_attendance": [
+          {
+            "absent": true, // true or false
+            "present": false //  true or false
+          }
+        ]
+      }
     }
-  }
-  console.log(body);
+    console.log(body);
     this.courseService.MarkAttendacneapi(body).subscribe((response: any) => {
       console.log(response);
       if (response.status === 200) {
@@ -594,9 +589,7 @@ attendancetype:any;
       }
     });
 
-}
-
- 
+  }
 
 
 
@@ -605,36 +598,294 @@ attendancetype:any;
 
 
 
+  OpenUpdatelabourcontract(partyId: any) {
+    this.UpdateLabourContractor = true;
+    this.currentworkforceId = partyId;
+    this.UpdatelabourForm = this.formBuilder.group({
+      SalaryAmount: ["", [Validators.required,]],
+      shift: ["", [Validators.required,]],
+      amount: [0, Validators.required],
+      numberOfWorkers: [1, Validators.required],
+      // shift: [null, Validators.required],
+      overtime: this.formBuilder.group({
+        Overtime: [true],
+        amount: [0]
+      }),
+      allowances: this.formBuilder.array([])
+
+    });
+    this.addAllowance();
+
+    this.getUpdateattendanceFun();
 
 
+  }
 
 
-UpdateLabourContratorfun() {
-  if (this.addworkforceform.valid) {
-    const body = {
-      "worker_type": this.addworkforceform.get("WorkerType")?.value,
-      "salary": this.addworkforceform.get("Salary")?.value,
-    }
-    this.courseService.UpdateLabourContratorAPI(body).subscribe((response: any) => {
-      console.log(response);
+  Updatelist: any;
+  getUpdateattendanceFun() {
+    this.courseService.getUpdateattendanceApi(this.projectiD, this.userId, this.currentpartyId, this.currentworkforceId, this.todayDate).subscribe((response: any) => {
       if (response.status === 200) {
-        console.log("success");
-        this.closeModal();
-        this.successName = 'Create Workforce';
-        this.ngOnInit();
-        setTimeout(() => {
-          this.openSecondsuccess = true;
-          setTimeout(() => {
-            this.openSecondsuccess = false;
-          }, 1800);
-        }, 200);
+        this.Updatelist = response.data;
+        this.fillformdate(response.data);
+
+      }
+      console.log(this.Updatelist);
+    });
+  }
+
+  fillformdate(response: any,) {
+    console.log(response.shifts.id)
+    this.UpdatelabourForm = this.formBuilder.group({
+      SalaryAmount: [response.net_amount, [Validators.required,]],
+      shift: [response.shifts.id, [Validators.required,]],
+  
+      numberOfWorkers: [1, Validators.required],
+      // shift: [null, Validators.required],
+        Overtime: [response.over_time!=undefined?response.over_time.length>0?response.over_time.late_fine==0?true:false:true:true],
+        Hours: [response.over_time!=undefined?response.over_time.length>0?response.over_time.hours:"":""],
+        Rate: [response.over_time!=undefined?response.over_time.length>0?response.over_time.rate:"":""],
+        totalovertimeamount: [response.over_time!=undefined?response.over_time.length>0?response.over_time.amount:"":""],
+        Notes:[""],
+        attendanceimage:[""],
+  
+      allowances: this.formBuilder.array([])
+
+    });
+    this.addAllowance();
+  }
+
+
+
+
+
+  Shiftlist: any;
+  getShiftfun() {
+    this.courseService.getShiftApi().subscribe((response: any) => {
+      if (response.status === 200) {
+        this.Shiftlist = response.shifts;
       }
     });
-  } else {
-    this.errorMessage = 'Please fill all the details correctly.';
-    this.addworkforceform.markAllAsTouched();
   }
-}
+
+
+
+
+
+
+
+
+
+  UpdateLabourContratorfun() {
+    if (this.addworkforceform.valid) {
+      const body = {
+        "worker_type": this.addworkforceform.get("WorkerType")?.value,
+        "salary": this.addworkforceform.get("Salary")?.value,
+      }
+      this.courseService.UpdateLabourContratorAPI(body).subscribe((response: any) => {
+        console.log(response);
+        if (response.status === 200) {
+          console.log("success");
+          this.closeModal();
+          this.successName = 'Create Workforce';
+          this.ngOnInit();
+          setTimeout(() => {
+            this.openSecondsuccess = true;
+            setTimeout(() => {
+              this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+        }
+      });
+    } else {
+      this.errorMessage = 'Please fill all the details correctly.';
+      this.addworkforceform.markAllAsTouched();
+    }
+  }
+
+
+  get allowances(): FormArray {
+    return this.UpdatelabourForm.get('allowances') as FormArray;
+  }
+
+  addAllowance(): void {
+    this.allowances.push(this.formBuilder.group({
+      allowance: [false],
+      Description:[''],
+      amount: [0, Validators.required]
+    }));
+  }
+
+  removeAllowance(index: number): void {
+    this.allowances.removeAt(index);
+  }
+
+  calculateText(): string {
+    const formValues = this.UpdatelabourForm.value;
+    const totalText = `Net Amount = ${this.calculate()} ` +
+      `(${formValues.amount} * ${formValues.numberOfWorkers} * ${formValues.shift ?? ''} ` +
+      `${formValues.overtime.over_time ? ((formValues.overtime.over_time === true || formValues.overtime.over_time === 1) ? '+ ' : '- ') + formValues.overtime.amount : ''})` +
+      this.allowanceText();
+    return totalText;
+  }
+
+  allowanceText(): string {
+    let v = '';
+    const allowances = this.UpdatelabourForm.get('allowances')?.value;
+    allowances.forEach((allowance: any) => {
+      v += `${allowance.allowance ? ((allowance.allowance === true || allowance.allowance === 1) ? '+ ' : '- ') + allowance.amount : ''}`;
+    });
+    return v;
+  }
+
+  calculateAllowance(): number {
+    let amountOvertime = 0;
+    let minus = 0;
+    const allowances = this.UpdatelabourForm.get('allowances')?.value;
+
+    allowances.forEach((allowance: any) => {
+      if (allowance.allowance) {
+        amountOvertime += parseFloat(allowance.amount) || 0;
+      } else {
+        minus += parseFloat(allowance.amount) || 0;
+      }
+    });
+
+    const newAllowance = amountOvertime - minus;
+    return newAllowance;
+  }
+
+  calculate(): number {
+    const formValues = this.UpdatelabourForm.value;
+    let amountOvertime = 0;
+    let amountMinus = 0;
+
+    if (formValues.overtime) {
+      if (formValues.overtime.over_time === true || formValues.overtime.over_time === 1) {
+        amountOvertime = parseFloat(formValues.overtime.amount) || 0;
+      } else {
+        amountMinus = parseFloat(formValues.overtime.amount) || 0;
+      }
+    }
+
+    const newOverValue = amountOvertime - amountMinus;
+    return (formValues.numberOfWorkers * (formValues.shift ?? 0) * formValues.amount) + newOverValue + this.calculateAllowance();
+  }
+
+
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
+  @Output() fileSelected = new EventEmitter<File>();
+  imageUrl: string | ArrayBuffer | null = null;
+  profileimage!: any;
+  onDragOver(event: any): void {
+    event.preventDefault();
+  }
+
+  onDrop(event: any): void {
+    event.preventDefault();
+    const file: File = event.dataTransfer.files[0];
+    if (file) {
+      this.fileSelected.emit(file);
+      this.profileimage = file;
+      // Preview image
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.fileSelected.emit(file);
+      this.profileimage = file;
+      // Preview image
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  clearFile(event: MouseEvent): void {
+    event.stopPropagation();
+    this.imageUrl = null;
+    this.profileimage = undefined;
+    this.fileInput.nativeElement.value = '';
+  }
+
+  clearFileWithoutevent(): void {
+    this.imageUrl = null;
+    this.profileimage = undefined;
+    this.fileInput.nativeElement.value = '';
+  }
+
+
+
+  onDragLeave(event: any): void {
+    event.preventDefault();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

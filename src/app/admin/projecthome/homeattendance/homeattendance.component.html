@@ -142,8 +142,7 @@
 
                     <!-- Present Status -->
                     <td>
-                        <p class="table-detail text-capitalize ms-2 table-detail-new"
-                        [ngClass]="{
+                        <p class="table-detail text-capitalize ms-2 table-detail-new" [ngClass]="{
                             'text-success': attendance.partyAttendance?.present, 
                             'text-muted': !attendance.partyAttendance?.present
                           }">
@@ -153,8 +152,7 @@
 
                     <!-- Absent Status -->
                     <td>
-                        <p class="table-detail text-capitalize ms-2 table-detail-new"
-                        [ngClass]="{
+                        <p class="table-detail text-capitalize ms-2 table-detail-new" [ngClass]="{
                             'text-danger': attendance.partyAttendance?.absent, 
                             'text-muted': !attendance.partyAttendance?.absent
                           }">
@@ -164,18 +162,23 @@
 
                     <td>
                         <p>
-                            <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu"
-                                >
+                            <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
 
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="OpenViewDetails(attendance.party_id);" *ngIf="attendance.workforces && attendance.workforces.length > 0">View Details</button>
-                                <button mat-menu-item (click)="OpenMarkpresent(attendance.party_id,0)" *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark Present</button>
-                                <button mat-menu-item (click)="OpenMarkAbsent(attendance.party_id,0);" *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark Absent</button>
+                                <button mat-menu-item (click)="OpenViewDetails(attendance.party_id);"
+                                    *ngIf="attendance.workforces && attendance.workforces.length > 0">View
+                                    Details</button>
+                                <button mat-menu-item (click)="OpenMarkpresent(attendance.party_id,0)"
+                                    *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark
+                                    Present</button>
+                                <button mat-menu-item (click)="OpenMarkAbsent(attendance.party_id,0);"
+                                    *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark
+                                    Absent</button>
                             </mat-menu>
 
-                            
+
                         </p>
                     </td>
 
@@ -259,35 +262,35 @@
 
                                 <td>
                                     <p class="table-detail text-capitalize ms-2 table-detail-new">
-                                      <button 
-                                        class="btn custom-btn" 
-                                        [ngClass]="{'btn-primary': worker.present, 'btn-default': !worker.present}" 
-                                        (click)="OpenMarkpresent(worker.id,1)">
-                                        Present
-                                      </button>
+                                        <button class="btn custom-btn"
+                                            [ngClass]="{'btn-primary': worker.present, 'btn-default': !worker.present}"
+                                            (click)="OpenMarkpresent(worker.id,1)">
+                                            Present
+                                        </button>
                                     </p>
-                                  </td>
-                                  
-                                  <!-- Absent Status -->
-                                  <td>
-                                    <button 
-                                      class="btn custom-btn" 
-                                      [ngClass]="{'btn-danger': worker.absent, 'btn-default': !worker.absent}" 
-                                      (click)="OpenMarkAbsent(worker.id,1);">
-                                      Absent
+                                </td>
+
+                                <!-- Absent Status -->
+                                <td>
+                                    <button class="btn custom-btn"
+                                        [ngClass]="{'btn-danger': worker.absent, 'btn-default': !worker.absent}"
+                                        (click)="OpenMarkAbsent(worker.id,1);">
+                                        Absent
                                     </button>
-                                  </td>
-                                  
+                                </td>
+
 
 
                                 <td>
                                     <p>
-                                        <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu" *ngIf="worker.present || worker.absent">
+                                        <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu"
+                                            *ngIf="worker.present || worker.absent">
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
 
                                         <mat-menu #menu="matMenu">
-                                            <button mat-menu-item (click)="OpenUpdatelabourcontract()">Update Details</button>
+                                            <button mat-menu-item (click)="OpenUpdatelabourcontract(worker.id)">Update
+                                                Details</button>
                                         </mat-menu>
                                     </p>
                                 </td>
@@ -383,15 +386,15 @@
                             </div>
 
 
-                            <div class="col-lg-12 col-md-12 mb-3"
-                            *ngIf="partyTypeName=='labour contractor' ">
+                            <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeName=='labour contractor' ">
 
                                 <label class="d-block text-capitalize form-label form-lable-custom"
                                     for="labourstafflist">Select Workforce</label>
 
                                 <ng-select [items]="labourstafflist" class="d-block" [appendTo]="'body'"
                                     bindLabel="worker_type" bindValue="id" [multiple]="true"
-                                    formControlName="labourstafflist" groupBy="selectedAllGroup" [selectableGroup]="true"
+                                    formControlName="labourstafflist" groupBy="selectedAllGroup"
+                                    [selectableGroup]="true"
                                     [ngClass]="{ 'is-invalid': AddWorkerForm.controls['labourstafflist'].errors && (AddWorkerForm.controls['labourstafflist'].touched || AddWorkerForm.controls['labourstafflist'].dirty) }">
 
                                     <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
@@ -526,38 +529,28 @@
 
 <!-- mark present -->
 
-<div *ngIf="MarkPresent"
-    class=" your-animation-class modal-container"
-    aria-labelledby="modal-title" role="dialog"
+<div *ngIf="MarkPresent" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
     aria-modal="true">
     <div class="modal-content modal-content-30" [@fadeIn]>
         <div>
             <div class="card">
-                <div
-                    class="card-header bg-white d-flex justify-content-between algin-items-center">
+                <div class="card-header bg-white d-flex justify-content-between algin-items-center">
                     <h5 class="modal-title pt-1">Mark present</h5>
-                    <button
-                        class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
-                        type="button" (click)="closeModal()"><i
-                            class="fa-solid fa-xmark"></i></button>
+                    <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                        (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="modal-content-width mb-2">
                     <div class="card-body text-center ">
-                        <span class="mark-success"><i
-                                class="fa-solid fa-check"></i></span>
+                        <span class="mark-success"><i class="fa-solid fa-check"></i></span>
                         <p class="text-capitalize mb-0 pt-2 mark-text">Are You
                             sure ?</p>
                         <p class="mark-text-light">You want to Mark as
                             Present</p>
                     </div>
                     <div class="text-end border-top pt-3">
-                        <button
-                            class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600"
-                            type="button"
+                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
                             (click)="closeModal()">No</button>
-                        <button
-                            class="btn btn-primary main-btnfs px-4 py-2 me-3"
-                            type="submit"
+                        <button class="btn btn-primary main-btnfs px-4 py-2 me-3" type="submit"
                             (click)="MarkAttendancepresentFun()">Yes</button>
                     </div>
 
@@ -570,38 +563,28 @@
 </div>
 
 
-<div *ngIf="Markabsent"
-    class=" your-animation-class modal-container"
-    aria-labelledby="modal-title" role="dialog"
+<div *ngIf="Markabsent" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
     aria-modal="true">
     <div class="modal-content modal-content-30" [@fadeIn]>
         <div>
             <div class="card">
-                <div
-                    class="card-header bg-white d-flex justify-content-between algin-items-center">
+                <div class="card-header bg-white d-flex justify-content-between algin-items-center">
                     <h5 class="modal-title pt-1">Mark Absent</h5>
-                    <button
-                        class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
-                        type="button" (click)="closeModal()"><i
-                            class="fa-solid fa-xmark"></i></button>
+                    <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                        (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="modal-content-width mb-2">
                     <div class="card-body text-center ">
-                        <span class="mark-cross"><i
-                                class="fa-solid fa-check"></i></span>
+                        <span class="mark-cross"><i class="fa-solid fa-check"></i></span>
                         <p class="text-capitalize mb-0 pt-2 mark-text">Are You
                             sure ?</p>
                         <p class="mark-text-light">You want to Mark as
                             Absent</p>
                     </div>
                     <div class="text-end border-top pt-3">
-                        <button
-                            class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600"
-                            type="button"
+                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
                             (click)="closeModal()">No</button>
-                        <button
-                            class="btn btn-primary main-btnfs px-4 py-2 me-3"
-                            type="submit"
+                        <button class="btn btn-primary main-btnfs px-4 py-2 me-3" type="submit"
                             (click)="MarkAttendanceabsentFun()">Yes</button>
                     </div>
 
@@ -616,14 +599,14 @@
 
 <!-- UpdateLabourContractor ****************************************** -->
 
-<div *ngIf="UpdateLabourContractor" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
-    aria-modal="true">
+<div *ngIf="UpdateLabourContractor" class=" your-animation-class modal-container" aria-labelledby="modal-title"
+    role="dialog" aria-modal="true">
     <div class="modal-content modal-content-50" [@fadeIn]>
         <div>
             <form [formGroup]="UpdatelabourForm">
                 <div class="card">
                     <div class="card-header bg-white d-flex justify-content-between algin-items-center">
-                        <h5 class="modal-title pt-1">Update Worker</h5>
+                        <h5 class="modal-title pt-1">Update Attendance</h5>
                         <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
                             type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
                     </div>
@@ -632,24 +615,218 @@
 
                     <div class="modal-content-width card-body mb-0">
                         <div class="row">
+
+                            <div>
+                                <p class="class=suggest-content-validation text-primary"></p>
+                            </div>
+
+
+                            
+
+
                             <div class="col-lg-12 col-md-12 mb-3">
-                                <label for="PartyType" class="form-label form-lable-custom">Party Type</label>
-                                <select type="text" class="d-block  form-select form-control form-input-custom"
-                                    formControlName="PartyType" #PartyType (change)="staffselect(PartyType.value)"
-                                    [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['PartyType'].errors && (UpdatelabourForm.controls['PartyType'].touched || UpdatelabourForm.controls['PartyType'].dirty) }">
-                                    <option *ngFor="let party of filteredPartyTypes" [value]="party.name">
-                                        {{ party.name }}
-                                    </option>
-                                </select>
+                                <label for="SalaryAmount" class="form-label form-lable-custom">Salary Amount</label>
+                                <input type="text" class="d-block   form-control form-input-custom"
+                                    formControlName="SalaryAmount"
+                                    [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['SalaryAmount'].errors && (UpdatelabourForm.controls['SalaryAmount'].touched || UpdatelabourForm.controls['SalaryAmount'].dirty) }">
                                 <div class="text-danger error-message"
-                                    *ngIf="UpdatelabourForm.controls['PartyType'].errors && (UpdatelabourForm.controls['PartyType'].touched || UpdatelabourForm.controls['PartyType'].dirty)">
+                                    *ngIf="UpdatelabourForm.controls['SalaryAmount'].errors && (UpdatelabourForm.controls['SalaryAmount'].touched || UpdatelabourForm.controls['SalaryAmount'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="UpdatelabourForm.controls['PartyType'].errors['required']">ParTy Type
+                                        *ngIf="UpdatelabourForm.controls['SalaryAmount'].errors['required']">Salary
+                                        Amount
 
                                         is Requried</p>
                                 </div>
+                                <p class="suggest-content-validation text-primary"> *The change is day wage will only
+                                    affect the day selected alone.</p>
                             </div>
 
+                            <div class="col-lg-12 col-md-12 mb-4">
+                                <label for="numberOfWorkers">No. of Workers:</label>
+                                <input id="numberOfWorkers" type="number" formControlName="numberOfWorkers"
+                                    class="form-control form-control form-input-custom">
+                            </div>
+
+
+                            <div class="col-lg-6 col-md-6 mb-4">
+                                <label class="form-label mb-3 ms-2 mt-1" for="shift">Shift</label>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <div class="form-check ms-2" *ngFor="let detail of Shiftlist">
+                                        <div class="button-container">
+                                            <label class="form-check-label button-label">
+                                                <input class="form-check-input" type="radio" name="shift"
+                                                    formControlName="shift" id="CategoryGen" [value]="detail.id"
+                                                    [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['shift'].errors && (UpdatelabourForm.controls['shift'].touched || UpdatelabourForm.controls['shift'].dirty) }">
+                                                <span>{{detail.name}}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="text-danger"
+                                    *ngIf="UpdatelabourForm.controls['shift'].errors && (UpdatelabourForm.controls['shift'].touched || UpdatelabourForm.controls['shift'].dirty)">
+                                    <p class="fw-light fs-5 text-danger text-end mt-3"
+                                        *ngIf="UpdatelabourForm.controls['shift'].errors['required']">No
+                                        Shift is required</p>
+                                </div>
+
+                            </div>
+
+                            <div>
+                                
+
+
+
+                                <div class="form-group">
+
+                                    <div class="d-flex  mt-3 mb-3">
+                                        <div class="form-check ms-2">
+                                            <label class="form-check-label" for="Overtime">
+                                                <input class="form-check-input" type="radio" name="Overtime"
+                                                    formControlName="Overtime" [value]="true" checked>
+                                                Over Time
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check  ms-4">
+                                            <label class="form-check-label" for="Overtime">
+                                                <input class="form-check-input" type="radio" name="Overtime"
+                                                    formControlName="Overtime" [value]="false">
+                                                Late Fine
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 p-0 ">
+                                        <div class="row mx-0 d-flex algin-items-center">
+                                            <div class="col-lg-5">
+                                                <label for="Hours">Hours:</label>
+                                                <input type="text" formControlName="Hours" class="form-control">
+                                            </div>
+
+                                            <div class="col-lg-5">
+                                                <label for="Rate">Hourly Rate:</label>
+                                                <input type="number" formControlName="Rate" class="form-control">
+                                            </div>
+
+                                            <div class="col-lg-2 mt-4">
+                                                <input type="number" formControlName="totalovertimeamount"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div formArrayName="allowances"
+                                    *ngFor="let allowance of allowances.controls; let i=index">
+                                    <div [formGroupName]="i" class="form-group">
+                                        <div class="d-flex  mt-3 mb-3">
+                                            <div class="form-check ms-2">
+                                                <label class="form-check-label" for="allowance">
+                                                    <input class="form-check-input" type="radio" name="allowance"
+                                                        formControlName="allowance" [value]="true">
+                                                    Allowance
+                                                </label>
+                                            </div>
+
+                                            <div class="form-check  ms-4">
+                                                <label class="form-check-label" for="allowance">
+                                                    <input class="form-check-input" type="radio" name="allowance"
+                                                        formControlName="allowance" [value]="false">
+                                                    Deduction
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 p-0">
+                                            <div class="row mx-0">
+                                                <div class="col-lg-6">
+                                                    <label for="allowanceAmount{{i}}">Description:</label>
+                                                    <input id="allowanceAmount{{i}}" type="text"
+                                                        formControlName="Description" class="form-control">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <label for="allowanceAmount{{i}}">Amount:</label>
+                                                    <input id="allowanceAmount{{i}}" type="number"
+                                                        formControlName="amount" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <button type="button" class="btn btn-danger mt-3 me-3"
+                                                (click)="removeAllowance(i)">Remove</button>
+                                            <button type="button" class="btn btn-primary mt-3 me-3"
+                                                (click)="addAllowance()">Add </button>
+                                            <button type="submit" class="btn btn-primary mt-3">Calculate Amount</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="result">
+                                    <!-- <p>{{ calculateText() }}</p> -->
+                                </div>
+
+
+                                <div class="col-lg-12 col-md-12 mb-3">
+                                    <label for="Notes" class="form-label form-lable-custom">Notes</label>
+                                    <input type="text" class="d-block   form-control form-input-custom"
+                                        formControlName="Notes"
+                                        [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['Notes'].errors && (UpdatelabourForm.controls['Notes'].touched || UpdatelabourForm.controls['Notes'].dirty) }">
+                                    <div class="text-danger error-message"
+                                        *ngIf="UpdatelabourForm.controls['Notes'].errors && (UpdatelabourForm.controls['Notes'].touched || UpdatelabourForm.controls['Notes'].dirty)">
+                                        <p class="fw-light text-danger"
+                                            *ngIf="UpdatelabourForm.controls['Notes'].errors['required']">Notes Is Required
+                                            </p>
+                                    </div>
+
+                                </div>
+
+
+                                
+
+                                <div class="col-lg-4 col-md-4" (drop)="onDrop($event)"
+                                (dragover)="onDragOver($event)"
+                                (dragleave)="onDragLeave($event)">
+                                <label
+                                  class="d-block text-capitalize form-label form-lable-custom"
+                                  for="attendanceimage">Labour Photos Add
+                                  pic</label>
+                                <label for="fileInput" class="file-label" *ngIf="!imageUrl">
+                                  <span><img src="./assets/upload-icon.png"
+                                      class="upload-icon" alt></span>
+                                  <p class="text-gray-500"> Drag and drop or browse to choose
+                                    a file </p>
+                                </label>
+                                <div class="custom-file-upload position-relative"
+                                  (click)="fileInput.click()">
+                                  <input type="file" id="fileInput" #fileInput
+                                    accept="image/jpeg, image/jpg, image/png"
+                                    (change)="onFileSelected($event)"
+                                    formControlName="attendanceimage"
+                                    [ngClass]="{ 'is-invalid': UpdatelabourForm.controls['attendanceimage'].errors && (UpdatelabourForm.controls['attendanceimage'].touched || UpdatelabourForm.controls['attendanceimage'].dirty) }">
+                                  <button *ngIf="imageUrl" (click)="clearFile($event)"
+                                    class="remove-button">
+                                    <span><i class="fa-solid fa-xmark cross-icon"></i></span>
+                                  </button>
+              
+                                  <div *ngIf="imageUrl" class="image-container">
+                                    <div class="black-layer"></div>
+                                    <img [src]="imageUrl" alt="Profile Preview"
+                                      class="Profile-image" />
+                                  </div>
+                                </div>
+                                <!-- <div class="text-danger error-message"
+                                  *ngIf="Employerform.controls['attendanceimage'].errors && (Employerform.controls['attendanceimage'].touched || Employerform.controls['attendanceimage'].dirty)">
+                                  <p class="fw-light  text-danger"
+                                    *ngIf="Employerform.controls['attendanceimage'].errors['required']">
+                                    Profile is required</p>
+                                </div> -->
+                              </div>
+                                
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer text-end me-4 mb-3">

@@ -340,9 +340,36 @@ UpdateLabourContratorAPI(body:any): Observable<any> {
 }
 
 
+getUpdateattendanceApi(ProjecId:any,userId:any,partyId:any,workforceid:any,date:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  const body = {
+    "project_id":ProjecId,
+    "user_id": userId,
+    "party_id":partyId,
+    "workforce_id":workforceid,
+    "date":date
+  };
+
+  return this.apiservice.post(`edit-attendance`, body,  headers );
+}
 
 
 
+
+
+getShiftApi() {
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  return this.apiservice.get("shifts",headers);
+}
 
 
 
