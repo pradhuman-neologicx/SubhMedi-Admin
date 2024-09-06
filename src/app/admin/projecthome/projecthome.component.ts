@@ -126,15 +126,15 @@ ngOnInit() {
 }
 NavigationTab(type: any) {
   if (type == 1) {
-    this.router.navigate(['/project_home/'+this.projectiD+'/'+this.projectname+'/project_parties']);
+    this.router.navigate(['/project_home/'+this.projectiD+'/project_parties']);
   } else if (type == 2) {
-    this.router.navigate(['/project_home/'+this.projectiD+'/'+this.projectname+'/project_transactions']);
+    this.router.navigate(['/project_home/'+this.projectiD+'/project_transactions']);
   } 
   else if (type == 3) {
-    this.router.navigate(['/project_home/'+this.projectiD+'/'+this.projectname+'/project_attendance']);
+    this.router.navigate(['/project_home/'+this.projectiD+'/project_attendance']);
   }
   else if (type == 4) {
-    this.router.navigate(['/project_home/'+this.projectiD+'/'+this.projectname+'/project_material']);
+    this.router.navigate(['/project_home/'+this.projectiD+'/project_material']);
   }
 }
 Active(item: any) {
