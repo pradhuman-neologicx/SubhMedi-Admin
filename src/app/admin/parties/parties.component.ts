@@ -1,6 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Createparty, Updateparty } from 'src/app/core/model-class/parties';
 import { Validations } from 'src/app/core/model-class/validations';
 import { CourseService } from 'src/app/core/services/course.service';
@@ -57,6 +58,7 @@ export class PartiesComponent {
     private courseService: CourseService,
     private jwtService: JwtService,
     private employeeService: EmployeeService,
+    private router: Router
   ) { }
   validation: Validations = new Validations();
   sessionId: any;
@@ -115,7 +117,7 @@ export class PartiesComponent {
       BankAddress: [""],
       UPI: [""],
     });
-
+ this.Type =  this.jwtService.getType();
 
     this.Getpartytablefun();
     this.getState();
@@ -176,7 +178,15 @@ export class PartiesComponent {
   resetsearchbar() {
     window.location.reload();
   }
-
+  viewmmodal(id: any,partyname:any) {
+    // Log the project_id to the console
+    console.log('party ID:', id);
+    
+    // Navigate to the desired route with the project_id
+    this.router.navigate(['/viewparties', id ], {
+      queryParams: { partyname: partyname },
+    }); 
+  }
 
   // onTableSizeChange(event: any): void {
   //   this.tableSize = event.target.value;
@@ -563,6 +573,7 @@ export class PartiesComponent {
 
   // edit party 
   PartyId!: number;
+  Type!: any;
   Editpartyopen: boolean = false;
 
 

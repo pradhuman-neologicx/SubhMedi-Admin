@@ -97,7 +97,31 @@ export class EmployeeService {
   }
   
 
-
+  getPartiesproject( partyId: any,search:any, date_range?: any ): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Retrieving the user ID
+    const token = this.jwtService.getToken(); // Retrieving the token
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    // Creating the body object with optional fields
+    const body = {
+      'user_id': user,
+    
+      'party_id': partyId,
+          "search":search!=undefined?search:"",
+      ...(date_range ? { 'date_range': date_range } : {}),
+      
+    
+     
+     
+    };
+    console.log('Request Body:', body);
+  
+    // Sending the POST request with the constructed body and headers
+    return this.apiservice.post('party-projects', body, headers);
+  }
 
 
 

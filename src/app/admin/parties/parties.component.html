@@ -275,9 +275,16 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
 
-                            <mat-menu #menu="matMenu">
-                                <button mat-menu-item>View Details</button>
-                                <button mat-menu-item (click)="OpenEditModal(party)">Edit Details</button>
+                            <mat-menu #menu="matMenu" >
+                                <button mat-menu-item (click)="viewmmodal(party.id,party.name)">View Details</button>
+                                <!-- <button mat-menu-item  (click)="OpenEditModal(party)"  *ngIf="type== 'staff'>Edit Details</button> -->
+                                <button 
+                                mat-menu-item 
+                                *ngIf="Type == 'admin'" 
+                                (click)="OpenEditModal(party)">
+                                Edit Details
+                              </button>
+                              
                             </mat-menu>
                         </p>
                     </td>
@@ -687,7 +694,7 @@
 
 
 <!-- party edit form  -->
-<div *ngIf="Editpartyopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+<div *ngIf="Editpartyopen "  class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
     aria-modal="true">
     <div class="modal-content modal-content-50" [@fadeIn]>
         <div>
