@@ -79,6 +79,7 @@ export class HomeattendanceComponent {
   userId: any;
   projectiD: any;
   todayDate: any;
+  FilterForm!: FormGroup;
   ngOnInit(): void {
     // this.projectiD = this.route.snapshot.paramMap.get('id');
     this.userId = this.jwtService.getpanelUserId();
@@ -90,9 +91,14 @@ export class HomeattendanceComponent {
       ],
       ],
     },);
-    this.searchbarform = this.formBuilder.group({
-      searchbar: [""],
-      Filter: [""],
+    // this.searchbarform = this.formBuilder.group({
+    //   searchbar: [""],
+    //   Filter: [""],
+    // });
+    this.FilterForm = this.formBuilder.group({
+      filter: [''],
+      Transactiontype: [''],
+    
     });
 
     this.AddWorkerForm = this.formBuilder.group({
@@ -148,9 +154,10 @@ export class HomeattendanceComponent {
   }
 
 
-  resetsearchbar() {
+  resetFilter() {
     window.location.reload();
   }
+    
 
 
   showreset: any = false;
@@ -167,7 +174,7 @@ export class HomeattendanceComponent {
     // const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
     // const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
     if (type == 0) {
-      this.employeeService.getattendace(this.projectiD, this.todayDate,  this.searchbarform.get("Filter")?.value, this.searchbarform.get("searchbar")?.value,).subscribe((response: any) => {
+      this.employeeService.getattendace(this.projectiD, this.todayDate,  this.FilterForm.get('Transactiontype')?.value, this.FilterForm.get("filter")?.value??"").subscribe((response: any) => {
         console.log(this.CalendarForm.get('Caledardate')?.value);
         console.log(this.projectiD);
         if (response.status === 200) {
@@ -180,8 +187,8 @@ export class HomeattendanceComponent {
         }
       });
     } else {
-      // if (this.searchbarform.valid) {
-      this.employeeService.getattendace(this.projectiD,this.todayDate,this.searchbarform.get("Filter")?.value, this.searchbarform.get("searchbar")?.value, ).subscribe((response: any) => {
+      if (this.FilterForm.valid) {
+      this.employeeService.getattendace(this.projectiD,this.todayDate,this.FilterForm.get('Transactiontype')?.value, this.FilterForm.get("filter")?.value??"" ).subscribe((response: any) => {
         console.log(this.CalendarForm.get('Caledardate')?.value);
         console.log(this.projectiD);
         if (response.status === 200) {
@@ -193,8 +200,11 @@ export class HomeattendanceComponent {
           this.workertable = this.Attendancetable.flatMap((attendance: any) => attendance.workforces || []);
         }
       });
+    } else {
+      // Mark form fields as touched to display validation errors
+      this.FilterForm.markAllAsTouched();
     }
-    // }
+    }
   }
 
   ViewDetailopen: boolean = false;

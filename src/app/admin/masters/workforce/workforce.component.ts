@@ -101,7 +101,7 @@ export class WorkforceComponent {
 
 
     this.GetPartyType();
-    this.GetAttendanceFun();
+    // this.GetAttendanceFun();
   }
 
 
@@ -123,26 +123,7 @@ export class WorkforceComponent {
   workertable: any
   Attendancetable: any;
   // projectiD: any;
-  GetAttendanceFun() {
-    // staticid "16","17","2024-09-05"
 
-
-    const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
-    const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
-
-    this.courseService.getAttendacneAPI(this.projectiD, this.userId, formattedDate).subscribe((response: any) => {
-      console.log(this.CalendarForm.get('Caledardate')?.value);
-      console.log(this.projectiD);
-      if (response.status === 200) {
-        this.Attendancetable = response.data;
-        this.totalPresent = response.total_present ?? 0;
-        this.totalAbsent = response.total_absent ?? 0;
-        this.totalNetAmount = response.total_net_amount ?? 0;
-        console.log(this.totalPresent);
-        this.workertable = this.Attendancetable.flatMap((attendance: any) => attendance.workforces || []);
-      }
-    });
-  }
 
   ViewDetailopen: boolean = false;
 
