@@ -4,10 +4,13 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { JwtService } from './jwt.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiService {
-  constructor(private http: HttpClient, private jwtService: JwtService) { }
+  constructor(private http: HttpClient, private jwtService: JwtService,
+    private router: Router
+  ) { }
 
   private formatErrors(error: any) {
     let errorMessage = "";
@@ -21,6 +24,47 @@ export class ApiService {
     console.log(errorMessage);
     return throwError(error.error);
   }
+
+  // private formatErrors(error: any) {
+  //   const errorMessage = this.handleResponseError(error);
+  //   console.log(errorMessage);
+  //   return throwError(() => errorMessage);
+  // }
+
+  // private handleResponseError(error: any): string {
+  //   let errorMessage = '';
+
+  //   if (error.error instanceof ErrorEvent) {
+  //     // Client-side error
+  //     errorMessage = `Error: ${error.error.message}`;
+  //   } else {
+  //     // Server-side error
+  //     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+
+  //     if (
+  //       error.status === 422 &&
+  //       error.error.message &&
+  //       (error.error.message.includes('The selected user id is invalid') ||
+  //         error.error.message.includes('Your account has been deactivated') ||
+  //         error.error.message.includes('Your token has been expired') ||
+  //         error.error.message.includes(
+  //           'Your token has been expired. Please login again.'
+  //         ))
+  //     ) {
+  //       // Log user out and redirect to home route if token is expired
+  //       this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+  //       this.router.navigate(['/sign_in']); // Navigate to home route
+  //       alert(error.error.message); // Show alert with error message
+       
+  //     } else if (error.error && error.error.message) {
+  //       alert(error.error.message); // Show alert with error message
+  //     } else {
+  //       alert('Something went wrong');
+  //     }
+  //   }
+
+  //   return errorMessage;
+  // }
   // search(term: string) {
   //   if (term === "") {
   //     return of([]);
