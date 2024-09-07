@@ -252,11 +252,14 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     materialpurchasetable: any
     subcontractortable: any
     
-    opening_balance: number = 0
+    opening_balance: any
     is_active: any
     sum_in:number = 0
     sum_out: number = 0
     balance: number = 0
+    amount: any
+    will_pay: any
+    will_receive: any
   
     dateValidator(formGroup: any) {
       const StartDate = formGroup.get('StartDate').value;
@@ -283,10 +286,15 @@ import { JwtService } from 'src/app/core/services/jwt.service';
             this.FilterForm.get('daterange')?.value)
           .subscribe(
             (response: any) => {
+              this.opening_balance = {
+                amount: response.opening_balance.amount,
+                will_pay: response.opening_balance.will_pay,
+                will_receive: response.opening_balance.will_receive,
+              };
               // Handling the response data
-              this.opening_balance = response.opening_balance.amount ;
-              this.opening_balance = response.opening_balance.will_pay ;
-              this.opening_balance = response.opening_balance.will_receive ;
+              // this.opening_balance = response.opening_balance.amount ;
+              // this.opening_balance = response.opening_balance.will_pay ;
+              // this.opening_balance = response.opening_balance.will_receive ;
               this.is_active = response.is_active ;
               this.sum_in = response.sum_in ;
               this.sum_out = response.sum_out ;
@@ -313,9 +321,14 @@ else {
             .subscribe(
               (response: any) => {
                 // Handling the response data
-                this.opening_balance = response.opening_balance.amount ;
-                this.opening_balance = response.opening_balance.will_pay ;
-                this.opening_balance = response.opening_balance.will_receive ;
+                this.opening_balance = {
+                  amount: response.opening_balance.amount,
+                  will_pay: response.opening_balance.will_pay,
+                  will_receive: response.opening_balance.will_receive,
+                };
+                // this.opening_balance = response.opening_balance.amount ;
+                // this.opening_balance = response.opening_balance.will_pay ;
+                // this.opening_balance = response.opening_balance.will_receive ;
                 this.is_active = response.is_active ;
                 this.sum_in = response.sum_in ;
                 this.sum_out = response.sum_out ;

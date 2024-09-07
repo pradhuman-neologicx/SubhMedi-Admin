@@ -20,6 +20,8 @@
         </div>
       </div>
     </div>
+
+
     <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
         <div class="card custom-card border-0 cursor h-100">
           <div class="card-body">
@@ -28,15 +30,21 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+
+     
+
+    
+      <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
         <div class="card custom-card border-0 cursor h-100">
           <div class="card-body">
-            <h6 class="card-title text-primary">Opening Balance</h6>
-            <p class="card-text2">{{ opening_balance }}</p>
+            <h6 class="card-title text-primary small">Opening Balance</h6>
+            <p class="card-text">Amount: {{ opening_balance.amount }}</p>
+            <p class="card-text">Status: {{( opening_balance.will_pay ==1 || opening_balance.will_pay == true ) ? "Will Pay" : "Will Receive" }}</p>
+            <!-- <p class="card-text">Will Receive: {{ opening_balance.will_receive }}</p> -->
           </div>
         </div>
       </div>
-  </div>
+    </div>
 
 
 
