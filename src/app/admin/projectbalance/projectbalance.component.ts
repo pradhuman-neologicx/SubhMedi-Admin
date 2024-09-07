@@ -108,10 +108,11 @@ import { JwtService } from 'src/app/core/services/jwt.service';
      todayDate!: string;
      projectID: any;
      partyID: any;
-
+     Party_id:any
     ngOnInit(): void {
       this.todayDate = new Date().toISOString().split('T')[0];
         this.user_id= this.jwtService.getpanelUserId();
+        this.Party_id= this.jwtService.getpanelPartyId();
       this.projectID = this.route.snapshot.paramMap.get('id');
       this.partyID = this.route.snapshot.paramMap.get('party_id');
       console.log('Project ID:', this.projectID);
