@@ -1,6 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { projects } from 'src/app/core/model-class/employee';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
@@ -10,13 +10,55 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 @Component({
   selector: 'app-projectbalance',
   templateUrl: './projectbalance.component.html',
-  styleUrl: './projectbalance.component.scss'
+  styleUrl: './projectbalance.component.scss',
+  
+  animations: [
+    trigger('succesfullyMesaage', [
+      state('void', style({
+        transform: 'translateX(-30%)',
+        opacity: 0
+      })),
+      transition(':enter, :leave', [
+        animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)')
+      ])
+    ]),
+    trigger('slideIn', [
+      state('void', style({
+        transform: 'translateX(100%)', 
+        opacity: 0 
+      })),
+      transition(':enter', [
+        animate('0.5s ease-out', style({
+          transform: 'translateX(0)', // Final position for slide-in effect
+          opacity: 1 // Final opacity
+        }))
+      ])
+    ]),  
+
+    trigger('fadeIn', [
+      state('void', style({
+        opacity: 0,
+        transform: 'scale(0.5)' // Start with smaller size
+      })),
+      transition(':enter', [
+        animate('0.5s ease-out', style({
+          opacity: 1,
+          transform: 'scale(1)' // Final size
+        }))
+      ])
+    ])
+    
+
+  ]
 })
 
 
   export class ProjectbalanceComponent {
+
+
     FilterForm!: FormGroup;
-  
+    successName: any = "";
+    openSecondsuccess: boolean = false;
     showreset: any = false
     searchText: any;
     tableSize: any = 10;
@@ -25,7 +67,9 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     page: number = 1;
     searchbarform!: FormGroup;
     CreateliveexamForm!: FormGroup;
-    createproductform!: FormGroup;
+    addsubcontractorform!: FormGroup;
+    addcategoryform!: FormGroup;
+    addpaymentinform!: FormGroup;
   
     orderviewform!: FormGroup;
   
@@ -34,6 +78,17 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     deleteeventOpen: boolean = false;
   
     projectiD : any
+
+
+
+
+
+
+  
+ 
+    createproductform!: FormGroup;
+  
+  
     constructor(
       private formBuilder: FormBuilder,
       private employeeService: EmployeeService,
@@ -47,19 +102,31 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       // const urlSegments = this.router.url.split(urlDelimitators);
       // this.projectID = urlSegments[2]; // Assuming 'id' is at index 2
       // this.partyID = urlSegments[3]; // Assuming 'party_id' is at index 3
-     
+      const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
+      this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
      }
-  
+     todayDate!: string;
      projectID: any;
      partyID: any;
+     Party_id:any
     ngOnInit(): void {
-    // Retrieve both IDs using paramMap
-    this.projectID = this.route.snapshot.paramMap.get('id');
-    this.partyID = this.route.snapshot.paramMap.get('party_id');
-    console.log('Project ID:', this.projectID);
-    console.log('Party ID:', this.partyID);
-      this.user_id= this.jwtService.getpanelUserId();
+      this.todayDate = new Date().toISOString().split('T')[0];
+        this.user_id= this.jwtService.getpanelUserId();
+        this.Party_id= this.jwtService.getpanelPartyId();
+      this.projectID = this.route.snapshot.paramMap.get('id');
+      this.partyID = this.route.snapshot.paramMap.get('party_id');
+      console.log('Project ID:', this.projectID);
+      console.log('Party ID:', this.partyID);
 
+        this.addcategoryform = this.formBuilder.group({
+          category: ['Material Purchase',[Validators.required,]],
+      
+        });
+      
+     
+
+      
+       
 
       this.FilterForm = this.formBuilder.group({
         StartDate: [''],
@@ -68,18 +135,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       });
   
   
-  
-      this.createproductform = this.formBuilder.group({
-        projectname: ["", [Validators.required,]],
-        Address: [""],
-        State: [""],
-        City: [""],
-        SelectClient: ["", [Validators.required,]],
-        Selectstaff: [""],
-        description: [""],
-        StartDate: [""],
-        endDate: [""],
-      });
+
      
   
   
@@ -88,6 +144,8 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.getStaff();
       this.postclient();
       this.checkUserRole();
+       
+      this.Getpartynamefun();
     
   
       
@@ -100,32 +158,161 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
   
     }
-    paginatedCourses = [
-      {
-        advancePaid: '5000 USD',
-      
-      },
-      {
-       
-        pendingToPay: '1000 USD'
-      },
-     
-      // Add more items as needed
-    ];
+
+
+
+// Getter for FormArray
+get materials(): FormArray {
+  return this.addsubcontractorform.get('materials') as FormArray;
+}
+
+initialmaterials() {
+  return this.formBuilder.group({
+    // Input: ["", [Validators.required]],
+    id: [''],
+    Name: [''],
+    discount: [''],
+    units: [''],
+    unitsRange: [''],
+    subtotal: [''],
+  });
+}
+
+
+// On change event for ng-select
+onMaterialsChange(selectedMaterials: any[]) {
+  this.materials.clear(); // Clear existing FormArray controls
+  selectedMaterials.forEach((e:any) => {
+    this.materials.push(this.createMaterialGroup());
+  });
+}
+
+// Create FormGroup for each material
+createMaterialGroup(): FormGroup {
+  return this.formBuilder.group({
     
+    name: ['materialName', Validators.required],
+    subTotal: [''],
+    discount: [''],
+    units: ['', Validators.required],
+    unitsRange: ['', Validators.required]
+  });
+}
+
+
+
+ // upload image  code here
+ @ViewChild('fileInput') fileInput!: ElementRef;
+
+ @Output() fileSelected = new EventEmitter<File>();
+ imageUrl: string | ArrayBuffer | null = null;
+ profileimage!: any;
+ onFileSelected(event: any): void {
+   const file: File = event.target.files[0];
+   if (file) {
+     this.fileSelected.emit(file);
+     this.profileimage = file;
+     // Preview image
+     const reader = new FileReader();
+     reader.onload = (e: any) => {
+       this.imageUrl = e.target.result;
+     };
+     reader.readAsDataURL(file);
+   }
+ }
+
+ clearFile(event: MouseEvent): void {
+   event.stopPropagation();
+   this.imageUrl = null;
+   this.profileimage = undefined;
+   this.fileInput.nativeElement.value = '';
+ }
+
+ clearFileWithoutevent(): void {
+   this.imageUrl = null;
+   this.profileimage = undefined;
+   this.fileInput.nativeElement.value = '';
+ }
+
+
+
+  onDragOver(event: any): void {
+    event.preventDefault();
+  }
+
+  onDrop(event: any): void {
+    event.preventDefault();
+    const file: File = event.dataTransfer.files[0];
+    if (file) {
+      this.fileSelected.emit(file);
+      this.profileimage = file;
+      // Preview image
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onDragLeave(event: any): void {
+    event.preventDefault();
+  }
+
+
+
+
+  partynamelist:any
+  Getpartynamefun() {
+    this.employeeService.GetpartynamelistApi().subscribe((response: any) => {
+      if (response.status === 200) {
+        
+        this.partynamelist = response.suppliers
+      }
+    });
+  }
+
+  materialtablelist: any
+  Getmaterialaddfun() {
+    this.employeeService.GetmattlistApi().subscribe((response: any) => {
+      if (response.status === 200) {
+        
+        this.materialtablelist = response.materials
+      }
+    });
+  }
+
+   
     idString: any;
     partyType: any
     id: any;
     Type!: string;
     checkUserRole() {
-      this.Type = localStorage.getItem('Type') || '';
-      if (this.Type === 'admin') {
-        this.createproductform.get('Selectstaff')?.setValidators(Validators.required);
-      } else if (this.Type === 'staff') {
-        this.createproductform.removeControl('Selectstaff');
-      }
+      // this.Type = localStorage.getItem('Type') || '';
+      // if (this.Type === 'admin') {
+      //   this.createproductform.get('Selectstaff')?.setValidators(Validators.required);
+      // } else if (this.Type === 'staff') {
+      //   this.createproductform.removeControl('Selectstaff');
+      // }
     }
   
+    projects: projects = new projects();
+    user_id: any
+
+    transactiontable: any
+    partypaidtable: any
+    salarytable: any
+    otherexpensetable: any
+    materialpurchasetable: any
+    subcontractortable: any
+    
+    name: any
+    type: any
+    amount: any
+    status: any
+
+  
+
     stateList: any = [];
     // getState() {
     //   this.employeeService.GetState().subscribe((response: any) => {
@@ -242,8 +429,6 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
   
   
-    projects: projects = new projects();
-    user_id: any
    
   
   
@@ -261,16 +446,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
   
     partryecievetable: any
-    partypaidtable: any
-    salarytable: any
-    otherexpensetable: any
-    materialpurchasetable: any
-    subcontractortable: any
-    
-    name: any
-    type: any
-    amount: any
-    status: any
+  
   
 
 
@@ -364,10 +540,134 @@ else {
     
   
   
+    showadditionalDetails = false;
+    showdiscountDetails = false;
+    showpaymentDetails = false;
+    shownotesDetails = false;
+    showreferenceDetails = false;
+    showreaddmaterialDetails = false;
+
+
+    toggleADetails() {
+      this.showadditionalDetails = !this.showadditionalDetails;
+      this.addsubcontractorform.get('additionalcharges')?.clearValidators();
+      if(this.showpaymentDetails){
+        this.addsubcontractorform.get('additionalcharges')?.setValidators([
+          Validators.required,
+        ]);
+       
+      }
+    
+      this.addsubcontractorform.get('additionalcharges')?.updateValueAndValidity();
+   
+    
+    }
+    toggleDDetails() {
+      this.showdiscountDetails = !this.showdiscountDetails;
+      this.addsubcontractorform.get('Discount')?.clearValidators();
+      if(this.showpaymentDetails){
+        this.addsubcontractorform.get('Discount')?.setValidators([
+          Validators.required,
+        ]);
+       
+      }
+    
+      this.addsubcontractorform.get('Discount')?.updateValueAndValidity();
+   
+    
+    
+    }
+    togglePAYDetails() {
+      this.showpaymentDetails = !this.showpaymentDetails;
+      this.addsubcontractorform.get('Payment')?.clearValidators();
+      this.addsubcontractorform.get('cheque')?.clearValidators();
+      if(this.showpaymentDetails){
+        this.addsubcontractorform.get('Payment')?.setValidators([
+          Validators.required,
+        ]);
+        this.addsubcontractorform.get('cheque')?.setValidators([
+          Validators.required,
+        ]);
+      }
+    
+      this.addsubcontractorform.get('Payment')?.updateValueAndValidity();
+      this.addsubcontractorform.get('cheque')?.updateValueAndValidity();
+    }
+    toggleNDetails() {
+      this.shownotesDetails = !this.shownotesDetails;
+      this.addsubcontractorform.get('Notes')?.clearValidators();
+      if(this.showpaymentDetails){
+        this.addsubcontractorform.get('Notes')?.setValidators([
+          Validators.required,
+        ]);
+       
+      }
+    
+      this.addsubcontractorform.get('Notes')?.updateValueAndValidity();
+    }
+    toggleRDetails() {
+      this.showreferenceDetails = !this.showreferenceDetails;
+      this.shownotesDetails = !this.shownotesDetails;
+      this.addsubcontractorform.get('Reference')?.clearValidators();
+      if(this.showpaymentDetails){
+        this.addsubcontractorform.get('Reference')?.setValidators([
+          Validators.required,
+        ]);
+       
+      }
+    
+      this.addsubcontractorform.get('Reference')?.updateValueAndValidity();
+
+    }
+    @Output() closeModalEvent = new EventEmitter<void>();
   
+    addsubcontractoropen: boolean = false;
+    addpaymentinopen: boolean = false;
+    transactioncreatemodal() {
+      this.addsubcontractoropen = true;
+      if (this.type ===  'material supplier'){
+        this.addcategoryform = this.formBuilder.group({
+          category: ['Material Purchase',[Validators.required,]],
+      
+        });
+        this.onchangecategory('Material Purchase')
+      } else if(this.type ===  'sub contractor'){
+        this.addcategoryform = this.formBuilder.group({
+          category: ['Sub Contractor Payment',[Validators.required,]],
+      
+        });
+        this.onchangecategory('Sub Contractor Payment')
+      }  else if(this.type ===  'labour contractor'){
+        this.addcategoryform = this.formBuilder.group({
+          category: ['Salary',[Validators.required,]],
+      
+        });
+        this.onchangecategory('Salary')
+      } else {
+        this.addcategoryform = this.formBuilder.group({
+          category: ['Other Expense',[Validators.required,]],
+      
+        });
+        this.onchangecategory('Other Expense')
+    } 
+      
+    }
+    transactionpaymwentincreatemodal() {
+      this.addpaymentinopen = true;
+    }
+    // closeModal() {
+    //   this.addsubcontractoropen = false;
+    //   this.addpaymentinopen = false;
+    //   this.closeModalEvent.emit();
+    // }
+    toggleAMatDetails() {
+      this.showreaddmaterialDetails = !this.showreaddmaterialDetails;
+      this.materials.clear(); // Clear existing FormArray controls
+      this.materials.push(this.createMaterialGroup());
 
-
-
+    }
+ 
+  
 
 
   
@@ -414,7 +714,9 @@ else {
     }
     closeModal() {
       this.projectgopen = false;
-    
+         this.addsubcontractoropen = false;
+      this.addpaymentinopen = false;
+      this.closeModalEvent.emit();
     }
     ClickModalconent(event: Event): void {
       event.stopPropagation();
@@ -612,6 +914,334 @@ else {
     // }
   
   
+    @Output() addmodelEvent = new EventEmitter<string>();
+
+    paymentinadd() {
+     
+    
+    this.clickin = this.generateUniqueId();
+    
+    this.addmodelEvent.emit(this.clickin)
+      } 
+
+
+clickin:string = '0'
+
+clickadd:string = '0'
+    Createadd() {
+  if (this.catergory=='Sub Contractor Payment' ){
+
+this.clickadd = this.generateUniqueId();
+
+this.addmodelEvent.emit(this.clickadd)
+  } else if (this.catergory=='Other Expense') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }else if (this.catergory=='Material Purchase') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }
+  else if (this.catergory=='Salary') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }
+  else if (this.catergory=='Petty Expenses') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }
+  else if (this.catergory=='Miscellaneous Expenses') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }
+    }
+    selectedIn!: any;
+  selectEventHanderIn($event: any) {
+    this.selectedIn = $event;
+    if (this.selectedIn == 'close') {
+      this.successName = 'Transaction Done';
+      this.closeModal()
+      this.ngOnInit();
+      this.Getalltranslations(0);
+      
+      setTimeout(() => {
+        this.openSecondsuccess = true;
+        setTimeout(() => {
+          this.openSecondsuccess = false;
+        }, 1800);
+      }, 200);
+    }else{
+      this.errorMessage=this.selectedIn;
+    }
+    console.log(this.selectedIn);
+  }
+
+    generateUniqueId(): string {
+      return 'id-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now();
+    }
+  errorMessage: any;
+  submitted!: boolean;
+ 
+  erroroutput: boolean = false;
+  Createaddpurchase() {
+    if (this.addsubcontractorform.valid) {
+      if (this.materials.length>0) {
+
+      
+      const formData: FormData = new FormData();
+
+      var newMateria=[];
+      for (let index = 0; index < this.materials.length; index++) {
+        const addsubcontractorform =   this.materials.at(index);
+  
+    
+        // Safely parse values from the form controls, defaulting to 0 if invalid or empty
+        const units: number = parseFloat(addsubcontractorform.get('units')?.value ?? '0') || 0;
+        const unitsRange: number = parseFloat(addsubcontractorform.get('unitsRange')?.value ?? '0') || 0;
+        const discount: number = parseFloat(addsubcontractorform.get('discount')?.value ?? '0') || 0;
+        newMateria.push({
+          "id":addsubcontractorform.get('id')?.value,
+          "name": addsubcontractorform.get('name')?.value,
+          "quantity":units.toString(),
+          "discount":
+          discount.toString(),
+          "amount": addsubcontractorform.get('subtotal')?.value,
+          "unit_rate":unitsRange.toString()
+        })
+      
+    }
+
+    
+      // Append common fields
+      const user = this.jwtService.getpanelUserId();
+      formData.append("user_id",user.toString());
+      formData.append("project_id", this.projectiD.toString());
+      formData.append("date", this.addsubcontractorform.get("date")?.value.toString());
+      formData.append("party_id", this.addsubcontractorform.get("category")?.value.toString());
+      formData.append("materials", JSON.stringify(newMateria)); // Convert materialList to JSON string if it's an object
+      formData.append("additional_charges", this.addsubcontractorform.get("additionalcharges")?.value.toString());
+      formData.append("discount", this.addsubcontractorform.get("Discount")?.value.toString());
+      formData.append("total_amount", this.calculateTotal().toString());
+      formData.append("payment_out", this.addsubcontractorform.get("Payment")?.value.toString());
+      formData.append("payment_method", this.addsubcontractorform.get("cheque")?.value.toString());
+      formData.append("balance", this.calculatebalanceTotal().toString());
+      formData.append("notes", this.addsubcontractorform.get("Notes")?.value.toString());
+      formData.append("reference_no", this.addsubcontractorform.get("Reference")?.value.toString());
+      formData.append("sub_total", this.calculateSubTotal().toString());
+  
+     
+      if (this.profileimage) {
+        // If image exists, add it to FormData
+      
+
+        const file = this.profileimage;
+        formData.append("bill_image", file, file.name);
+      }
+  
+      // Call the API service
+      this.employeeService.purchasematerials(formData).subscribe((response: any) => {
+        this.errorMessage = response.errorMessage;
+  
+        if (response.status === 200) {
+          this.closeModal();
+          this.ngOnInit();
+  
+          // Save profile picture URL
+          this.jwtService.saveImageUrl(response.data.profilePicture);
+          this.clearFileWithoutevent();
+  
+          // Optionally display success message
+          setTimeout(() => {
+            // this.openSecondsuccess = true;
+            setTimeout(() => {
+              // this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+        } else {
+          this.submitted = false;
+        }
+      });
+    }else {
+      // Mark all form fields as touched to show validation errors
+        this.errorMessage = 'please select at least one material'
+      this.addsubcontractorform.markAllAsTouched();
+      console.log(this.findInvalidControls(this.addsubcontractorform));
+    }
+    } else {
+      // Mark all form fields as touched to show validation errors
+        this.errorMessage = 'fill all the details Correctly'
+      this.addsubcontractorform.markAllAsTouched();
+      console.log(this.findInvalidControls(this.addsubcontractorform));
+    }
+  }
+  
+  findInvalidControls(formName: any) {
+    const invalid = [];
+    const controls = formName.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+    console.log(invalid);
+    return invalid;
+  }
+  
+
+  additionalCharge: number = 0;
+  discount: number = 0;
+  totalAmount: number = 0;
+
+  // Form control objects (similar to text controllers in Flutter)
+  
+
+
+
+  calculatebalanceTotal(): number {
+    
+    const totaamount = parseFloat(this.addsubcontractorform.get("Amount")?.value ?? '') || 0;
+    const paymentout = parseFloat(this.addsubcontractorform.get("Payment")?.value ?? '') || 0;
+  
+   
+    const total =  this.calculateTotal() - paymentout;
+  
+   
+    // this.totalAmountControl.setValue(total.toString());
+  
+    return total;
+  }
+  
+
+
+  calculateTotal(): number {
+    
+    const additionalCharge = parseFloat(this.addsubcontractorform.get("additionalcharges")?.value ?? '') || 0;
+    const discount = parseFloat(this.addsubcontractorform.get("Discount")?.value ?? '') || 0;
+  
+   
+    const total = this.calculateSubTotal() + additionalCharge - discount;
+  
+   
+    // this.totalAmountControl.setValue(total.toString());
+  
+    return total;
+  }
+
+
+
+   // Function to calculate subtotal
+   calculateSubTotal(): number {
+    let value: number = 0; 
+    if(this.materials.length>0){// TypeScript uses 'number' instead of 'double'
+ 
+      for (let index = 0; index < this.materials.length; index++) {
+        value += this.calculatePerMaterialAmount(index,1);
+      
+    }
+  }
+    
+    return value;
+  }
+  formControls: FormGroup[] = []; // Array of FormGroups for each material item
+  calculatePerMaterialAmount(index: number,type:any): number {
+    console.log(type);
+    console.log(this.materials.length);
+    
+    // Get the form control at the specified index
+    let total: number=0;
+    if(this.materials.length>0){
+
+    
+    const addsubcontractorform =   this.materials.at(index);
+  
+    
+    // Safely parse values from the form controls, defaulting to 0 if invalid or empty
+    const units: number = parseFloat(addsubcontractorform.get('units')?.value ?? '0') || 0;
+    const unitsRange: number = parseFloat(addsubcontractorform.get('unitsRange')?.value ?? '0') || 0;
+    const discount: number = parseFloat(addsubcontractorform.get('discount')?.value ?? '0') || 0;
+
+    // Perform the calculation: (qty * unitrate) - discount
+     total = (units * unitsRange) - discount;
+    }
+    return total;
+  }
+
+
+catergory:any
+  onchangecategory(value:any) {
+  this.catergory=value
+  }
+
+
+  
+  // Getalltransaltions() {
+  //   this.employeeService.gettransaction(this.projectiD).subscribe((response: any) => {
+  //     if (response.status === 200) {
+        
+  //       this.transactiontable = response.transaction_list
+  //     }
+  //   });
+  // }
+
+
+
+  sum_out: number = 0
+  sum_in: number = 0;
+  balance: number = 0;
+
+  Getalltranslations(type: any) {
+    // Check if the type is 0
+    if (type === 0) {
+      // Fetch transaction data based on type 0
+      this.employeeService.gettransaction(this.projectiD,this.FilterForm.get('Transactiontype')?.value,this.FilterForm.get('filter')?.value ?? "",).subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            // Handle response data for type 0
+            this.balance = response.balance || 0;
+            this.sum_in = response.sum_in || 0;
+            this.sum_out = response.sum_out || 0;
+        
+         
+            this.transactiontable = response.transaction_list;
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching transactions:', error);
+          // Handle the error scenario
+        }
+      );
+    } else {
+      // Ensure form validation if applicable
+      if (this.FilterForm.valid) {
+        this.employeeService
+          .gettransaction(this.projectiD,this.FilterForm.get('Transactiontype')?.value,this.FilterForm.get('filter')?.value ?? "",)
+          .subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                // Handle response data
+                this.balance = response.balance || 0;
+                this.sum_in = response.sum_in || 0;
+                this.sum_out = response.sum_out || 0;
+                this.transactiontable = response.transaction_list;
+              }
+            },
+            (error: any) => {
+              console.error('Error fetching transactions:', error);
+              // Handle the error scenario
+            }
+          );
+      } else {
+        // Mark form fields as touched to display validation errors
+        this.FilterForm.markAllAsTouched();
+      }
+    }
+  }
+  
+
   
   }
 
