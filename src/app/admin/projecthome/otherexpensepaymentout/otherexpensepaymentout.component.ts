@@ -80,7 +80,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         additionalcharges: [""],
         Discount: [""],
         Payment: [""],
-      
+        Balance: ['',],
         cheque: [""],
       
         Notes: [""],
@@ -422,8 +422,8 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         })
       
     }
-
     
+   
       // Append common fields
       const user = this.jwtService.getpanelUserId();
       formData.append("user_id",user.toString());
@@ -511,6 +511,22 @@ import { JwtService } from 'src/app/core/services/jwt.service';
 
   // Form control objects (similar to text controllers in Flutter)
   
+  balanceamoujnt:any
+  getbalanceparty() {
+    this.employeeService.getbalance(this.projectiD,this.partyid).subscribe((response: any) => {
+      if (response.status === 200) {
+        
+        this.balanceamoujnt = response.parties
+
+        this.addotherexpenseorm.get("Balance")?.setValue(response.parties!=undefined?response.parties.length>0?response.parties[0].balance:0:0)
+      }
+    });
+  }
+  partyid:any
+  onchange(partyid:any){
+    this.partyid =partyid
+this.getbalanceparty()
+  }
 
 
 

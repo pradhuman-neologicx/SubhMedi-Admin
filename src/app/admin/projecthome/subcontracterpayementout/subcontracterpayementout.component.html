@@ -25,7 +25,7 @@
             <label class="form-label form-lable-custom"
                 for="selectpartyname">
                 Select Party Name</label>
-            <select class="form-select form-input-custom" formControlName="selectpartyname"
+            <select class="form-select form-input-custom" formControlName="selectpartyname" #selectpartyname  (change)="onchange(selectpartyname.value)"
                 [ngClass]="{ 'is-invalid': addsubcontractorform.controls['selectpartyname'].errors && (addsubcontractorform.controls['selectpartyname'].touched || addsubcontractorform.controls['selectpartyname'].dirty) }">
                 <option *ngFor="let party of partynamelist" [value]="party.id">
                 {{ party.name }}
@@ -46,6 +46,14 @@
 
 
 
+        <div class="mb-3 ">
+            <label class="d-block text-capitalize form-label form-lable-custom" for="Bbalance">
+              Total Balance
+            </label>
+            <input type="text" class="d-block form-control form-input-custom"  
+                formControlName="Bbalance"  [readOnly]="true" >
+         
+        </div>
 
 
 

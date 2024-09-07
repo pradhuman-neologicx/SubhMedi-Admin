@@ -125,7 +125,7 @@ export class EmployeeService {
   
 
 
-  gettransaction(project_id: any): Observable<any> {
+  gettransaction(project_id: any, transaction_type:any,search: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
@@ -136,7 +136,10 @@ export class EmployeeService {
     const body = {
       'user_id': user,
       'project_id': project_id,
-   
+      "search":search!=undefined?search:"",
+      ...(transaction_type ? { 'transaction_type': transaction_type } : {}),
+      // 'transaction_type': transaction_type,
+
     };
   
     return this.apiservice.post(`transactions-list`, body,  headers );

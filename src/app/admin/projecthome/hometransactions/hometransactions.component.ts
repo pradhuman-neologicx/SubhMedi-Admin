@@ -111,6 +111,18 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       });
   
     
+      this.addcategoryform = this.formBuilder.group({
+        category: ['',[Validators.required,]],
+    
+      });
+      this.FilterForm = this.formBuilder.group({
+        filter: [''],
+        Transactiontype: [''],
+      
+      });
+  
+  
+    
   
       this.addsubcontractorform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
@@ -134,7 +146,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
   
       this.Getpartynamefun();
-      this.Getalltransaltions();
+      this.Getalltranslations(0)
    
     
   
@@ -738,8 +750,11 @@ this.addmodelEvent.emit(this.clickadd)
   selectEventHanderIn($event: any) {
     this.selectedIn = $event;
     if (this.selectedIn == 'close') {
-      this.successName = 'Transaction';
+      this.successName = 'Transaction Done';
       this.closeModal()
+      this.ngOnInit();
+      this.Getalltranslations(0);
+      
       setTimeout(() => {
         this.openSecondsuccess = true;
         setTimeout(() => {
@@ -950,15 +965,68 @@ catergory:any
 
 
   
-  Getalltransaltions() {
-    this.employeeService.gettransaction(this.projectiD).subscribe((response: any) => {
-      if (response.status === 200) {
+  // Getalltransaltions() {
+  //   this.employeeService.gettransaction(this.projectiD).subscribe((response: any) => {
+  //     if (response.status === 200) {
         
-        this.transactiontable = response.transaction_list
+  //       this.transactiontable = response.transaction_list
+  //     }
+  //   });
+  // }
+
+
+
+  sum_out: number = 0
+  sum_in: number = 0;
+  balance: number = 0;
+
+  Getalltranslations(type: any) {
+    // Check if the type is 0
+    if (type === 0) {
+      // Fetch transaction data based on type 0
+      this.employeeService.gettransaction(this.projectiD,this.FilterForm.get('Transactiontype')?.value,this.FilterForm.get('filter')?.value ?? "",).subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            // Handle response data for type 0
+            this.balance = response.balance || 0;
+            this.sum_in = response.sum_in || 0;
+            this.sum_out = response.sum_out || 0;
+        
+         
+            this.transactiontable = response.transaction_list;
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching transactions:', error);
+          // Handle the error scenario
+        }
+      );
+    } else {
+      // Ensure form validation if applicable
+      if (this.FilterForm.valid) {
+        this.employeeService
+          .gettransaction(this.projectiD,this.FilterForm.get('Transactiontype')?.value,this.FilterForm.get('filter')?.value ?? "",)
+          .subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                // Handle response data
+                this.balance = response.balance || 0;
+                this.sum_in = response.sum_in || 0;
+                this.sum_out = response.sum_out || 0;
+                this.transactiontable = response.transaction_list;
+              }
+            },
+            (error: any) => {
+              console.error('Error fetching transactions:', error);
+              // Handle the error scenario
+            }
+          );
+      } else {
+        // Mark form fields as touched to display validation errors
+        this.FilterForm.markAllAsTouched();
       }
-    });
+    }
   }
-
-
+  
 
   }

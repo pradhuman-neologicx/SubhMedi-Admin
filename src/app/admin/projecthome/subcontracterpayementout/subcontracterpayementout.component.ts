@@ -81,6 +81,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         Payment: [""],
         Balance: [""],
         cheque: [""],
+        Bbalance: [""],
       
         Notes: [""],
         Reference: [""],
@@ -595,5 +596,25 @@ catergory:any
   onchangecategory(value:any) {
   this.catergory=value
   }
+
+
+
+  balanceamoujnt:any
+  getbalanceparty() {
+    this.employeeService.getbalance(this.projectiD,this.partyid).subscribe((response: any) => {
+      if (response.status === 200) {
+        
+        this.balanceamoujnt = response.parties
+
+        this.addsubcontractorform.get("Bbalance")?.setValue(response.parties!=undefined?response.parties.length>0?response.parties[0].balance:0:0)
+      }
+    });
+  }
+  partyid:any
+  onchange(partyid:any){
+    this.partyid =partyid
+this.getbalanceparty()
+  }
+
 
   }

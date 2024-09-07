@@ -1,3 +1,39 @@
+
+
+<div class="row">
+    <!-- Card for Advance Paid -->
+    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+      <div class="card custom-card border-0 cursor h-100">
+        <div class="card-body">
+          <h6 class="card-title text-primary">Balance</h6>
+          <p class="card-text">{{ balance }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Card for Pending to Pay -->
+    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+      <div class="card custom-card border-0 cursor h-100">
+        <div class="card-body">
+          <h6 class="card-title text-primary">Total In</h6>
+          <p class="card-text">{{ sum_in }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+        <div class="card custom-card border-0 cursor h-100">
+          <div class="card-body">
+            <h6 class="card-title text-primary">Total Out</h6>
+            <p class="card-text2">{{ sum_out }}</p>
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+
+
+
 <div class="container">
 
 
@@ -23,7 +59,50 @@
 
 
 
+        <form [formGroup]="FilterForm">
+            <div class="row mb-2">
+                <div class="col-lg-6">
+                    <input type="text" class="form-control px-4 py-2 mt-2 ml-2" placeholder="Search by name" #filter
+                        formControlName="filter"
+                        [ngClass]="{ 'is-invalid':FilterForm.controls['filter'].errors && (FilterForm.controls['filter'].touched || FilterForm.controls['filter'].dirty) }">
+                    <div class="text-danger error-message"
+                        *ngIf="FilterForm.controls['filter'].errors && ( FilterForm.controls['filter'].touched ||  FilterForm.controls['filter'].dirty)">
+                        <p class="fw-light  text-danger" *ngIf="FilterForm.controls['filter'].errors['required']">
+                            Name is required</p>
+                    </div>
+                </div>
 
+                <div class="col-lg-6">
+                    <label
+                      class="form-label form-lable-custom"
+                      for="Transactiontype">Transaction type</label>
+                    <select
+                      class="form-select form-control px-4 py-2 mt-2 ml-2"
+                     #Transactiontype
+                      formControlName="Transactiontype">
+    >  
+                      <!-- <option [selected]="true" value="all">All</option> -->
+                      <option value="in_transaction">Transaction In</option>
+                      <option value="miscellaneous_expense">Miscellaneous Expense</option>
+                      <option value="material_purchase">Material Purchase</option>
+                      <option value="petty_expense">Petty Expense</option>
+                      <option value="other_expense">Other Expense</option>
+                      <option value="sub_contractor_payment">Sub Contractor Payment</option>
+                      <option value="payment_out">Payment Out</option>
+                      <option value="material_transaction">Material Transaction</option>
+                      <option value="salary">Salary</option>
+                    </select>
+                  
+                  </div>
+
+
+                <div class="col-lg-6">
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2" type="button" (click)="Getalltranslations(1)">Search</button>
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2" type="submit"
+                        (click)="resetFilter()">Reset</button>
+                </div>
+            </div>
+        </form>
 
 
         <div class="d-flex justify-content-between">
@@ -61,10 +140,10 @@
                         </th>
 
                         <th>
-                            <p class="table-heading table-new-heading">Party</p>
+                            <p class="table-heading table-new-heading">Transaction</p>
                         </th>
                         <th>
-                            <p class="table-heading table-new-heading">Party Type</p>
+                            <p class="table-heading table-new-heading">Transaction Type</p>
                         </th>
                         <th>
                             <p class="table-heading table-new-heading">Amount</p>
@@ -89,7 +168,7 @@
                         </td>
                         <td>
                             <p class="table-detail text-capitalize table-detail-new">
-                                {{party.type }}</p>
+                                {{party.name }}</p>
                         </td>
                         <td>
                             <p class="table-detail text-capitalize td-width table-detail-new">{{
