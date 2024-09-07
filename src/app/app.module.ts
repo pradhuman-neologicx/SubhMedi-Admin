@@ -46,6 +46,7 @@ import { SalaryComponent } from './admin/projecthome/salary/salary.component';
 import { PettyexpenseComponent } from './admin/projecthome/pettyexpense/pettyexpense.component';
 import { MiscelaniousexpensesComponent } from './admin/projecthome/miscelaniousexpenses/miscelaniousexpenses.component';
 import { PaymentoutComponent } from './admin/projecthome/paymentout/paymentout.component';
+import { ViewpartiesComponent } from './admin/parties/viewparties/viewparties.component';
 
 
 
@@ -83,6 +84,7 @@ import { PaymentoutComponent } from './admin/projecthome/paymentout/paymentout.c
     PettyexpenseComponent,
     MiscelaniousexpensesComponent,
     PaymentoutComponent,
+    ViewpartiesComponent,
 
  
   

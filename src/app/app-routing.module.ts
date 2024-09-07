@@ -21,6 +21,7 @@ import { UnitsComponent } from './admin/masters/units/units.component';
 import { MaterialsComponent } from './admin/masters/materials/materials.component';
 import { AttendanceComponent } from './admin/attendance/attendance.component';
 import { WorkforceComponent } from './admin/masters/workforce/workforce.component';
+import { ViewpartiesComponent } from './admin/parties/viewparties/viewparties.component';
 
 const routes: Routes = [
 
@@ -48,6 +49,10 @@ const routes: Routes = [
       {
         path: 'parties',
         component: PartiesComponent,
+      },
+      {
+        path: 'viewparties/:id',
+        component: ViewpartiesComponent,
       },
 
       {
