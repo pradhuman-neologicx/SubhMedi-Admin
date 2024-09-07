@@ -8,3 +8,22 @@
     border: 1px solid #e9ecef;
     width: 24.3%;
   }
+
+
+  .header-dropdown {
+    position: absolute;
+    width: fit-content;
+    z-index: 2;
+  }
+  
+  .header-profile {
+    margin-right: 50px;
+  }
+  
+  .notification {
+    color: #d45812;
+    border-radius: 4px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 500ms ease-in;
+  }

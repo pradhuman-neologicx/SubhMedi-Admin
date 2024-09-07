@@ -19,7 +19,7 @@ import { ProjectbalanceComponent } from './admin/projectbalance/projectbalance.c
 import { MastersComponent } from './admin/masters/masters.component';
 import { UnitsComponent } from './admin/masters/units/units.component';
 import { MaterialsComponent } from './admin/masters/materials/materials.component';
-import { AttendanceComponent } from './admin/attendance/attendance.component';
+
 import { WorkforceComponent } from './admin/masters/workforce/workforce.component';
 import { ViewpartiesComponent } from './admin/parties/viewparties/viewparties.component';
 
@@ -55,10 +55,7 @@ const routes: Routes = [
         component: ViewpartiesComponent,
       },
 
-      {
-        path: 'attendance/:id',
-        component: AttendanceComponent,
-      },
+    
 
       {
         path: 'project',

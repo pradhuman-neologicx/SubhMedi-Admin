@@ -71,7 +71,7 @@ export class WorkforceComponent {
 
   }
 
-  AddWorkerForm!: FormGroup;
+  addworkforceform!: FormGroup;
   userId: any;
   projectiD: any;
   ngOnInit(): void {
@@ -88,9 +88,8 @@ export class WorkforceComponent {
       searchbar: ["", [Validators.required,]]
     });
 
-    this.AddWorkerForm = this.formBuilder.group({
-      PartyType: ["", [Validators.required,]],
-      StaffList: ["",],
+    this.addworkforceform = this.formBuilder.group({
+      WorkerType: ["", [Validators.required,]],
       Salary: ["", [Validators.required,]]
     });
 
@@ -102,7 +101,7 @@ export class WorkforceComponent {
 
 
     this.GetPartyType();
-    this.GetAttendanceFun();
+    // this.GetAttendanceFun();
   }
 
 
@@ -124,26 +123,7 @@ export class WorkforceComponent {
   workertable: any
   Attendancetable: any;
   // projectiD: any;
-  GetAttendanceFun() {
-    // staticid "16","17","2024-09-05"
 
-
-    const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
-    const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
-
-    this.courseService.getAttendacneAPI(this.projectiD, this.userId, formattedDate).subscribe((response: any) => {
-      console.log(this.CalendarForm.get('Caledardate')?.value);
-      console.log(this.projectiD);
-      if (response.status === 200) {
-        this.Attendancetable = response.data;
-        this.totalPresent = response.total_present ?? 0;
-        this.totalAbsent = response.total_absent ?? 0;
-        this.totalNetAmount = response.total_net_amount ?? 0;
-        console.log(this.totalPresent);
-        this.workertable = this.Attendancetable.flatMap((attendance: any) => attendance.workforces || []);
-      }
-    });
-  }
 
   ViewDetailopen: boolean = false;
 
@@ -194,13 +174,12 @@ export class WorkforceComponent {
   partyTypeNameupdate: any;
   staffselect(value: any) {
     var newlist = this.PartTypeList.filter((courseType: any) => courseType.id == value);
-
     console.log(newlist);
     if (newlist.length > 0) {
       this.partyTypeName = newlist[0].name;
       if(this.partyTypeName=="staff"){
         this.GetStaffFun();
-        this.updateEmailValidators();
+        // this.updateEmailValidators();
       }
     }
   }
@@ -208,14 +187,14 @@ export class WorkforceComponent {
   updateEmailValidators() {
 
     if (this.partyTypeName === 'staff') {
-      this.AddWorkerForm.get('StaffList')?.setValidators([Validators.required,]);
+      this.addworkforceform.get('StaffList')?.setValidators([Validators.required,]);
 
     } else {
-      this.AddWorkerForm.get('StaffList')?.clearValidators();
+      this.addworkforceform.get('StaffList')?.clearValidators();
 
     }
 
-    this.AddWorkerForm.get('StaffList')?.updateValueAndValidity();
+    this.addworkforceform.get('StaffList')?.updateValueAndValidity();
   }
 
 
@@ -232,22 +211,18 @@ export class WorkforceComponent {
   successName: any = "";
   openSecondsuccess = false;
   CreateWorkforcefun() {
-    if (this.AddWorkerForm.valid) {
+    if (this.addworkforceform.valid) {
       const body = {
-        "worker_type":this.AddWorkerForm.get("PartyType")?.value,
-        "salary":this.AddWorkerForm.get("Salary")?.value,
+        "worker_type":this.addworkforceform.get("WorkerType")?.value,
+        "salary":this.addworkforceform.get("Salary")?.value,
       }
-
-
-
     this.courseService.CreateWorkforceApi(body).subscribe((response: any) => {
       console.log(response);
       if (response.status === 200) {
         console.log("success");
         this.closeModal();
-        this.successName = 'Create Worker';
+        this.successName = 'Create Workforce';
         this.ngOnInit();
-        this.GetAttendanceFun();
         setTimeout(() => {
           this.openSecondsuccess = true;
           setTimeout(() => {
@@ -258,7 +233,7 @@ export class WorkforceComponent {
     });
   } else {
     this.errorMessage = 'Please fill all the details correctly.';
-    this.AddWorkerForm.markAllAsTouched();
+    this.addworkforceform.markAllAsTouched();
   }
 }
 submitted: any;

@@ -3,8 +3,8 @@
         <h1 class="text-primary table-heading-detail">Attendance</h1>
         <form [formGroup]="CalendarForm">
             <mat-form-field class="attendance-management-date-picker">
-                <input matInput [matDatepicker]="picker" formControlName="Caledardate" [max]="maxDate"
-                    onkeydown="return false" #Caledardate>
+                <input matInput [matDatepicker]="picker" formControlName="Caledardate" [max]="todayDateMax"
+                    onkeydown="return false" #Caledardate (dateChange)="DateChange(Caledardate.value)">
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -18,7 +18,8 @@
                 <div class="card-body pb-0">
                     <h1 class="attendance-m-heading pb-0 border-bottom text-center pb-0">Present
                         Employees</h1>
-                    <p class="text-center mt-3 mb-2">{{ totalPresent !== undefined && totalPresent !== null ? totalPresent : 'Not available' }}</p>
+                    <p class="text-center mt-3 mb-2">{{ totalPresent !== undefined && totalPresent !== null ?
+                        totalPresent : 'Not available' }}</p>
                 </div>
             </div>
         </div>
@@ -27,7 +28,8 @@
                 <div class="card-body pb-0">
                     <h1 class="attendance-m-heading pb-0 border-bottom text-center">Absent
                     </h1>
-                    <p class="text-center mt-3 mb-2">{{ totalAbsent !== undefined && totalAbsent !== null ? totalAbsent : 'Not available' }}</p>
+                    <p class="text-center mt-3 mb-2">{{ totalAbsent !== undefined && totalAbsent !== null ? totalAbsent
+                        : 'Not available' }}</p>
                 </div>
             </div>
         </div>
@@ -35,49 +37,67 @@
             <div class="card border-0 my-3">
                 <div class="card-body pb-0">
                     <h1 class="attendance-m-heading pb-0 border-bottom text-center">Day's salary</h1>
-                    <p class="text-center mt-3 mb-2">{{ totalNetAmount !== undefined && totalNetAmount !== null ? (totalNetAmount | currency) : 'Not available' }}</p>
+                    <p class="text-center mt-3 mb-2">{{ totalNetAmount !== undefined && totalNetAmount !== null ?
+                        "₹" + (totalNetAmount) : 'Not available' }}</p>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-8">
-            <form [formGroup]="searchbarform" class="">
-                <div class="d-flex mt-2">
-                    <input type="text" class="form-control search-user position-relative py-2" type="text"
-                        autocomplete="off" formControlName="searchbar" placeholder="Search:"
-                        [ngClass]="{ 'is-invalid':searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }">
-                    <div class="text-danger error-message d-block"
-                        *ngIf="searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty)">
-                        <p class="fw-light  text-danger search-required"
-                            *ngIf="searchbarform.controls['searchbar'].errors['required']">
-                            This is required</p>
+        <form [formGroup]="FilterForm">
+            <div class="row mb-2">
+                <div class="col-lg-4">
+                    <label
+                      class="form-label form-lable-custom"
+                      for="filter">Search</label>
+                    <input type="text" class="form-control px-4 py-2 mt-2 ml-2" placeholder="Search" #filter
+                        formControlName="filter"
+                        [ngClass]="{ 'is-invalid':FilterForm.controls['filter'].errors && (FilterForm.controls['filter'].touched || FilterForm.controls['filter'].dirty) }">
+                    <div class="text-danger error-message"
+                        *ngIf="FilterForm.controls['filter'].errors && ( FilterForm.controls['filter'].touched ||  FilterForm.controls['filter'].dirty)">
+                        <p class="fw-light  text-danger" *ngIf="FilterForm.controls['filter'].errors['required']">
+                            Name is required</p>
                     </div>
-
-                    <button class="btn btn-primary search-btn ms-2" (click)="searchfun()"><span><i
-                                class="fa-solid fa-magnifying-glass form-control-feedback"></i></span>
-                    </button>
-                    <button class="btn btn-primary search-btn ms-2" (click)="resetsearchbar()" type="submit"
-                        *ngIf="showreset==true"><span><i
-                                class="fa-solid fa-rotate-right form-control-feedback"></i></span>
-                    </button>
                 </div>
 
-            </form>
+                <div class="col-lg-4">
+                    <label
+                      class="form-label form-lable-custom"
+                      for="Transactiontype">Party type</label>
+                      <select type="text" class="d-block  form-select form-control form-input-custom"
+                      formControlName="Transactiontype" #Transactiontype
+                      [ngClass]="{ 'is-invalid':FilterForm.controls['Transactiontype'].errors && (FilterForm.controls['Transactiontype'].touched || FilterForm.controls['Transactiontype'].dirty) }">
+                      <option *ngFor="let party of filteredPartyTypes" [value]="party.name">
+                          {{ party.name }}
+                      </option>
+                  </select>
+                  
+                  </div>
 
-        </div>
-        <div class="col-lg-4">
-            
-        </div>
+
+                <div class="col-lg-4 mt-4">
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 me-3" type="button" (click)="GetAttendanceFun(1)">Search</button>
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2"
+                        (click)="resetFilter()">Reset</button>
+                </div>
+            </div>
+        </form>
+
     </div>
 </div>
 
-<div class="container">
+<div class="container mt-3">
     <div class="text-end">
-    <button class="btn btn-primary mb-3" (click)="AddopenWorker()">
-        Add Worker
-    </button>
-</div>
+        <button class="btn btn-primary mb-3 me-3" (click)="AddopenWorker()" *ngIf="todayDate==todayDateMax">
+            Add Worker
+        </button>
+
+        <button class="btn btn-primary mb-3" (click)="AddopenWorkeforce()">
+            Create Workforce
+        </button>
+
+
+    </div>
     <div class="card border-0 mb-4 py-0 tabel-card">
         <table class="table table-hover">
             <thead class="table-header-trailer">
@@ -133,28 +153,43 @@
 
                     <!-- Present Status -->
                     <td>
-                        <p class="table-detail text-capitalize ms-2 table-detail-new">
+                        <p class="table-detail text-capitalize ms-2 table-detail-new" [ngClass]="{
+                            'text-success': attendance.partyAttendance?.present, 
+                            'text-muted': !attendance.partyAttendance?.present
+                          }">
                             {{ attendance.partyAttendance?.present ? 'Present' : '-' }}
                         </p>
                     </td>
 
                     <!-- Absent Status -->
                     <td>
-                        <p class="table-detail text-capitalize ms-2 table-detail-new">
+                        <p class="table-detail text-capitalize ms-2 table-detail-new" [ngClass]="{
+                            'text-danger': attendance.partyAttendance?.absent, 
+                            'text-muted': !attendance.partyAttendance?.absent
+                          }">
                             {{ attendance.partyAttendance?.absent ? 'Absent' : '-' }}
                         </p>
                     </td>
 
                     <td>
                         <p>
-                            <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu"
-                                *ngIf="attendance.workforces && attendance.workforces.length > 0">
+                            <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
 
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="OpenViewDetails();">View Details</button>
+                                <button mat-menu-item (click)="OpenViewDetails(attendance.party_id);"
+                                    *ngIf="attendance.workforces && attendance.workforces.length > 0">View
+                                    Details</button>
+                                <button mat-menu-item (click)="OpenMarkpresent(attendance.party_id,0)"
+                                    *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark
+                                    Present</button>
+                                <button mat-menu-item (click)="OpenMarkAbsent(attendance.party_id,0);"
+                                    *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark
+                                    Absent</button>
                             </mat-menu>
+
+
                         </p>
                     </td>
 
@@ -177,7 +212,7 @@
                 <div class="card-header bg-white d-flex justify-content-between algin-items-center">
                     <h5 class="modal-title pt-1">Worker Details</h5>
                     <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
-                        (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                        (click)="closeviewdetial()"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
 
@@ -238,24 +273,35 @@
 
                                 <td>
                                     <p class="table-detail text-capitalize ms-2 table-detail-new">
-                                        <button class="btn btn-primary">Mark Present</button>
+                                        <button class="btn custom-btn"
+                                            [ngClass]="{'btn-primary': worker.present, 'btn-default': !worker.present}"
+                                            (click)="OpenMarkpresent(worker.id,1)">
+                                            Present
+                                        </button>
                                     </p>
                                 </td>
 
                                 <!-- Absent Status -->
                                 <td>
-                                    <button class="btn btn-danger">Mark Absent</button>
+                                    <button class="btn custom-btn"
+                                        [ngClass]="{'btn-danger': worker.absent, 'btn-default': !worker.absent}"
+                                        (click)="OpenMarkAbsent(worker.id,1);">
+                                        Absent
+                                    </button>
                                 </td>
+
 
 
                                 <td>
                                     <p>
-                                        <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                                        <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu"
+                                            *ngIf="worker.present || worker.absent">
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
 
                                         <mat-menu #menu="matMenu">
-                                            <button mat-menu-item>View Details</button>
+                                            <button mat-menu-item (click)="OpenUpdatelabourcontract(worker.id)">Update
+                                                Details</button>
                                         </mat-menu>
                                     </p>
                                 </td>
@@ -293,7 +339,7 @@
 
                     <div class="modal-content-width card-body mb-0">
                         <div class="row">
-                            
+
 
 
                             <div class="col-lg-12 col-md-12 mb-3">
@@ -301,7 +347,7 @@
                                 <select type="text" class="d-block  form-select form-control form-input-custom"
                                     formControlName="PartyType" #PartyType (change)="staffselect(PartyType.value)"
                                     [ngClass]="{ 'is-invalid':AddWorkerForm.controls['PartyType'].errors && (AddWorkerForm.controls['PartyType'].touched || AddWorkerForm.controls['PartyType'].dirty) }">
-                                    <option *ngFor="let party of filteredPartyTypes" [value]="party.id">
+                                    <option *ngFor="let party of filteredPartyTypes" [value]="party.name">
                                         {{ party.name }}
                                     </option>
                                 </select>
@@ -315,10 +361,12 @@
                             </div>
 
 
-                            <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeName=='staff'">
+                            <div class="col-lg-12 col-md-12 mb-3"
+                                *ngIf="partyTypeName=='staff' || partyTypeName=='labour' || partyTypeName=='labour contractor' ">
                                 <label for="StaffList" class="form-label form-lable-custom">Staff List</label>
                                 <select type="text" class="d-block  form-select form-control form-input-custom"
-                                    formControlName="StaffList" 
+                                    formControlName="StaffList" #StaffList
+                                    (change)="labourcontractorstaff(StaffList.value)"
                                     [ngClass]="{ 'is-invalid':AddWorkerForm.controls['StaffList'].errors && (AddWorkerForm.controls['StaffList'].touched || AddWorkerForm.controls['StaffList'].dirty) }">
                                     <option *ngFor="let staff of Stafflist" [value]="staff.id">
                                         {{ staff.name }}
@@ -327,21 +375,126 @@
                                 <div class="text-danger error-message"
                                     *ngIf="AddWorkerForm.controls['StaffList'].errors && (AddWorkerForm.controls['StaffList'].touched || AddWorkerForm.controls['StaffList'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="AddWorkerForm.controls['StaffList'].errors['required']">Staff list is requried</p>
+                                        *ngIf="AddWorkerForm.controls['StaffList'].errors['required']">Staff list is
+                                        requried</p>
                                 </div>
                             </div>
 
 
-                            <div class="col-lg-12 col-md-12 mb-3">
+                            <div class="col-lg-12 col-md-12 mb-3"
+                                *ngIf="partyTypeName=='staff' || partyTypeName=='labour' ">
                                 <label for="Salary" class="form-label form-lable-custom">Salary (perday)</label>
                                 <input type="text" class="d-block form-control form-input-custom"
-                                    formControlName="Salary" 
+                                    formControlName="Salary"
                                     [ngClass]="{ 'is-invalid':AddWorkerForm.controls['Salary'].errors && (AddWorkerForm.controls['Salary'].touched || AddWorkerForm.controls['Salary'].dirty) }">
 
                                 <div class="text-danger error-message"
                                     *ngIf="AddWorkerForm.controls['Salary'].errors && (AddWorkerForm.controls['Salary'].touched || AddWorkerForm.controls['Salary'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="AddWorkerForm.controls['Salary'].errors['required']">Salary  is requried</p>
+                                        *ngIf="AddWorkerForm.controls['Salary'].errors['required']">Salary is requried
+                                    </p>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeName=='labour contractor' ">
+
+                                <label class="d-block text-capitalize form-label form-lable-custom"
+                                    for="labourstafflist">Select Workforce</label>
+
+                                <ng-select [items]="labourstafflist" class="d-block" [appendTo]="'body'"
+                                    bindLabel="worker_type" bindValue="id" [multiple]="true"
+                                    formControlName="labourstafflist" groupBy="selectedAllGroup"
+                                    [selectableGroup]="true"
+                                    [ngClass]="{ 'is-invalid': AddWorkerForm.controls['labourstafflist'].errors && (AddWorkerForm.controls['labourstafflist'].touched || AddWorkerForm.controls['labourstafflist'].dirty) }">
+
+                                    <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                                        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> Select
+                                        All
+                                    </ng-template>
+                                </ng-select>
+                                <div class="text-danger error-message"
+                                    *ngIf="AddWorkerForm.controls['labourstafflist'].errors && (AddWorkerForm.controls['labourstafflist'].touched || AddWorkerForm.controls['labourstafflist'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="AddWorkerForm.controls['labourstafflist'].errors['required']">
+                                        Select Workforce is required
+                                    </p>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer text-end me-4 mb-3">
+                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                            (click)="closeModal()">Cancel</button>
+                        <button class="btn btn-primary main-btnfs px-4 py-2"
+                            (click)="CreateWorkerfun();">Create</button>
+                    </div>
+                    <div class="text-end error-message" *ngIf="!submitted">
+                        <p class="fw-light text-danger">{{errorMessage}}</p>
+                    </div>
+
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div *ngIf="addworkforceopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-50" [@fadeIn]>
+        <div>
+            <form [formGroup]="addworkforceform">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                        <h5 class="modal-title pt-1">Create Workforce </h5>
+                        <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                            type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+
+
+                    <div class="modal-content-width card-body mb-0">
+                        <div class="row">
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="WorkerType" class="form-label form-lable-custom">Worker Type</label>
+                                <input type="text" class="d-block form-control form-input-custom"
+                                    formControlName="WorkerType"
+                                    [ngClass]="{ 'is-invalid':addworkforceform.controls['WorkerType'].errors && (addworkforceform.controls['WorkerType'].touched || addworkforceform.controls['WorkerType'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="addworkforceform.controls['WorkerType'].errors && (addworkforceform.controls['WorkerType'].touched || addworkforceform.controls['WorkerType'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="addworkforceform.controls['WorkerType'].errors['required']">Worker Type
+
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="Salary" class="form-label form-lable-custom">Salary (per shift)</label>
+                                <input type="text" class="d-block form-control form-input-custom"
+                                    formControlName="Salary"
+                                    [ngClass]="{ 'is-invalid':addworkforceform.controls['Salary'].errors && (addworkforceform.controls['Salary'].touched || addworkforceform.controls['Salary'].dirty) }">
+
+                                <div class="text-danger error-message"
+                                    *ngIf="addworkforceform.controls['Salary'].errors && (addworkforceform.controls['Salary'].touched || addworkforceform.controls['Salary'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="addworkforceform.controls['Salary'].errors['required']">Salary is
+                                        requried</p>
                                 </div>
                             </div>
 
@@ -354,7 +507,400 @@
                     <div class="modal-footer text-end me-4 mb-3">
                         <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
                             (click)="closeModal()">Cancel</button>
-                        <button class="btn btn-primary main-btnfs px-4 py-2" (click)="CreateWorkforcefun();">Create</button>
+                        <button class="btn btn-primary main-btnfs px-4 py-2"
+                            (click)="CreateWorkforcefun();">Create</button>
+                    </div>
+                    <div class="text-end error-message" *ngIf="!submitted">
+                        <p class="fw-light text-danger">{{errorMessage}}</p>
+                    </div>
+
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="openSecondsuccess" class="your-animation-class modal-container-success" [@slideIn]
+    aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div>
+        <div class=" p-4 d-flex justify-content-between align-items-center success-content">
+            <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+            <p class="text-green-900 text-capitalize mb-0">
+                {{successName}} successfully</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- mark present -->
+
+<div *ngIf="MarkPresent" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-30" [@fadeIn]>
+        <div>
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                    <h5 class="modal-title pt-1">Mark present</h5>
+                    <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                        (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-content-width mb-2">
+                    <div class="card-body text-center ">
+                        <span class="mark-success"><i class="fa-solid fa-check"></i></span>
+                        <p class="text-capitalize mb-0 pt-2 mark-text">Are You
+                            sure ?</p>
+                        <p class="mark-text-light">You want to Mark as
+                            Present</p>
+                    </div>
+                    <div class="text-end border-top pt-3">
+                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                            (click)="closeModal()">No</button>
+                        <button class="btn btn-primary main-btnfs px-4 py-2 me-3" type="button"
+                            (click)="MarkAttendancepresentFun()">Yes</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="Markabsent" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-30" [@fadeIn]>
+        <div>
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                    <h5 class="modal-title pt-1">Mark Absent</h5>
+                    <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                        (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-content-width mb-2">
+                    <div class="card-body text-center ">
+                        <span class="mark-cross"><i class="fa-solid fa-check"></i></span>
+                        <p class="text-capitalize mb-0 pt-2 mark-text">Are You
+                            sure ?</p>
+                        <p class="mark-text-light">You want to Mark as
+                            Absent</p>
+                    </div>
+                    <div class="text-end border-top pt-3">
+                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                            (click)="closeModal()">No</button>
+                        <button class="btn btn-primary main-btnfs px-4 py-2 me-3" type="button"
+                            (click)="MarkAttendanceabsentFun()">Yes</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- UpdateLabourContractor ****************************************** -->
+
+<div *ngIf="UpdateLabourContractor" class=" your-animation-class modal-container" aria-labelledby="modal-title"
+    role="dialog" aria-modal="true">
+    <div class="modal-content modal-content-50" [@fadeIn]>
+        <div>
+            <form [formGroup]="UpdatelabourForm">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                        <h5 class="modal-title pt-1">Update Attendance</h5>
+                        <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                            type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+
+
+                    <div class="modal-content-width card-body mb-0">
+                        <div class="row">
+                            <div class="result">
+                                <p class="class=suggest-content-validation text-primary">{{ calculateText() }}</p>
+                            </div>
+
+
+
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="SalaryAmount" class="form-label form-lable-custom">Salary Amount</label>
+                                <input type="text" class="d-block   form-control form-input-custom"
+                                    formControlName="SalaryAmount"
+                                    [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['SalaryAmount'].errors && (UpdatelabourForm.controls['SalaryAmount'].touched || UpdatelabourForm.controls['SalaryAmount'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="UpdatelabourForm.controls['SalaryAmount'].errors && (UpdatelabourForm.controls['SalaryAmount'].touched || UpdatelabourForm.controls['SalaryAmount'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="UpdatelabourForm.controls['SalaryAmount'].errors['required']">Salary
+                                        Amount
+
+                                        is Requried</p>
+                                </div>
+                                <p class="suggest-content-validation text-primary"> *The change is day wage will only
+                                    affect the day selected alone.</p>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 mb-4">
+                                <label for="numberOfWorkers">No. of Workers:</label>
+                                <input id="numberOfWorkers" type="number" formControlName="numberOfWorkers"
+                                    class="form-control form-control form-input-custom"
+                                    [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['numberOfWorkers'].errors && (UpdatelabourForm.controls['numberOfWorkers'].touched || UpdatelabourForm.controls['numberOfWorkers'].dirty) }">
+                                    
+                                <div class="text-danger error-message"
+                                *ngIf="UpdatelabourForm.controls['numberOfWorkers'].errors && (UpdatelabourForm.controls['numberOfWorkers'].touched || UpdatelabourForm.controls['numberOfWorkers'].dirty)">
+                                <p class="fw-light fs-5 text-danger"
+                                    *ngIf="UpdatelabourForm.controls['numberOfWorkers'].errors['required']">No
+                                    Number Of Workers is required</p>
+                            </div>
+                            </div>
+
+
+                            <div class="col-lg-6 col-md-6 mb-4">
+                                <label class="form-label mb-3 ms-2 mt-1" for="shift">Shift</label>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <div class="form-check ms-2" *ngFor="let detail of Shiftlist">
+                                        <div class="button-container">
+                                            <label class="form-check-label button-label">
+                                                <input class="form-check-input" type="radio" name="shift"
+                                                    formControlName="shift" id="CategoryGen" #shift [value]="detail.id" (change)="shiftchange()"
+                                                    [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['shift'].errors && (UpdatelabourForm.controls['shift'].touched || UpdatelabourForm.controls['shift'].dirty) }">
+                                                <span>{{detail.name}}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="text-danger error-message"
+                                    *ngIf="UpdatelabourForm.controls['shift'].errors && (UpdatelabourForm.controls['shift'].touched || UpdatelabourForm.controls['shift'].dirty)">
+                                    <p class="fw-light fs-5 text-danger"
+                                        *ngIf="UpdatelabourForm.controls['shift'].errors['required']">No
+                                        Shift is required</p>
+                                </div>
+
+                            </div>
+
+                            <div>
+
+
+
+                                <div class="d-flex justify-content-between second-form align-items-center">
+                                    <h1 class="heading-party mb-0">OverTime/Late-Fine</h1>
+                                    <button class="btn btn-primary px-2 py-2 me-3" (click)="addOverTime()">
+                                        <span>
+                                            <i class="fa-solid" [ngClass]="OverTime ? 'fa-minus' : 'fa-plus'"></i>
+                                        </span>
+                                        Add Overtime
+                                    </button>
+                                </div>
+                                <div class="form-group mb-3" *ngIf="OverTime">
+
+                                    <div class="d-flex  mt-3 mb-3">
+                                        <div class="form-check ms-2">
+                                            <label class="form-check-label" for="Overtime">
+                                                <input class="form-check-input" type="radio" name="Overtime"
+                                                    formControlName="Overtime" [value]="true" checked>
+                                                Over Time
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check  ms-4">
+                                            <label class="form-check-label" for="Overtime">
+                                                <input class="form-check-input" type="radio" name="Overtime"
+                                                    formControlName="Overtime" [value]="false">
+                                                Late Fine
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 p-0 ">
+                                        <div class="row mx-0 d-flex algin-items-center">
+                                            <div class="col-lg-5">
+                                                <label for="Hours">Hours</label>
+                                                <input type="number" formControlName="Hours" class="form-control"
+                                                    [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['Hours'].errors && (UpdatelabourForm.controls['Hours'].touched || UpdatelabourForm.controls['Hours'].dirty) }">
+
+                                                <div class="text-danger"
+                                                    *ngIf="UpdatelabourForm.controls['Hours'].errors && (UpdatelabourForm.controls['Hours'].touched || UpdatelabourForm.controls['Hours'].dirty)">
+                                                    <p class="fw-light fs-5 text-danger  error-message"
+                                                        *ngIf="UpdatelabourForm.controls['Hours'].errors['required']">No
+                                                        Hours is required</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-5">
+                                                <label for="Rate">Hourly Rate</label>
+                                                <input type="number" formControlName="Rate" class="form-control"
+                                                [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['Rate'].errors && (UpdatelabourForm.controls['Rate'].touched || UpdatelabourForm.controls['Rate'].dirty) }">
+
+                                                <div class="text-danger error-message"
+                                                    *ngIf="UpdatelabourForm.controls['Rate'].errors && (UpdatelabourForm.controls['Rate'].touched || UpdatelabourForm.controls['Rate'].dirty)">
+                                                    <p class="fw-light fs-5 text-danger"
+                                                        *ngIf="UpdatelabourForm.controls['Rate'].errors['required']">No
+                                                        Hours is required</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2 ">
+                                                <label for="totalovertimeamount">Total</label>
+                                                <input type="number" formControlName="totalovertimeamount"
+                                                    readonly="true" class="form-control" [value]="calculateOvertimeAmount()">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="d-flex justify-content-between second-form align-items-center">
+                                    <h1 class="heading-party mb-0">Allowance/Deduction</h1>
+                                    <button type="button" 
+                                        class="btn btn-primary mt-3" (click)="addAllowance()">Add
+                                        allowance/Deduction</button>
+                                </div>
+
+                                <div formArrayName="allowances"
+                                    *ngFor="let allowance of allowances.controls; let i=index">
+                                    <div [formGroupName]="i" class="form-group third-form">
+                                        <div class="d-flex mt-3 mb-3">
+                                            <div class="form-check ms-2">
+                                                <label class="form-check-label" for="allowance{{i}}_true">
+                                                    <input 
+                                                        class="form-check-input" 
+                                                        type="radio" 
+                                                        id="allowance{{i}}_true"
+                                                        formControlName="allowance" 
+                                                        [value]="true">
+                                                    Allowance
+                                                </label>
+                                            </div>
+                                
+                                            <div class="form-check ms-4">
+                                                <label class="form-check-label" for="allowance{{i}}_false">
+                                                    <input 
+                                                        class="form-check-input" 
+                                                        type="radio" 
+                                                        id="allowance{{i}}_false"
+                                                        formControlName="allowance" 
+                                                        [value]="false">
+                                                    Deduction
+                                                </label>
+                                            </div>
+                                        </div>
+                                
+
+                                        <div class="col-12 mb-3">
+                                            <div class="row mx-0">
+                                                <div class="col-lg-5">
+                                                    <label for="Description{{i}}">Description</label>
+                                                    <input id="Description{{i}}" type="text"
+                                                        formControlName="description" class="form-control">
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    <label for="allowanceAmount{{i}}">Amount</label>
+                                                    <input id="allowanceAmount{{i}}" type="number"
+                                                        formControlName="amount" class="form-control"
+                                                        oninput="check(this)"
+                                                        [ngClass]="{ 'is-invalid':allowances.controls[i].get('amount')?.errors && (allowances.controls[i].get('amount')?.['touched'] ||  allowances.controls[i].get('amount')?.errors?.['dirty']) }">
+                                                    <div class="text-danger error-message" *ngIf="
+                    allowances.controls[i].get('amount')?.invalid &&
+                    (allowances.controls[i].get('amount')?.touched || allowances.controls[i].get('amount')?.dirty) &&
+                    allowances.controls[i].get('amount')?.errors?.['required']
+                  ">
+                                                        <p class="fw-light text-danger">This is Required</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="d-flex mt-2">
+                                                        <!-- <button type="button" class="btn btn-primary mt-3 me-3"
+                                                            (click)="addAllowance()"> <span><i
+                                                                    class="fa-solid fa-plus"></i></span></button> -->
+                                                        <button type="button" class="btn btn-danger mt-3 me-3"
+                                                            (click)="removeAllowance(i)">
+                                                            <span><i class="fa-solid fa-minus"></i></span>
+                                                        </button>
+
+                                                        <!-- <button type="button" class="btn btn-primary mt-3">Calculate Amount</button> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-lg-12 col-md-12 mb-3 mt-3">
+                                    <label for="Notes" class="form-label form-lable-custom">Notes</label>
+                                    <input type="text" class="d-block   form-control form-input-custom"
+                                        formControlName="Notes"
+                                        [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['Notes'].errors && (UpdatelabourForm.controls['Notes'].touched || UpdatelabourForm.controls['Notes'].dirty) }">
+                                    <div class="text-danger error-message"
+                                        *ngIf="UpdatelabourForm.controls['Notes'].errors && (UpdatelabourForm.controls['Notes'].touched || UpdatelabourForm.controls['Notes'].dirty)">
+                                        <p class="fw-light text-danger"
+                                            *ngIf="UpdatelabourForm.controls['Notes'].errors['required']">Notes Is
+                                            Required
+                                        </p>
+                                    </div>
+
+                                </div>
+
+
+
+
+                                <div class="col-lg-4 col-md-4" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
+                                    (dragleave)="onDragLeave($event)">
+                                    <label class="d-block text-capitalize form-label form-lable-custom"
+                                        for="attendanceimage">Labour Photos Add
+                                        pic</label>
+                                    <label for="fileInput" class="file-label" *ngIf="!imageUrl">
+                                        <span><img src="./assets/upload-icon.png" class="upload-icon" alt></span>
+                                        <p class="text-gray-500"> Drag and drop or browse to choose
+                                            a file </p>
+                                    </label>
+                                    <div class="custom-file-upload position-relative" (click)="fileInput.click()">
+                                        <input type="file" id="fileInput" #fileInput
+                                            accept="image/jpeg, image/jpg, image/png" (change)="onFileSelected($event)"
+                                            formControlName="attendanceimage"
+                                            [ngClass]="{ 'is-invalid': UpdatelabourForm.controls['attendanceimage'].errors && (UpdatelabourForm.controls['attendanceimage'].touched || UpdatelabourForm.controls['attendanceimage'].dirty) }">
+                                        <button *ngIf="imageUrl" (click)="clearFile($event)" class="remove-button">
+                                            <span><i class="fa-solid fa-xmark cross-icon"></i></span>
+                                        </button>
+
+                                        <div *ngIf="imageUrl" class="image-container">
+                                            <div class="black-layer"></div>
+                                            <img [src]="imageUrl" alt="Profile Preview" class="Profile-image" />
+                                        </div>
+                                    </div>
+                                    <!-- <div class="text-danger error-message"
+                                  *ngIf="Employerform.controls['attendanceimage'].errors && (Employerform.controls['attendanceimage'].touched || Employerform.controls['attendanceimage'].dirty)">
+                                  <p class="fw-light  text-danger"
+                                    *ngIf="Employerform.controls['attendanceimage'].errors['required']">
+                                    Profile is required</p>
+                                </div> -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-end me-4 mb-3">
+                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                            (click)="closeModal()">Cancel</button>
+                        <button class="btn btn-primary main-btnfs px-4 py-2"
+                            (click)="UpdateLabourContratorfun();">Update</button>
                     </div>
                     <div class="text-end error-message" *ngIf="!submitted">
                         <p class="fw-light text-danger">{{errorMessage}}</p>

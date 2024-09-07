@@ -228,22 +228,48 @@ getPartyByIdAPI(PartyId:any): Observable<any> {
 
 
 
-getAttendacneAPI(projectId:any,userId:any,Date:any): Observable<any> {
-  const user = this.jwtService.getpanelUserId();
-  const token = this.jwtService.getToken();
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  });
-  const body = {
-    "project_id":projectId,
-    "user_id": userId,
-    "date":Date
-  };
+// getAttendacneAPI(projectId:any,userId:any,date:any,search:any,partytype:any): Observable<any> {
+//   const user = this.jwtService.getpanelUserId();
+//   const token = this.jwtService.getToken();
+//   const headers = new HttpHeaders({
+//     'Authorization': `Bearer ${token}`,
+//     'Content-Type': 'application/json'
+//   });
+//   const body = {
+//     "project_id":projectId,
+//     "user_id": userId,
+//     "date":date,
+//     'party_type':partytype,
+//     'search':search,
+//     // ...(partytype ? { 'party_type': partytype } : {'party_type': 'all'}),
+//     // ...(search ? { 'search': search } : {'search': ''}),
+//     // 'search':search
+//   };
 
-  return this.apiservice.post(`attendance`, body,  headers );
-}
+//   return this.apiservice.post(`attendance`, body,  headers );
+// }
 
+
+// getattendace(project_id: any,date:any, partytype:any,search:any): Observable<any> {
+//   const user = this.jwtService.getpanelUserId();
+//   const token = this.jwtService.getToken();
+//   const headers = new HttpHeaders({
+//     'Authorization': `Bearer ${token}`,
+//     'Content-Type': 'application/json'
+//   });
+
+//   const body = {
+//     'user_id': user,
+//     'project_id': project_id,
+//     "date":date,
+//     "search":search!=undefined?search:"",
+//     ...(partytype ? { 'party_type': partytype } : {}),
+//     // 'transaction_type': transaction_type,
+
+//   };
+
+//   return this.apiservice.post(`attendance`, body,  headers );
+// }
 
 GetStaffApi(projectId:any,staff:any,): Observable<any> {
   const user = this.jwtService.getpanelUserId();
@@ -276,6 +302,34 @@ CreateWorkforceApi(body:any): Observable<any> {
 
 
 
+CreateWorkerapi(body:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+;
+
+  return this.apiservice.post(`add-party-workforce`, body,  headers );
+}
+
+
+
+GetStafflabourcontractorapi(partyid:any,projectId:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  const body = {
+    "party_id":projectId,
+    "project_id": partyid,
+  };
+
+  return this.apiservice.post(`get-workforce`, body,  headers );
+}
 
 
 
@@ -283,22 +337,65 @@ CreateWorkforceApi(body:any): Observable<any> {
 
 
 
+MarkAttendacneapi(body:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  
+
+  return this.apiservice.post(`mark-attendance`, body,  headers );
+}
+
+
+// update labour contractor
+
+
+UpdateLabourContratorAPI(body:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+
+  });
+  
+
+  return this.apiservice.post(`update-attendance`, body,  headers );
+}
+
+
+getUpdateattendanceApi(ProjecId:any,userId:any,partyId:any,workforceid:any,date:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  const body = {
+    "project_id":ProjecId,
+    "user_id": userId,
+    "party_id":partyId,
+    "workforce_id":workforceid,
+    "date":date
+  };
+
+  return this.apiservice.post(`edit-attendance`, body,  headers );
+}
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+getShiftApi() {
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  return this.apiservice.get("shifts",headers);
+}
 
 
 

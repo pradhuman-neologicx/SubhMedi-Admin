@@ -36,7 +36,7 @@ import { ProjectbalanceComponent } from './admin/projectbalance/projectbalance.c
 import { MastersComponent } from './admin/masters/masters.component';
 import { UnitsComponent } from './admin/masters/units/units.component';
 import { MaterialsComponent } from './admin/masters/materials/materials.component';
-import { AttendanceComponent } from './admin/attendance/attendance.component';
+
 import { NgSelectModule } from '@ng-select/ng-select';
 import { WorkforceComponent } from './admin/masters/workforce/workforce.component';
 import { SubcontracterpayementoutComponent } from './admin/projecthome/subcontracterpayementout/subcontracterpayementout.component';
@@ -75,7 +75,6 @@ import { ViewpartiesComponent } from './admin/parties/viewparties/viewparties.co
     MastersComponent,
     UnitsComponent,
     MaterialsComponent,
-    AttendanceComponent,
     WorkforceComponent,
     SubcontracterpayementoutComponent,
     OtherexpensepaymentoutComponent,

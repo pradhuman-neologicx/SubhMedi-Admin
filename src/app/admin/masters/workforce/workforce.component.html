@@ -1,83 +1,17 @@
 <div class="container ">
-    <div class="d-flex justify-content-between">
-        <h1 class="text-primary table-heading-detail">Attendance</h1>
-        <form [formGroup]="CalendarForm">
-            <mat-form-field class="attendance-management-date-picker">
-                <input matInput [matDatepicker]="picker" formControlName="Caledardate" [max]="maxDate"
-                    onkeydown="return false" #Caledardate>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-        </form>
+    <div class="d-flex justify-content-between algin-items-center">
+        <h1 class="text-primary table-heading-detail">Workforce</h1>
+        <div>
+        <button class="btn btn-primary py-2" (click)="AddopenWorker()">
+            Add Worker
+        </button>
+    </div>
     </div>
 
 
-    <div class="row">
-        <div class="col-lg-4 col-md-4 pe-5">
-            <div class="card border-0 my-3">
-                <div class="card-body pb-0">
-                    <h1 class="attendance-m-heading pb-0 border-bottom text-center pb-0">Present
-                        Employees</h1>
-                    <p class="text-center mt-3 mb-2">{{ totalPresent !== undefined && totalPresent !== null ? totalPresent : 'Not available' }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 pe-5">
-            <div class="card border-0 my-3">
-                <div class="card-body pb-0">
-                    <h1 class="attendance-m-heading pb-0 border-bottom text-center">Absent
-                    </h1>
-                    <p class="text-center mt-3 mb-2">{{ totalAbsent !== undefined && totalAbsent !== null ? totalAbsent : 'Not available' }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4">
-            <div class="card border-0 my-3">
-                <div class="card-body pb-0">
-                    <h1 class="attendance-m-heading pb-0 border-bottom text-center">Day's salary</h1>
-                    <p class="text-center mt-3 mb-2">{{ totalNetAmount !== undefined && totalNetAmount !== null ? (totalNetAmount | currency) : 'Not available' }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-8">
-            <form [formGroup]="searchbarform" class="">
-                <div class="d-flex mt-2">
-                    <input type="text" class="form-control search-user position-relative py-2" type="text"
-                        autocomplete="off" formControlName="searchbar" placeholder="Search:"
-                        [ngClass]="{ 'is-invalid':searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }">
-                    <div class="text-danger error-message d-block"
-                        *ngIf="searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty)">
-                        <p class="fw-light  text-danger search-required"
-                            *ngIf="searchbarform.controls['searchbar'].errors['required']">
-                            This is required</p>
-                    </div>
 
-                    <button class="btn btn-primary search-btn ms-2" (click)="searchfun()"><span><i
-                                class="fa-solid fa-magnifying-glass form-control-feedback"></i></span>
-                    </button>
-                    <button class="btn btn-primary search-btn ms-2" (click)="resetsearchbar()" type="submit"
-                        *ngIf="showreset==true"><span><i
-                                class="fa-solid fa-rotate-right form-control-feedback"></i></span>
-                    </button>
-                </div>
 
-            </form>
 
-        </div>
-        <div class="col-lg-4">
-            
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="text-end">
-    <button class="btn btn-primary mb-3" (click)="AddopenWorker()">
-        Add Worker
-    </button>
-</div>
     <div class="card border-0 mb-4 py-0 tabel-card">
         <table class="table table-hover">
             <thead class="table-header-trailer">
@@ -281,10 +215,10 @@
     aria-modal="true">
     <div class="modal-content modal-content-50" [@fadeIn]>
         <div>
-            <form [formGroup]="AddWorkerForm">
+            <form [formGroup]="addworkforceform">
                 <div class="card">
                     <div class="card-header bg-white d-flex justify-content-between algin-items-center">
-                        <h5 class="modal-title pt-1">Create Worker</h5>
+                        <h5 class="modal-title pt-1">Create Workforce </h5>
                         <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
                             type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
                     </div>
@@ -297,51 +231,32 @@
 
 
                             <div class="col-lg-12 col-md-12 mb-3">
-                                <label for="PartyType" class="form-label form-lable-custom">Party Type</label>
-                                <select type="text" class="d-block  form-select form-control form-input-custom"
-                                    formControlName="PartyType" #PartyType (change)="staffselect(PartyType.value)"
-                                    [ngClass]="{ 'is-invalid':AddWorkerForm.controls['PartyType'].errors && (AddWorkerForm.controls['PartyType'].touched || AddWorkerForm.controls['PartyType'].dirty) }">
-                                    <option *ngFor="let party of filteredPartyTypes" [value]="party.id">
-                                        {{ party.name }}
-                                    </option>
-                                </select>
+                                <label for="WorkerType" class="form-label form-lable-custom">Worker Type</label>
+                                <input type="text" class="d-block form-control form-input-custom"
+                                    formControlName="WorkerType"
+                                    [ngClass]="{ 'is-invalid':addworkforceform.controls['WorkerType'].errors && (addworkforceform.controls['WorkerType'].touched || addworkforceform.controls['WorkerType'].dirty) }">
                                 <div class="text-danger error-message"
-                                    *ngIf="AddWorkerForm.controls['PartyType'].errors && (AddWorkerForm.controls['PartyType'].touched || AddWorkerForm.controls['PartyType'].dirty)">
+                                    *ngIf="addworkforceform.controls['WorkerType'].errors && (addworkforceform.controls['WorkerType'].touched || addworkforceform.controls['WorkerType'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="AddWorkerForm.controls['PartyType'].errors['required']">ParTy Type
+                                        *ngIf="addworkforceform.controls['WorkerType'].errors['required']">Worker Type
 
                                         is Requried</p>
                                 </div>
                             </div>
 
 
-                            <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeName=='staff'">
-                                <label for="StaffList" class="form-label form-lable-custom">Staff List</label>
-                                <select type="text" class="d-block  form-select form-control form-input-custom"
-                                    formControlName="StaffList" 
-                                    [ngClass]="{ 'is-invalid':AddWorkerForm.controls['StaffList'].errors && (AddWorkerForm.controls['StaffList'].touched || AddWorkerForm.controls['StaffList'].dirty) }">
-                                    <option *ngFor="let staff of Stafflist" [value]="staff.id">
-                                        {{ staff.name }}
-                                    </option>
-                                </select>
-                                <div class="text-danger error-message"
-                                    *ngIf="AddWorkerForm.controls['StaffList'].errors && (AddWorkerForm.controls['StaffList'].touched || AddWorkerForm.controls['StaffList'].dirty)">
-                                    <p class="fw-light text-danger"
-                                        *ngIf="AddWorkerForm.controls['StaffList'].errors['required']">Staff list is requried</p>
-                                </div>
-                            </div>
 
 
                             <div class="col-lg-12 col-md-12 mb-3">
-                                <label for="Salary" class="form-label form-lable-custom">Salary (perday)</label>
+                                <label for="Salary" class="form-label form-lable-custom">Salary (per shift)</label>
                                 <input type="text" class="d-block form-control form-input-custom"
                                     formControlName="Salary" 
-                                    [ngClass]="{ 'is-invalid':AddWorkerForm.controls['Salary'].errors && (AddWorkerForm.controls['Salary'].touched || AddWorkerForm.controls['Salary'].dirty) }">
+                                    [ngClass]="{ 'is-invalid':addworkforceform.controls['Salary'].errors && (addworkforceform.controls['Salary'].touched || addworkforceform.controls['Salary'].dirty) }">
 
                                 <div class="text-danger error-message"
-                                    *ngIf="AddWorkerForm.controls['Salary'].errors && (AddWorkerForm.controls['Salary'].touched || AddWorkerForm.controls['Salary'].dirty)">
+                                    *ngIf="addworkforceform.controls['Salary'].errors && (addworkforceform.controls['Salary'].touched || addworkforceform.controls['Salary'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="AddWorkerForm.controls['Salary'].errors['required']">Salary  is requried</p>
+                                        *ngIf="addworkforceform.controls['Salary'].errors['required']">Salary  is requried</p>
                                 </div>
                             </div>
 
@@ -364,6 +279,18 @@
 
 
             </form>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="openSecondsuccess" class="your-animation-class modal-container-success" [@slideIn]
+    aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div>
+        <div class=" p-4 d-flex justify-content-between align-items-center success-content">
+            <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+            <p class="text-green-900 text-capitalize mb-0">
+                {{successName}} successfully</p>
         </div>
     </div>
 </div>

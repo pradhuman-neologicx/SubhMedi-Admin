@@ -701,3 +701,43 @@ table.table thead.table-header th {
   z-index: 1;
   /* Ensure the black layer is above the image */
 }
+
+
+.mark-success {
+  border: 1px solid green;
+  border-radius: 50%;
+  color: green;
+  padding: 15px 7px 8px 8px;
+
+}
+
+.mark-success i {
+  font-size: 24px;
+  padding: 5px 2px 6px 2px;
+}
+
+.mark-cross {
+  border: 1px solid red;
+  border-radius: 50%;
+  color: red;
+  padding: 15px 10px 8px 8px;
+}
+
+
+.mark-cross i {
+  font-size: 24px;
+  padding: 5px 2px 6px 3px;
+}
+
+.mark-success i {
+  font-size: 24px;
+  padding: 5px 2px 6px 2px;
+}
+
+.error-message p {
+  font-size: 15px !important;
+  margin-bottom: 0 !important;
+  text-transform: capitalize;
+  padding: 4px 0 0 7px !important;
+  font-weight: 400 !important;
+}

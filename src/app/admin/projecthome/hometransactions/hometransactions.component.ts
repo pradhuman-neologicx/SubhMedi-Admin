@@ -104,11 +104,11 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.user_id= this.jwtService.getpanelUserId();
 
 
-      this.FilterForm = this.formBuilder.group({
-        StartDate: [''],
-        enddate: [''],
-        daterange: [''],
-      });
+      // this.FilterForm = this.formBuilder.group({
+      //   StartDate: [''],
+      //   enddate: [''],
+      //   daterange: [''],
+      // });
   
     
       this.addcategoryform = this.formBuilder.group({

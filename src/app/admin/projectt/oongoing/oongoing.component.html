@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-lg-6">
                     <button class="btn btn-primary main-btnfs px-4 py-2 mt-2" type="button" (click)="getOngoingproject(1)">Search</button>
-                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2" type="submit"
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2" type="button"
                         *ngIf="showStudent!=undefined" (click)="resetFilter()">Reset</button>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     <button class="btn btn-primary search-btn ms-2" (click)="searchfun()"><span><i
                                 class="fa-solid fa-magnifying-glass form-control-feedback"></i></span>
                     </button>
-                    <button class="btn btn-primary search-btn ms-2" (click)="resetsearchbar()" type="submit"
+                    <button class="btn btn-primary search-btn ms-2" (click)="resetsearchbar()" type="button"
                         *ngIf="showreset==true"><span><i
                                 class="fa-solid fa-rotate-right form-control-feedback"></i></span>
                     </button>
@@ -407,7 +407,7 @@
             <div class="modal-footer text-end me-4">
                 <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
                   (click)="closeModal()">Cancel</button>
-                <button class="btn btn-custom-primary  px-4 py-2"  type="submit" (click)="createprojects()" >Create</button>
+                <button class="btn btn-custom-primary  px-4 py-2"  type="button" (click)="createprojects()" >Create</button>
               </div>
 
 

@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { JwtService } from 'src/app/core/services/jwt.service';
 // import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
@@ -14,7 +15,9 @@ import { NavigationEnd, Router } from '@angular/router';
     @Output() toggleCollapsed = new EventEmitter<void>();
     searchQuery: string = '';
   
-    constructor(private elementRef: ElementRef,private router: Router,) { }
+    constructor(private elementRef: ElementRef,private router: Router,
+      private jwtService: JwtService
+    ) { }
   
     clearSearch(): void {
       this.searchQuery = '';
@@ -65,7 +68,7 @@ import { NavigationEnd, Router } from '@angular/router';
     
   
     logout() {
-      // this.jwtService.clearStorage();
+      this.jwtService.clearStorage();
       this.router.navigate(["/sign_in"]);
     }
   
