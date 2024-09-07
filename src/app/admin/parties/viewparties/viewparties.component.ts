@@ -271,7 +271,13 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       }
       return null;
     }
-
+    viewmmodal(projectid: any,party_id:any) {
+      // Log the project_id to the console
+      console.log('Project ID:', projectid);
+      
+      // Navigate to the desired route with the project_id
+      this.router.navigate(['/projectpartybalance', projectid, party_id]);
+    }
  
     getpartyprojectbalance(type: any) {
       // if (!this.isAtLeastOneFieldFilled()) {

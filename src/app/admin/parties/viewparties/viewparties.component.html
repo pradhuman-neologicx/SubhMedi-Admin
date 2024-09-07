@@ -186,8 +186,8 @@
                             </button>
 
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item>View Details</button>
-                                <button mat-menu-item>Edit Details</button>
+                                <button mat-menu-item (click)="viewmmodal(party.project_id,party.party_id)"> View Details</button>
+                             
                             </mat-menu>
                         </p>
                     </td>
