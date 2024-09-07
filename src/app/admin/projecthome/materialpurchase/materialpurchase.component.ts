@@ -16,6 +16,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   export class MaterialpurchaseComponent {
   
     @Input() materialpurchase!: string;
+    @Input() partyId!: any;
     othermaterialtype!: FormGroup;
   
   
@@ -41,7 +42,13 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       if (changes['materialpurchase'] && changes['materialpurchase'].currentValue !== undefined) {
         // Initialization logic or any code you want to run when materialpurchase updates
         console.log('materialpurchase updated:', changes['materialpurchase'].currentValue);
+
         this.initializeComponent(changes['materialpurchase'].currentValue);
+      } else if (changes['partyId'] && changes['partyId'].currentValue !== undefined) {
+        // Initialization logic or any code you want to run when materialpurchase updates
+        console.log('partyId updated:', changes['partyId'].currentValue);
+
+        this.initializeComponentparty(changes['partyId'].currentValue);
       }
     }
   
@@ -51,7 +58,18 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       console.log('Initialization logic executed with materialpurchase:', materialpurchaseValue);
       // Add more initialization steps as needed
       if (materialpurchaseValue!='0'|| materialpurchaseValue !=0){
+        console.log('Party ID:', this.partyId);
         this.creatematerialpurchase()
+      }
+      
+    }
+    private initializeComponentparty(partyId: any) {
+      // Place any logic that should run when materialpurchase changes
+      console.log('Initialization logic executed with partyId:', partyId);
+      // Add more initialization steps as needed
+      if (partyId!='0'|| partyId !=0){
+        console.log('Party ID:', this.partyId);
+        // this.creatematerialpurchase()
       }
       
     }
@@ -60,9 +78,10 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.todayDate = new Date().toISOString().split('T')[0];
     // Retrieve both IDs using paramMap
     this.projectID = this.route.snapshot.paramMap.get('id');
-    this.partyID = this.route.snapshot.paramMap.get('party_id');
+    // this.partyID = this.route.snapshot.paramMap.get('party_id');
     console.log('Project ID:', this.projectID);
-    console.log('Party ID:', this.partyID);
+    // console.log('Party ID:', this.partyID);
+    console.log('Party ID:', this.partyId);
     console.log('materialpurchase:', this.materialpurchase);
       this.user_id= this.jwtService.getpanelUserId();
 
@@ -73,7 +92,12 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
       this.othermaterialtype = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
-        selectpartyname: ["", [Validators.required,]],
+        selectpartyname: 
+          this.formBuilder.control({
+            value:this.partyId!=undefined?this.partyId:"",
+            disabled:this.partyId!=undefined?true: false,
+          } , [Validators.required,])
+         ,
        SubTotal: ['',Validators.required],
        cheque: ["",Validators.required],
        description: [""],
@@ -95,8 +119,10 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.Getpartynamesubcontractorfun();
       this.Getunitsn();
     
-   
-    
+   if (this.partyId != undefined)
+   {
+    this.onchange(this.partyId)
+   }    
   
       
   

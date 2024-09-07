@@ -17,6 +17,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   export class SubcontracterpayementoutComponent {
   
     @Input() renewType!: string;
+    @Input() partyId!: any;
     addsubcontractorform!: FormGroup;
   
   
@@ -43,6 +44,11 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         // Initialization logic or any code you want to run when renewType updates
         console.log('renewType updated:', changes['renewType'].currentValue);
         this.initializeComponent(changes['renewType'].currentValue);
+      }else if (changes['partyId'] && changes['partyId'].currentValue !== undefined) {
+        // Initialization logic or any code you want to run when materialpurchase updates
+        console.log('partyId updated:', changes['partyId'].currentValue);
+
+        this.initializeComponentparty(changes['partyId'].currentValue);
       }
     }
   
@@ -52,11 +58,22 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       console.log('Initialization logic executed with renewType:', renewTypeValue);
       // Add more initialization steps as needed
       if (renewTypeValue!='0'|| renewTypeValue !=0){
+        console.log('Party ID:', this.partyId);
         this.Createaddsubcontractor()
       }
       
     }
   
+    private initializeComponentparty(partyId: any) {
+      // Place any logic that should run when materialpurchase changes
+      console.log('Initialization logic executed with partyId:', partyId);
+      // Add more initialization steps as needed
+      if (partyId!='0'|| partyId !=0){
+        console.log('Party ID:', this.partyId);
+        // this.creatematerialpurchase()
+      }
+
+    }
     ngOnInit(): void {
       this.todayDate = new Date().toISOString().split('T')[0];
     // Retrieve both IDs using paramMap
@@ -74,7 +91,12 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
       this.addsubcontractorform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
-        selectpartyname: ["", [Validators.required,]],
+        selectpartyname: 
+          this.formBuilder.control({
+            value:this.partyId!=undefined?this.partyId:"",
+            disabled:this.partyId!=undefined?true: false,
+          } , [Validators.required,])
+         ,
        
         additionalcharges: [""],
         Discount: [""],
@@ -100,7 +122,11 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     
    
     
-  
+      if (this.partyId != undefined)
+        {
+         this.onchange(this.partyId)
+        }    
+       
       
   
   

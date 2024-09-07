@@ -56,7 +56,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     @Input() paymentintype!: string;
     paymentinform!: FormGroup;
   
-  
+    @Input() partyId!: any;
   
   
     projectiD : any
@@ -80,8 +80,14 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         // Initialization logic or any code you want to run when paymentintype updates
         console.log('paymentintype updated:', changes['paymentintype'].currentValue);
         this.initializeComponent(changes['paymentintype'].currentValue);
+      }else if (changes['partyId'] && changes['partyId'].currentValue !== undefined) {
+        // Initialization logic or any code you want to run when materialpurchase updates
+        console.log('partyId updated:', changes['partyId'].currentValue);
+
+        this.initializeComponentparty(changes['partyId'].currentValue);
       }
     }
+    
   
     // Initialization logic based on paymentintype changes
     private initializeComponent(paymentintypeValue: any) {
@@ -89,11 +95,21 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       console.log('Initialization logic executed with paymentintype:', paymentintypeValue);
       // Add more initialization steps as needed
       if (paymentintypeValue!='0'|| paymentintypeValue !=0){
+        console.log('Party ID:', this.partyId);
         this.creatpaymentouttype()
       }
       
     }
-  
+    private initializeComponentparty(partyId: any) {
+      // Place any logic that should run when materialpurchase changes
+      console.log('Initialization logic executed with partyId:', partyId);
+      // Add more initialization steps as needed
+      if (partyId!='0'|| partyId !=0){
+        console.log('Party ID:', this.partyId);
+        // this.creatematerialpurchase()
+      }
+
+    }
     ngOnInit(): void {
       this.todayDate = new Date().toISOString().split('T')[0];
     // Retrieve both IDs using paramMap
@@ -111,7 +127,13 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
       this.paymentinform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
-        selectpartyname: ["", [Validators.required,]],
+        selectpartyname: 
+        this.formBuilder.control({
+          value:this.partyId!=undefined?this.partyId:"",
+          disabled:this.partyId!=undefined?true: false,
+        } , [Validators.required,])
+       ,
+     
        SubTotal: ['',Validators.required],
        cheque: ["",Validators.required],
        description: [""],
@@ -134,7 +156,11 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.Getpartynamesubcontractorfun();
       this.Getunitsn();
     
-   
+      if (this.partyId != undefined)
+        {
+         this.onchange(this.partyId)
+        }    
+       
     
   
       

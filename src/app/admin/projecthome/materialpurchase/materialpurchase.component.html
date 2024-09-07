@@ -24,7 +24,7 @@
             <label class="form-label form-lable-custom"
                 for="selectpartyname">
                 Select Party Name</label>
-            <select class="form-select form-input-custom" formControlName="selectpartyname" #selectpartyname  (change)="onchange(selectpartyname.value)"
+            <select class="form-select form-input-custom" formControlName="selectpartyname" #selectpartyname  (change)="onchange(selectpartyname.value)"  
                 [ngClass]="{ 'is-invalid': othermaterialtype.controls['selectpartyname'].errors && (othermaterialtype.controls['selectpartyname'].touched || othermaterialtype.controls['selectpartyname'].dirty) }">
                 <option *ngFor="let party of partynamelist" [value]="party.id">
                 {{ party.name }}
