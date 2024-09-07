@@ -1,1 +1,329 @@
-<p>hometransactions works!</p>
+<div class="container">
+
+
+    <div class="d-flex col-lg-6 justify-content-between align-items-end">
+        <!-- <h1 class="admin-heading">Order Management </h1> -->
+        <div class="col-lg-6">
+
+
+            <button class="btn btn-success main-btnfs px-3 py-2 me-2" (click)="transactionpaymwentincreatemodal()"> Payment In
+            </button>
+            <button class="btn btn-success main-btnfs px-3 py-2 " (click)="  transactioncreatemodal()"> Payment Out
+            </button>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="container">
+
+
+
+
+
+
+        <div class="d-flex justify-content-between">
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <div class="card border-0 mb-4 py-0 tabel-card tab-pane  fade show active">
+            <table class="table table-hover">
+                <thead class="table-header-trailer">
+                    <tr>
+                        <th>
+                            <p class="table-heading table-new-heading">Serial No.</p>
+                        </th>
+
+                        <th>
+                            <p class="table-heading table-new-heading">Party</p>
+                        </th>
+                        <th>
+                            <p class="table-heading table-new-heading">Party Type</p>
+                        </th>
+                        <th>
+                            <p class="table-heading table-new-heading">Amount</p>
+                        </th>
+                        <th>
+                            <p class="table-heading table-new-heading">Date</p>
+                        </th>
+                    
+
+                        <th>
+                            <p class="table-heading table-new-heading">Action</p>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let party of transactiontable; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                            <p class="table-detail text-capitalize table-detail-new">
+                                {{party.party }}</p>
+                        </td>
+                        <td>
+                            <p class="table-detail text-capitalize table-detail-new">
+                                {{party.type }}</p>
+                        </td>
+                        <td>
+                            <p class="table-detail text-capitalize td-width table-detail-new">{{
+                                party.amount }}</p>
+                        </td>
+                        <td>
+                            <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                                party.date}}</p>
+                        </td>
+                     
+                        <!-- <td>
+                        <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                             'status-to-pay': party.status === 'to pay',
+                             'status-to-receive': party.status === 'to receive',
+                             'status-settled': party.status === 'settled'
+                           }">
+                            {{ party.status }}
+                        </p>
+                    </td> -->
+
+
+                        <td>
+                            <p>
+                                <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item>View Details</button>
+                                    <button mat-menu-item>Edit Details</button>
+                                </mat-menu>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div *ngIf="addsubcontractoropen" class="your-animation-class modal-container" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="modal-content modal-content-50">
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title pt-1 mb-0 tt-color">Payment Out</h5>
+                    <button class="btn btn-primary cross-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                        (click)="closeModal()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+
+                <div class="modal-content-width card-body mb-0">
+
+
+                    <div class="row">
+                        <form [formGroup]="addcategoryform">
+
+
+                            <div class="mb-3 ">
+                                <label class="form-label form-lable-custom" for="category">
+                                    Select Category</label>
+                                <select class="form-select form-input-custom" formControlName="category" #category
+                                    (change)="onchangecategory(category.value)"
+                                    [ngClass]="{ 'is-invalid': addcategoryform.controls['category'].errors && (addcategoryform.controls['category'].touched || addcategoryform.controls['category'].dirty) }">
+                                    <option value="Petty Expenses">Petty Expenses</option>
+                                    <option value="Miscellaneous Expenses">Miscellaneous Expenses</option>
+                                    <option value="Sub Contractor Payment">Sub Contractor Payment</option>
+                                    <option value="Other Expense">Other Expense</option>
+                                    <option value="Material Purchase">Material Purchase</option>
+                                    <option value="Salary">Salary</option>
+                                </select>
+                                <div class="text-danger error-message"
+                                    *ngIf="addcategoryform.controls['category'].errors && (addcategoryform.controls['category'].touched || addcategoryform.controls['category'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="addcategoryform.controls['category'].errors['required']">
+                                        Select Category is required
+                                    </p>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+
+
+                    <div *ngIf="catergory=='Sub Contractor Payment'">
+                        <app-subcontracterpayementout [renewType]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-subcontracterpayementout>
+                    </div>
+                    <div *ngIf="catergory=='Other Expense'">
+                        <app-otherexpensepaymentout [otherexpensetype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-otherexpensepaymentout>
+                    </div>
+
+                    <div *ngIf="catergory=='Material Purchase'">
+                        <app-materialpurchase [materialpurchase]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-materialpurchase>
+                    </div>
+                    <div *ngIf="catergory=='Salary'">
+                        <app-salary [salarytype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-salary>
+                    </div>
+                    <div *ngIf="catergory=='Petty Expenses'">
+                        <app-pettyexpense [pettytype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-pettyexpense>
+                    </div>
+
+                    <div *ngIf="catergory=='Miscellaneous Expenses'">
+                        <app-miscelaniousexpenses [miscellonustype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-miscelaniousexpenses>
+                    </div>
+                </div>
+
+
+
+                <div class="modal-footer text-end me-4">
+                    <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                        (click)="closeModal()">Cancel</button>
+                    <button class="btn btn-custom-primary  px-4 py-2" type="submit"
+                        (click)="Createadd()">Create</button>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div *ngIf="addpaymentinopen" class="your-animation-class modal-container" aria-labelledby="modal-title"
+role="dialog" aria-modal="true">
+<div class="modal-content modal-content-50">
+    <div class="card">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="modal-title pt-1 mb-0 tt-color">Payment In</h5>
+            <button class="btn btn-primary cross-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                (click)="closeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+
+        <div class="modal-content-width card-body mb-0">
+
+
+            <div class="row">
+            
+                <div>
+                    <app-paymentout [paymentintype]="clickin"  (selectedIn)="selectEventHanderIn($event)"></app-paymentout>
+                </div>
+            </div>
+
+            </div>
+
+
+
+
+        
+
+
+
+        <div class="modal-footer text-end me-4">
+            <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                (click)="closeModal()">Cancel</button>
+            <button class="btn btn-custom-primary  px-4 py-2" type="submit"
+                (click)="paymentinadd()">Create</button>
+        </div>
+
+
+    </div>
+
+
+</div>
+</div>
+
+
+<div *ngIf="openSecondsuccess"
+  class="your-animation-class modal-container-success" [@slideIn]
+  aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div>
+    <div
+      class=" p-4 d-flex justify-content-between align-items-center success-content">
+      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+      <p class="text-green-900 text-capitalize">{{ successName }}
+        successfully</p>
+    </div>
+  </div>
+</div>

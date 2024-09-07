@@ -125,6 +125,23 @@ export class EmployeeService {
   
 
 
+  gettransaction(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    const body = {
+      'user_id': user,
+      'project_id': project_id,
+   
+    };
+  
+    return this.apiservice.post(`transactions-list`, body,  headers );
+  }
+  
 
 
 
@@ -212,6 +229,20 @@ export class EmployeeService {
 
 
 
+
+
+  Getunitsformarray() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.apiservice.get("get-units",headers);
+  }
+
+
+
+
   GetpartynamelistApi() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
@@ -220,6 +251,100 @@ export class EmployeeService {
     });
     return this.apiservice.get("suppliers",headers);
   }
+
+
+
+
+  getsubcontractorParties(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: 'sub-contractor',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers );
+  }
+
+
+
+  getotherexpenseParties(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: '',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers );
+  }
+
+
+  
+
+
+
+
+
+  getsalarytype(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: 'salary',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers );
+  }
+
+
+
+
+
+  getTransactionParty(projectId: any): Observable<any> {
+    const userId = this.jwtService.getpanelUserId(); // Get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+
+    // Construct the headers with the token for authorization
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    // Construct the URL with query parameters
+    let url = `transaction-parties`;
+    if (projectId) {
+      url += `?project_id=${projectId}&user_id=${userId}`;
+    }
+
+    console.log('Constructed URL:', url);
+
+    // Make the GET request using HttpClient
+    return this.apiservice.get(url,  headers );
+  }
+
+
 
 
 
@@ -292,7 +417,24 @@ export class EmployeeService {
 
 
 
-
+  getbalance(project_id: any, party_id:any): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    const body = {
+      'user_id': user,
+      'project_id': project_id,
+      'party_id': party_id,
+   
+    };
+  
+    return this.apiservice.post(`salary-amount`, body,  headers );
+  }
+  
 
 
   creatematerial(body: any): Observable<any> {
@@ -324,6 +466,32 @@ export class EmployeeService {
   }
 
 
+  addsubcotractorpaymentout(body:any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      
+    });
+
+    
+
+    // Make the POST request to the server
+    return this.apiservice.post(`payment-transaction-out`, body,  headers );
+  }
+  addsubcotractorpaymenin(body:any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      
+    });
+
+    
+
+    // Make the POST request to the server
+    return this.apiservice.post(`payment-transaction-in`, body,  headers );
+  }
 }
 
 
