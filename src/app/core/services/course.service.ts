@@ -332,7 +332,7 @@ UpdateLabourContratorAPI(body:any): Observable<any> {
   const token = this.jwtService.getToken();
   const headers = new HttpHeaders({
     'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
+
   });
   
 

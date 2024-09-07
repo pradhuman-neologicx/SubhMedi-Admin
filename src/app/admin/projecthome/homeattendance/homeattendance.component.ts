@@ -605,12 +605,13 @@ export class HomeattendanceComponent {
       SalaryAmount: ["", [Validators.required,]],
       shift: ["", [Validators.required,]],
       amount: [0, Validators.required],
-      numberOfWorkers: [1, Validators.required],
-      // shift: [null, Validators.required],
-      overtime: this.formBuilder.group({
-        Overtime: [true],
-        amount: [0]
-      }),
+      numberOfWorkers: [, Validators.required],
+      Overtime: [true],
+      Hours: [],
+      Rate: [],
+      totalovertimeamount: [],
+      Notes: [""],
+      attendanceimage: [""],
       allowances: this.formBuilder.array([])
 
     });
@@ -634,28 +635,52 @@ export class HomeattendanceComponent {
     });
   }
 
+
+
   fillformdate(response: any,) {
+
+    var allowancelist = JSON.parse(response.allowance);
+    console.log(allowancelist)
     console.log(response.shifts.id)
     this.UpdatelabourForm = this.formBuilder.group({
-      SalaryAmount: [response.net_amount, [Validators.required,]],
+      SalaryAmount: [response.workforce_salary, [Validators.required,]],
       shift: [response.shifts.id, [Validators.required,]],
-  
-      numberOfWorkers: [1, Validators.required],
+      numberOfWorkers: [response.no_of_workers, Validators.required],
       // shift: [null, Validators.required],
-        Overtime: [response.over_time!=undefined?response.over_time.length>0?response.over_time.late_fine==0?true:false:true:true],
-        Hours: [response.over_time!=undefined?response.over_time.length>0?response.over_time.hours:"":""],
-        Rate: [response.over_time!=undefined?response.over_time.length>0?response.over_time.rate:"":""],
-        totalovertimeamount: [response.over_time!=undefined?response.over_time.length>0?response.over_time.amount:"":""],
-        Notes:[""],
-        attendanceimage:[""],
-  
+      Overtime: [response.over_time != undefined ? response.over_time.toString().length > 0 ? (response.over_time.over_time == 1 ||response.over_time.over_time == true) ? true : false : true : true],
+      Hours: [response.over_time != undefined ? response.over_time.toString().length > 0 ? response.over_time.hours : "" : ""],
+      Rate: [response.over_time != undefined ? response.over_time.toString().length > 0 ? response.over_time.rate : "" : ""],
+      totalovertimeamount: [response.over_time != undefined ? response.over_time.toString().length > 0 ? response.over_time.amount : "" : ""],
+      Notes: [response.notes],
+      attendanceimage: [""],
+
       allowances: this.formBuilder.array([])
 
     });
-    this.addAllowance();
+    this.shiftname=response.shifts.name
+    if (response.over_time != undefined) {
+      if (response.over_time.toString().length > 0) {
+        this.OverTime = true;
+
+      }
+    }
+
+    if (allowancelist.length > 0) {
+      this.onAttendanceChange(allowancelist)
+
+    } else {
+      this.addAllowance();
+
+    }
+
   }
 
-
+  onAttendanceChange(allowancelist: any) {
+    this.allowances.clear(); // Clear existing FormArray controls
+    allowancelist.forEach((e: any) => {
+      this.allowances.push(this.createMaterialGroup(e.allowance, e.description, e.amount));
+    });
+  }
 
 
 
@@ -667,28 +692,95 @@ export class HomeattendanceComponent {
       }
     });
   }
+  shiftname: any;
+  shiftchange() {
+   
+    var newlist = this.Shiftlist.filter((courseType: any) => courseType.id ==  this.UpdatelabourForm.get('shift')?.value);
+    console.log(newlist);
+    if (newlist.length > 0) {
+      this.shiftname = newlist[0].name;
 
-
-
-
-
-
-
+    }
+  }
 
 
   UpdateLabourContratorfun() {
-    if (this.addworkforceform.valid) {
-      const body = {
-        "worker_type": this.addworkforceform.get("WorkerType")?.value,
-        "salary": this.addworkforceform.get("Salary")?.value,
+    if (this.UpdatelabourForm.valid) {
+      const formData: FormData = new FormData();
+      // Append common fields
+      formData.append('project_id', this.projectiD.toString());
+      formData.append('user_id', this.userId.toString());
+      formData.append('party_id', this.currentpartyId.toString());
+      formData.append('workforce_id', this.currentworkforceId.toString());
+      formData.append('date', this.todayDate.toString());
+      formData.append('no_of_worker', this.UpdatelabourForm.get('numberOfWorkers')?.value.toString());
+      formData.append('shift_id', this.UpdatelabourForm.get('shift')?.value.toString());
+      formData.append('workforce_salary', this.UpdatelabourForm.get('SalaryAmount')?.value.toString());
+      formData.append('notes', this.UpdatelabourForm.get('Notes')?.value.toString());
+
+
+      const netAmount = this.calculate();
+      formData.append('net_amount', netAmount.toString());
+      // Append over_time object fields
+      //  formData.append('over_time[over_time]', this.UpdatelabourForm.get('Overtime')?.value.toString()); // Assuming it's always true
+      // formData.append('over_time[late_fine]', this.UpdatelabourForm.get('Overtime')?.value.toString()); // Assuming it's always false
+      // formData.append('over_time[amount]', this.UpdatelabourForm.get('totalovertimeamount')?.value.toString()); // Fixed amount
+      // formData.append('over_time[hours]', this.UpdatelabourForm.get('Hours')?.value.toString()); // Fixed hours
+      // formData.append('over_time[rate]', this.UpdatelabourForm.get('Rate')?.value.toString()); // Fixed rate
+
+      var ov = {
+
+        "over_time": this.UpdatelabourForm.get('Overtime')?.value == true ? true : false,
+        "late_fine": this.UpdatelabourForm.get('Overtime')?.value == false ? true : false,
+        "amount": this.UpdatelabourForm.get('totalovertimeamount')?.value.toString(),
+        "hours": this.UpdatelabourForm.get('Hours')?.value.toString(),
+        "rate": this.UpdatelabourForm.get('Rate')?.value.toString()
+
+
+      };
+      formData.append('over_time', JSON.stringify(ov)); // Assuming it's always true
+
+      // Append each allowance object in the array
+      var newMateria = [];
+      const allowancesArray = this.UpdatelabourForm.get('allowances') as FormArray;
+      for (let i = 0; i < allowancesArray.length; i++) {
+        const allowanceGroup = allowancesArray.at(i);
+        newMateria.push({
+          "allowance": allowanceGroup.get('allowance')?.value == true ? true : false,
+          "deduction": allowanceGroup.get('allowance')?.value == false ? true : false,
+          "description": allowanceGroup.get('description')?.value,
+          "amount": allowanceGroup.get('amount')?.value
+        })
       }
-      this.courseService.UpdateLabourContratorAPI(body).subscribe((response: any) => {
+      formData.append(`allowance`, JSON.stringify(newMateria));
+
+      // Now you can send formData via an HTTP request
+
+
+
+
+      if (this.profileimage) {
+        // If image exists, add it to FormData
+
+
+        const file = this.profileimage;
+        formData.append("image", file, file.name);
+      }
+
+
+
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
+      // console.log(body);
+      this.courseService.UpdateLabourContratorAPI(formData).subscribe((response: any) => {
         console.log(response);
         if (response.status === 200) {
           console.log("success");
           this.closeModal();
-          this.successName = 'Create Workforce';
+          this.successName = 'Update Attendance';
           this.ngOnInit();
+          this.getUpdateattendanceFun();
           setTimeout(() => {
             this.openSecondsuccess = true;
             setTimeout(() => {
@@ -699,7 +791,7 @@ export class HomeattendanceComponent {
       });
     } else {
       this.errorMessage = 'Please fill all the details correctly.';
-      this.addworkforceform.markAllAsTouched();
+      this.UpdatelabourForm.markAllAsTouched();
     }
   }
 
@@ -708,68 +800,132 @@ export class HomeattendanceComponent {
     return this.UpdatelabourForm.get('allowances') as FormArray;
   }
 
+  OverTime = false;
+
+
+  addOverTime(): void {
+    this.UpdatelabourForm.get("Overtime")?.clearValidators();
+    this.UpdatelabourForm.get("Hours")?.clearValidators();
+    this.UpdatelabourForm.get("Rate")?.clearValidators();
+    this.UpdatelabourForm.get("totalovertimeamount")?.clearValidators();
+    this.OverTime = !this.OverTime;
+
+    if (this.OverTime == true) {
+      this.UpdatelabourForm.get("Overtime")?.setValidators([Validators.required]);
+      this.UpdatelabourForm.get("Hours")?.setValidators([Validators.required]);
+      this.UpdatelabourForm.get("Rate")?.setValidators([Validators.required]);
+
+    } else {
+      // Remove validators
+      this.UpdatelabourForm.get("Overtime")?.setValidators([Validators.required]);
+      this.UpdatelabourForm.get("Hours")?.setValidators([Validators.required]);
+      this.UpdatelabourForm.get("Rate")?.setValidators([Validators.required]);
+    }
+    this.UpdatelabourForm.get("Overtime")?.updateValueAndValidity();
+    this.UpdatelabourForm.get("Hours")?.updateValueAndValidity();
+    this.UpdatelabourForm.get("Rate")?.updateValueAndValidity();
+
+
+  }
+
+  createMaterialGroup(allowance: any, description: any, amount: any): FormGroup {
+    return this.formBuilder.group({
+
+      allowance: [allowance],
+      description: [description],
+      amount: [amount, Validators.required]
+    });
+  }
+
+
   addAllowance(): void {
-    this.allowances.push(this.formBuilder.group({
-      allowance: [false],
-      Description:[''],
-      amount: [0, Validators.required]
-    }));
+    if (this.allowances.valid) {
+      this.allowances.push(this.formBuilder.group({
+        allowance: [true],
+        description: [''],
+        amount: ["", Validators.required]
+      }));
+    }
+    else {
+      this.allowances.markAllAsTouched();
+    }
+
   }
 
   removeAllowance(index: number): void {
     this.allowances.removeAt(index);
   }
 
-  calculateText(): string {
-    const formValues = this.UpdatelabourForm.value;
-    const totalText = `Net Amount = ${this.calculate()} ` +
-      `(${formValues.amount} * ${formValues.numberOfWorkers} * ${formValues.shift ?? ''} ` +
-      `${formValues.overtime.over_time ? ((formValues.overtime.over_time === true || formValues.overtime.over_time === 1) ? '+ ' : '- ') + formValues.overtime.amount : ''})` +
-      this.allowanceText();
+  calculateText() {
+    const netAmount = this.calculate();
+    const amount = this.UpdatelabourForm.get('SalaryAmount')?.value || 0;
+    const numberOfWorkers = this.UpdatelabourForm.get('numberOfWorkers')?.value || 0;
+    const shift = this.shiftname||1.0;
+    const overtime = {
+      over_time: this.UpdatelabourForm.get('Overtime')?.value,
+      amount: this.calculateOvertimeAmount() || 0,
+    };
+
+    let totalText = `Net Amount = ${netAmount} (${amount} * ${numberOfWorkers} * ${shift}) `;
+
+    if (overtime) {
+      totalText += overtime.over_time ? `+ ${overtime.amount}` : `- ${overtime.amount}`;
+    }
+
+    totalText += this.allowanceText();
+
     return totalText;
   }
 
-  allowanceText(): string {
-    let v = '';
-    const allowances = this.UpdatelabourForm.get('allowances')?.value;
-    allowances.forEach((allowance: any) => {
-      v += `${allowance.allowance ? ((allowance.allowance === true || allowance.allowance === 1) ? '+ ' : '- ') + allowance.amount : ''}`;
-    });
-    return v;
-  }
+  allowanceText() {
+    let text = '';
+    const allowancesArray = this.UpdatelabourForm.get('allowances') as FormArray;
 
-  calculateAllowance(): number {
-    let amountOvertime = 0;
-    let minus = 0;
-    const allowances = this.UpdatelabourForm.get('allowances')?.value;
+    allowancesArray.controls.forEach((allowanceGroup, i) => {
+      const allowance = allowanceGroup.get('allowance')?.value;
+      const amount = allowanceGroup.get('amount')?.value || 0;
 
-    allowances.forEach((allowance: any) => {
-      if (allowance.allowance) {
-        amountOvertime += parseFloat(allowance.amount) || 0;
+      if (allowance) {
+        text += `+ ${amount}`;
       } else {
-        minus += parseFloat(allowance.amount) || 0;
+        text += `- ${amount}`;
       }
     });
 
-    const newAllowance = amountOvertime - minus;
-    return newAllowance;
+    return text;
   }
 
-  calculate(): number {
-    const formValues = this.UpdatelabourForm.value;
-    let amountOvertime = 0;
-    let amountMinus = 0;
+  calculateAllowance() {
+    let totalAllowance = 0;
 
-    if (formValues.overtime) {
-      if (formValues.overtime.over_time === true || formValues.overtime.over_time === 1) {
-        amountOvertime = parseFloat(formValues.overtime.amount) || 0;
+    const allowancesArray = this.UpdatelabourForm.get('allowances') as FormArray;
+    allowancesArray.controls.forEach((allowanceGroup) => {
+      const allowance = allowanceGroup.get('allowance')?.value;
+      const amount = parseFloat(allowanceGroup.get('amount')?.value || '0');
+
+      if (allowance) {
+        totalAllowance += amount;
       } else {
-        amountMinus = parseFloat(formValues.overtime.amount) || 0;
+        totalAllowance -= amount;
       }
+    });
+
+    return totalAllowance;
+  }
+
+  calculate() {
+    const amount = parseFloat(this.UpdatelabourForm.get('SalaryAmount')?.value || '0');
+    const numberOfWorkers = parseFloat(this.UpdatelabourForm.get('numberOfWorkers')?.value || '0');
+    const shift = parseFloat(this.UpdatelabourForm.get('shift')?.value || '0');
+
+    let overtimeAmount = 0;
+    let overtime = this.UpdatelabourForm.get('Overtime')?.value;
+    if (overtime) {
+      overtimeAmount = parseFloat(this.UpdatelabourForm.get('totalovertimeamount')?.value || '0');
     }
 
-    const newOverValue = amountOvertime - amountMinus;
-    return (formValues.numberOfWorkers * (formValues.shift ?? 0) * formValues.amount) + newOverValue + this.calculateAllowance();
+    const netAmount = (numberOfWorkers * shift * amount) + overtimeAmount + this.calculateAllowance();
+    return netAmount;
   }
 
 
@@ -837,12 +993,27 @@ export class HomeattendanceComponent {
 
 
 
+  check(input: any) {
+    if (input.value == 0) {
+      input.setCustomValidity('The number must not be zero.');
+    } else {
+      // input is fine -- reset the error message
+      input.setCustomValidity('');
+    }
+  }
 
 
 
 
 
 
+  calculateOvertimeAmount() {
+    const hours = this.UpdatelabourForm.get('Hours')?.value || 0;
+    const rate = this.UpdatelabourForm.get('Rate')?.value || 0;
+    const totalOvertimeAmount = hours * rate;
+    this.UpdatelabourForm.get('totalovertimeamount')?.setValue(totalOvertimeAmount);
+    return totalOvertimeAmount;
+  }
 
 
 

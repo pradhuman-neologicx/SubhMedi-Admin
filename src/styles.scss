@@ -733,3 +733,11 @@ table.table thead.table-header th {
   font-size: 24px;
   padding: 5px 2px 6px 2px;
 }
+
+.error-message p {
+  font-size: 15px !important;
+  margin-bottom: 0 !important;
+  text-transform: capitalize;
+  padding: 4px 0 0 7px !important;
+  font-weight: 400 !important;
+}

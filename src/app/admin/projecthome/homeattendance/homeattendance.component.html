@@ -615,13 +615,13 @@
 
                     <div class="modal-content-width card-body mb-0">
                         <div class="row">
-
-                            <div>
-                                <p class="class=suggest-content-validation text-primary"></p>
+                            <div class="result">
+                                <p class="class=suggest-content-validation text-primary">{{ calculateText() }}</p>
                             </div>
 
 
-                            
+
+
 
 
                             <div class="col-lg-12 col-md-12 mb-3">
@@ -644,7 +644,15 @@
                             <div class="col-lg-12 col-md-12 mb-4">
                                 <label for="numberOfWorkers">No. of Workers:</label>
                                 <input id="numberOfWorkers" type="number" formControlName="numberOfWorkers"
-                                    class="form-control form-control form-input-custom">
+                                    class="form-control form-control form-input-custom"
+                                    [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['numberOfWorkers'].errors && (UpdatelabourForm.controls['numberOfWorkers'].touched || UpdatelabourForm.controls['numberOfWorkers'].dirty) }">
+                                    
+                                <div class="text-danger error-message"
+                                *ngIf="UpdatelabourForm.controls['numberOfWorkers'].errors && (UpdatelabourForm.controls['numberOfWorkers'].touched || UpdatelabourForm.controls['numberOfWorkers'].dirty)">
+                                <p class="fw-light fs-5 text-danger"
+                                    *ngIf="UpdatelabourForm.controls['numberOfWorkers'].errors['required']">No
+                                    Number Of Workers is required</p>
+                            </div>
                             </div>
 
 
@@ -655,7 +663,7 @@
                                         <div class="button-container">
                                             <label class="form-check-label button-label">
                                                 <input class="form-check-input" type="radio" name="shift"
-                                                    formControlName="shift" id="CategoryGen" [value]="detail.id"
+                                                    formControlName="shift" id="CategoryGen" #shift [value]="detail.id" (change)="shiftchange()"
                                                     [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['shift'].errors && (UpdatelabourForm.controls['shift'].touched || UpdatelabourForm.controls['shift'].dirty) }">
                                                 <span>{{detail.name}}</span>
                                             </label>
@@ -666,9 +674,9 @@
                                 </div>
 
 
-                                <div class="text-danger"
+                                <div class="text-danger error-message"
                                     *ngIf="UpdatelabourForm.controls['shift'].errors && (UpdatelabourForm.controls['shift'].touched || UpdatelabourForm.controls['shift'].dirty)">
-                                    <p class="fw-light fs-5 text-danger text-end mt-3"
+                                    <p class="fw-light fs-5 text-danger"
                                         *ngIf="UpdatelabourForm.controls['shift'].errors['required']">No
                                         Shift is required</p>
                                 </div>
@@ -676,11 +684,19 @@
                             </div>
 
                             <div>
-                                
 
 
 
-                                <div class="form-group">
+                                <div class="d-flex justify-content-between second-form align-items-center">
+                                    <h1 class="heading-party mb-0">OverTime/Late-Fine</h1>
+                                    <button class="btn btn-primary px-2 py-2 me-3" (click)="addOverTime()">
+                                        <span>
+                                            <i class="fa-solid" [ngClass]="OverTime ? 'fa-minus' : 'fa-plus'"></i>
+                                        </span>
+                                        Add Overtime
+                                    </button>
+                                </div>
+                                <div class="form-group mb-3" *ngIf="OverTime">
 
                                     <div class="d-flex  mt-3 mb-3">
                                         <div class="form-check ms-2">
@@ -703,74 +719,120 @@
                                     <div class="col-12 p-0 ">
                                         <div class="row mx-0 d-flex algin-items-center">
                                             <div class="col-lg-5">
-                                                <label for="Hours">Hours:</label>
-                                                <input type="text" formControlName="Hours" class="form-control">
+                                                <label for="Hours">Hours</label>
+                                                <input type="number" formControlName="Hours" class="form-control"
+                                                    [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['Hours'].errors && (UpdatelabourForm.controls['Hours'].touched || UpdatelabourForm.controls['Hours'].dirty) }">
+
+                                                <div class="text-danger"
+                                                    *ngIf="UpdatelabourForm.controls['Hours'].errors && (UpdatelabourForm.controls['Hours'].touched || UpdatelabourForm.controls['Hours'].dirty)">
+                                                    <p class="fw-light fs-5 text-danger  error-message"
+                                                        *ngIf="UpdatelabourForm.controls['Hours'].errors['required']">No
+                                                        Hours is required</p>
+                                                </div>
                                             </div>
 
                                             <div class="col-lg-5">
-                                                <label for="Rate">Hourly Rate:</label>
-                                                <input type="number" formControlName="Rate" class="form-control">
+                                                <label for="Rate">Hourly Rate</label>
+                                                <input type="number" formControlName="Rate" class="form-control"
+                                                [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['Rate'].errors && (UpdatelabourForm.controls['Rate'].touched || UpdatelabourForm.controls['Rate'].dirty) }">
+
+                                                <div class="text-danger error-message"
+                                                    *ngIf="UpdatelabourForm.controls['Rate'].errors && (UpdatelabourForm.controls['Rate'].touched || UpdatelabourForm.controls['Rate'].dirty)">
+                                                    <p class="fw-light fs-5 text-danger"
+                                                        *ngIf="UpdatelabourForm.controls['Rate'].errors['required']">No
+                                                        Hours is required</p>
+                                                </div>
                                             </div>
 
-                                            <div class="col-lg-2 mt-4">
+                                            <div class="col-lg-2 ">
+                                                <label for="totalovertimeamount">Total</label>
                                                 <input type="number" formControlName="totalovertimeamount"
-                                                    class="form-control">
+                                                    readonly="true" class="form-control" [value]="calculateOvertimeAmount()">
                                             </div>
                                         </div>
                                     </div>
 
+                                </div>
+                                <div class="d-flex justify-content-between second-form align-items-center">
+                                    <h1 class="heading-party mb-0">Allowance/Deduction</h1>
+                                    <button type="button" 
+                                        class="btn btn-primary mt-3" (click)="addAllowance()">Add
+                                        allowance/Deduction</button>
                                 </div>
 
                                 <div formArrayName="allowances"
                                     *ngFor="let allowance of allowances.controls; let i=index">
-                                    <div [formGroupName]="i" class="form-group">
-                                        <div class="d-flex  mt-3 mb-3">
+                                    <div [formGroupName]="i" class="form-group third-form">
+                                        <div class="d-flex mt-3 mb-3">
                                             <div class="form-check ms-2">
-                                                <label class="form-check-label" for="allowance">
-                                                    <input class="form-check-input" type="radio" name="allowance"
-                                                        formControlName="allowance" [value]="true">
+                                                <label class="form-check-label" for="allowance{{i}}_true">
+                                                    <input 
+                                                        class="form-check-input" 
+                                                        type="radio" 
+                                                        id="allowance{{i}}_true"
+                                                        formControlName="allowance" 
+                                                        [value]="true">
                                                     Allowance
                                                 </label>
                                             </div>
-
-                                            <div class="form-check  ms-4">
-                                                <label class="form-check-label" for="allowance">
-                                                    <input class="form-check-input" type="radio" name="allowance"
-                                                        formControlName="allowance" [value]="false">
+                                
+                                            <div class="form-check ms-4">
+                                                <label class="form-check-label" for="allowance{{i}}_false">
+                                                    <input 
+                                                        class="form-check-input" 
+                                                        type="radio" 
+                                                        id="allowance{{i}}_false"
+                                                        formControlName="allowance" 
+                                                        [value]="false">
                                                     Deduction
                                                 </label>
                                             </div>
                                         </div>
+                                
 
-                                        <div class="col-12 p-0">
+                                        <div class="col-12 mb-3">
                                             <div class="row mx-0">
-                                                <div class="col-lg-6">
-                                                    <label for="allowanceAmount{{i}}">Description:</label>
-                                                    <input id="allowanceAmount{{i}}" type="text"
-                                                        formControlName="Description" class="form-control">
+                                                <div class="col-lg-5">
+                                                    <label for="Description{{i}}">Description</label>
+                                                    <input id="Description{{i}}" type="text"
+                                                        formControlName="description" class="form-control">
                                                 </div>
-                                                <div class="col-lg-6">
-                                                    <label for="allowanceAmount{{i}}">Amount:</label>
+                                                <div class="col-lg-5">
+                                                    <label for="allowanceAmount{{i}}">Amount</label>
                                                     <input id="allowanceAmount{{i}}" type="number"
-                                                        formControlName="amount" class="form-control">
+                                                        formControlName="amount" class="form-control"
+                                                        oninput="check(this)"
+                                                        [ngClass]="{ 'is-invalid':allowances.controls[i].get('amount')?.errors && (allowances.controls[i].get('amount')?.['touched'] ||  allowances.controls[i].get('amount')?.errors?.['dirty']) }">
+                                                    <div class="text-danger error-message" *ngIf="
+                    allowances.controls[i].get('amount')?.invalid &&
+                    (allowances.controls[i].get('amount')?.touched || allowances.controls[i].get('amount')?.dirty) &&
+                    allowances.controls[i].get('amount')?.errors?.['required']
+                  ">
+                                                        <p class="fw-light text-danger">This is Required</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="d-flex mt-2">
+                                                        <!-- <button type="button" class="btn btn-primary mt-3 me-3"
+                                                            (click)="addAllowance()"> <span><i
+                                                                    class="fa-solid fa-plus"></i></span></button> -->
+                                                        <button type="button" class="btn btn-danger mt-3 me-3"
+                                                            (click)="removeAllowance(i)">
+                                                            <span><i class="fa-solid fa-minus"></i></span>
+                                                        </button>
+
+                                                        <!-- <button type="submit" class="btn btn-primary mt-3">Calculate Amount</button> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="d-flex">
-                                            <button type="button" class="btn btn-danger mt-3 me-3"
-                                                (click)="removeAllowance(i)">Remove</button>
-                                            <button type="button" class="btn btn-primary mt-3 me-3"
-                                                (click)="addAllowance()">Add </button>
-                                            <button type="submit" class="btn btn-primary mt-3">Calculate Amount</button>
-                                        </div>
+
                                     </div>
                                 </div>
-                                <div class="result">
-                                    <!-- <p>{{ calculateText() }}</p> -->
-                                </div>
 
 
-                                <div class="col-lg-12 col-md-12 mb-3">
+
+                                <div class="col-lg-12 col-md-12 mb-3 mt-3">
                                     <label for="Notes" class="form-label form-lable-custom">Notes</label>
                                     <input type="text" class="d-block   form-control form-input-custom"
                                         formControlName="Notes"
@@ -778,54 +840,48 @@
                                     <div class="text-danger error-message"
                                         *ngIf="UpdatelabourForm.controls['Notes'].errors && (UpdatelabourForm.controls['Notes'].touched || UpdatelabourForm.controls['Notes'].dirty)">
                                         <p class="fw-light text-danger"
-                                            *ngIf="UpdatelabourForm.controls['Notes'].errors['required']">Notes Is Required
-                                            </p>
+                                            *ngIf="UpdatelabourForm.controls['Notes'].errors['required']">Notes Is
+                                            Required
+                                        </p>
                                     </div>
 
                                 </div>
 
 
-                                
 
-                                <div class="col-lg-4 col-md-4" (drop)="onDrop($event)"
-                                (dragover)="onDragOver($event)"
-                                (dragleave)="onDragLeave($event)">
-                                <label
-                                  class="d-block text-capitalize form-label form-lable-custom"
-                                  for="attendanceimage">Labour Photos Add
-                                  pic</label>
-                                <label for="fileInput" class="file-label" *ngIf="!imageUrl">
-                                  <span><img src="./assets/upload-icon.png"
-                                      class="upload-icon" alt></span>
-                                  <p class="text-gray-500"> Drag and drop or browse to choose
-                                    a file </p>
-                                </label>
-                                <div class="custom-file-upload position-relative"
-                                  (click)="fileInput.click()">
-                                  <input type="file" id="fileInput" #fileInput
-                                    accept="image/jpeg, image/jpg, image/png"
-                                    (change)="onFileSelected($event)"
-                                    formControlName="attendanceimage"
-                                    [ngClass]="{ 'is-invalid': UpdatelabourForm.controls['attendanceimage'].errors && (UpdatelabourForm.controls['attendanceimage'].touched || UpdatelabourForm.controls['attendanceimage'].dirty) }">
-                                  <button *ngIf="imageUrl" (click)="clearFile($event)"
-                                    class="remove-button">
-                                    <span><i class="fa-solid fa-xmark cross-icon"></i></span>
-                                  </button>
-              
-                                  <div *ngIf="imageUrl" class="image-container">
-                                    <div class="black-layer"></div>
-                                    <img [src]="imageUrl" alt="Profile Preview"
-                                      class="Profile-image" />
-                                  </div>
-                                </div>
-                                <!-- <div class="text-danger error-message"
+
+                                <div class="col-lg-4 col-md-4" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
+                                    (dragleave)="onDragLeave($event)">
+                                    <label class="d-block text-capitalize form-label form-lable-custom"
+                                        for="attendanceimage">Labour Photos Add
+                                        pic</label>
+                                    <label for="fileInput" class="file-label" *ngIf="!imageUrl">
+                                        <span><img src="./assets/upload-icon.png" class="upload-icon" alt></span>
+                                        <p class="text-gray-500"> Drag and drop or browse to choose
+                                            a file </p>
+                                    </label>
+                                    <div class="custom-file-upload position-relative" (click)="fileInput.click()">
+                                        <input type="file" id="fileInput" #fileInput
+                                            accept="image/jpeg, image/jpg, image/png" (change)="onFileSelected($event)"
+                                            formControlName="attendanceimage"
+                                            [ngClass]="{ 'is-invalid': UpdatelabourForm.controls['attendanceimage'].errors && (UpdatelabourForm.controls['attendanceimage'].touched || UpdatelabourForm.controls['attendanceimage'].dirty) }">
+                                        <button *ngIf="imageUrl" (click)="clearFile($event)" class="remove-button">
+                                            <span><i class="fa-solid fa-xmark cross-icon"></i></span>
+                                        </button>
+
+                                        <div *ngIf="imageUrl" class="image-container">
+                                            <div class="black-layer"></div>
+                                            <img [src]="imageUrl" alt="Profile Preview" class="Profile-image" />
+                                        </div>
+                                    </div>
+                                    <!-- <div class="text-danger error-message"
                                   *ngIf="Employerform.controls['attendanceimage'].errors && (Employerform.controls['attendanceimage'].touched || Employerform.controls['attendanceimage'].dirty)">
                                   <p class="fw-light  text-danger"
                                     *ngIf="Employerform.controls['attendanceimage'].errors['required']">
                                     Profile is required</p>
                                 </div> -->
-                              </div>
-                                
+                                </div>
+
                             </div>
                         </div>
                     </div>
