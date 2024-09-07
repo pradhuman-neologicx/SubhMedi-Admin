@@ -160,6 +160,29 @@ export class EmployeeService {
 
 
 
+
+  getattendace(project_id: any,date:any, partytype:any,search:any): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    const body = {
+      'user_id': user,
+      'project_id': project_id,
+      "date":date,
+      "search":search!=undefined?search:"",
+      ...(partytype ? { 'party_type': partytype } : {}),
+      // 'transaction_type': transaction_type,
+  
+    };
+  
+    return this.apiservice.post(`attendance`, body,  headers );
+  }
+
+
   getCity(state_id: any): Observable<any> {
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({

@@ -45,33 +45,36 @@
     </div>
     <div class="row">
         <div class="col-lg-8">
-            <form [formGroup]="searchbarform" class="">
+            <form [formGroup]="searchbarform">
                 <div class="d-flex mt-2">
-                    <input type="text" class="form-control search-user position-relative py-2" type="text"
-                        autocomplete="off" formControlName="searchbar" placeholder="Search:"
-                        [ngClass]="{ 'is-invalid':searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }">
-                    <div class="text-danger error-message d-block"
-                        *ngIf="searchbarform.controls['searchbar'].errors && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty)">
-                        <p class="fw-light  text-danger search-required"
-                            *ngIf="searchbarform.controls['searchbar'].errors['required']">
-                            This is required</p>
-                    </div>
+                    <label for="searchbar" class="form-label form-lable-custom">Search</label>
 
-                    <button class="btn btn-primary search-btn ms-2" (click)="searchfun()"><span><i
-                                class="fa-solid fa-magnifying-glass form-control-feedback"></i></span>
-                    </button>
-                    <button class="btn btn-primary search-btn ms-2" (click)="resetsearchbar()" type="submit"
-                        *ngIf="showreset==true"><span><i
-                                class="fa-solid fa-rotate-right form-control-feedback"></i></span>
-                    </button>
+                    <input type="text" class="form-control form-input-custom search-user position-relative py-2" type="text"
+                       formControlName="searchbar" placeholder="Search:">
+
+                </div>
+                <div>
+                    <label for="Filter" class="form-label form-lable-custom">Filter</label>
+                    <select type="text" class="d-block  form-select form-control form-input-custom"
+                        formControlName="Filter">
+                        <option *ngFor="let party of filteredPartyTypes" [value]="party.name">
+                            {{ party.name }}
+                        </option>
+                    </select>
+                
                 </div>
 
             </form>
 
+            <button class="btn btn-primary search-btn ms-2" (click)="searchfun()"><span><i
+                class="fa-solid fa-magnifying-glass form-control-feedback"></i></span>
+    </button>
+    <button class="btn btn-primary search-btn ms-2" (click)="resetsearchbar()" type="submit"
+        *ngIf="showreset==true"><span><i
+                class="fa-solid fa-rotate-right form-control-feedback"></i></span>
+    </button>
         </div>
-        <div class="col-lg-4">
 
-        </div>
     </div>
 </div>
 

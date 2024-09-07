@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CourseService } from 'src/app/core/services/course.service';
 import { DataService } from 'src/app/core/services/data.service';
+import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
@@ -62,6 +63,7 @@ export class HomeattendanceComponent {
     private formBuilder: FormBuilder,
     private dataService: DataService,
     private courseService: CourseService,
+    private employeeService: EmployeeService,
     private jwtService: JwtService,
     private router: Router,
     private route: ActivatedRoute,
@@ -89,7 +91,8 @@ export class HomeattendanceComponent {
       ],
     },);
     this.searchbarform = this.formBuilder.group({
-      searchbar: ["", [Validators.required,]]
+      searchbar: [""],
+      Filter: [""],
     });
 
     this.AddWorkerForm = this.formBuilder.group({
@@ -105,6 +108,10 @@ export class HomeattendanceComponent {
     });
 
 
+
+
+
+
     this.getShiftfun();
 
     // this.GetStaffFun();
@@ -115,7 +122,7 @@ export class HomeattendanceComponent {
 
 
     this.GetPartyType();
-    this.GetAttendanceFun();
+    this.GetAttendanceFun(0);
   }
 
   get todayDateMax() {
@@ -127,18 +134,22 @@ export class HomeattendanceComponent {
     let newdate = formatDate(Date.parse(event), 'yyyy-MM-dd', 'en-US');
     this.todayDate = newdate;
     console.log(newdate);
-    this.GetAttendanceFun();
+    this.GetAttendanceFun(0);
   }
 
 
 
   searchfun() {
+    // if (this.searchbarform.valid) {
+    this.GetAttendanceFun(1);
     this.showreset = true;
+    console.log("search");
+    // }
   }
 
 
   resetsearchbar() {
-
+    window.location.reload();
   }
 
 
@@ -149,25 +160,41 @@ export class HomeattendanceComponent {
   workertable: any
   Attendancetable: any;
   // projectiD: any;
-  GetAttendanceFun() {
+  GetAttendanceFun(type: any) {
     // staticid "16","17","2024-09-05"
 
 
     // const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
     // const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
-
-    this.courseService.getAttendacneAPI(this.projectiD, this.userId, this.todayDate).subscribe((response: any) => {
-      console.log(this.CalendarForm.get('Caledardate')?.value);
-      console.log(this.projectiD);
-      if (response.status === 200) {
-        this.Attendancetable = response.data;
-        this.totalPresent = response.total_present ?? 0;
-        this.totalAbsent = response.total_absent ?? 0;
-        this.totalNetAmount = response.total_net_amount ?? 0;
-        console.log(this.totalPresent);
-        this.workertable = this.Attendancetable.flatMap((attendance: any) => attendance.workforces || []);
-      }
-    });
+    if (type == 0) {
+      this.employeeService.getattendace(this.projectiD, this.todayDate,  this.searchbarform.get("Filter")?.value, this.searchbarform.get("searchbar")?.value,).subscribe((response: any) => {
+        console.log(this.CalendarForm.get('Caledardate')?.value);
+        console.log(this.projectiD);
+        if (response.status === 200) {
+          this.Attendancetable = response.data;
+          this.totalPresent = response.total_present ?? 0;
+          this.totalAbsent = response.total_absent ?? 0;
+          this.totalNetAmount = response.total_net_amount ?? 0;
+          console.log(this.totalPresent);
+          this.workertable = this.Attendancetable.flatMap((attendance: any) => attendance.workforces || []);
+        }
+      });
+    } else {
+      // if (this.searchbarform.valid) {
+      this.employeeService.getattendace(this.projectiD,this.todayDate,this.searchbarform.get("Filter")?.value, this.searchbarform.get("searchbar")?.value, ).subscribe((response: any) => {
+        console.log(this.CalendarForm.get('Caledardate')?.value);
+        console.log(this.projectiD);
+        if (response.status === 200) {
+          this.Attendancetable = response.data;
+          this.totalPresent = response.total_present ?? 0;
+          this.totalAbsent = response.total_absent ?? 0;
+          this.totalNetAmount = response.total_net_amount ?? 0;
+          console.log(this.totalPresent);
+          this.workertable = this.Attendancetable.flatMap((attendance: any) => attendance.workforces || []);
+        }
+      });
+    }
+    // }
   }
 
   ViewDetailopen: boolean = false;
@@ -234,6 +261,13 @@ export class HomeattendanceComponent {
     const typesToInclude = ['staff', 'labour', 'labour contractor'];
     return partyTypes.filter(type => typesToInclude.includes(type.name.toLowerCase()));
   }
+
+
+
+
+
+
+
 
   partyTypeName: any
   partyTypeNameupdate: any;
@@ -357,7 +391,7 @@ export class HomeattendanceComponent {
             this.closeModal();
             this.successName = 'Create Worker';
             this.ngOnInit();
-            this.GetAttendanceFun();
+            this.GetAttendanceFun(0);
             setTimeout(() => {
               this.openSecondsuccess = true;
               setTimeout(() => {
@@ -388,7 +422,7 @@ export class HomeattendanceComponent {
             this.closeModal();
             this.successName = 'Create Worker';
             this.ngOnInit();
-            this.GetAttendanceFun();
+            this.GetAttendanceFun(0);
             setTimeout(() => {
               this.openSecondsuccess = true;
               setTimeout(() => {
@@ -515,7 +549,7 @@ export class HomeattendanceComponent {
         this.closeModal();
         this.successName = 'Mark Present';
         this.ngOnInit();
-        this.GetAttendanceFun();
+        this.GetAttendanceFun(0);
         setTimeout(() => {
           this.openSecondsuccess = true;
           setTimeout(() => {
@@ -575,7 +609,7 @@ export class HomeattendanceComponent {
         this.closeModal();
         this.successName = 'Mark Absent';
         this.ngOnInit();
-        this.GetAttendanceFun();
+        this.GetAttendanceFun(0);
         setTimeout(() => {
           this.openSecondsuccess = true;
           setTimeout(() => {
@@ -647,7 +681,7 @@ export class HomeattendanceComponent {
       shift: [response.shifts.id, [Validators.required,]],
       numberOfWorkers: [response.no_of_workers, Validators.required],
       // shift: [null, Validators.required],
-      Overtime: [response.over_time != undefined ? response.over_time.toString().length > 0 ? (response.over_time.over_time == 1 ||response.over_time.over_time == true) ? true : false : true : true],
+      Overtime: [response.over_time != undefined ? response.over_time.toString().length > 0 ? (response.over_time.over_time == 1 || response.over_time.over_time == true) ? true : false : true : true],
       Hours: [response.over_time != undefined ? response.over_time.toString().length > 0 ? response.over_time.hours : "" : ""],
       Rate: [response.over_time != undefined ? response.over_time.toString().length > 0 ? response.over_time.rate : "" : ""],
       totalovertimeamount: [response.over_time != undefined ? response.over_time.toString().length > 0 ? response.over_time.amount : "" : ""],
@@ -657,7 +691,7 @@ export class HomeattendanceComponent {
       allowances: this.formBuilder.array([])
 
     });
-    this.shiftname=response.shifts.name
+    this.shiftname = response.shifts.name
     if (response.over_time != undefined) {
       if (response.over_time.toString().length > 0) {
         this.OverTime = true;
@@ -694,8 +728,8 @@ export class HomeattendanceComponent {
   }
   shiftname: any;
   shiftchange() {
-   
-    var newlist = this.Shiftlist.filter((courseType: any) => courseType.id ==  this.UpdatelabourForm.get('shift')?.value);
+
+    var newlist = this.Shiftlist.filter((courseType: any) => courseType.id == this.UpdatelabourForm.get('shift')?.value);
     console.log(newlist);
     if (newlist.length > 0) {
       this.shiftname = newlist[0].name;
@@ -860,7 +894,7 @@ export class HomeattendanceComponent {
     const netAmount = this.calculate();
     const amount = this.UpdatelabourForm.get('SalaryAmount')?.value || 0;
     const numberOfWorkers = this.UpdatelabourForm.get('numberOfWorkers')?.value || 0;
-    const shift = this.shiftname||1.0;
+    const shift = this.shiftname || 1.0;
     const overtime = {
       over_time: this.UpdatelabourForm.get('Overtime')?.value,
       amount: this.calculateOvertimeAmount() || 0,

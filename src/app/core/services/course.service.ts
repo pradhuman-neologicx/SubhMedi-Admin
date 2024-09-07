@@ -228,7 +228,7 @@ getPartyByIdAPI(PartyId:any): Observable<any> {
 
 
 
-getAttendacneAPI(projectId:any,userId:any,Date:any): Observable<any> {
+getAttendacneAPI(projectId:any,userId:any,date:any,search:any,partytype:any): Observable<any> {
   const user = this.jwtService.getpanelUserId();
   const token = this.jwtService.getToken();
   const headers = new HttpHeaders({
@@ -238,12 +238,38 @@ getAttendacneAPI(projectId:any,userId:any,Date:any): Observable<any> {
   const body = {
     "project_id":projectId,
     "user_id": userId,
-    "date":Date
+    "date":date,
+    'party_type':partytype,
+    'search':search,
+    // ...(partytype ? { 'party_type': partytype } : {'party_type': 'all'}),
+    // ...(search ? { 'search': search } : {'search': ''}),
+    // 'search':search
   };
 
   return this.apiservice.post(`attendance`, body,  headers );
 }
 
+
+getattendace(project_id: any,date:any, partytype:any,search:any): Observable<any> {
+  const user = this.jwtService.getpanelUserId();
+  const token = this.jwtService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+
+  const body = {
+    'user_id': user,
+    'project_id': project_id,
+    "date":date,
+    "search":search!=undefined?search:"",
+    ...(partytype ? { 'party_type': partytype } : {}),
+    // 'transaction_type': transaction_type,
+
+  };
+
+  return this.apiservice.post(`attendance`, body,  headers );
+}
 
 GetStaffApi(projectId:any,staff:any,): Observable<any> {
   const user = this.jwtService.getpanelUserId();
