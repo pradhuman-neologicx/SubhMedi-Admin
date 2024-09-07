@@ -169,10 +169,10 @@
           <div formArrayName="materials" >
             <div *ngFor="let material of materials.controls; let i = index" [formGroupName]="i" class="row mt-3">
               <!-- Name Field -->
-              <div class="col-md-6">
+              <div class="col-md-6 mb-3">
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control form-input-custom"
                   placeholder="Task Name"
                   formControlName="name"
                 />
@@ -193,11 +193,12 @@
 
 
 
-              <div class="col-md-6">
+              <div class="col-md-6 mb-3">
             
-                <select class="form-control" formControlName="Unitsnew"  placeholder="Units" >
-                    
-                  
+                <select class="form-control form-input-custom form-select" formControlName="Unitsnew"  placeholder="Units" >
+                    <option selected disabled value>
+                        Units</option>
+                
                     <option *ngFor="let units of getunitslist" [value]="units.id">
                     {{ units.name }}
                 </option>
@@ -220,10 +221,10 @@
             
           
               <!-- Units Field -->
-              <div class="col-md-6">
+              <div class="col-md-6 mb-3">
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control form-input-custom"
                   placeholder="Quantity"
                   formControlName="units"
                 />
@@ -240,10 +241,10 @@
               </div>
           
               <!-- Units Range Field -->
-              <div class="col-md-6">
+              <div class="col-md-6 mb-3">
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control form-input-custom"
                   placeholder="Unit Rate"
                   formControlName="unitsRange"
                 />
@@ -260,10 +261,10 @@
               </div>
           
               <!-- Sub Total Field -->
-              <div class="col-md-6">
+              <div class="col-md-6 mb-3">
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control form-input-custom"
                   placeholder="Amount"
                   [value]="calculatePerMaterialAmount(i, 0)"
                   formControlName="subtotal"

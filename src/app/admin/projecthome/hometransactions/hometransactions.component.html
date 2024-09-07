@@ -1,34 +1,34 @@
+<div class="container">
+    <div class="row">
+        <!-- Card for Advance Paid -->
+        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Balance</h6>
+                    <p class="card-text">{{ balance }}</p>
+                </div>
+            </div>
+        </div>
 
-
-<div class="row">
-    <!-- Card for Advance Paid -->
-    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
-      <div class="card custom-card border-0 cursor h-100">
-        <div class="card-body">
-          <h6 class="card-title text-primary">Balance</h6>
-          <p class="card-text">{{ balance }}</p>
+        <!-- Card for Pending to Pay -->
+        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Total In</h6>
+                    <p class="card-text">{{ sum_in }}</p>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Total Out</h6>
+                    <p class="card-text2">{{ sum_out }}</p>
+                </div>
+            </div>
+        </div>
     </div>
-  
-    <!-- Card for Pending to Pay -->
-    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
-      <div class="card custom-card border-0 cursor h-100">
-        <div class="card-body">
-          <h6 class="card-title text-primary">Total In</h6>
-          <p class="card-text">{{ sum_in }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
-        <div class="card custom-card border-0 cursor h-100">
-          <div class="card-body">
-            <h6 class="card-title text-primary">Total Out</h6>
-            <p class="card-text2">{{ sum_out }}</p>
-          </div>
-        </div>
-      </div>
-  </div>
+</div>
 
 
 
@@ -37,32 +37,14 @@
 <div class="container">
 
 
-    <div class="d-flex col-lg-6 justify-content-between align-items-end">
-        <!-- <h1 class="admin-heading">Order Management </h1> -->
-        <div class="col-lg-6">
-
-
-            <button class="btn btn-success main-btnfs px-3 py-2 me-2" (click)="transactionpaymwentincreatemodal()"> Payment In
-            </button>
-            <button class="btn btn-success main-btnfs px-3 py-2 " (click)="  transactioncreatemodal()"> Payment Out
-            </button>
-        </div>
-    </div>
-
-
-
-
-
-
-
-    <div class="container">
 
 
 
         <form [formGroup]="FilterForm">
             <div class="row mb-2">
-                <div class="col-lg-6">
-                    <input type="text" class="form-control px-4 py-2 mt-2 ml-2" placeholder="Search by name" #filter
+                <div class="col-lg-4">
+                    <label class="form-label form-lable-custom" for="filter">Search</label>
+                    <input type="text" class="form-control px-4 py-2 mt-2 ml-2" placeholder="Search" #filter
                         formControlName="filter"
                         [ngClass]="{ 'is-invalid':FilterForm.controls['filter'].errors && (FilterForm.controls['filter'].touched || FilterForm.controls['filter'].dirty) }">
                     <div class="text-danger error-message"
@@ -72,64 +54,44 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <label
-                      class="form-label form-lable-custom"
-                      for="Transactiontype">Transaction type</label>
-                    <select
-                      class="form-select form-control px-4 py-2 mt-2 ml-2"
-                     #Transactiontype
-                      formControlName="Transactiontype">
-    >  
-                      <!-- <option [selected]="true" value="all">All</option> -->
-                      <option value="in_transaction">Transaction In</option>
-                      <option value="miscellaneous_expense">Miscellaneous Expense</option>
-                      <option value="material_purchase">Material Purchase</option>
-                      <option value="petty_expense">Petty Expense</option>
-                      <option value="other_expense">Other Expense</option>
-                      <option value="sub_contractor_payment">Sub Contractor Payment</option>
-                      <option value="payment_out">Payment Out</option>
-                      <option value="material_transaction">Material Transaction</option>
-                      <option value="salary">Salary</option>
+                <div class="col-lg-4">
+                    <label class="form-label form-lable-custom" for="Transactiontype">Transaction type</label>
+                    <select class="form-select form-control px-4 py-2 mt-2 ml-2" #Transactiontype
+                        formControlName="Transactiontype">
+                        >
+                        <!-- <option [selected]="true" value="all">All</option> -->
+                        <option value="in_transaction">Transaction In</option>
+                        <option value="miscellaneous_expense">Miscellaneous Expense</option>
+                        <option value="material_purchase">Material Purchase</option>
+                        <option value="petty_expense">Petty Expense</option>
+                        <option value="other_expense">Other Expense</option>
+                        <option value="sub_contractor_payment">Sub Contractor Payment</option>
+                        <option value="payment_out">Payment Out</option>
+                        <option value="material_transaction">Material Transaction</option>
+                        <option value="salary">Salary</option>
                     </select>
-                  
-                  </div>
+
+                </div>
 
 
-                <div class="col-lg-6">
-                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2" type="button" (click)="Getalltranslations(1)">Search</button>
+                <div class="col-lg-4 mt-4">
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 me-3" type="button"
+                        (click)="Getalltranslations(1)">Search</button>
                     <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2" type="button"
                         (click)="resetFilter()">Reset</button>
                 </div>
             </div>
         </form>
 
-
-        <div class="d-flex justify-content-between">
-
-
-
-
-
-
-
-
-
-
-
-
-
+        <div class="d-flex  justify-content-end align-items-center mt-3 mb-3">
+            <!-- <h1 class="admin-heading">Order Management </h1> -->
+                <button class="btn btn-primary main-btnfs px-3 py-2 me-2" (click)="transactionpaymwentincreatemodal()">
+                    Payment In
+                </button>
+                <button class="btn btn-primary main-btnfs px-3 py-2 " (click)="  transactioncreatemodal()"> Payment Out
+                </button>
+            
         </div>
-
-
-
-
-
-
-
-
-
-
 
         <div class="card border-0 mb-4 py-0 tabel-card tab-pane  fade show active">
             <table class="table table-hover">
@@ -151,7 +113,7 @@
                         <th>
                             <p class="table-heading table-new-heading">Date</p>
                         </th>
-                    
+
 
                         <th>
                             <p class="table-heading table-new-heading">Action</p>
@@ -178,7 +140,7 @@
                             <p class="table-detail text-capitalize ms-2 table-detail-new">{{
                                 party.date}}</p>
                         </td>
-                     
+
                         <!-- <td>
                         <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
                              'status-to-pay': party.status === 'to pay',
@@ -303,24 +265,29 @@
 
 
                     <div *ngIf="catergory=='Sub Contractor Payment'">
-                        <app-subcontracterpayementout [renewType]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-subcontracterpayementout>
+                        <app-subcontracterpayementout [renewType]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-subcontracterpayementout>
                     </div>
                     <div *ngIf="catergory=='Other Expense'">
-                        <app-otherexpensepaymentout [otherexpensetype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-otherexpensepaymentout>
+                        <app-otherexpensepaymentout [otherexpensetype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-otherexpensepaymentout>
                     </div>
 
                     <div *ngIf="catergory=='Material Purchase'">
-                        <app-materialpurchase [materialpurchase]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-materialpurchase>
+                        <app-materialpurchase [materialpurchase]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-materialpurchase>
                     </div>
                     <div *ngIf="catergory=='Salary'">
-                        <app-salary [salarytype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-salary>
+                        <app-salary [salarytype]="clickadd" (selectedIn)="selectEventHanderIn($event)"></app-salary>
                     </div>
                     <div *ngIf="catergory=='Petty Expenses'">
-                        <app-pettyexpense [pettytype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-pettyexpense>
+                        <app-pettyexpense [pettytype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-pettyexpense>
                     </div>
 
                     <div *ngIf="catergory=='Miscellaneous Expenses'">
-                        <app-miscelaniousexpenses [miscellonustype]="clickadd"  (selectedIn)="selectEventHanderIn($event)"></app-miscelaniousexpenses>
+                        <app-miscelaniousexpenses [miscellonustype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-miscelaniousexpenses>
                     </div>
                 </div>
 
@@ -348,61 +315,60 @@
 
 
     <div *ngIf="addpaymentinopen" class="your-animation-class modal-container" aria-labelledby="modal-title"
-role="dialog" aria-modal="true">
-<div class="modal-content modal-content-50">
-    <div class="card">
-        <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <h5 class="modal-title pt-1 mb-0 tt-color">Payment In</h5>
-            <button class="btn btn-primary cross-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
-                (click)="closeModal()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-
-        <div class="modal-content-width card-body mb-0">
-
-
-            <div class="row">
-            
-                <div>
-                    <app-paymentout [paymentintype]="clickin"  (selectedIn)="selectEventHanderIn($event)"></app-paymentout>
+        role="dialog" aria-modal="true">
+        <div class="modal-content modal-content-50">
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title pt-1 mb-0 tt-color">Payment In</h5>
+                    <button class="btn btn-primary cross-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                        (click)="closeModal()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
-            </div>
+
+
+                <div class="modal-content-width card-body mb-0">
+
+
+                    <div class="row">
+
+                        <div>
+                            <app-paymentout [paymentintype]="clickin"
+                                (selectedIn)="selectEventHanderIn($event)"></app-paymentout>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+
+                <div class="modal-footer text-end me-4">
+                    <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                        (click)="closeModal()">Cancel</button>
+                    <button class="btn btn-custom-primary  px-4 py-2" type="button"
+                        (click)="paymentinadd()">Create</button>
+                </div>
+
 
             </div>
 
 
-
-
-        
-
-
-
-        <div class="modal-footer text-end me-4">
-            <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
-                (click)="closeModal()">Cancel</button>
-            <button class="btn btn-custom-primary  px-4 py-2" type="button"
-                (click)="paymentinadd()">Create</button>
         </div>
-
-
     </div>
 
 
-</div>
-</div>
-
-
-<div *ngIf="openSecondsuccess"
-  class="your-animation-class modal-container-success" [@slideIn]
-  aria-labelledby="modal-title" role="dialog" aria-modal="true">
-  <div>
-    <div
-      class=" p-4 d-flex justify-content-between align-items-center success-content">
-      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
-      <p class="text-green-900 text-capitalize">{{ successName }}
-        successfully</p>
+    <div *ngIf="openSecondsuccess" class="your-animation-class modal-container-success" [@slideIn]
+        aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div>
+            <div class=" p-4 d-flex justify-content-between align-items-center success-content">
+                <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+                <p class="text-green-900 text-capitalize">{{ successName }}
+                    successfully</p>
+            </div>
+        </div>
     </div>
-  </div>
-</div>

@@ -741,3 +741,14 @@ table.table thead.table-header th {
   padding: 4px 0 0 7px !important;
   font-weight: 400 !important;
 }
+
+input[type="file"] {
+  display: none;
+}
+.modal-footer{
+  border-top: 1px solid #a99c9c;
+  padding-top: 10px;
+  margin-bottom: 13px !important;
+  padding-right: 14px;
+  margin-right: 0 !important;
+}

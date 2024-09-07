@@ -1,51 +1,52 @@
-
-
-<div class="row">
-    <!-- Card for Advance Paid -->
-    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
-      <div class="card custom-card border-0 cursor h-100">
-        <div class="card-body">
-          <h6 class="card-title text-primary">Balance</h6>
-          <p class="card-text">{{ balance }}</p>
+<div class="container">
+    <div class="row">
+        <!-- Card for Advance Paid -->
+        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Balance</h6>
+                    <p class="card-text">{{ balance }}</p>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- Card for Pending to Pay -->
+        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Total In</h6>
+                    <p class="card-text">{{ sum_in }}</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Total Out</h6>
+                    <p class="card-text2">{{ sum_out }}</p>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary small">Opening Balance</h6>
+                    <p class="card-text">Amount: {{ opening_balance.amount }}</p>
+                    <p class="card-text">Status: {{( opening_balance.will_pay ==1 || opening_balance.will_pay == true )
+                        ? "Will Pay" : "Will Receive" }}</p>
+                    <!-- <p class="card-text">Will Receive: {{ opening_balance.will_receive }}</p> -->
+                </div>
+            </div>
+        </div>
     </div>
-  
-    <!-- Card for Pending to Pay -->
-    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
-      <div class="card custom-card border-0 cursor h-100">
-        <div class="card-body">
-          <h6 class="card-title text-primary">Total In</h6>
-          <p class="card-text">{{ sum_in }}</p>
-        </div>
-      </div>
-    </div>
 
-
-    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
-        <div class="card custom-card border-0 cursor h-100">
-          <div class="card-body">
-            <h6 class="card-title text-primary">Total Out</h6>
-            <p class="card-text2">{{ sum_out }}</p>
-          </div>
-        </div>
-      </div>
-
-     
-
-    
-      <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
-        <div class="card custom-card border-0 cursor h-100">
-          <div class="card-body">
-            <h6 class="card-title text-primary small">Opening Balance</h6>
-            <p class="card-text">Amount: {{ opening_balance.amount }}</p>
-            <p class="card-text">Status: {{( opening_balance.will_pay ==1 || opening_balance.will_pay == true ) ? "Will Pay" : "Will Receive" }}</p>
-            <!-- <p class="card-text">Will Receive: {{ opening_balance.will_receive }}</p> -->
-          </div>
-        </div>
-      </div>
-    </div>
-
+</div>
 
 
 
@@ -53,69 +54,47 @@
 <div class="container">
 
 
-  
 
-
-
-
-
-
-    <div class="container">
-
-
-
-        <form [formGroup]="FilterForm">
-            <div class="row mb-2">
-                <div class="col-lg-6">
-                    <input type="text" class="form-control px-4 py-2 mt-2 ml-2" placeholder="Search by name" #filter
-                        formControlName="filter"
-                        [ngClass]="{ 'is-invalid':FilterForm.controls['filter'].errors && (FilterForm.controls['filter'].touched || FilterForm.controls['filter'].dirty) }">
-                    <div class="text-danger error-message"
-                        *ngIf="FilterForm.controls['filter'].errors && ( FilterForm.controls['filter'].touched ||  FilterForm.controls['filter'].dirty)">
-                        <p class="fw-light  text-danger" *ngIf="FilterForm.controls['filter'].errors['required']">
-                            Name is required</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <label class="form-label form-lable-custom" for="daterange">Date Range</label>
-                    <select class="form-select form-control" #daterange formControlName="daterange">
-                        >
-                        <option [selected]="true" value="all">All</option>
-    
-                        <option value="today">Today</option>
-                        <option value="this_week">This Week (Mon-Today)</option>
-                        <option value="last_week">Last Week (Mon-Sun)</option>
-                        <option value="this_month">This Month</option>
-                        <option value="last_month">Last Month</option>
-                    </select>
-    
-                </div>
-
-                <div class="col-lg-6">
-                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2" type="button" (click)="getpartyprojectbalance(1)">Search</button>
-                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2" type="button"
-                        (click)="resetFilter()">Reset</button>
+    <form [formGroup]="FilterForm">
+        <div class="row mb-3">
+            <div class="col-lg-4">
+                <label class="form-label form-lable-custom" for="filter">Search</label>
+                <input type="text" class="form-control px-4 py-2 mt-2 ml-2" placeholder="Search" #filter
+                    formControlName="filter"
+                    [ngClass]="{ 'is-invalid':FilterForm.controls['filter'].errors && (FilterForm.controls['filter'].touched || FilterForm.controls['filter'].dirty) }">
+                <div class="text-danger error-message"
+                    *ngIf="FilterForm.controls['filter'].errors && ( FilterForm.controls['filter'].touched ||  FilterForm.controls['filter'].dirty)">
+                    <p class="fw-light  text-danger" *ngIf="FilterForm.controls['filter'].errors['required']">
+                        Name is required</p>
                 </div>
             </div>
-        </form>
 
+            <div class="col-lg-4">
+                <label class="form-label form-lable-custom" for="daterange">Date Range</label>
+                <select class="form-select form-control" #daterange formControlName="daterange">
+                    >
+                    <option [selected]="true" value="all">All</option>
 
-        <div class="d-flex justify-content-between">
+                    <option value="today">Today</option>
+                    <option value="this_week">This Week (Mon-Today)</option>
+                    <option value="last_week">Last Week (Mon-Sun)</option>
+                    <option value="this_month">This Month</option>
+                    <option value="last_month">Last Month</option>
+                </select>
 
+            </div>
 
-
-
-
-
-
-
-
-
-
-
-
+            <div class="col-lg-4 mt-4">
+                <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 me-3" type="button"
+                    (click)="getpartyprojectbalance(1)">Search</button>
+                <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2" type="button"
+                    (click)="resetFilter()">Reset</button>
+            </div>
         </div>
+    </form>
+
+
+    <div class="d-flex justify-content-between">
 
 
 
@@ -127,55 +106,69 @@
 
 
 
-        <div class="card border-0 mb-4 py-0 tabel-card tab-pane  fade show active">
-            <table class="table table-hover">
-                <thead class="table-header-trailer">
-                    <tr>
-                        <th>
-                            <p class="table-heading table-new-heading">Serial No.</p>
-                        </th>
 
-                        <th>
-                            <p class="table-heading table-new-heading">Party Name</p>
-                        </th>
-                        <th>
-                            <p class="table-heading table-new-heading">Amount</p>
-                        </th>
-                        <th>
-                            <p class="table-heading table-new-heading">Date</p>
-                        </th>
-                        <th>
-                            <p class="table-heading table-new-heading">Status</p>
-                        </th>
-                    
 
-                        <th>
-                            <p class="table-heading table-new-heading">Action</p>
-                        </th>
+    </div>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let party of transactiontable; let i = index">
-                        <td>{{ i + 1 }}</td>
-                        <td>
-                            <p class="table-detail text-capitalize table-detail-new">
-                                {{party.party }}</p>
-                        </td>
-                        <td>
-                            <p class="table-detail text-capitalize table-detail-new">
-                                {{party.amount }}</p>
-                        </td>
-                        <td>
-                            <p class="table-detail text-capitalize td-width table-detail-new">{{
-                                party.date }}</p>
-                        </td>
-                        <!-- <td>
+
+
+
+
+
+
+
+
+
+
+    <div class="card border-0 mb-4 py-0 tabel-card tab-pane  fade show active">
+        <table class="table table-hover">
+            <thead class="table-header-trailer">
+                <tr>
+                    <th>
+                        <p class="table-heading table-new-heading">Serial No.</p>
+                    </th>
+
+                    <th>
+                        <p class="table-heading table-new-heading">Party Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Amount</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Date</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Status</p>
+                    </th>
+
+
+                    <th>
+                        <p class="table-heading table-new-heading">Action</p>
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let party of transactiontable; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{party.party }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{party.amount }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize td-width table-detail-new">{{
+                            party.date }}</p>
+                    </td>
+                    <!-- <td>
                             <p class="table-detail text-capitalize ms-2 table-detail-new">{{
                                 party.date}}</p>
                         </td> -->
-                     
-                        <td>
+
+                    <td>
                         <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
                              'status-to-pay': party.status === 'to pay',
                              'status-to-receive': party.status === 'to receive',
@@ -186,39 +179,21 @@
                     </td>
 
 
-                        <td>
-                            <p>
-                                <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
-                                    <mat-icon>more_vert</mat-icon>
-                                </button>
+                    <td>
+                        <p>
+                            <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
 
-                                <mat-menu #menu="matMenu">
-                                    <button mat-menu-item>View Details</button>
-                                    <button mat-menu-item>Edit Details</button>
-                                </mat-menu>
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item>View Details</button>
+                                <button mat-menu-item>Edit Details</button>
+                            </mat-menu>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 
@@ -236,3 +211,5 @@
 
 
 
+
+</div>

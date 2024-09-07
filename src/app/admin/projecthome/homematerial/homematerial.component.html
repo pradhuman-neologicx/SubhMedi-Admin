@@ -1,16 +1,10 @@
 <div class="container">
-
-
-    <div class="d-flex justify-content-between align-items-center">
-        <!-- <h1 class="admin-heading">Order Management </h1> -->
-        <div>
-
-
-            <button class="btn btn-success main-btnfs px-3 py-2 addproject-btn" (click)="purchasecreatemodal()"> Add
+    <div class="d-flex justify-content-end align-items-center">
+            <button class="btn btn-success main-btnfs px-3 py-2" (click)="purchasecreatemodal()"> Add
                 Purchase </button>
-        </div>
-    </div>
 
+    </div>
+</div>
 
 
 
@@ -407,8 +401,8 @@
                                             formControlName="id" [readOnly]="true">
 
                                     
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Name"
+                                    <div class="col-md-6 mb-3">
+                                        <input type="text" class="form-control form-input-custom" placeholder="Name"
                                             formControlName="name" [readOnly]="true">
 
                                     </div>
@@ -416,8 +410,8 @@
 
 
                                     <!-- Discount Field -->
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Discount"
+                                    <div class="col-md-6 mb-3">
+                                        <input type="text" class="form-control form-input-custom" placeholder="Discount"
                                             formControlName="discount" >
                                             <div
                                             class="text-danger error-message"
@@ -430,8 +424,8 @@
                                     </div>
 
                                     <!-- Units Field -->
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Quantity"
+                                    <div class="col-md-6 mb-3">
+                                        <input type="text" class="form-control  form-input-custom" placeholder="Quantity"
                                             formControlName="units">
                                             <div
                                             class="text-danger error-message"
@@ -443,8 +437,8 @@
                                     </div>
 
                                     <!-- Units Range Field -->
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Unit Rate"
+                                    <div class="col-md-6 mb-3">
+                                        <input type="text" class="form-control form-input-custom" placeholder="Unit Rate"
                                             formControlName="unitsRange">
                                             <div
                                             class="text-danger error-message"
@@ -456,8 +450,8 @@
                                     </div>
 
                                     <!-- Sub Total Field -->
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Amount" [value]="calculatePerMaterialAmount(i,0)"
+                                    <div class="col-md-6 mb-3">
+                                        <input type="text" class="form-control form-input-custom" placeholder="Amount" [value]="calculatePerMaterialAmount(i,0)"
                                             formControlName="subtotal" [readOnly]="true">
 
                                     </div>
