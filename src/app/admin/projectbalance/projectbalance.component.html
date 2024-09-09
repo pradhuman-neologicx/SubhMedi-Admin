@@ -194,7 +194,7 @@
                             <p class="table-heading table-new-heading">To</p>
                         </th>
                         <th>
-                            <p class="table-heading table-new-heading">Party Type</p>
+                            <p class="table-heading table-new-heading">Transaction  Type</p>
                         </th>
                         <th>
                             <p class="table-heading table-new-heading">Date</p>
@@ -221,8 +221,7 @@
                                 {{party.party_name12 }}</p>
                         </td>
                         <td>
-                            <p class="table-detail text-capitalize td-width table-detail-new">{{
-                                party.type }}</p>
+                            <p class="table-detail text-capitalize td-width table-detail-new">  {{ getTransactionType(party.type) }}<p>
                         </td>
                         <td>
                             <p class="table-detail text-capitalize ms-2 table-detail-new">{{

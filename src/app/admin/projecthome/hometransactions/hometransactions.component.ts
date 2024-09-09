@@ -744,6 +744,30 @@ this.addmodelEvent.emit(this.clickadd)
     this.clickadd = this.generateUniqueId();
 
     this.addmodelEvent.emit(this.clickadd)
+  }  else if (this.catergory=='Labour Expenses') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  } else if (this.catergory=='Fuel Expenses') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  } else if (this.catergory=='Machinery Expenses') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }else if (this.catergory=='Electric Expenses') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }else if (this.catergory=='Water Expenses') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
+  }else if (this.catergory=='Supervisor Payment') {
+    this.clickadd = this.generateUniqueId();
+
+    this.addmodelEvent.emit(this.clickadd)
   }
     }
     selectedIn!: any;

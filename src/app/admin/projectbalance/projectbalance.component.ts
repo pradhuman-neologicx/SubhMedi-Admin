@@ -631,18 +631,22 @@ else {
       
         });
         this.onchangecategory('Material Purchase')
+
+
       } else if(this.type ===  'sub contractor'){
         this.addcategoryform = this.formBuilder.group({
           category: ['Sub Contractor Payment',[Validators.required,]],
       
         });
         this.onchangecategory('Sub Contractor Payment')
+
       }  else if(this.type ===  'labour contractor'){
         this.addcategoryform = this.formBuilder.group({
           category: ['Salary',[Validators.required,]],
       
         });
         this.onchangecategory('Salary')
+        
       } else {
         this.addcategoryform = this.formBuilder.group({
           category: ['Other Expense',[Validators.required,]],
@@ -668,7 +672,31 @@ else {
     }
  
   
-
+    getTransactionType(type: string): string {
+      switch (type) {
+        case 'in_transaction':
+          return 'Transaction In';
+        case 'miscellaneous_expense':
+          return 'Miscellaneous Expense';
+        case 'material_purchase':
+          return 'Material Purchase';
+        case 'petty_expense':
+          return 'Petty Expense';
+        case 'other_expense':
+          return 'Other Expense';
+        case 'sub_contractor_payment':
+          return 'Sub Contractor Payment';
+        case 'material_transaction':
+          return 'Material Transaction';
+        case 'salary':
+          return 'Salary';
+        case 'payment_out':
+          return 'Payment Out';
+        default:
+          return '';
+      }
+    }
+    
 
   
   

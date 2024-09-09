@@ -47,6 +47,12 @@ import { PettyexpenseComponent } from './admin/projecthome/pettyexpense/pettyexp
 import { MiscelaniousexpensesComponent } from './admin/projecthome/miscelaniousexpenses/miscelaniousexpenses.component';
 import { PaymentoutComponent } from './admin/projecthome/paymentout/paymentout.component';
 import { ViewpartiesComponent } from './admin/parties/viewparties/viewparties.component';
+import { LabourexpenseComponent } from './admin/projecthome/labourexpense/labourexpense.component';
+import { FuelexpenseComponent } from './admin/projecthome/fuelexpense/fuelexpense.component';
+import { MachineryexpenseComponent } from './admin/projecthome/machineryexpense/machineryexpense.component';
+import { ElectricexpenseComponent } from './admin/projecthome/electricexpense/electricexpense.component';
+import { WaterexpenseComponent } from './admin/projecthome/waterexpense/waterexpense.component';
+import { SupervisorpaymentComponent } from './admin/projecthome/supervisorpayment/supervisorpayment.component';
 
 
 
@@ -84,6 +90,12 @@ import { ViewpartiesComponent } from './admin/parties/viewparties/viewparties.co
     MiscelaniousexpensesComponent,
     PaymentoutComponent,
     ViewpartiesComponent,
+    LabourexpenseComponent,
+    FuelexpenseComponent,
+    MachineryexpenseComponent,
+    ElectricexpenseComponent,
+    WaterexpenseComponent,
+    SupervisorpaymentComponent,
 
  
   

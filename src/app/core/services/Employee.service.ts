@@ -782,8 +782,267 @@ export class EmployeeService {
   
 
 
+  getlaboiurParties(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: 'labour_expense',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers )
+    .pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        if (
+          error.status === 422 &&
+          error.message &&
+          (
+            error.message.includes('The selected user id is invalid') ||
+            error.message.includes('Your account has been deactivated') ||
+            error.message.includes('Your token has been expired') ||
+            error.message.includes('Your token has been expired. Please login again.')
+          )
+        ) {
+          // Log the user out and navigate to sign-in page
+          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+          this.router.navigate(['/sign_in']); // Navigate to home route
+          alert(error.message); // Show alert with error message
+        } else if (error && error.message) {
+          // Display error message
+          alert(error.message);
+        } 
+      })
+    
+    );
+  }
 
 
+
+
+  getwaterParties(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: 'water_expense',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers )
+    .pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        if (
+          error.status === 422 &&
+          error.message &&
+          (
+            error.message.includes('The selected user id is invalid') ||
+            error.message.includes('Your account has been deactivated') ||
+            error.message.includes('Your token has been expired') ||
+            error.message.includes('Your token has been expired. Please login again.')
+          )
+        ) {
+          // Log the user out and navigate to sign-in page
+          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+          this.router.navigate(['/sign_in']); // Navigate to home route
+          alert(error.message); // Show alert with error message
+        } else if (error && error.message) {
+          // Display error message
+          alert(error.message);
+        } 
+      })
+    
+    );
+  }
+
+
+  getmaintainanceParties(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: 'maintenance_expense',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers )
+    .pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        if (
+          error.status === 422 &&
+          error.message &&
+          (
+            error.message.includes('The selected user id is invalid') ||
+            error.message.includes('Your account has been deactivated') ||
+            error.message.includes('Your token has been expired') ||
+            error.message.includes('Your token has been expired. Please login again.')
+          )
+        ) {
+          // Log the user out and navigate to sign-in page
+          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+          this.router.navigate(['/sign_in']); // Navigate to home route
+          alert(error.message); // Show alert with error message
+        } else if (error && error.message) {
+          // Display error message
+          alert(error.message);
+        } 
+      })
+    
+    );
+  }
+
+
+  getelectricParties(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: 'electric_expense',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers )
+    .pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        if (
+          error.status === 422 &&
+          error.message &&
+          (
+            error.message.includes('The selected user id is invalid') ||
+            error.message.includes('Your account has been deactivated') ||
+            error.message.includes('Your token has been expired') ||
+            error.message.includes('Your token has been expired. Please login again.')
+          )
+        ) {
+          // Log the user out and navigate to sign-in page
+          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+          this.router.navigate(['/sign_in']); // Navigate to home route
+          alert(error.message); // Show alert with error message
+        } else if (error && error.message) {
+          // Display error message
+          alert(error.message);
+        } 
+      })
+    
+    );
+  }
+
+
+
+  getfuelParties(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: 'fuel_expense',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers )
+    .pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        if (
+          error.status === 422 &&
+          error.message &&
+          (
+            error.message.includes('The selected user id is invalid') ||
+            error.message.includes('Your account has been deactivated') ||
+            error.message.includes('Your token has been expired') ||
+            error.message.includes('Your token has been expired. Please login again.')
+          )
+        ) {
+          // Log the user out and navigate to sign-in page
+          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+          this.router.navigate(['/sign_in']); // Navigate to home route
+          alert(error.message); // Show alert with error message
+        } else if (error && error.message) {
+          // Display error message
+          alert(error.message);
+        } 
+      })
+    
+    );
+  }
+
+
+  getsupervisorParties(project_id: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
+    const token = this.jwtService.getToken(); // Get the token for authorization
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      type: 'supervisor_payment',
+      user_id: user,
+    project_id: project_id,
+    };
+
+    // Make the POST request to the server
+    return this.apiservice.post(`list-parties`, body,  headers )
+    .pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        if (
+          error.status === 422 &&
+          error.message &&
+          (
+            error.message.includes('The selected user id is invalid') ||
+            error.message.includes('Your account has been deactivated') ||
+            error.message.includes('Your token has been expired') ||
+            error.message.includes('Your token has been expired. Please login again.')
+          )
+        ) {
+          // Log the user out and navigate to sign-in page
+          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+          this.router.navigate(['/sign_in']); // Navigate to home route
+          alert(error.message); // Show alert with error message
+        } else if (error && error.message) {
+          // Display error message
+          alert(error.message);
+        } 
+      })
+    
+    );
+  }
+
+  
 
   getsalarytype(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID

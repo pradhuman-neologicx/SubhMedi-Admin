@@ -68,7 +68,15 @@
                         <option value="sub_contractor_payment">Sub Contractor Payment</option>
                         <option value="payment_out">Payment Out</option>
                         <option value="material_transaction">Material Transaction</option>
-                        <option value="salary">Salary</option>
+                        <!-- <option value="labour_expense">Labour Expenses</option> -->
+                        <option value="fuel_expense">Fuel Expenses</option>
+                        <option value="maintenance_expense">Machinery / Maintenance Expenses</option>
+                        <option value="electric_expense">Electric Expenses</option>
+                        <option value="water_expense">Water Expenses</option>
+                        <option value="supervisor_payment">Supervisor Payment</option>
+                       
+
+                 
                     </select>
 
                 </div>
@@ -240,13 +248,20 @@
                                     Select Category</label>
                                 <select class="form-select form-input-custom" formControlName="category" #category
                                     (change)="onchangecategory(category.value)"
+                                   
                                     [ngClass]="{ 'is-invalid': addcategoryform.controls['category'].errors && (addcategoryform.controls['category'].touched || addcategoryform.controls['category'].dirty) }">
-                                    <option value="Petty Expenses">Petty Expenses</option>
+                                    <!-- <option value="Petty Expenses">Petty Expenses</option> -->
                                     <option value="Miscellaneous Expenses">Miscellaneous Expenses</option>
                                     <option value="Sub Contractor Payment">Sub Contractor Payment</option>
                                     <option value="Other Expense">Other Expense</option>
                                     <option value="Material Purchase">Material Purchase</option>
                                     <option value="Salary">Salary</option>
+                                    <!-- <option value="Labour Expenses">Labour Expenses</option> -->
+                                    <option value="Fuel Expenses">Fuel Expenses</option>
+                                    <option value="Machinery Expenses">Machinery / Maintenance Expenses</option>
+                                    <option value="Electric Expenses">Electric Expenses</option>
+                                    <option value="Water Expenses">Water Expenses</option>
+                                    <option value="Supervisor Payment">Supervisor Payment</option>
                                 </select>
                                 <div class="text-danger error-message"
                                     *ngIf="addcategoryform.controls['category'].errors && (addcategoryform.controls['category'].touched || addcategoryform.controls['category'].dirty)">
@@ -289,6 +304,39 @@
                         <app-miscelaniousexpenses [miscellonustype]="clickadd"
                             (selectedIn)="selectEventHanderIn($event)"></app-miscelaniousexpenses>
                     </div>
+
+<!-- 
+                    <div *ngIf="catergory=='Labour Expenses'">
+                        <app-labourexpense [Labourtype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-labourexpense>
+                    </div> -->
+
+                    <div *ngIf="catergory=='Fuel Expenses'">
+                        <app-fuelexpense [fueltype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-fuelexpense>
+                    </div>
+                    <div *ngIf="catergory=='Machinery Expenses'">
+                        <app-machineryexpense [machinerytype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-machineryexpense>
+                    </div>
+
+
+                    <div *ngIf="catergory=='Electric Expenses'">
+                        <app-electricexpense [electrictype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-electricexpense>
+                    </div>
+
+                    <div *ngIf="catergory=='Water Expenses'">
+                        <app-waterexpense [watertype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-waterexpense>
+                    </div>
+
+
+                    <div *ngIf="catergory=='Supervisor Payment'">
+                        <app-supervisorpayment [Supervisortype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-supervisorpayment>
+                    </div>
+
                 </div>
 
 
