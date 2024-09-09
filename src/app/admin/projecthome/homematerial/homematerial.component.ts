@@ -73,12 +73,14 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
       this.addpurchaseform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
-        selectpartyname: [""],
+        selectpartyname: ["",[Validators.required,]],
         additionalcharges: [""],
         Discount: [""],
         Payment: [""],
         Balance: [""],
         cheque: [""],
+        paymentType: ['', Validators.required],
+
       
         Notes: [""],
         Reference: [""],
