@@ -1,13 +1,23 @@
-<div class="container">
+<!-- <div class="container">
     <div class="d-flex justify-content-end align-items-center">
-            <button class="btn btn-success main-btnfs px-3 py-2" (click)="purchasecreatemodal()"> Add
+            <button class="btn btn-success main-btnfs px-3 py-2" (click)="purchasecreatemodal()"> Material
                 Purchase </button>
 
     </div>
+</div> -->
+
+
+<div class="d-flex  justify-content-end align-items-center mt-3 mb-3">
+    <!-- <h1 class="admin-heading">Order Management </h1> -->
+        <button class="btn btn-primary main-btnfs px-3 py-2 me-2" (click)="purchasecreatemodal()">
+            Material
+            Purchase
+        </button>
+        <button class="btn btn-primary main-btnfs px-3 py-2 " (click)="receivedcreatemodal()">  Material
+           Received
+        </button>
+    
 </div>
-
-
-
 
 
 
@@ -259,7 +269,7 @@
         <div class="modal-content modal-content-50" >
             <div class="card">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h5 class="modal-title pt-1 mb-0 tt-color">Add Purchase</h5>
+                    <h5 class="modal-title pt-1 mb-0 tt-color">Material Purchase</h5>
                     <button class="btn btn-primary cross-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
                         (click)="closeModal()">
                         <i class="fa-solid fa-xmark"></i>
@@ -856,3 +866,619 @@
 
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Material Received -->
+     
+  
+<div *ngIf="receivedopen" class="your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+aria-modal="true">
+<div class="modal-content modal-content-50" >
+    <div class="card">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="modal-title pt-1 mb-0 tt-color">Material Received</h5>
+            <button class="btn btn-primary cross-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                (click)="closeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="modal-content-width card-body mb-0">
+            <div class="row">
+                <form [formGroup]="addreceivedorm">
+                    <div class="mb-3 ">
+                        <label class="d-block text-capitalize form-label form-lable-custom" for="date">Date
+                        </label>
+                        <input type="date" class="d-block form-control form-input-custom" formControlName="date"
+                            [ngClass]="{ 'is-invalid':addreceivedorm.controls['date'].errors && (addreceivedorm.controls['date'].touched || addreceivedorm.controls['date'].dirty) }">
+                        <div class="text-danger error-message"
+                            *ngIf="addreceivedorm.controls['date'].errors && (addreceivedorm.controls['date'].touched || addreceivedorm.controls['date'].dirty)">
+                            <p class="fw-light text-danger"
+                                *ngIf="addreceivedorm.controls['date'].errors['required']">
+                                Date is required</p>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="mb-3 ">
+                        <label class="form-label form-lable-custom"
+                            for="selectpartyname">
+                            Select Party Name</label>
+                        <select class="form-select form-input-custom" formControlName="selectpartyname"
+                            [ngClass]="{ 'is-invalid': addreceivedorm.controls['selectpartyname'].errors && (addreceivedorm.controls['selectpartyname'].touched || addreceivedorm.controls['selectpartyname'].dirty) }">
+                            <option *ngFor="let party of partynamelist" [value]="party.id">
+                            {{ party.name }}
+                        </option>
+                        </select>
+                        <div class="text-danger error-message"
+                            *ngIf="addreceivedorm.controls['selectpartyname'].errors && (addreceivedorm.controls['selectpartyname'].touched || addreceivedorm.controls['selectpartyname'].dirty)">
+                            <p class="fw-light text-danger"
+                                *ngIf="addreceivedorm.controls['selectpartyname'].errors['required']">
+                                Select Party Name is required
+                            </p>
+                        </div>
+                    </div>
+
+
+
+                    <!-- <div class="text-end mb-3">
+                    <button class="btn btn-primary px-2 py-2" (click)="toggleAMatDetails()">
+                        <span>
+                            <i class="fa-solid" [ngClass]="showreaddmaterialDetails ? 'fa-minus' : 'fa-plus'"></i>
+                        </span>
+                       Add Material
+                    </button>
+                </div>
+
+                <div class="mb-3 " *ngIf="showreaddmaterialDetails">
+                    <label
+                      class="form-label form-lable-custom"
+                      for="addmaterialsReceived">Select materialsReceived</label>
+                    <ng-select [items]="coursetablelist" class="d-block"
+                      [appendTo]="'body'"
+                      bindLabel="name" bindValue="addmaterialsReceivedId"
+                      [multiple]="true" formControlName="addmaterialsReceived" #addmaterialsReceived
+                      groupBy="selectedAllGroup" [selectableGroup]="true"
+                      
+                      [ngClass]="{ 'is-invalid':addreceivedorm.controls['addmaterialsReceived'].errors && (addreceivedorm.controls['addmaterialsReceived'].touched || addreceivedorm.controls['addmaterialsReceived'].dirty) }">
+  
+                      <ng-template ng-optgroup-tmp let-item="item"
+                        let-item$="item$"
+                        let-index="index">
+                        <input id="item-{{index}}" type="checkbox"
+                          [ngModel]="item$.selected" /> Select All
+                      </ng-template>
+                    </ng-select>
+                    <div class="text-danger error-message"
+                      *ngIf="addreceivedorm.controls['addmaterialsReceived'].errors && (addreceivedorm.controls['addmaterialsReceived'].touched || addreceivedorm.controls['addmaterialsReceived'].dirty)">
+                      <p class="fw-light text-danger"
+                        *ngIf="addreceivedorm.controls['addmaterialsReceived'].errors['required']">Select
+                        Select materialsReceived is required</p>
+                    </div>
+                  </div> -->
+
+
+
+                    <div class="text-end mb-3">
+                        <button class="btn btn-primary px-2 py-2" (click)="toggleAMatDetailsreceive()">
+                            <span>
+                                <i class="fa-solid"
+                                    [ngClass]="showreaddmaterialDetailsreceive ? 'fa-minus' : 'fa-plus'"></i>
+                            </span>
+                            Add Material
+                        </button>
+                    </div>
+
+                    <div class="mb-3" *ngIf="showreaddmaterialDetailsreceive">
+                        <!-- Select materialsReceived Section -->
+                        <label  class="d-block text-capitalize form-label form-lable-custom" for="addMaterials">Select materials</label>
+                        <ng-select [items]="materialtablelist" class="d-block"  [appendTo]="'body'"
+                            bindLabel="name" bindValue="id" [multiple]="true"
+                            formControlName="addMaterials" (change)="onMaterialsReceivedChange($event)"
+                            groupBy="selectedAllGroup" [selectableGroup]="true"
+                            [ngClass]="{ 'is-invalid': addreceivedorm.controls['addMaterials'].errors && (addreceivedorm.controls['addMaterials'].touched || addreceivedorm.controls['addMaterials'].dirty) }">
+
+                            <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> Select
+                                All
+                            </ng-template>
+                        </ng-select>
+                        <div class="text-danger error-message"
+                            *ngIf="addreceivedorm.controls['addMaterials'].errors && (addreceivedorm.controls['addMaterials'].touched || addreceivedorm.controls['addMaterials'].dirty)">
+                            <p class="fw-light text-danger"
+                                *ngIf="addreceivedorm.controls['addMaterials'].errors['required']">
+                                Select materials is required
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FormArray for selected materialsReceived -->
+                    <div formArrayName="materialsReceived" *ngIf="showreaddmaterialDetailsreceive">
+                        <div *ngFor="let material of materialsReceived.controls; let i = index" [formGroupName]="i"
+                            class="row mt-3">
+                            <!-- Name Field -->
+                           
+                                <input type="text" class=" d-none" placeholder="Id"
+                                    formControlName="id" [readOnly]="true">
+
+                            
+                            <div class="col-md-6 mb-3">
+                                <input type="text" class="form-control form-input-custom" placeholder="Name"
+                                    formControlName="name" [readOnly]="true">
+
+                            </div>
+
+
+
+                            <!-- Discount Field -->
+                            <div class="col-md-6 mb-3">
+                                <input type="text" class="form-control form-input-custom" placeholder="Discount"
+                                    formControlName="discount" >
+                                    <div
+                                    class="text-danger error-message"
+                                    *ngIf="materialsReceived.controls[i].get('discount')?.invalid && (materialsReceived.controls[i].get('discount')?.touched || materialsReceived.controls[i].get('discount')?.dirty) && materialsReceived.controls[i].get('discount')?.errors?.['required']">
+                                    <p
+                                        class="fw-light text-danger">This
+                                        is Required</p>
+                                </div>
+
+                            </div>
+
+                            <!-- Units Field -->
+                            <div class="col-md-6 mb-3">
+                                <input type="text" class="form-control  form-input-custom" placeholder="Quantity"
+                                    formControlName="units">
+                                    <div
+                                    class="text-danger error-message"
+                                    *ngIf="materialsReceived.controls[i].get('units')?.invalid && (materialsReceived.controls[i].get('units')?.touched || materialsReceived.controls[i].get('units')?.dirty) && materialsReceived.controls[i].get('units')?.errors?.['required']">
+                                    <p
+                                        class="fw-light text-danger">This
+                                        is Required</p>
+                                </div>
+                            </div>
+
+                            <!-- Units Range Field -->
+                            <div class="col-md-6 mb-3">
+                                <input type="text" class="form-control form-input-custom" placeholder="Unit Rate"
+                                    formControlName="unitsRange">
+                                    <div
+                                    class="text-danger error-message"
+                                    *ngIf="materialsReceived.controls[i].get('unitsRange')?.invalid && (materialsReceived.controls[i].get('unitsRange')?.touched || materialsReceived.controls[i].get('unitsRange')?.dirty) && materialsReceived.controls[i].get('unitsRange')?.errors?.['required']">
+                                    <p
+                                        class="fw-light text-danger">This
+                                        is Required</p>
+                                </div>
+                            </div>
+
+                            <!-- Sub Total Field -->
+                            <div class="col-md-6 mb-3">
+                                <input type="text" class="form-control form-input-custom" placeholder="Amount" [value]="calculatePerMaterialAmountreceive(i,0)"
+                                    formControlName="subtotal" [readOnly]="true">
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <div class="mb-3 ">
+                        <label class="d-block text-capitalize form-label form-lable-custom" for="Amount">
+                         Subtotal Amount
+                        </label>
+                        <input type="text" class="d-block form-control form-input-custom"  [value]="calculateSubTotalreceive()"
+                            formControlName="SubTotal" [readOnly]="true">
+
+                    </div>
+
+
+
+
+                    <!-- <div class="mb-3 ">
+                    <label class="d-block text-capitalize form-label form-lable-custom" for="description">Description</label>
+                    <textarea class="d-block form-control form-input-custom" rows="3" formControlName="description"
+                        placeholder="Enter Your description"
+                        [ngClass]="{ 'is-invalid': addreceivedorm.controls['description'].errors && (addreceivedorm.controls['description'].touched || addreceivedorm.controls['description'].dirty) }"></textarea>
+                    <div class="text-danger error-message"
+                        *ngIf="addreceivedorm.controls['description'].errors && (addreceivedorm.controls['description'].touched || addreceivedorm.controls['description'].dirty)">
+                        <p class="fw-light text-danger"
+                            *ngIf="addreceivedorm.controls['description'].errors['required']">
+                            Description is required
+                        </p>
+
+                    </div>
+                </div> -->
+
+
+
+
+                    <div class="text-end mb-3">
+                        <button class="btn btn-primary px-2 py-2" (click)="toggleADetailsreceive()">
+                            <span>
+                                <i class="fa-solid"
+                                    [ngClass]="showadditionalDetailsreceive ? 'fa-minus' : 'fa-plus'"></i>
+                            </span>
+                            Additional Charges
+                        </button>
+                    </div>
+
+
+                    <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showadditionalDetailsreceive">
+                        <div class="row mx-0">
+
+                            <div class="col-lg-6">
+                                <label for="additionalcharges" class="form-label form-lable-custom">Additional
+                                    charges</label>
+                                <input type="text" class="form-control form-input-custom"
+                                    formControlName="additionalcharges"
+                                    [ngClass]="{ 'is-invalid': addreceivedorm.controls['additionalcharges'].errors && (addreceivedorm.controls['additionalcharges'].touched || addreceivedorm.controls['additionalcharges'].dirty) }">
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="text-end mb-3">
+                        <button class="btn btn-primary px-2 py-2" (click)="toggleDDetailsreceive()">
+                            <span>
+                                <i class="fa-solid"
+                                    [ngClass]="showdiscountDetailsreceive ? 'fa-minus' : 'fa-plus'"></i>
+                            </span>
+                            Add Discount
+                        </button>
+                    </div>
+
+
+                    <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showdiscountDetailsreceive">
+                        <div class="row mx-0">
+
+                            <div class="col-lg-6">
+                                <label for="Discount" class="form-label form-lable-custom"> Add Discount</label>
+                                <input type="text" class="form-control form-input-custom"
+                                    formControlName="Discount"
+                                    [ngClass]="{ 'is-invalid': addreceivedorm.controls['Discount'].errors && (addreceivedorm.controls['Discount'].touched || addreceivedorm.controls['Discount'].dirty) }">
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="text-end mb-3">
+                        <button class="btn btn-primary px-2 py-2" (click)="togglePAYDetailsreceive()">
+                            <span>
+                                <i class="fa-solid" [ngClass]="showpaymentDetailsreceive ? 'fa-minus' : 'fa-plus'"></i>
+                            </span>
+                            Payment Out
+                        </button>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showpaymentDetailsreceive">
+                        <div class="row mx-0">
+
+                            <div class="col-lg-6">
+                                <label for="Payment" class="form-label form-lable-custom">Payment Out</label>
+                                <input type="text" class="form-control form-input-custom"
+                                    formControlName="Payment"
+                                    [ngClass]="{ 'is-invalid': addreceivedorm.controls['Payment'].errors && (addreceivedorm.controls['Payment'].touched || addreceivedorm.controls['Payment'].dirty) }">
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="Balance" class="form-label form-lable-custom">Balance</label>
+                                <input type="text" class="form-control form-input-custom"  [value]="calculatebalanceTotalreceive()"
+                                    formControlName="Balance" [readOnly]="true">
+                            </div>
+
+                            <!-- Add checkboxes below the Payment input field -->
+                            <div class="col-lg-12 col-md-12 mb-3 mt-3">
+                                <label for="cheque"
+                                    class="form-label lable-custom">Payment Method</label>
+                                <div class="d-flex mt-2">
+                                    <div class="form-check me-3">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio"
+                                                name="cheque"
+                                                formControlName="cheque"
+                                                id="0" value="0"
+                                                [ngClass]="{ 'is-invalid':addreceivedorm.controls['cheque'].errors && (addreceivedorm.controls['cheque'].touched || addreceivedorm.controls['cheque'].dirty) }">
+                                                Cash
+                                        </label>
+                                    </div>
+        
+                                    <div class="form-check  me-3">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio"
+                                                name="cheque"
+                                                formControlName="cheque"
+                                                id="1" value="1" [ngClass]="{ 'is-invalid':addreceivedorm.controls['cheque'].errors && (addreceivedorm.controls['cheque'].touched || addreceivedorm.controls['cheque'].dirty) }">
+                                            Bank Transfer
+                                        </label>
+                                    </div>
+        
+                                    <div class="form-check  ms-2">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio"
+                                                name="cheque"
+                                                formControlName="cheque"
+                                                id="2" value="2" [ngClass]="{ 'is-invalid':addreceivedorm.controls['cheque'].errors && (addreceivedorm.controls['cheque'].touched || addreceivedorm.controls['cheque'].dirty) }">
+                                                Cheque
+                                        </label>
+                                    </div>
+        
+                                </div>
+        
+                                <div class="text-danger mt-2 d-block"
+                                    *ngIf="addreceivedorm.controls['cheque'].errors && (addreceivedorm.controls['cheque'].touched || addreceivedorm.controls['cheque'].dirty)">
+                                    <p class="fw-light  text-danger"
+                                        *ngIf="addreceivedorm.controls['cheque'].errors['required']">
+                                        cheque is required
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- <div class="d-flex mt-3">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="cheque"
+                                        formControlName="cheque">
+                                    <label class="form-check-label" for="cheque">Cheque</label>
+                                </div>
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="debitCard"
+                                        formControlName="debitCard">
+                                    <label class="form-check-label" for="debitCard"></label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cash"
+                                        formControlName="cash">
+                                    <label class="form-check-label" for="cash">Cash</label>
+                                </div>
+                            </div> -->
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <!-- <div class="text-end mb-3">
+                    <button class="btn btn-primary px-2 py-2" (click)="togglePAYDetails()">
+                        <span>
+                            <i class="fa-solid" [ngClass]="showpaymentDetails ? 'fa-minus' : 'fa-plus'"></i>
+                        </span>
+                     Payment Out 
+                    </button>
+                </div>
+
+
+                <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showpaymentDetails">
+                    <div class="row mx-0">
+
+                        <div class="col-lg-6">
+                            <label for="Payment" class="form-label form-lable-custom">Payment Out </label>
+                            <input type="text" class="form-control form-input-custom"
+                                formControlName="Payment">
+                        
+                        </div>
+
+
+                    
+
+                        <div class="col-lg-6">
+                            <label for="Balance" class="form-label form-lable-custom">Balance
+                                 </label>
+                            <input type="text" class="form-control form-input-custom"
+                                formControlName="Balance" [readOnly]="true">
+                        
+                        </div>
+
+                        
+
+
+                    </div>
+
+                </div>
+-->
+
+
+
+
+                    <div class="text-end mb-3">
+                        <button class="btn btn-primary px-2 py-2" (click)="toggleNDetailsreceive()">
+                            <span>
+                                <i class="fa-solid" [ngClass]="shownotesDetailsreceive ? 'fa-minus' : 'fa-plus'"></i>
+                            </span>
+                            Add Notes
+                        </button>
+                    </div>
+
+
+                    <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="shownotesDetailsreceive">
+                        <div class="row mx-0">
+
+                            <div class="col-lg-6">
+                                <label for="Notes" class="form-label form-lable-custom"> Add Notes</label>
+                                <input type="text" class="form-control form-input-custom"
+                                    formControlName="Notes"
+                                    [ngClass]="{ 'is-invalid':addreceivedorm.controls['Notes'].errors && (addreceivedorm.controls['Notes'].touched || addreceivedorm.controls['Notes'].dirty) }">
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="text-end mb-3">
+                        <button class="btn btn-primary px-2 py-2" (click)="toggleRDetailsreceive()">
+                            <span>
+                                <i class="fa-solid"
+                                    [ngClass]="showreferenceDetailsreceive ? 'fa-minus' : 'fa-plus'"></i>
+                            </span>
+                            Reference Number
+                        </button>
+                    </div>
+
+
+                    <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showreferenceDetailsreceive">
+                        <div class="row mx-0">
+
+                            <div class="col-lg-6">
+                                <label for="Reference" class="form-label form-lable-custom">Reference
+                                    Number</label>
+                                <input type="text" class="form-control form-input-custom"
+                                    formControlName="Reference"
+                                    [ngClass]="{ 'is-invalid':addreceivedorm.controls['Reference'].errors && (addreceivedorm.controls['Reference'].touched || addreceivedorm.controls['Reference'].dirty) }">
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <div class="mb-3 ">
+                        <label class="d-block text-capitalize form-label form-lable-custom" for="Amount">Total
+                            Amount
+                        </label>
+                        <input type="text" class="d-block form-control form-input-custom" [value]="calculateTotalreceive()"
+                            formControlName="Amount" [readOnly]="true">
+
+                    </div>
+
+
+
+                    <div class="col-lg-12 col-md-12" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
+                        (dragleave)="onDragLeave($event)">
+                        <label class="form-label form-lable-custom" for="profileimage">Upload Profile
+                        </label>
+                        <label for="fileInput" class="file-label" *ngIf="!imageUrl">
+                            <span><img src="/assets/upload-icon.png" class="upload-icon" alt></span>
+                            <p class="text-gray-500"> Drag and drop or browse to choose
+                                a file </p>
+                        </label>
+                        <div class="custom-file-upload position-relative" (click)="fileInput.click()">
+                            <input type="file" id="fileInput" #fileInput
+                                accept="image/jpeg, image/jpg, image/png" (change)="onFileSelected($event)"
+                                formControlName="profileimage"
+                                [ngClass]="{ 'is-invalid': addreceivedorm.controls['profileimage'].errors && (addreceivedorm.controls['profileimage'].touched || addreceivedorm.controls['profileimage'].dirty) }">
+                            <button *ngIf="imageUrl" (click)="clearFile($event)" class="remove-button">
+                                <span><i class="fa-solid fa-xmark cross-icon"></i></span>
+                            </button>
+
+                            <div *ngIf="imageUrl" class="image-container">
+                                <div class="black-layer"></div>
+                                <img [src]="imageUrl" alt="Profile Preview" class="Profile-image" />
+                            </div>
+                        </div>
+                        <!-- <div class="text-danger error-message"
+                  *ngIf="addreceivedorm.controls['ProfileImage'].errors && (addreceivedorm.controls['ProfileImage'].touched || addreceivedorm.controls['ProfileImage'].dirty)">
+                  <p class="fw-light  text-danger"
+                    *ngIf="addreceivedorm.controls['ProfileImage'].errors['required']">
+                    Profile is required</p>
+                </div> -->
+                    </div>
+
+
+
+
+                </form>
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="modal-footer text-end me-4">
+            <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                (click)="closeModal()">Cancel</button>
+            <button class="btn btn-custom-primary  px-4 py-2" type="button" (click)="Creatreceivepurchase()">Create</button>
+        </div>
+
+
+    </div>
+
+
+</div>
+</div>

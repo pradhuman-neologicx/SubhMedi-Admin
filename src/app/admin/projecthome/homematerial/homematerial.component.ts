@@ -25,6 +25,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     searchbarform!: FormGroup;
     CreateliveexamForm!: FormGroup;
     addpurchaseform!: FormGroup;
+    addreceivedorm!: FormGroup;
   
     orderviewform!: FormGroup;
   
@@ -89,7 +90,25 @@ import { JwtService } from 'src/app/core/services/jwt.service';
      
       });
      
-  
+      this.addreceivedorm = this.formBuilder.group({
+        date: [this.todayDate, [Validators.required,]],
+        selectpartyname: ["", [Validators.required,]],
+        additionalcharges: [""],
+        Discount: [""],
+        Payment: [""],
+        Balance: [""],
+        cheque: [""],
+      
+        Notes: [""],
+        Reference: [""],
+        addMaterials: ["", [Validators.required,]],
+        materialsReceived: this.formBuilder.array([]) ,
+        Amount: [""],
+        profileimage: ['',],
+        SubTotal: ['',],
+     
+      });
+     
   
       this.Getpartynamefun();
       this.Getmaterialaddfun();
@@ -112,6 +131,13 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     return this.addpurchaseform.get('materials') as FormArray;
   }
  
+   get materialsReceived(): FormArray {
+    return this.addreceivedorm.get('materialsReceived') as FormArray;
+  }
+ 
+
+
+
   initialmaterials() {
     return this.formBuilder.group({
       // Input: ["", [Validators.required]],
@@ -132,9 +158,25 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.materials.push(this.createMaterialGroup(e.name,e.id));
     });
   }
+  onMaterialsReceivedChange(selectedMaterials: any[]) {
+    this.materialsReceived.clear(); // Clear existing FormArray controls
+    selectedMaterials.forEach((e:any) => {
+      this.materialsReceived.push(this.createMaterialreceivedGroup(e.name,e.id));
+    });
+  }
 
   // Create FormGroup for each material
   createMaterialGroup(materialName:any,materialId:any): FormGroup {
+    return this.formBuilder.group({
+      id: [materialId],
+      name: [materialName],
+      subTotal: [''],
+      discount: [''],
+      units: ['', Validators.required],
+      unitsRange: ['', Validators.required]
+    });
+  }
+  createMaterialreceivedGroup(materialName:any,materialId:any): FormGroup {
     return this.formBuilder.group({
       id: [materialId],
       name: [materialName],
@@ -430,14 +472,104 @@ else {
       this.addpurchaseform.get('Reference')?.updateValueAndValidity();
 
     }
+   // Material receive //
+
+   showadditionalDetailsreceive = false;
+   showdiscountDetailsreceive = false;
+   showpaymentDetailsreceive = false;
+   shownotesDetailsreceive = false;
+   showreferenceDetailsreceive = false;
+   showreaddmaterialDetailsreceive = false;
+
+   toggleADetailsreceive() {
+     this.showadditionalDetailsreceive = !this.showadditionalDetailsreceive;
+     this.addreceivedorm.get('additionalcharges')?.clearValidators();
+     if(this.showpaymentDetailsreceive){
+       this.addreceivedorm.get('additionalcharges')?.setValidators([
+         Validators.required,
+       ]);
+      
+     }
    
+     this.addreceivedorm.get('additionalcharges')?.updateValueAndValidity();
   
+   
+   }
+   toggleDDetailsreceive() {
+     this.showdiscountDetailsreceive = !this.showdiscountDetailsreceive;
+     this.addreceivedorm.get('Discount')?.clearValidators();
+     if(this.showpaymentDetailsreceive){
+       this.addreceivedorm.get('Discount')?.setValidators([
+         Validators.required,
+       ]);
+      
+     }
+   
+     this.addreceivedorm.get('Discount')?.updateValueAndValidity();
+  
+   
+   
+   }
+   togglePAYDetailsreceive() {
+     this.showpaymentDetailsreceive = !this.showpaymentDetailsreceive;
+     this.addreceivedorm.get('Payment')?.clearValidators();
+     this.addreceivedorm.get('cheque')?.clearValidators();
+     if(this.showpaymentDetailsreceive){
+       this.addreceivedorm.get('Payment')?.setValidators([
+         Validators.required,
+       ]);
+       this.addreceivedorm.get('cheque')?.setValidators([
+         Validators.required,
+       ]);
+     }
+   
+     this.addreceivedorm.get('Payment')?.updateValueAndValidity();
+     this.addreceivedorm.get('cheque')?.updateValueAndValidity();
+   }
+   toggleNDetailsreceive() {
+     this.shownotesDetailsreceive = !this.shownotesDetailsreceive;
+     this.addreceivedorm.get('Notes')?.clearValidators();
+     if(this.showpaymentDetailsreceive){
+       this.addreceivedorm.get('Notes')?.setValidators([
+         Validators.required,
+       ]);
+      
+     }
+   
+     this.addreceivedorm.get('Notes')?.updateValueAndValidity();
+   }
+   toggleRDetailsreceive() {
+     this.showreferenceDetailsreceive = !this.showreferenceDetailsreceive;
+     this.shownotesDetailsreceive = !this.shownotesDetailsreceive;
+     this.addreceivedorm.get('Reference')?.clearValidators();
+     if(this.showpaymentDetailsreceive){
+       this.addreceivedorm.get('Reference')?.setValidators([
+         Validators.required,
+       ]);
+      
+     }
+   
+     this.addreceivedorm.get('Reference')?.updateValueAndValidity();
+
+   }
+   toggleAMatDetailsreceive() {
+    this.showreaddmaterialDetailsreceive = !this.showreaddmaterialDetailsreceive;
+
+  }
+  // END//
+
+
     purchasegopen: boolean = false;
+    receivedopen: boolean = false;
     purchasecreatemodal() {
       this.purchasegopen = true;
     }
+    receivedcreatemodal() {
+      this.receivedopen = true;
+    }
     closeModal() {
       this.purchasegopen = false;
+      this.receivedopen = false;
     
     }
     toggleAMatDetails() {
@@ -738,6 +870,105 @@ else {
     }
   }
   
+
+
+
+
+
+// receive API form//
+  Creatreceivepurchase() {
+    if (this.addreceivedorm.valid) {
+      if (this.materialsReceived.length>0) {
+
+      
+      const formData: FormData = new FormData();
+
+      var newMateria=[];
+      for (let index = 0; index < this.materialsReceived.length; index++) {
+        const addreceivedorm =   this.materialsReceived.at(index);
+  
+    
+        // Safely parse values from the form controls, defaulting to 0 if invalid or empty
+        const units: number = parseFloat(addreceivedorm.get('units')?.value ?? '0') || 0;
+        const unitsRange: number = parseFloat(addreceivedorm.get('unitsRange')?.value ?? '0') || 0;
+        const discount: number = parseFloat(addreceivedorm.get('discount')?.value ?? '0') || 0;
+        newMateria.push({
+          "id":addreceivedorm.get('id')?.value,
+          "name": addreceivedorm.get('name')?.value,
+          "quantity":units.toString(),
+          "discount":
+          discount.toString(),
+          "amount": addreceivedorm.get('subtotal')?.value,
+          "unit_rate":unitsRange.toString()
+        })
+      
+    }
+
+    
+      // Append common fields
+      const user = this.jwtService.getpanelUserId();
+      formData.append("user_id",user.toString());
+      formData.append("project_id", this.projectiD.toString());
+      formData.append("date", this.addreceivedorm.get("date")?.value.toString());
+      formData.append("party_id", this.addreceivedorm.get("selectpartyname")?.value.toString());
+      formData.append("materialsReceived", JSON.stringify(newMateria)); // Convert materialList to JSON string if it's an object
+      formData.append("additional_charges", this.addreceivedorm.get("additionalcharges")?.value.toString());
+      formData.append("discount", this.addreceivedorm.get("Discount")?.value.toString());
+      formData.append("total_amount", this.calculateTotalreceive().toString());
+      formData.append("payment_out", this.addreceivedorm.get("Payment")?.value.toString());
+      formData.append("payment_method", this.addreceivedorm.get("cheque")?.value.toString());
+      formData.append("balance", this.calculatebalanceTotalreceive().toString());
+      formData.append("notes", this.addreceivedorm.get("Notes")?.value.toString());
+      formData.append("reference_no", this.addreceivedorm.get("Reference")?.value.toString());
+      formData.append("sub_total", this.calculateSubTotalreceive().toString());
+  
+     
+      if (this.profileimage) {
+        // If image exists, add it to FormData
+      
+
+        const file = this.profileimage;
+        formData.append("bill_image", file, file.name);
+      }
+  
+      // Call the API service
+      this.employeeService.purchasematerials(formData).subscribe((response: any) => {
+        this.errorMessage = response.errorMessage;
+  
+        if (response.status === 200) {
+          this.closeModal();
+          this.ngOnInit();
+  
+          // Save profile picture URL
+  
+          this.clearFileWithoutevent();
+  
+          // Optionally display success message
+          setTimeout(() => {
+            // this.openSecondsuccess = true;
+            setTimeout(() => {
+              // this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+        } else {
+          this.submitted = false;
+        }
+      });
+    }else {
+      // Mark all form fields as touched to show validation errors
+        this.errorMessage = 'please select at least one material'
+      this.addreceivedorm.markAllAsTouched();
+      console.log(this.findInvalidControls(this.addreceivedorm));
+    }
+    } else {
+      // Mark all form fields as touched to show validation errors
+        this.errorMessage = 'fill all the details Correctly'
+      this.addreceivedorm.markAllAsTouched();
+      console.log(this.findInvalidControls(this.addreceivedorm));
+    }
+  }
+
+
   findInvalidControls(formName: any) {
     const invalid = [];
     const controls = formName.controls;
@@ -774,7 +1005,19 @@ else {
     return total;
   }
   
-
+  calculatebalanceTotalreceive(): number {
+    
+    const totaamount = parseFloat(this.addreceivedorm.get("Amount")?.value ?? '') || 0;
+    const paymentout = parseFloat(this.addreceivedorm.get("Payment")?.value ?? '') || 0;
+  
+   
+    const total =  this.calculateTotalreceive() - paymentout;
+  
+   
+    // this.totalAmountControl.setValue(total.toString());
+  
+    return total;
+  }
 
   calculateTotal(): number {
     
@@ -790,6 +1033,19 @@ else {
     return total;
   }
 
+  calculateTotalreceive(): number {
+    
+    const additionalCharge = parseFloat(this.addreceivedorm.get("additionalcharges")?.value ?? '') || 0;
+    const discount = parseFloat(this.addreceivedorm.get("Discount")?.value ?? '') || 0;
+  
+   
+    const total = this.calculateSubTotalreceive() + additionalCharge - discount;
+  
+   
+    // this.totalAmountControl.setValue(total.toString());
+  
+    return total;
+  }
 
 
    // Function to calculate subtotal
@@ -805,6 +1061,22 @@ else {
     
     return value;
   }
+
+  calculateSubTotalreceive(): number {
+    let value: number = 0; 
+    if(this.materialsReceived.length>0){// TypeScript uses 'number' instead of 'double'
+ 
+      for (let index = 0; index < this.materialsReceived.length; index++) {
+        value += this.calculatePerMaterialAmountreceive(index,1);
+      
+    }
+  }
+    
+    return value;
+  }
+
+
+
   formControls: FormGroup[] = []; // Array of FormGroups for each material item
   calculatePerMaterialAmount(index: number,type:any): number {
     console.log(type);
@@ -828,5 +1100,31 @@ else {
     }
     return total;
   }
+
+
+
+  calculatePerMaterialAmountreceive(index: number,type:any): number {
+    console.log(type);
+    console.log(this.materialsReceived.length);
+    
+    // Get the form control at the specified index
+    let total: number=0;
+    if(this.materialsReceived.length>0){
+
+    
+    const addreceivedorm =   this.materialsReceived.at(index);
+  
+    
+    // Safely parse values from the form controls, defaulting to 0 if invalid or empty
+    const units: number = parseFloat(addreceivedorm.get('units')?.value ?? '0') || 0;
+    const unitsRange: number = parseFloat(addreceivedorm.get('unitsRange')?.value ?? '0') || 0;
+    const discount: number = parseFloat(addreceivedorm.get('discount')?.value ?? '0') || 0;
+
+    // Perform the calculation: (qty * unitrate) - discount
+     total = (units * unitsRange) - discount;
+    }
+    return total;
+  }
+
 
   }
