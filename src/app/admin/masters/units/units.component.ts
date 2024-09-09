@@ -564,7 +564,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     //       console.log(formData);
   
     //       this.employeeService.BulkuploadCourseapi(formData).subscribe((response: any) => {
-    //         this.errorMessage = response.errorMessage;
+    //         this.errorMessage = ;
     //         if (response.statusCode === 200 || response.statusCode === 201) {
     //           console.log(response);
     //           this.closeModal();

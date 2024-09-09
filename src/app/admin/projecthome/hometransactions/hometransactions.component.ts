@@ -497,6 +497,10 @@ else {
     closeModal() {
       this.addsubcontractoropen = false;
       this.addpaymentinopen = false;
+      this.billsopen = false;
+      this.Subcontractoropen = false;
+      this.otherexpenseopen = false;
+      this.paymenteopen = false;
       this.closeModalEvent.emit();
     }
     toggleAMatDetails() {
@@ -855,7 +859,11 @@ this.addmodelEvent.emit(this.clickadd)
   
       // Call the API service
       this.employeeService.purchasematerials(formData).subscribe((response: any) => {
-        this.errorMessage = response.errorMessage;
+        if (typeof response.message === 'object' && response.message !== null && !Array.isArray(response.message)) {
+          this.errorMessage = JSON.stringify(response.message);
+        } else {
+          this.errorMessage = response.message;
+        }
   
         if (response.status === 200) {
           this.closeModal();
@@ -1053,4 +1061,67 @@ catergory:any
   }
   
 
+// bills //
+billsopen: boolean = false;
+Subcontractoropen: boolean = false;
+otherexpenseopen: boolean = false;
+paymenteopen: boolean = false;
+partybillsid:any;
+currenttypeid : any
+// viewmodel(id:any, type:any){
+// this.partybillsid =id;
+// this.currenttypeid =type;
+// this.billsopen = true;
+// this.Subcontractoropen = true;
+// this.getbills();
+// }
+
+viewmodel(id: any, type: any) {
+  this.partybillsid = id;
+  this.currenttypeid = type;
+
+  // Reset both flags to false before setting the specific one to true
+  this.billsopen = false;
+  this.Subcontractoropen = false;
+  this.otherexpenseopen = false;
+  this.paymenteopen = false;
+
+  // Set the correct modal based on the type
+  if (type === 'material_purchase') {
+    this.billsopen = true; 
+  } else if (type === 'sub_contractor_payment') {
+    this.Subcontractoropen = true; 
+  } else if (type === 'other_expense') {
+    this.otherexpenseopen = true; 
+  } else {
+    this.paymenteopen = true; 
+  }
+
+
+  this.getbills(); 
+}
+
+
+
+billstable:any
+subcontrtable : any
+otherexpenetable : any
+paytable : any
+getbills(){
+this.employeeService
+    .getpartybills(this.partybillsid,this.currenttypeid,)
+    .subscribe((response: any) => {
+        if (response.status === 200) {
+            this.billstable = response.party_bill;
+            this.subcontrtable = response.party_bill;
+            this.otherexpenetable = response.party_bill;
+            this.paytable = response.party_bill;
+           
+        }
+    });
+}
+
+ClickpayfeesModalconent(event: Event): void {
+  event.stopPropagation();
+}
   }

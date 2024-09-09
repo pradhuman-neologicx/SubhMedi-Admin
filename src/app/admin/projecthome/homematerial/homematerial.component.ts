@@ -73,7 +73,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
       this.addpurchaseform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
-        selectpartyname: ["", [Validators.required,]],
+        selectpartyname: [""],
         additionalcharges: [""],
         Discount: [""],
         Payment: [""],
@@ -92,7 +92,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
      
       this.addreceivedorm = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
-        selectpartyname: ["", [Validators.required,]],
+        selectpartyname: [""],
         additionalcharges: [""],
         Discount: [""],
         Payment: [""],
@@ -835,7 +835,11 @@ else {
   
       // Call the API service
       this.employeeService.purchasematerials(formData).subscribe((response: any) => {
-        this.errorMessage = response.errorMessage;
+        if (typeof response.message === 'object' && response.message !== null && !Array.isArray(response.message)) {
+          this.errorMessage = JSON.stringify(response.message);
+        } else {
+          this.errorMessage = response.message;
+        }
   
         if (response.status === 200) {
           this.closeModal();
@@ -933,7 +937,11 @@ else {
   
       // Call the API service
       this.employeeService.purchasematerials(formData).subscribe((response: any) => {
-        this.errorMessage = response.errorMessage;
+        if (typeof response.message === 'object' && response.message !== null && !Array.isArray(response.message)) {
+          this.errorMessage = JSON.stringify(response.message);
+        } else {
+          this.errorMessage = response.message;
+        }
   
         if (response.status === 200) {
           this.closeModal();

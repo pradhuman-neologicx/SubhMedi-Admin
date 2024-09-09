@@ -808,7 +808,11 @@ this.addmodelEvent.emit(this.clickadd)
   
       // Call the API service
       this.employeeService.purchasematerials(formData).subscribe((response: any) => {
-        this.errorMessage = response.errorMessage;
+        if (typeof response.message === 'object' && response.message !== null && !Array.isArray(response.message)) {
+          this.errorMessage = JSON.stringify(response.message);
+        } else {
+          this.errorMessage = response.message;
+        }
   
         if (response.status === 200) {
           this.closeModal();

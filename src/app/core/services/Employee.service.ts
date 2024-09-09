@@ -1426,28 +1426,46 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
   }
+
+
+
+  erromessagefunction(error: any)  {
+    console.log('Response received:', error);
+    var response = error  
+   var errorMessage 
+    if (typeof response.message === 'object' && response.message !== null && !Array.isArray(response.message)) {
+      errorMessage = JSON.stringify(response.message);
+    } else {
+      errorMessage = response.message;
+    }
+    console.log(response);
+    if (
+      error.status === 422 &&
+      error.message &&
+      (
+        errorMessage.includes('The selected user id is invalid') ||
+        errorMessage.includes('Your account has been deactivated') ||
+        errorMessage.includes('Your token has been expired') ||
+        errorMessage.includes('Your token has been expired. Please login again.')
+      )
+    ) {
+      // Log the user out and navigate to sign-in page
+      this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+      this.router.navigate(['/sign_in']); // Navigate to home route
+      alert(errorMessage); // Show alert with error message
+    } else if (error && error.message) {
+      // Display error message
+      alert(errorMessage);
+    } 
+  }
+
+
 
 
   addsubcotractorpaymentout(body:any): Observable<any> {
@@ -1524,6 +1542,57 @@ export class EmployeeService {
     
     );
   }
+
+
+
+
+
+
+  getpartybills(id: any, type:any): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    const body = {
+      'id': id,
+      'type': type,
+
+    };
+  
+    return this.apiservice.post(`party-bills`, body,  headers )
+    .pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        if (
+          error.status === 422 &&
+          error.message &&
+          (
+            error.message.includes('The selected user id is invalid') ||
+            error.message.includes('Your account has been deactivated') ||
+            error.message.includes('Your token has been expired') ||
+            error.message.includes('Your token has been expired. Please login again.')
+          )
+        ) {
+          // Log the user out and navigate to sign-in page
+          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+          this.router.navigate(['/sign_in']); // Navigate to home route
+          alert(error.message); // Show alert with error message
+        } else if (error && error.message) {
+          // Display error message
+          alert(error.message);
+        } 
+      })
+    
+    );
+  }
+  
+
+
+
+
 }
 
 
