@@ -763,8 +763,11 @@ export class HomeattendanceComponent {
 
 
   fillformdate(response: any,) {
-
-    var allowancelist = JSON.parse(response.allowance);
+    var allowancelist = []
+if (response.allowance.length>0) {
+  allowancelist= JSON.parse(response.allowance);
+}
+ 
     console.log(allowancelist)
     console.log(response.shifts.id)
     this.UpdatelabourForm = this.formBuilder.group({

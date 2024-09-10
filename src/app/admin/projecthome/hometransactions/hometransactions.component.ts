@@ -1068,6 +1068,7 @@ otherexpenseopen: boolean = false;
 paymenteopen: boolean = false;
 partybillsid:any;
 currenttypeid : any
+party_id : any
 // viewmodel(id:any, type:any){
 // this.partybillsid =id;
 // this.currenttypeid =type;
@@ -1076,9 +1077,10 @@ currenttypeid : any
 // this.getbills();
 // }
 
-viewmodel(id: any, type: any) {
+viewmodel(id: any, type: any,party_id:any) {
   this.partybillsid = id;
   this.currenttypeid = type;
+  this.party_id = party_id;
 
   // Reset both flags to false before setting the specific one to true
   this.billsopen = false;
@@ -1109,7 +1111,7 @@ otherexpenetable : any
 paytable : any
 getbills(){
 this.employeeService
-    .getpartybills(this.partybillsid,this.currenttypeid,)
+    .getpartybills(this.partybillsid,this.currenttypeid,this.party_id)
     .subscribe((response: any) => {
         if (response.status === 200) {
             this.billstable = response.party_bill;

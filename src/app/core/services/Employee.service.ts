@@ -1548,7 +1548,7 @@ export class EmployeeService {
 
 
 
-  getpartybills(id: any, type:any): Observable<any> {
+  getpartybills(id: any, type:any,party_id:any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
@@ -1559,6 +1559,7 @@ export class EmployeeService {
     const body = {
       'id': id,
       'type': type,
+      'party_id': party_id,
 
     };
   
