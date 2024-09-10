@@ -825,7 +825,7 @@ else {
       formData.append("notes", this.addpurchaseform.get("Notes")?.value.toString());
       formData.append("reference_no", this.addpurchaseform.get("Reference")?.value.toString());
       formData.append("sub_total", this.calculateSubTotal().toString());
-  
+      formData.append("type", 'material_purchase');
      
       if (this.profileimage) {
         // If image exists, add it to FormData
@@ -927,7 +927,7 @@ else {
       formData.append("notes", this.addreceivedorm.get("Notes")?.value.toString());
       formData.append("reference_no", this.addreceivedorm.get("Reference")?.value.toString());
       formData.append("sub_total", this.calculateSubTotalreceive().toString());
-  
+      formData.append("type", 'material_receive');
      
       if (this.profileimage) {
         // If image exists, add it to FormData

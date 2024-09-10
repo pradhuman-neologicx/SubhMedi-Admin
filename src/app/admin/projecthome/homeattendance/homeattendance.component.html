@@ -121,7 +121,9 @@
                     <th>
                         <p class="table-heading table-new-heading">Absent</p>
                     </th>
-
+                    <th>
+                        <p class="table-heading table-new-heading">Leave</p>
+                    </th>
                     <th>
                         <p class="table-heading table-new-heading">Action</p>
                     </th>
@@ -171,6 +173,19 @@
                         </p>
                     </td>
 
+
+
+                      <!-- leave Status -->
+                      <td>
+                        <p class="table-detail text-capitalize ms-2 table-detail-new" [ngClass]="{
+                            'text-danger': attendance.partyAttendance?.leave, 
+                            'text-muted': !attendance.partyAttendance?.leave
+                          }">
+                            {{ attendance.partyAttendance?.leave ? 'leave' : '-' }}
+                        </p>
+                    </td>
+
+
                     <td>
                         <p>
                             <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
@@ -187,6 +202,9 @@
                                 <button mat-menu-item (click)="OpenMarkAbsent(attendance.party_id,0);"
                                     *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark
                                     Absent</button>
+                                <button mat-menu-item (click)="OpenMarkLeave(attendance.party_id,0);"
+                                    *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark
+                                    Leave</button>
                             </mat-menu>
 
 
@@ -245,7 +263,9 @@
                                 <th>
                                     <p class="table-heading table-new-heading">Absent</p>
                                 </th>
-
+                                <th>
+                                    <p class="table-heading table-new-heading">Leave</p>
+                                </th>
                                 <th>
                                     <p class="table-heading table-new-heading">Action</p>
                                 </th>
@@ -290,6 +310,13 @@
                                     </button>
                                 </td>
 
+                                <td>
+                                    <button class="btn custom-btn"
+                                        [ngClass]="{'btn-danger': worker.leave, 'btn-default': !worker.leave}"
+                                        (click)="OpenMarkLeave(worker.id,1);">
+                                        Leave
+                                    </button>
+                                </td>
 
 
                                 <td>
@@ -606,6 +633,46 @@
         </div>
     </div>
 </div>
+
+
+
+
+<div *ngIf="Markleave" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-30" [@fadeIn]>
+        <div>
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                    <h5 class="modal-title pt-1">Mark Leave</h5>
+                    <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                        (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-content-width mb-2">
+                    <div class="card-body text-center ">
+                        <span class="mark-cross"><i class="fa-solid fa-check"></i></span>
+                        <p class="text-capitalize mb-0 pt-2 mark-text">Are You
+                            sure ?</p>
+                        <p class="mark-text-light">You want to Mark as Leave
+                            </p>
+                    </div>
+                    <div class="text-end border-top pt-3">
+                        <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                            (click)="closeModal()">No</button>
+                        <button class="btn btn-primary main-btnfs px-4 py-2 me-3" type="button"
+                            (click)="Markleaveattendance()">Yes</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
 
 
 <!-- UpdateLabourContractor ****************************************** -->
