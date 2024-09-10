@@ -75,12 +75,16 @@ export class PartiesComponent {
       searchbar: ["", [Validators.required,]]
     });
     this.FilterForm = this.formBuilder.group({
-      SelectCurrentStatus: [''],
-      SelectBatch: [''],
+      filter: [''],
+      Paymenttype: [''],
+      Partytype: [''],
+    
     });
+
     this.CreatepartyForm = this.formBuilder.group({
       PartyName: ["", [Validators.required,]],
       PartyType: ["", [Validators.required,]],
+      monthlysalary: ["", [Validators.required,]],
       PhoneNumber: ["", Validators.pattern(this.validation.mobile_pattern),],
       Email: ["",],
       GSTNumber: ["",],
@@ -119,7 +123,7 @@ export class PartiesComponent {
     });
  this.Type =  this.jwtService.getType();
 
-    this.Getpartytablefun();
+    this.Getpartytablefun(0);
     this.getState();
     this.GetPartyType();
   }
@@ -173,6 +177,9 @@ export class PartiesComponent {
   //   });
   // }
 
+
+
+
   showreset: any = false
 
   resetsearchbar() {
@@ -187,6 +194,13 @@ export class PartiesComponent {
       queryParams: { partyname: partyname },
     }); 
   }
+
+
+  resetFilter() {
+    window.location.reload();
+  }
+   
+ 
 
   // onTableSizeChange(event: any): void {
   //   this.tableSize = event.target.value;
@@ -243,14 +257,60 @@ export class PartiesComponent {
   //     });
   // }
 
-
-  Getpartytablefun() {
-    this.courseService.GetpartytableApi().subscribe((response: any) => {
-      if (response.status === 200) {
-        this.partiestable = response.parties;
+   onchange(id:any) {
+    this.party_type =id;
+   }
+   onchangepaymenttype(id:any) {
+    this.payment_type =id;
+   }
+  party_type:any
+  payment_type:any
+  
+  Getpartytablefun(type: any) {
+    // Check if the type is 0 or any other condition you want to handle
+    if (type === 0) {
+      // Fetch party data based on type 0
+      this.courseService.GetpartytableApi(this.FilterForm.get('Partytype')?.value,this.FilterForm.get('Paymenttype')?.value,this.FilterForm.get('filter')?.value ?? "",).subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            // Handle response data
+            this.partiestable = response.parties;
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching party data:', error);
+          // Handle the error scenario
+        }
+      );
+    } else {
+      // Ensure form validation if applicable
+      if (this.FilterForm.valid) {
+        this.courseService.GetpartytableApi(this.FilterForm.get('Partytype')?.value,this.FilterForm.get('Paymenttype')?.value,this.FilterForm.get('filter')?.value ?? "",).subscribe(
+          (response: any) => {
+            if (response.status === 200) {
+              // Handle response data
+              this.partiestable = response.parties;
+            }
+          },
+          (error: any) => {
+            console.error('Error fetching party data:', error);
+            // Handle the error scenario
+          }
+        );
+      } else {
+        // Mark form fields as touched to display validation errors
+        this.FilterForm.markAllAsTouched();
       }
-    });
+    }
   }
+  
+  // Getpartytablefun() {
+  //   this.courseService.GetpartytableApi().subscribe((response: any) => {
+  //     if (response.status === 200) {
+  //       this.partiestable = response.parties;
+  //     }
+  //   });
+  // }
   CreatepartyForm!: FormGroup;
   Createpartyopen: boolean = false;
 
@@ -292,15 +352,18 @@ export class PartiesComponent {
 
   updateEmailValidators() {
 
-    if (this.partyTypeName === 'staff') {
+    if (this.partyTypeName === 'supervisor') {
       this.CreatepartyForm.get('Email')?.setValidators([Validators.required, Validators.pattern(this.validation.email_pattern),]);
+      this.CreatepartyForm.get('monthlysalary')?.setValidators([Validators.required]);
 
     } else {
       this.CreatepartyForm.get('Email')?.clearValidators();
+      this.CreatepartyForm.get('monthlysalary')?.clearValidators();
 
     }
 
     this.CreatepartyForm.get('Email')?.updateValueAndValidity();
+    this.CreatepartyForm.get('monthlysalary')?.updateValueAndValidity();
   }
 
 
@@ -523,6 +586,7 @@ export class PartiesComponent {
       this.Createparty.type_id = this.CreatepartyForm.get('PartyType')?.value;
       this.Createparty.email = this.CreatepartyForm.get('Email')?.value;
       this.Createparty.mobile = this.CreatepartyForm.get('PhoneNumber')?.value;
+      this.Createparty.monthly_salary  = this.CreatepartyForm.get('monthlysalary')?.value;
 
       if (gst_details.length > 0) {
         this.Createparty.gst_details = gst_details;
@@ -552,7 +616,7 @@ export class PartiesComponent {
           this.closeModal();
           this.successName = 'Party Created';
           this.ngOnInit();
-          this.Getpartytablefun();
+          this.Getpartytablefun(0);
           setTimeout(() => {
             this.openSecondsuccess = true;
             setTimeout(() => {
@@ -743,7 +807,7 @@ export class PartiesComponent {
           this.closeModal();
           this.successName = 'Party Updated';
           this.ngOnInit();
-          this.Getpartytablefun();
+          this.Getpartytablefun(0);
           setTimeout(() => {
             this.openSecondsuccess = true;
             setTimeout(() => {

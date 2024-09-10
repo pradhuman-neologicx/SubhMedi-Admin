@@ -746,13 +746,38 @@ getCourseNameid(body:any){
 
 
 
-GetpartytableApi() {
+GetpartytableApi(party_type:any,payment_type:any,search:any) {
   const token = this.jwtService.getToken();
   const headers = new HttpHeaders({
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
+
   });
-  return this.apiservice.get("parties",headers);
+  var url = "parties";
+  if (party_type != undefined) {
+    if (party_type.length>0) {
+      url = `${url}?party_type=${party_type}`;
+    } else {
+      url = `${url}?party_type=4`;
+    }
+  } else {
+    url = `${url}?party_type=4`;
+  }
+  if (payment_type != undefined) {
+    if (payment_type.length>0) {
+      url = `${url}&payment_type=${payment_type}`
+    } else {
+      url = `${url}&payment_type=all`;
+    }
+  } else {
+    url = `${url}&payment_type=all`;
+  }
+  if (search != undefined)
+  if (search.length>0) {
+    url = `${url}&search=${search}`;
+  }
+ 
+  return this.apiservice.get(url,headers);
 }
 GetpartyTypetableApi() {
   const token = this.jwtService.getToken();
@@ -801,24 +826,8 @@ createPartyApi(body:any,): Observable<any> {
   .pipe(
     tap((error: any) => {
       console.log('Response received:', error);
-      if (
-        error.status === 422 &&
-        error.message &&
-        (
-          error.message.includes('The selected user id is invalid') ||
-          error.message.includes('Your account has been deactivated') ||
-          error.message.includes('Your token has been expired') ||
-          error.message.includes('Your token has been expired. Please login again.')
-        )
-      ) {
-        // Log the user out and navigate to sign-in page
-        this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-        this.router.navigate(['/sign_in']); // Navigate to home route
-        alert(error.message); // Show alert with error message
-      } else if (error && error.message) {
-        // Display error message
-        alert(error.message);
-      } 
+   this.erromessagefunction(error)
+
     })
   
   );
@@ -857,6 +866,41 @@ UpdatePartyApi(body:any,): Observable<any> {
   
   );
 }
+
+
+
+
+erromessagefunction(error: any)  {
+  console.log('Response received:', error);
+  var response = error  
+ var errorMessage 
+  if (typeof response.message === 'object' && response.message !== null && !Array.isArray(response.message)) {
+    errorMessage = JSON.stringify(response.message);
+  } else {
+    errorMessage = response.message;
+  }
+  console.log(response);
+  if (
+    error.status === 422 &&
+    error.message &&
+    (
+      errorMessage.includes('The selected user id is invalid') ||
+      errorMessage.includes('Your account has been deactivated') ||
+      errorMessage.includes('Your token has been expired') ||
+      errorMessage.includes('Your token has been expired. Please login again.')
+    )
+  ) {
+    // Log the user out and navigate to sign-in page
+    this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+    this.router.navigate(['/sign_in']); // Navigate to home route
+    alert(errorMessage); // Show alert with error message
+  } else if (error && error.message) {
+    // Display error message
+    alert(errorMessage);
+  } 
+}
+
+
 
 getPartyByIdAPI(PartyId:any): Observable<any> {
   const user = this.jwtService.getpanelUserId();

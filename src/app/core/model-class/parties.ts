@@ -7,6 +7,7 @@ export class Createparty {
     gst_details:any;
     bank_details:any;
     opening_balance:any;
+    monthly_salary :any;
     }
 
 
