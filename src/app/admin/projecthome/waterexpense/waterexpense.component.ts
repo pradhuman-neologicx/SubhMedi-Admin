@@ -93,11 +93,13 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
       this.watertypeform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
+        paymentType: ['withParty', Validators.required],
         selectpartyname: 
         this.formBuilder.control({
           value:this.partyId!=undefined?this.partyId:"",
           disabled:this.partyId!=undefined?true: false,
-        } ),
+        } , [Validators.required,])
+       ,
         Balance: ['',],
        SubTotal: ['',Validators.required],
        cheque: ["",Validators.required],
@@ -425,40 +427,30 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       
       const formData: FormData = new FormData();
 
-      var newMateria=[];
-      for (let index = 0; index < this.materials.length; index++) {
-        const watertypeform =   this.materials.at(index);
-  
+     
+
     
-      
-        newMateria.push({
-         
-          "name": watertypeform.get('name')?.value,
-          "amount": watertypeform.get('subtotal')?.value,
-    
-        })
-      
-    }
-    
-   
       // Append common fields
       const user = this.jwtService.getpanelUserId();
       formData.append("user_id",user.toString());
       formData.append("project_id", this.projectiD.toString());
       formData.append("date", this.watertypeform.get("date")?.value.toString());
-      formData.append("party_id", this.watertypeform.get("selectpartyname")?.value.toString());
-      formData.append("tasks", JSON.stringify(newMateria)); // Convert materialList to JSON string if it's an object
-      formData.append("additional_charges", this.watertypeform.get("additionalcharges")?.value.toString());
-      formData.append("discount", this.watertypeform.get("Discount")?.value.toString());
-      formData.append("total_amount", this.calculateTotal().toString());
-      formData.append("category", 'other_expense');
+     
+      // formData.append("party_id", this.watertypeform.get("selectpartyname")?.value.toString());
+      formData.append("amount", this.watertypeform.get("SubTotal")?.value.toString());
+      formData.append("description", this.watertypeform.get("description")?.value.toString());
    
-      formData.append("payment_out", this.watertypeform.get("Payment")?.value.toString());
+   
+      formData.append("category", 'water_expense');
+   
+   
       formData.append("payment_method", this.watertypeform.get("cheque")?.value.toString());
  
-      formData.append("notes", this.watertypeform.get("Notes")?.value.toString());
-      formData.append("reference_no", this.watertypeform.get("Reference")?.value.toString());
-      formData.append("sub_total", this.calculateSubTotal().toString());
+  // Conditionally append party_id only if payment type is 'withParty'
+  if (this.watertypeform.get('paymentType')?.value === 'withParty') {
+    formData.append("party_id", this.watertypeform.get("selectpartyname")?.value.toString());
+  }
+
   
      
       if (this.profileimage) {
@@ -509,6 +501,24 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     }
   }
   
+
+
+  onPaymentTypeChange() {
+    const paymentType = this.watertypeform.get('paymentType')?.value;
+    this.watertypeform.get('selectpartyname')?.clearValidators();
+    // Adjust validation based on selected payment type
+    if (paymentType === 'withParty') {
+      this.watertypeform.get('selectpartyname')?.setValidators(Validators.required);
+    } else {
+      this.watertypeform.get('selectpartyname')?.clearValidators();
+    }
+  
+    // Update validation status
+    this.watertypeform.get('selectpartyname')?.updateValueAndValidity();
+  }
+  
+
+
   findInvalidControls(formName: any) {
     const invalid = [];
     const controls = formName.controls;

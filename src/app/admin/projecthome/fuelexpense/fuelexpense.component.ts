@@ -93,11 +93,14 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
       this.fueltypeform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
+        paymentType: ['withParty', Validators.required],
         selectpartyname: 
         this.formBuilder.control({
           value:this.partyId!=undefined?this.partyId:"",
           disabled:this.partyId!=undefined?true: false,
-        } ),
+        } , [Validators.required,])
+       ,
+       
         Balance: ['',],
        SubTotal: ['',Validators.required],
        cheque: ["",Validators.required],
@@ -418,6 +421,9 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   submitted!: boolean;
   @Output() selectedIn = new EventEmitter<string>();
   erroroutput: boolean = false;
+ 
+
+
   Createaddotherexpense() {
     if (this.fueltypeform.valid) {
     
@@ -425,40 +431,30 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       
       const formData: FormData = new FormData();
 
-      var newMateria=[];
-      for (let index = 0; index < this.materials.length; index++) {
-        const fueltypeform =   this.materials.at(index);
-  
+     
+
     
-      
-        newMateria.push({
-         
-          "name": fueltypeform.get('name')?.value,
-          "amount": fueltypeform.get('subtotal')?.value,
-    
-        })
-      
-    }
-    
-   
       // Append common fields
       const user = this.jwtService.getpanelUserId();
       formData.append("user_id",user.toString());
       formData.append("project_id", this.projectiD.toString());
       formData.append("date", this.fueltypeform.get("date")?.value.toString());
-      formData.append("party_id", this.fueltypeform.get("selectpartyname")?.value.toString());
-      formData.append("tasks", JSON.stringify(newMateria)); // Convert materialList to JSON string if it's an object
-      formData.append("additional_charges", this.fueltypeform.get("additionalcharges")?.value.toString());
-      formData.append("discount", this.fueltypeform.get("Discount")?.value.toString());
-      formData.append("total_amount", this.calculateTotal().toString());
-      formData.append("category", 'other_expense');
+     
+      // formData.append("party_id", this.fueltypeform.get("selectpartyname")?.value.toString());
+      formData.append("amount", this.fueltypeform.get("SubTotal")?.value.toString());
+      formData.append("description", this.fueltypeform.get("description")?.value.toString());
    
-      formData.append("payment_out", this.fueltypeform.get("Payment")?.value.toString());
+   
+      formData.append("category", 'fuel_expense');
+   
+   
       formData.append("payment_method", this.fueltypeform.get("cheque")?.value.toString());
  
-      formData.append("notes", this.fueltypeform.get("Notes")?.value.toString());
-      formData.append("reference_no", this.fueltypeform.get("Reference")?.value.toString());
-      formData.append("sub_total", this.calculateSubTotal().toString());
+  // Conditionally append party_id only if payment type is 'withParty'
+  if (this.fueltypeform.get('paymentType')?.value === 'withParty') {
+    formData.append("party_id", this.fueltypeform.get("selectpartyname")?.value.toString());
+  }
+
   
      
       if (this.profileimage) {
@@ -508,7 +504,8 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       console.log(this.findInvalidControls(this.fueltypeform));
     }
   }
-  
+
+
   findInvalidControls(formName: any) {
     const invalid = [];
     const controls = formName.controls;
@@ -543,10 +540,24 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   onchange(partyid:any){
     this.partyid =partyid
 this.getbalanceparty()
+
   }
 
 
-
+  onPaymentTypeChange() {
+    const paymentType = this.fueltypeform.get('paymentType')?.value;
+    this.fueltypeform.get('selectpartyname')?.clearValidators();
+    // Adjust validation based on selected payment type
+    if (paymentType === 'withParty') {
+      this.fueltypeform.get('selectpartyname')?.setValidators(Validators.required);
+    } else {
+      this.fueltypeform.get('selectpartyname')?.clearValidators();
+    }
+  
+    // Update validation status
+    this.fueltypeform.get('selectpartyname')?.updateValueAndValidity();
+  }
+  
   calculatebalanceTotal(): number {
     
     const totaamount = parseFloat(this.fueltypeform.get("Amount")?.value ?? '') || 0;

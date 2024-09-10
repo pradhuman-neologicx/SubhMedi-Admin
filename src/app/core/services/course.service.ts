@@ -1073,8 +1073,8 @@ GetStafflabourcontractorapi(partyid:any,projectId:any): Observable<any> {
     'Content-Type': 'application/json'
   });
   const body = {
-    "party_id":projectId,
-    "project_id": partyid,
+    "party_id":partyid,
+    "project_id": projectId,
   };
 
   return this.apiservice.post(`get-workforce`, body,  headers )

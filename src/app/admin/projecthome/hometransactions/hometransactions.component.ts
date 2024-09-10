@@ -1104,7 +1104,6 @@ viewmodel(id: any, type: any,party_id:any) {
 }
 
 
-
 billstable:any
 subcontrtable : any
 otherexpenetable : any

@@ -366,6 +366,9 @@
                                 <select type="text" class="d-block  form-select form-control form-input-custom"
                                     formControlName="PartyType" #PartyType (change)="staffselect(PartyType.value)"
                                     [ngClass]="{ 'is-invalid':AddWorkerForm.controls['PartyType'].errors && (AddWorkerForm.controls['PartyType'].touched || AddWorkerForm.controls['PartyType'].dirty) }">
+                                    <option selected disabled value>
+                                        Party Type</option>
+                                   
                                     <option *ngFor="let party of filteredPartyTypes" [value]="party.name">
                                         {{ party.name }}
                                     </option>
@@ -381,27 +384,30 @@
 
 
                             <div class="col-lg-12 col-md-12 mb-3"
-                                *ngIf="partyTypeName=='staff' || partyTypeName=='labour' || partyTypeName=='labour contractor' ">
-                                <label for="StaffList" class="form-label form-lable-custom">Staff List</label>
+                                *ngIf="partyTypeName=='staff' || partyTypeName=='supervisor' || partyTypeName=='labour' || partyTypeName=='labour contractor' ">
+                                <label for="StaffList" class="form-label form-lable-custom">Select Party</label>
                                 <select type="text" class="d-block  form-select form-control form-input-custom"
                                     formControlName="StaffList" #StaffList
                                     (change)="labourcontractorstaff(StaffList.value)"
                                     [ngClass]="{ 'is-invalid':AddWorkerForm.controls['StaffList'].errors && (AddWorkerForm.controls['StaffList'].touched || AddWorkerForm.controls['StaffList'].dirty) }">
+                                    <option selected disabled value>
+                                        Select Party</option>
                                     <option *ngFor="let staff of Stafflist" [value]="staff.id">
+
                                         {{ staff.name }}
                                     </option>
                                 </select>
                                 <div class="text-danger error-message"
                                     *ngIf="AddWorkerForm.controls['StaffList'].errors && (AddWorkerForm.controls['StaffList'].touched || AddWorkerForm.controls['StaffList'].dirty)">
                                     <p class="fw-light text-danger"
-                                        *ngIf="AddWorkerForm.controls['StaffList'].errors['required']">Staff list is
+                                        *ngIf="AddWorkerForm.controls['StaffList'].errors['required']">Party  is
                                         requried</p>
                                 </div>
                             </div>
 
 
                             <div class="col-lg-12 col-md-12 mb-3"
-                                *ngIf="partyTypeName=='staff' || partyTypeName=='labour' ">
+                                *ngIf="partyTypeName=='labour' ">
                                 <label for="Salary" class="form-label form-lable-custom">Salary (perday)</label>
                                 <input type="text" class="d-block form-control form-input-custom"
                                     formControlName="Salary"

@@ -63,23 +63,19 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.user_id= this.jwtService.getpanelUserId();
 
 
-      this.FilterForm = this.formBuilder.group({
-        StartDate: [''],
-        enddate: [''],
-        daterange: [''],
-      });
-  
+     
   
   
       this.addpurchaseform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
+        paymentType: ['withParty', Validators.required],
         selectpartyname: ["",[Validators.required,]],
         additionalcharges: [""],
         Discount: [""],
         Payment: [""],
         Balance: [""],
         cheque: [""],
-        paymentType: ['', Validators.required],
+    
 
       
         Notes: [""],
@@ -94,7 +90,8 @@ import { JwtService } from 'src/app/core/services/jwt.service';
      
       this.addreceivedorm = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
-        selectpartyname: [""],
+      
+        selectpartyname: ["",[Validators.required,]],
         additionalcharges: [""],
         Discount: [""],
         Payment: [""],
@@ -110,10 +107,16 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         SubTotal: ['',],
      
       });
-     
+      this.FilterForm = this.formBuilder.group({
+        filter: [''],
+        Transactiontype: [''],
+      
+      });
+  
   
       this.Getpartynamefun();
       this.Getmaterialaddfun();
+      this.getmaterials(0);
    
     
   
@@ -137,6 +140,10 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     return this.addreceivedorm.get('materialsReceived') as FormArray;
   }
  
+
+
+
+
 
 
 
@@ -432,6 +439,8 @@ else {
     
     
     }
+  
+    
     togglePAYDetails() {
       this.showpaymentDetails = !this.showpaymentDetails;
       this.addpurchaseform.get('Payment')?.clearValidators();
@@ -572,6 +581,12 @@ else {
     closeModal() {
       this.purchasegopen = false;
       this.receivedopen = false;
+      this.addsubcontractoropen = false;
+      this.addpaymentinopen = false;
+      this.billsopen = false;
+      this.Subcontractoropen = false;
+      this.otherexpenseopen = false;
+      this.paymenteopen = false;
     
     }
     toggleAMatDetails() {
@@ -814,19 +829,36 @@ else {
       formData.append("user_id",user.toString());
       formData.append("project_id", this.projectiD.toString());
       formData.append("date", this.addpurchaseform.get("date")?.value.toString());
-      formData.append("party_id", this.addpurchaseform.get("selectpartyname")?.value.toString());
+      // formData.append("party_id", this.addpurchaseform.get("selectpartyname")?.value.toString());
       formData.append("materials", JSON.stringify(newMateria)); // Convert materialList to JSON string if it's an object
       formData.append("additional_charges", this.addpurchaseform.get("additionalcharges")?.value.toString());
       formData.append("discount", this.addpurchaseform.get("Discount")?.value.toString());
       formData.append("total_amount", this.calculateTotal().toString());
-      formData.append("payment_out", this.addpurchaseform.get("Payment")?.value.toString());
-      formData.append("payment_method", this.addpurchaseform.get("cheque")?.value.toString());
+      // formData.append("payment_out", this.addpurchaseform.get("Payment")?.value.toString());
+      // formData.append("payment_method", this.addpurchaseform.get("cheque")?.value.toString());
       formData.append("balance", this.calculatebalanceTotal().toString());
       formData.append("notes", this.addpurchaseform.get("Notes")?.value.toString());
       formData.append("reference_no", this.addpurchaseform.get("Reference")?.value.toString());
       formData.append("sub_total", this.calculateSubTotal().toString());
-      formData.append("type", 'material_purchase');
+      formData.append("type", 'purchase');
      
+   
+
+    if (this.addpurchaseform.get('paymentType')?.value === 'withParty') {
+      // If payment with party, include party-related fields
+      formData.append('party_id', this.addpurchaseform.get('selectpartyname')?.value.toString());
+      formData.append('payment_out', this.addpurchaseform.get('Payment')?.value.toString());
+      formData.append('payment_method', this.addpurchaseform.get('cheque')?.value.toString());
+    } else {
+      
+      formData.append('payment_out', this.calculateTotal().toString());
+      formData.append('payment_method', "0");
+
+    }
+
+
+
+
       if (this.profileimage) {
         // If image exists, add it to FormData
       
@@ -927,8 +959,13 @@ else {
       formData.append("notes", this.addreceivedorm.get("Notes")?.value.toString());
       formData.append("reference_no", this.addreceivedorm.get("Reference")?.value.toString());
       formData.append("sub_total", this.calculateSubTotalreceive().toString());
-      formData.append("type", 'material_receive');
+      formData.append("type", 'received');
      
+
+
+
+
+
       if (this.profileimage) {
         // If image exists, add it to FormData
       
@@ -1136,5 +1173,175 @@ else {
     return total;
   }
 
+  
+  onPaymentTypeChange() {
+    const paymentType = this.addpurchaseform.get('paymentType')?.value;
+  
+    // Clear all validators initially
+    this.addpurchaseform.get('selectpartyname')?.clearValidators();
+    this.addpurchaseform.get('Payment')?.clearValidators();
+    this.addpurchaseform.get('cheque')?.clearValidators();
+  
+    // If 'Payment with Party' is selected, add the required validators
+    if (paymentType === 'withParty') {
+      // Set validators for fields specific to 'Payment with Party'
+      this.addpurchaseform.get('selectpartyname')?.setValidators([Validators.required]);
+      this.addpurchaseform.get('Payment')?.setValidators([Validators.required]);
+      this.addpurchaseform.get('cheque')?.setValidators([Validators.required]);
+  
+      // Set to show payment details when 'withParty' is selected
+   
+    } else {
+      // Hide payment details when 'withoutParty' is selected
+      this.showpaymentDetails = false;
+    }
+  
+    // Update validity status after setting/clearing validators
+    this.addpurchaseform.get('selectpartyname')?.updateValueAndValidity();
+    this.addpurchaseform.get('Payment')?.updateValueAndValidity();
+    this.addpurchaseform.get('cheque')?.updateValueAndValidity();
+  }
+  onPaymentTypeChangereceive() {
+    const paymentType = this.addreceivedorm.get('paymentType')?.value;
+  
+    // Clear all validators initially
+    this.addreceivedorm.get('selectpartyname')?.clearValidators();
+    this.addreceivedorm.get('Payment')?.clearValidators();
+    this.addreceivedorm.get('cheque')?.clearValidators();
+  
+    // If 'Payment with Party' is selected, add the required validators
+    if (paymentType === 'withParty') {
+      // Set validators for fields specific to 'Payment with Party'
+      this.addreceivedorm.get('selectpartyname')?.setValidators([Validators.required]);
+      this.addreceivedorm.get('Payment')?.setValidators([Validators.required]);
+      this.addreceivedorm.get('cheque')?.setValidators([Validators.required]);
+  
+      // Set to show payment details when 'withParty' is selected
+   
+    } else {
+      // Hide payment details when 'withoutParty' is selected
+      this.showpaymentDetails = false;
+    }
+  
+    // Update validity status after setting/clearing validators
+    this.addreceivedorm.get('selectpartyname')?.updateValueAndValidity();
+    this.addreceivedorm.get('Payment')?.updateValueAndValidity();
+    this.addreceivedorm.get('cheque')?.updateValueAndValidity();
+  }
+  
+  materialstable: any
+  getmaterials(type: any) {
+    // Check if the type is 0
+    if (type === 0) {
+      // Fetch transaction data based on type 0
+      this.employeeService.getmaterialpurchaes(this.projectiD,this.FilterForm.get('Transactiontype')?.value,this.FilterForm.get('filter')?.value ?? "",).subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+       
+        
+         
+            this.materialstable = response.data;
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching transactions:', error);
+          // Handle the error scenario
+        }
+      );
+    } else {
+      // Ensure form validation if applicable
+      if (this.FilterForm.valid) {
+        this.employeeService
+          .getmaterialpurchaes(this.projectiD,this.FilterForm.get('Transactiontype')?.value,this.FilterForm.get('filter')?.value ?? "",)
+          .subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                // Handle response data
+             
+                this.materialstable = response.data;
+              }
+            },
+            (error: any) => {
+              console.error('Error fetching transactions:', error);
+              // Handle the error scenario
+            }
+          );
+      } else {
+        // Mark form fields as touched to display validation errors
+        this.FilterForm.markAllAsTouched();
+      }
+    }
+  }
+
+
+
+
+// bills //
+billsopen: boolean = false;
+Subcontractoropen: boolean = false;
+otherexpenseopen: boolean = false;
+paymenteopen: boolean = false;
+partybillsid:any;
+currenttypeid : any
+party_id : any
+// viewmodel(id:any, type:any){
+// this.partybillsid =id;
+// this.currenttypeid =type;
+// this.billsopen = true;
+// this.Subcontractoropen = true;
+// this.getbills();
+// }
+
+viewmodel(id: any, type: any,party_id:any) {
+  this.partybillsid = id;
+  this.currenttypeid = type;
+  this.party_id = party_id;
+
+  // Reset both flags to false before setting the specific one to true
+  this.billsopen = false;
+  this.Subcontractoropen = false;
+  this.otherexpenseopen = false;
+  this.paymenteopen = false;
+
+  // Set the correct modal based on the type
+  if (type === 'material_purchase') {
+    this.billsopen = true; 
+  } else if (type === 'sub_contractor_payment') {
+    this.Subcontractoropen = true; 
+  } else if (type === 'other_expense') {
+    this.otherexpenseopen = true; 
+  } else {
+    this.paymenteopen = true; 
+  }
+
+
+  this.getbills(); 
+}
+
+
+addsubcontractoropen: boolean = false;
+addpaymentinopen: boolean = false;
+
+billstable:any
+subcontrtable : any
+otherexpenetable : any
+paytable : any
+getbills(){
+this.employeeService
+    .getpartybills(this.partybillsid,this.currenttypeid,this.party_id)
+    .subscribe((response: any) => {
+        if (response.status === 200) {
+            this.billstable = response.party_bill;
+            this.subcontrtable = response.party_bill;
+            this.otherexpenetable = response.party_bill;
+            this.paytable = response.party_bill;
+           
+        }
+    });
+}
+
+ClickpayfeesModalconent(event: Event): void {
+  event.stopPropagation();
+}
 
   }

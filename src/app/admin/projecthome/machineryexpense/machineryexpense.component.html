@@ -19,11 +19,76 @@
 
 
 
+        <div class="col-lg-12 col-md-12 mb-3 mt-3">
+            <label for="chequetwo" class="form-label lable-custom">Payment Types</label>
+            <div class="d-flex mt-2">
+              <div class="form-check me-3">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    (change)="onPaymentTypeChange()"
+                    name="paymentType"
+                    formControlName="paymentType"
+                    id="paymentWithParty"
+                    value="withParty"
+                    [ngClass]="{
+                      'is-invalid':
+                        machinerytypeform.controls['paymentType'].errors &&
+                        (machinerytypeform.controls['paymentType'].touched ||
+                          machinerytypeform.controls['paymentType'].dirty)
+                    }"
+                  />
+                  Payment with Party
+                </label>
+              </div>
+          
+              <div class="form-check me-3">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentType"
+                    formControlName="paymentType"
+                    id="paymentWithoutParty"
+                    value="withoutParty"  (change)="onPaymentTypeChange()"
+                    [ngClass]="{
+                      'is-invalid':
+                        machinerytypeform.controls['paymentType'].errors &&
+                        (machinerytypeform.controls['paymentType'].touched ||
+                          machinerytypeform.controls['paymentType'].dirty)
+                    }"
+                  />
+                  Payment without Party
+                </label>
+              </div>
+            </div>
+          
+            <!-- Validation message for payment type -->
+            <div
+              class="text-danger mt-2 d-block"
+              *ngIf="
+                machinerytypeform.controls['paymentType'].errors &&
+                (machinerytypeform.controls['paymentType'].touched ||
+                  machinerytypeform.controls['paymentType'].dirty)
+              "
+            >
+              <p
+                class="fw-light text-danger"
+                *ngIf="machinerytypeform.controls['paymentType'].errors['required']"
+              >
+                Payment type is required
+              </p>
+            </div>
+          </div>
 
 
 
 
-        <div class="mb-3 ">
+
+
+
+        <div class="mb-3 "  *ngIf="machinerytypeform.get('paymentType')?.value === 'withParty'">
             <label class="form-label form-lable-custom"
                 for="selectpartyname">
                 Select Party Name</label>
@@ -33,13 +98,13 @@
                 {{ party.name }}
             </option>
             </select>
-            <!-- <div class="text-danger error-message"
+            <div class="text-danger error-message"
                 *ngIf="machinerytypeform.controls['selectpartyname'].errors && (machinerytypeform.controls['selectpartyname'].touched || machinerytypeform.controls['selectpartyname'].dirty)">
                 <p class="fw-light text-danger"
                     *ngIf="machinerytypeform.controls['selectpartyname'].errors['required']">
                     Select Party Name is required
                 </p>
-            </div> -->
+            </div>
         </div>
 
 

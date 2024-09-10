@@ -343,6 +343,56 @@ export class EmployeeService {
 
 
 
+
+
+
+
+
+  
+  getmaterialpurchaes(project_id: any, type:any,search: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    const body = {
+      'user_id': user,
+      'project_id': project_id,
+      "search":search!=undefined?search:"",
+      ...(type ? { 'type': type } : {}),
+      // 'transaction_type': transaction_type,
+
+    };
+  
+    return this.apiservice.post(`materials-list`, body,  headers )
+    .pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        if (
+          error.status === 422 &&
+          error.message &&
+          (
+            error.message.includes('The selected user id is invalid') ||
+            error.message.includes('Your account has been deactivated') ||
+            error.message.includes('Your token has been expired') ||
+            error.message.includes('Your token has been expired. Please login again.')
+          )
+        ) {
+          // Log the user out and navigate to sign-in page
+          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
+          this.router.navigate(['/sign_in']); // Navigate to home route
+          alert(error.message); // Show alert with error message
+        } else if (error && error.message) {
+          // Display error message
+          alert(error.message);
+        } 
+      })
+    
+    );
+  }
+
   GetState() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({

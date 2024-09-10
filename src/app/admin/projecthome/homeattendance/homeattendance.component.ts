@@ -269,7 +269,7 @@ export class HomeattendanceComponent {
   filteredPartyTypes: any;
   filterPartyTypes(partyTypes: any[]): any[] {
     // Define the types you want to filter
-    const typesToInclude = ['staff', 'labour', 'labour contractor'];
+    const typesToInclude = ['staff', 'labour', 'labour contractor', 'supervisor'];
     return partyTypes.filter(type => typesToInclude.includes(type.name.toLowerCase()));
   }
 
@@ -283,8 +283,13 @@ export class HomeattendanceComponent {
   partyTypeName: any
   partyTypeNameupdate: any;
   staffselect(value: any) {
+    this.AddWorkerForm.get('StaffList')?.setValue("");
     this.partyTypeName = value
-    if (value == "staff" || value == "labour") {
+    if (value == "staff" || value == "supervisor") {
+      this.GetStaffFun(value);
+      this.updateStaffSupervisorValidators();
+    } else if (value == "labour") {
+
       this.GetStaffFun(value);
       this.updateEmailValidators();
     }
@@ -295,6 +300,24 @@ export class HomeattendanceComponent {
     }
 
   }
+  updateStaffSupervisorValidators() {
+    this.AddWorkerForm.get('StaffList')?.clearValidators();
+    this.AddWorkerForm.get('Salary')?.clearValidators();
+    if (this.partyTypeName === 'staff' || this.partyTypeName === 'supervisor') {
+      this.AddWorkerForm.get('StaffList')?.setValidators([Validators.required,]);
+    
+
+    } else {
+      this.AddWorkerForm.get('StaffList')?.clearValidators();
+      this.AddWorkerForm.get('Salary')?.clearValidators();
+
+
+    }
+
+    this.AddWorkerForm.get('StaffList')?.updateValueAndValidity();
+    this.AddWorkerForm.get('Salary')?.updateValueAndValidity();
+  }
+
 
   updateEmailValidators() {
     this.AddWorkerForm.get('StaffList')?.clearValidators();
@@ -361,8 +384,8 @@ export class HomeattendanceComponent {
   }
 
   labourstafflist: any;
-  GetStafflabourcontractorfun(type: any) {
-    this.courseService.GetStafflabourcontractorapi(type, this.projectiD).subscribe((response: any) => {
+  GetStafflabourcontractorfun(partyid: any) {
+    this.courseService.GetStafflabourcontractorapi(partyid, this.projectiD).subscribe((response: any) => {
       console.log(this.projectiD);
       if (response.status === 200) {
         this.labourstafflist = response.workforces;
@@ -381,7 +404,37 @@ export class HomeattendanceComponent {
   openSecondsuccess = false;
   CreateWorkerfun() {
     if (this.AddWorkerForm.valid) {
-      if (this.partyTypeName == 'staff' || this.partyTypeName == 'labour') {
+      if (this.partyTypeName == 'staff' || this.partyTypeName == 'supervisor') {
+
+
+        const body = {
+          "party_id": this.AddWorkerForm.get("StaffList")?.value,
+          "project_id": this.projectiD,
+          "user_id": this.userId,
+
+          // "workforce_ids":this.AddWorkerForm.get("PartyType")?.value,
+          // "amount": this.AddWorkerForm.get("Salary")?.value,
+        }
+
+        console.log(body);
+
+        this.courseService.CreateWorkerapi(body).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200) {
+            console.log("success");
+            this.closeModal();
+            this.successName = 'Create Worker';
+            this.ngOnInit();
+            this.GetAttendanceFun(0);
+            setTimeout(() => {
+              this.openSecondsuccess = true;
+              setTimeout(() => {
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          }
+        });
+      }else if (this.partyTypeName == 'labour') {
 
 
         const body = {

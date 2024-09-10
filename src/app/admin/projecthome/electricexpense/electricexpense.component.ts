@@ -92,11 +92,14 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   
       this.electrictypeform = this.formBuilder.group({
         date: [this.todayDate, [Validators.required,]],
+        paymentType: ['withParty', Validators.required],
         selectpartyname: 
         this.formBuilder.control({
           value:this.partyId!=undefined?this.partyId:"",
           disabled:this.partyId!=undefined?true: false,
-        } ),
+        } , [Validators.required,])
+       ,
+       
         Balance: ['',],
        SubTotal: ['',Validators.required],
        cheque: ["",Validators.required],
@@ -417,6 +420,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
   submitted!: boolean;
   @Output() selectedIn = new EventEmitter<string>();
   erroroutput: boolean = false;
+  
   Createaddotherexpense() {
     if (this.electrictypeform.valid) {
     
@@ -424,40 +428,30 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       
       const formData: FormData = new FormData();
 
-      var newMateria=[];
-      for (let index = 0; index < this.materials.length; index++) {
-        const electrictypeform =   this.materials.at(index);
-  
+     
+
     
-      
-        newMateria.push({
-         
-          "name": electrictypeform.get('name')?.value,
-          "amount": electrictypeform.get('subtotal')?.value,
-    
-        })
-      
-    }
-    
-   
       // Append common fields
       const user = this.jwtService.getpanelUserId();
       formData.append("user_id",user.toString());
       formData.append("project_id", this.projectiD.toString());
       formData.append("date", this.electrictypeform.get("date")?.value.toString());
-      formData.append("party_id", this.electrictypeform.get("selectpartyname")?.value.toString());
-      formData.append("tasks", JSON.stringify(newMateria)); // Convert materialList to JSON string if it's an object
-      formData.append("additional_charges", this.electrictypeform.get("additionalcharges")?.value.toString());
-      formData.append("discount", this.electrictypeform.get("Discount")?.value.toString());
-      formData.append("total_amount", this.calculateTotal().toString());
-      formData.append("category", 'other_expense');
+     
+      // formData.append("party_id", this.electrictypeform.get("selectpartyname")?.value.toString());
+      formData.append("amount", this.electrictypeform.get("SubTotal")?.value.toString());
+      formData.append("description", this.electrictypeform.get("description")?.value.toString());
    
-      formData.append("payment_out", this.electrictypeform.get("Payment")?.value.toString());
+   
+      formData.append("category", 'electric_expense');
+   
+   
       formData.append("payment_method", this.electrictypeform.get("cheque")?.value.toString());
  
-      formData.append("notes", this.electrictypeform.get("Notes")?.value.toString());
-      formData.append("reference_no", this.electrictypeform.get("Reference")?.value.toString());
-      formData.append("sub_total", this.calculateSubTotal().toString());
+  // Conditionally append party_id only if payment type is 'withParty'
+  if (this.electrictypeform.get('paymentType')?.value === 'withParty') {
+    formData.append("party_id", this.electrictypeform.get("selectpartyname")?.value.toString());
+  }
+
   
      
       if (this.profileimage) {
@@ -616,6 +610,20 @@ this.getbalanceparty()
   }
 
 
+  onPaymentTypeChange() {
+    const paymentType = this.electrictypeform.get('paymentType')?.value;
+    this.electrictypeform.get('selectpartyname')?.clearValidators();
+    // Adjust validation based on selected payment type
+    if (paymentType === 'withParty') {
+      this.electrictypeform.get('selectpartyname')?.setValidators(Validators.required);
+    } else {
+      this.electrictypeform.get('selectpartyname')?.clearValidators();
+    }
+  
+    // Update validation status
+    this.electrictypeform.get('selectpartyname')?.updateValueAndValidity();
+  }
+  
 catergory:any
   onchangecategory(value:any) {
   this.catergory=value
