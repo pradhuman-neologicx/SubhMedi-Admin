@@ -34,6 +34,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     deleteeventOpen: boolean = false;
   
     projectiD : any
+    Type : any
     constructor(
       private formBuilder: FormBuilder,
       private employeeService: EmployeeService,
@@ -62,7 +63,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     console.log('Party ID:', this.partyID);
       this.user_id= this.jwtService.getpanelUserId();
 
-
+      this.Type= this.jwtService.getType();
      
   
   
@@ -199,7 +200,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     idString: any;
     partyType: any
     id: any;
-    Type!: string;
+   
    
    // upload image  code here
    @ViewChild('fileInput') fileInput!: ElementRef;
