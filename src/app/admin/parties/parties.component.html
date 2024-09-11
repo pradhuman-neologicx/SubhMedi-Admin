@@ -828,19 +828,45 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeNameupdate=='staff'">
+
+
+
+
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeNameupdate=='supervisor'">
                                 <label for="Email" class="form-label form-lable-custom">Email</label>
                                 <input type="email" class="form-control form-input-custom" formControlName="Email" readonly="true"
-                                    [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['Email'].errors && (UpdatepartyForm.controls['Email'].touched || UpdatepartyForm.controls['Email'].dirty) }">
-                                <div class="text-danger error-message"
+                    >
+                                <!-- <div class="text-danger error-message"
                                     *ngIf="UpdatepartyForm.controls['Email'].errors && (UpdatepartyForm.controls['Email'].touched || UpdatepartyForm.controls['Email'].dirty)">
                                     <p class="fw-light text-danger"
                                         *ngIf="UpdatepartyForm.controls['Email'].errors['required']">Email is Requried</p>
                                         <p class="fw-light text-danger"
                                         *ngIf="UpdatepartyForm.controls['Email'].errors['pattern']">Please Enter Valid Email</p>
-                                </div>
+                                </div> -->
 
                             </div>
+
+
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3"  *ngIf="partyTypeNameupdate=='supervisor'|| partyTypeNameupdate=='staff'">
+                                <label for="monthlysalary" class="form-label form-lable-custom">Monthly Salary</label>
+                                <input type="number" class="form-control form-input-custom"
+                                    formControlName="monthlysalary"
+                                    [ngClass]="{ 'is-invalid':UpdatepartyForm.controls['monthlysalary'].errors && (UpdatepartyForm.controls['monthlysalary'].touched || UpdatepartyForm.controls['monthlysalary'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="UpdatepartyForm.controls['monthlysalary'].errors && (UpdatepartyForm.controls['monthlysalary'].touched || UpdatepartyForm.controls['monthlysalary'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="UpdatepartyForm.controls['monthlysalary'].errors['pattern']">
+                                         Monthly Salary is Required</p>
+                                </div> 
+
+                            </div>
+
 
 
                             <div class="col-lg-12 col-md-12 mb-3">

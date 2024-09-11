@@ -23,4 +23,5 @@ export class Updateparty {
     gst_details:any;
     bank_details:any;
     opening_balance:any;
+    monthly_salary :any;
     }

@@ -106,6 +106,7 @@ export class PartiesComponent {
       PartyName: ["", [Validators.required,]],
       PartyType: ["", [Validators.required,]],
       PhoneNumber: ["", Validators.pattern(this.validation.mobile_pattern),],
+      monthlysalary: ["", [Validators.required,]],
       Email: ["",],
       GSTNumber: ["",],
       LegalBusinessName: ["",],
@@ -316,6 +317,7 @@ export class PartiesComponent {
 
   OpenCreateModal() {
     this.Createpartyopen = true;
+    this.partyTypeName = undefined
   }
   closeModal() {
     this.Createpartyopen = false;
@@ -350,24 +352,55 @@ export class PartiesComponent {
     }
   }
 
-  updateEmailValidators() {
+  // updateEmailValidators() {
 
+  //   if (this.partyTypeName === 'supervisor') {
+  //     this.CreatepartyForm.get('Email')?.setValidators([Validators.required, Validators.pattern(this.validation.email_pattern),]);
+  //     this.CreatepartyForm.get('monthlysalary')?.setValidators([Validators.required]);
+
+  //   } else {
+  //     this.CreatepartyForm.get('Email')?.clearValidators();
+  //     this.CreatepartyForm.get('monthlysalary')?.clearValidators();
+
+  //   }
+
+  //   this.CreatepartyForm.get('Email')?.updateValueAndValidity();
+  //   this.CreatepartyForm.get('monthlysalary')?.updateValueAndValidity();
+  // }
+
+  updateEmailValidators() {
+  
+    this.CreatepartyForm.get('Email')?.clearValidators();
+    this.CreatepartyForm.get('monthlysalary')?.clearValidators();
+  
+  
     if (this.partyTypeName === 'supervisor') {
-      this.CreatepartyForm.get('Email')?.setValidators([Validators.required, Validators.pattern(this.validation.email_pattern),]);
-      this.CreatepartyForm.get('monthlysalary')?.setValidators([Validators.required]);
+      
+      this.CreatepartyForm.get('Email')?.setValidators([
+        Validators.required,
+        Validators.pattern(this.validation.email_pattern),
+      ]);
+      this.CreatepartyForm.get('monthlysalary')?.setValidators([
+        Validators.required,
+      ]);
 
     } else {
       this.CreatepartyForm.get('Email')?.clearValidators();
       this.CreatepartyForm.get('monthlysalary')?.clearValidators();
-
     }
-
-    this.CreatepartyForm.get('Email')?.updateValueAndValidity();
+    
+     if (this.partyTypeName === 'staff') {
+ 
+      this.CreatepartyForm.get('monthlysalary')?.setValidators([
+        Validators.required,
+      ]);
+    }
+    else {
+      this.CreatepartyForm.get('monthlysalary')?.clearValidators();
+    }
+      this.CreatepartyForm.get('Email')?.updateValueAndValidity();
     this.CreatepartyForm.get('monthlysalary')?.updateValueAndValidity();
   }
-
-
-
 
   showGstDetails = false;
   toggleGstDetails(): void {
@@ -584,9 +617,20 @@ export class PartiesComponent {
 
       this.Createparty.name = this.CreatepartyForm.get('PartyName')?.value;
       this.Createparty.type_id = this.CreatepartyForm.get('PartyType')?.value;
-      this.Createparty.email = this.CreatepartyForm.get('Email')?.value;
+      // this.Createparty.email = this.CreatepartyForm.get('Email')?.value;
       this.Createparty.mobile = this.CreatepartyForm.get('PhoneNumber')?.value;
-      this.Createparty.monthly_salary  = this.CreatepartyForm.get('monthlysalary')?.value;
+      // this.Createparty.monthly_salary  = this.CreatepartyForm.get('monthlysalary')?.value;
+
+if (this.partyTypeName === 'supervisor') {
+ 
+  this.Createparty.email = this.CreatepartyForm.get('Email')?.value;
+  this.Createparty.monthly_salary = this.CreatepartyForm.get('monthlysalary')?.value;
+} else if (this.partyTypeName === 'staff') {
+
+  this.Createparty.monthly_salary = this.CreatepartyForm.get('monthlysalary')?.value;
+} 
+
+
 
       if (gst_details.length > 0) {
         this.Createparty.gst_details = gst_details;
@@ -682,7 +726,18 @@ export class PartiesComponent {
       PartyName: [response.name, [Validators.required,]],
       PartyType: [partytype, [Validators.required,]],
       PhoneNumber: [response.mobile, Validators.pattern(this.validation.mobile_pattern),],
-      Email: [response.email!=null?response.email ?? "":""],
+        // Prefill monthlysalary and Email based on partyTypeNameupdate condition
+  monthlysalary: [
+    this.partyTypeNameupdate === 'supervisor' || this.partyTypeNameupdate === 'staff' ? response.monthly_salary : '', 
+    this.partyTypeNameupdate === 'supervisor' || this.partyTypeNameupdate === 'staff' ? [Validators.required] : [],
+  ],
+
+  Email: [
+    this.partyTypeNameupdate === 'supervisor' ? response.email ?? "" : "", 
+    this.partyTypeNameupdate === 'supervisor' ? [Validators.required, Validators.pattern(this.validation.email_pattern)] : [],
+  ],
+      // monthlysalary: [response.monthly_salary , [Validators.required,]],
+      // Email: [response.email!=null?response.email ?? "":""],
       GSTNumber:         [response.gst_details!=null?response.gst_details[0]?.gst_number!=null?response.gst_details[0]?.gst_number?? "":"":""],
       LegalBusinessName: [response.gst_details!=null?response.gst_details[0]?.business_name!=null?response.gst_details[0]?.business_name?? "":"":""],           
       State:             [response.gst_details!=null?response.gst_details[0]?.state_id!=null?response.gst_details[0]?.state_id?? "":"":""],
@@ -784,6 +839,18 @@ export class PartiesComponent {
       // this.Updateparty.email = this.UpdatepartyForm.get('Email')?.value;
       this.Updateparty.is_active = this.UpdatepartyForm.get('status')?.value;
       this.Updateparty.mobile = this.UpdatepartyForm.get('PhoneNumber')?.value;
+
+
+      if (this.partyTypeNameupdate === 'supervisor') {
+ 
+        this.Updateparty.email = this.UpdatepartyForm.get('Email')?.value;
+        this.Updateparty.monthly_salary = this.UpdatepartyForm.get('monthlysalary')?.value;
+      } else if (this.partyTypeNameupdate === 'staff') {
+      
+        this.Updateparty.monthly_salary = this.UpdatepartyForm.get('monthlysalary')?.value;
+      } 
+      
+      
 
       // Conditionally add optional details to the payload
       if (gst_details.length > 0) {
