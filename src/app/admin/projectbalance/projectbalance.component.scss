@@ -121,3 +121,43 @@ font-size: 18px;
   .heading-party{
     font-size: 20px !important;
 }
+
+
+
+.button-container {
+  display: flex;
+}
+.button-label {
+  display: inline-block;
+  margin: 0 20px 0 0;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.button-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 0%;
+}
+
+.button-label span {
+  display: inline-block;
+  padding: 5px 2px;
+  width: 72px !important;
+}
+
+.button-label input:checked + span {
+  background-color: #36a292;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  height: 100%;
+}

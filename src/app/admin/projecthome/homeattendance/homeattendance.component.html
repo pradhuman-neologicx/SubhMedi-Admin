@@ -178,10 +178,10 @@
                       <!-- leave Status -->
                       <td>
                         <p class="table-detail text-capitalize ms-2 table-detail-new" [ngClass]="{
-                            'text-danger': attendance.partyAttendance?.leave, 
-                            'text-muted': !attendance.partyAttendance?.leave
+                            'text-danger': attendance.partyAttendance?.onleave, 
+                            'text-muted': !attendance.partyAttendance?.onleave
                           }">
-                            {{ attendance.partyAttendance?.leave ? 'leave' : '-' }}
+                            {{ attendance.partyAttendance?.onleave ? 'onleave' : '-' }}
                         </p>
                     </td>
 
@@ -202,9 +202,20 @@
                                 <button mat-menu-item (click)="OpenMarkAbsent(attendance.party_id,0);"
                                     *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark
                                     Absent</button>
-                                <button mat-menu-item (click)="OpenMarkLeave(attendance.party_id,0);"
-                                    *ngIf="!attendance.workforces || attendance.workforces.length === 0">Mark
+                                <button mat-menu-item (click)="OpenMarkLeave(attendance.party_id,2);"
+                                    *ngIf="(!attendance.workforces || attendance.workforces.length === 0) && (attendance.type =='staff'|| attendance.type =='supervisor') ">Mark
                                     Leave</button>
+                                
+                                        <button mat-menu-item
+                                        *ngIf="(!attendance.workforces || attendance.workforces.length === 0) && (attendance.type =='staff'|| attendance.type =='supervisor') &&  attendance.partyAttendance?.present "
+                                         (click)="OpenUpdatelabourcontract(attendance.party_id,0)">Update
+                                            Details</button>
+
+                                            <button mat-menu-item
+                                            *ngIf="(!attendance.workforces || attendance.workforces.length === 0) && (attendance.type =='labour') &&  attendance.partyAttendance?.present "
+                                             (click)="OpenUpdatelabourcontract(attendance.party_id,1)">Update
+                                                Details</button>
+                                   
                             </mat-menu>
 
 
@@ -319,7 +330,7 @@
                                         </button>
 
                                         <mat-menu #menu="matMenu">
-                                            <button mat-menu-item (click)="OpenUpdatelabourcontract(worker.id)">Update
+                                            <button mat-menu-item (click)="OpenUpdatelabourcontract(worker.id,2)">Update
                                                 Details</button>
                                         </mat-menu>
                                     </p>
@@ -702,7 +713,7 @@
 
                             <div class="col-lg-12 col-md-12 mb-3">
                                 <label for="SalaryAmount" class="form-label form-lable-custom">Salary Amount</label>
-                                <input type="text" class="d-block   form-control form-input-custom"
+                                <input type="text" class="d-block   form-control form-input-custom" [readOnly]="type==0?true:false"
                                     formControlName="SalaryAmount"
                                     [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['SalaryAmount'].errors && (UpdatelabourForm.controls['SalaryAmount'].touched || UpdatelabourForm.controls['SalaryAmount'].dirty) }">
                                 <div class="text-danger error-message"
@@ -719,7 +730,7 @@
 
                             <div class="col-lg-12 col-md-12 mb-4">
                                 <label for="numberOfWorkers">No. of Workers:</label>
-                                <input id="numberOfWorkers" type="number" formControlName="numberOfWorkers"
+                                <input id="numberOfWorkers" type="number" formControlName="numberOfWorkers" [readOnly]="type==2?false:true"
                                     class="form-control form-control form-input-custom"
                                     [ngClass]="{ 'is-invalid':UpdatelabourForm.controls['numberOfWorkers'].errors && (UpdatelabourForm.controls['numberOfWorkers'].touched || UpdatelabourForm.controls['numberOfWorkers'].dirty) }">
                                     

@@ -431,7 +431,7 @@
 
 
 
-                            <div class="col-lg-12 col-md-12 mb-3"  *ngIf="partyTypeName=='supervisor'|| partyTypeName=='staff'">
+                            <!-- <div class="col-lg-12 col-md-12 mb-3"  *ngIf="partyTypeName=='supervisor'|| partyTypeName=='staff'">
                                 <label for="monthlysalary" class="form-label form-lable-custom">Monthly Salary</label>
                                 <input type="number" class="form-control form-input-custom"
                                     formControlName="monthlysalary"
@@ -443,8 +443,27 @@
                                          Monthly Salary is Required</p>
                                 </div> 
 
+                            </div> -->
+                            <div class="col-lg-12 col-md-12 mb-3" *ngIf="partyTypeName == 'supervisor' || partyTypeName == 'staff'">
+                                <label for="monthlysalary" class="form-label form-lable-custom">Monthly Salary</label>
+                                <input type="number" class="form-control form-input-custom" formControlName="monthlysalary"
+                                    [ngClass]="{ 'is-invalid': CreatepartyForm.controls['monthlysalary'].errors && (CreatepartyForm.controls['monthlysalary'].touched || CreatepartyForm.controls['monthlysalary'].dirty) }">
+                                
+                                <div class="text-danger error-message"
+                                    *ngIf="CreatepartyForm.controls['monthlysalary'].errors && (CreatepartyForm.controls['monthlysalary'].touched || CreatepartyForm.controls['monthlysalary'].dirty)">
+                                    
+                                    <!-- Custom error message -->
+                                    <p class="fw-light text-danger" *ngIf="CreatepartyForm.controls['monthlysalary'].hasError('required')">
+                                        Monthly salary is required
+                                    </p>
+                            
+                                    <!-- Additional validation messages (optional, can be customized further) -->
+                                    <p class="fw-light text-danger" *ngIf="CreatepartyForm.controls['monthlysalary'].hasError('min')">
+                                        Please enter a valid salary amount.
+                                    </p>
+                                </div>
                             </div>
-
+                            
 
 
 
@@ -864,7 +883,7 @@
                                         *ngIf="UpdatepartyForm.controls['monthlysalary'].errors['pattern']">
                                          Monthly Salary is Required</p>
                                 </div> 
-
+                                <p class="suggest-content-validation text-primary">If you modify or revise the salary amount, your new salary will take effect starting today.,</p>
                             </div>
 
 

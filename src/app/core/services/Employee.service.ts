@@ -841,7 +841,7 @@ export class EmployeeService {
     });
 
     const body = {
-      type: 'labour_expense',
+      type: '',
       user_id: user,
     project_id: project_id,
     };
@@ -886,7 +886,7 @@ export class EmployeeService {
     });
 
     const body = {
-      type: 'water_expense',
+      type: '',
       user_id: user,
     project_id: project_id,
     };
@@ -929,7 +929,7 @@ export class EmployeeService {
     });
 
     const body = {
-      type: 'maintenance_expense',
+      type: '',
       user_id: user,
     project_id: project_id,
     };
@@ -972,7 +972,7 @@ export class EmployeeService {
     });
 
     const body = {
-      type: 'electric_expense',
+      type: '',
       user_id: user,
     project_id: project_id,
     };
@@ -1016,7 +1016,7 @@ export class EmployeeService {
     });
 
     const body = {
-      type: 'fuel_expense',
+      type: '',
       user_id: user,
     project_id: project_id,
     };
@@ -1059,7 +1059,7 @@ export class EmployeeService {
     });
 
     const body = {
-      type: 'supervisor_payment',
+      type: 'staff',
       user_id: user,
     project_id: project_id,
     };

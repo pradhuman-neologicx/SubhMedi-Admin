@@ -150,6 +150,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       this.checkUserRole();
        
       this.Getpartynamefun();
+      this.getShiftfun();
     
   
       
@@ -500,6 +501,7 @@ createMaterialGroup(): FormGroup {
               this.otherexpensetable = response.other_expense ;
               this.salarytable = response.attendanceData ;
               this.materialpurchasetable = response.material_purchase ;
+              // this.fillformdate(response);
             },
             (error: any) => {
               console.error('Error fetching project party balance:', error);
@@ -529,6 +531,7 @@ else {
                 this.otherexpensetable = response.other_expense ;
                 this.salarytable = response.attendanceData ;
                 this.materialpurchasetable = response.material_purchase ;
+                // this.fillformdate(response);
               },
               (error: any) => {
                 console.error('Error fetching project party balance:', error);
@@ -651,7 +654,17 @@ else {
         });
         this.onchangecategory('Salary')
         
-      } else {
+      }  else if(this.type ===  'supervisor'){
+        this.addcategoryform = this.formBuilder.group({
+          category: ['Supervisor Payment',[Validators.required,]],
+      
+        });
+        this.onchangecategory('Supervisor Payment')
+        
+      }
+      
+      
+      else {
         this.addcategoryform = this.formBuilder.group({
           category: ['Other Expense',[Validators.required,]],
       
@@ -758,7 +771,7 @@ else {
       this.otherexpenseopen = false;
       this.paymenteopen = false;
       this.closeModalEvent.emit();
-      this.closeModalEvent.emit();
+    
     }
     ClickModalconent(event: Event): void {
       event.stopPropagation();
@@ -1295,14 +1308,22 @@ catergory:any
 
 
 
-  currentpartyId: any;
+  
   currentworkforceId: any;
   attendancetype: any;
 
-
-  OpenUpdatelabourcontract(partyId: any) {
+ editattendancedate : any
+  OpenUpdatelabourcontract(partyId: any, type:any, date:any) {
+    this.attendancetype = type // 0- staff /supervisor , 1- labour 2-labour contractor
+    this.editattendancedate = date
     this.UpdateLabourContractor = true;
-    this.currentworkforceId = partyId;
+    this.errorMessage = ""
+    if(type==2)
+{    this.currentworkforceId = partyId;
+
+}else{
+  this.partyID = partyId;
+}
     this.UpdatelabourForm = this.formBuilder.group({
       SalaryAmount: ["", [Validators.required,]],
       shift: ["", [Validators.required,]],
@@ -1318,15 +1339,28 @@ catergory:any
 
     });
     this.addAllowance();
+    
 
-    // this.getUpdateattendanceFun();
-
+    this.getUpdateattendanceFun();
+ 
 
   }
 
 
+  Updatelist: any;
+  getUpdateattendanceFun() {
+    this.courseService.getUpdateattendanceApi(this.projectiD, this.userId, this.partyID, this.currentworkforceId, this.todayDate, this.attendancetype).subscribe((response: any) => {
+      if (response.status === 200) {
+        this.Updatelist = response.data;
+        this.fillformdate(response.data);
 
-  fillformdate(response: any,) {
+      }
+      console.log(this.Updatelist);
+    });
+  }
+
+
+  fillformdate(response: any) {
     var allowancelist = []
 if (response.allowance.length>0) {
   allowancelist= JSON.parse(response.allowance);
@@ -1335,7 +1369,13 @@ if (response.allowance.length>0) {
     console.log(allowancelist)
     console.log(response.shifts.id)
     this.UpdatelabourForm = this.formBuilder.group({
-      SalaryAmount: [response.workforce_salary, [Validators.required,]],
+      SalaryAmount:    
+      // this.formBuilder.control({
+      //   value:response.workforce_salary,
+      //   readonly:this.type== 0?true: false,
+      // } , [Validators.required,]),
+      [
+        response.workforce_salary, [Validators.required,]],
       shift: [response.shifts.id, [Validators.required,]],
       numberOfWorkers: [response.no_of_workers, Validators.required],
       // shift: [null, Validators.required],
@@ -1366,6 +1406,7 @@ if (response.allowance.length>0) {
     }
 
   }
+
 
   onAttendanceChange(allowancelist: any) {
     this.allowances.clear(); // Clear existing FormArray controls
@@ -1402,8 +1443,11 @@ if (response.allowance.length>0) {
       // Append common fields
       formData.append('project_id', this.projectiD.toString());
       formData.append('user_id', this.userId.toString());
-      formData.append('party_id', this.currentpartyId.toString());
-      formData.append('workforce_id', this.currentworkforceId.toString());
+      formData.append('party_id', this.partyID.toString());
+      if ( this.type==2) {
+        formData.append('workforce_id', this.currentworkforceId.toString());
+      }
+    
       formData.append('date', this.todayDate.toString());
       formData.append('no_of_worker', this.UpdatelabourForm.get('numberOfWorkers')?.value.toString());
       formData.append('shift_id', this.UpdatelabourForm.get('shift')?.value.toString());
@@ -1470,9 +1514,9 @@ if (response.allowance.length>0) {
         if (response.status === 200) {
           console.log("success");
           this.closeModal();
-          this.successName = 'Update Attendance';
+          this.successName = 'Updated Details';
           this.ngOnInit();
-          // this.getUpdateattendanceFun();
+          // this.getpartyprojectbalance();
           setTimeout(() => {
             this.openSecondsuccess = true;
             setTimeout(() => {

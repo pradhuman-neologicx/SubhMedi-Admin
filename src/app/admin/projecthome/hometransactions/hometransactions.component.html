@@ -487,10 +487,7 @@ aria-modal="true">
                                     <label>Project Name</label>
                                     <span>{{billstable!=undefined?billstable.project:""}}</span>
                                 </div>
-                                <div>
-                                    <label>Image</label>
-                                    <span>{{billstable!=undefined?billstable.image:""}}</span>
-                                </div>
+                        
                             
                              
                            
@@ -500,6 +497,19 @@ aria-modal="true">
                              
 
                             </div>
+
+                            <div class="col-lg-12 col-md-12 col-12" *ngIf="billstable.image!=undefined">
+                                <div *ngIf="billstable.image.length>0"  class="d-flex justify-content-between">
+                                <label>Image</label>
+                                <div class="text-end">
+                                <a href="{{billstable.image}}" target="_blank">
+                                    <img src="{{billstable.image}}" class="document-img mb-3 d-flex justity-content-end">
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                          
+
                             <table class="table table-hover">
                                 <thead class="table-header-trailer">
                                     <tr>
@@ -675,10 +685,7 @@ aria-modal="true">
                                     <label>From</label>
                                     <span>{{subcontrtable!=undefined?subcontrtable.from:""}}</span>
                                 </div>
-                                <div>
-                                    <label>Image</label>
-                                    <span>{{subcontrtable!=undefined?subcontrtable.image:""}}</span>
-                                </div>
+                    
                             
                              
                            
@@ -688,6 +695,17 @@ aria-modal="true">
                              
 
                             </div>
+                            <div class="col-lg-12 col-md-12 col-12" *ngIf="subcontrtable.image!=undefined">
+                                <div *ngIf="subcontrtable.image.length>0"  class="d-flex justify-content-between">
+                                <label>Image</label>
+                                <div class="text-end">
+                                <a href="{{subcontrtable.image}}" target="_blank">
+                                    <img src="{{subcontrtable.image}}" class="document-img mb-3 d-flex justity-content-end">
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                          
                             <table class="table table-hover">
                                 <thead class="table-header-trailer">
                                     <tr>
@@ -860,10 +878,10 @@ aria-modal="true">
                                     <label>Project Name</label>
                                     <span>{{otherexpenetable!=undefined?otherexpenetable.project:""}}</span>
                                 </div>
-                                <div>
+                                <!-- <div>
                                     <label>Image</label>
                                     <span>{{otherexpenetable!=undefined?otherexpenetable.image:""}}</span>
-                                </div>
+                                </div> -->
                             
                              
                            
@@ -873,6 +891,17 @@ aria-modal="true">
                              
 
                             </div>
+                            <div class="col-lg-12 col-md-12 col-12" *ngIf="otherexpenetable.image!=undefined">
+                                <div *ngIf="otherexpenetable.image.length>0"  class="d-flex justify-content-between">
+                                <label>Image</label>
+                                <div class="text-end">
+                                <a href="{{otherexpenetable.image}}" target="_blank">
+                                    <img src="{{otherexpenetable.image}}" class="document-img mb-3 d-flex justity-content-end">
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                          
                             <table class="table table-hover">
                                 <thead class="table-header-trailer">
                                     <tr>
@@ -1035,12 +1064,13 @@ aria-modal="true">
                                     <label>Project Name</label>
                                     <span>{{paytable!=undefined?paytable.project:""}}</span>
                                 </div>
-                                <div>
-                                    <label>Image</label>
-                                    <span>{{paytable!=undefined?paytable.image:""}}</span>
-                                </div>
-                            
+                      
+                               
+                                
+                                    <!-- <span>{{paytable!=undefined?paytable.image:""}}</span> -->
                              
+                            
+                            
                            
 
                           
@@ -1049,6 +1079,16 @@ aria-modal="true">
 
                             </div>
                      
+                            <div class="col-lg-12 col-md-12 col-12" *ngIf="paytable.image!=undefined">
+                                <div *ngIf="paytable.image.length>0"  class="d-flex justify-content-between">
+                                <label>Image</label>
+                                <div class="text-end">
+                                <a href="{{paytable.image}}" target="_blank">
+                                    <img src="{{paytable.image}}" class="document-img mb-3 d-flex justity-content-end">
+                                </a>
+                            </div>
+                            </div>
+                        </div>
                           
                             <hr>
                         

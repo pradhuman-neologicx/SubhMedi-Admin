@@ -1151,24 +1151,8 @@ MarkAttendacneapi(body:any): Observable<any> {
   .pipe(
     tap((error: any) => {
       console.log('Response received:', error);
-      if (
-        error.status === 422 &&
-        error.message &&
-        (
-          error.message.includes('The selected user id is invalid') ||
-          error.message.includes('Your account has been deactivated') ||
-          error.message.includes('Your token has been expired') ||
-          error.message.includes('Your token has been expired. Please login again.')
-        )
-      ) {
-        // Log the user out and navigate to sign-in page
-        this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-        this.router.navigate(['/sign_in']); // Navigate to home route
-        alert(error.message); // Show alert with error message
-      } else if (error && error.message) {
-        // Display error message
-        alert(error.message);
-      } 
+   this.erromessagefunction(error)
+
     })
   
   );
@@ -1215,44 +1199,42 @@ UpdateLabourContratorAPI(body:any): Observable<any> {
 }
 
 
-getUpdateattendanceApi(ProjecId:any,userId:any,partyId:any,workforceid:any,date:any): Observable<any> {
+getUpdateattendanceApi(ProjecId:any,userId:any,partyId:any,workforceid:any,date:any,type:any): Observable<any> {
   const user = this.jwtService.getpanelUserId();
   const token = this.jwtService.getToken();
   const headers = new HttpHeaders({
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
   });
-  const body = {
-    "project_id":ProjecId,
-    "user_id": userId,
-    "party_id":partyId,
-    "workforce_id":workforceid,
-    "date":date
-  };
+  var body
+  if(type==2){
+    body = {
+      "project_id":ProjecId,
+      "user_id": userId,
+      "party_id":partyId,
+  
+      "workforce_id":workforceid,
+      "date":date
+    };
+  } else {
+    body = {
+      "project_id":ProjecId,
+      "user_id": userId,
+      "party_id":partyId,
+  
+      "date":date
+    };
+  }
+
 
   return this.apiservice.post(`edit-attendance`, body,  headers )
   .pipe(
     tap((error: any) => {
       console.log('Response received:', error);
-      if (
-        error.status === 422 &&
-        error.message &&
-        (
-          error.message.includes('The selected user id is invalid') ||
-          error.message.includes('Your account has been deactivated') ||
-          error.message.includes('Your token has been expired') ||
-          error.message.includes('Your token has been expired. Please login again.')
-        )
-      ) {
-        // Log the user out and navigate to sign-in page
-        this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-        this.router.navigate(['/sign_in']); // Navigate to home route
-        alert(error.message); // Show alert with error message
-      } else if (error && error.message) {
-        // Display error message
-        alert(error.message);
-      } 
+   this.erromessagefunction(error)
+
     })
+  
   
   );
 }

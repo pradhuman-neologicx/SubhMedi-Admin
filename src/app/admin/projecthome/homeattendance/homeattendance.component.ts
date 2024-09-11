@@ -569,7 +569,7 @@ export class HomeattendanceComponent {
   OpenMarkLeave(partyId: any, type: any) {
     this.Markleave = true;
     this.attendancetype = type;
-    if (type == 0) {
+    if (type == 2) {
       this.currentpartyId = partyId;
     }
     else {
@@ -602,7 +602,8 @@ export class HomeattendanceComponent {
         "mark_attendance": [
           {
             "absent": false, // true or false
-            "present": true //  true or false
+            "present": true,
+            "onleave":false //  true or false
           }
         ]
       }
@@ -617,7 +618,8 @@ export class HomeattendanceComponent {
         "mark_attendance": [
           {
             "absent": false, // true or false
-            "present": true //  true or false
+            "present": true ,
+            "onleave":false//  true or false
           }
         ]
       }
@@ -662,7 +664,8 @@ export class HomeattendanceComponent {
         "mark_attendance": [
           {
             "absent": true, // true or false
-            "present": false //  true or false
+            "present": false,
+            "onleave":false //  true or false
           }
         ]
       }
@@ -677,11 +680,14 @@ export class HomeattendanceComponent {
         "mark_attendance": [
           {
             "absent": true, // true or false
-            "present": false //  true or false
+            "present": false,
+            "onleave":false
+             //  true or false
           }
         ]
       }
     }
+   
     console.log(body);
     this.courseService.MarkAttendacneapi(body).subscribe((response: any) => {
       console.log(response);
@@ -717,22 +723,7 @@ export class HomeattendanceComponent {
     const caledardateValue = this.CalendarForm.get('Caledardate')?.value;
     const formattedDate = caledardateValue ? new Date(caledardateValue).toISOString().split('T')[0] : '';
     var body
-    if (this.attendancetype == 0) {
-      body = {
-        "project_id": this.projectiD,
-        "user_id": this.userId,
-        "party_id": this.currentpartyId,
-        // "workforce_id":this.userId,
-        "date": formattedDate,
-        "mark_attendance": [
-          {
-            "absent": true, // true or false
-            "present": false //  true or false
-          }
-        ]
-      }
-    }
-    else if (this.attendancetype == 1) {
+     if (this.attendancetype == 2) { //staff and supervisor
       body = {
         "project_id": this.projectiD,
         "user_id": this.userId,
@@ -741,8 +732,9 @@ export class HomeattendanceComponent {
         "date": formattedDate,
         "mark_attendance": [
           {
-            "absent": true, // true or false
-            "present": false //  true or false
+            "absent": false, // true or false
+            "present": false ,//  true or false
+            "onleave":true
           }
         ]
       }
@@ -775,10 +767,17 @@ export class HomeattendanceComponent {
 
 
 
-
-  OpenUpdatelabourcontract(partyId: any) {
+ type: any
+  OpenUpdatelabourcontract(partyId: any, type:any) {
+    this.type = type // 0- staff /supervisor , 1- labour 2-labour contractor
     this.UpdateLabourContractor = true;
-    this.currentworkforceId = partyId;
+
+    if(type==2)
+{    this.currentworkforceId = partyId;
+
+}else{
+  this.currentpartyId = partyId;
+}
     this.UpdatelabourForm = this.formBuilder.group({
       SalaryAmount: ["", [Validators.required,]],
       shift: ["", [Validators.required,]],
@@ -803,7 +802,7 @@ export class HomeattendanceComponent {
 
   Updatelist: any;
   getUpdateattendanceFun() {
-    this.courseService.getUpdateattendanceApi(this.projectiD, this.userId, this.currentpartyId, this.currentworkforceId, this.todayDate).subscribe((response: any) => {
+    this.courseService.getUpdateattendanceApi(this.projectiD, this.userId, this.currentpartyId, this.currentworkforceId, this.todayDate, this.type).subscribe((response: any) => {
       if (response.status === 200) {
         this.Updatelist = response.data;
         this.fillformdate(response.data);
@@ -815,7 +814,7 @@ export class HomeattendanceComponent {
 
 
 
-  fillformdate(response: any,) {
+  fillformdate(response: any) {
     var allowancelist = []
 if (response.allowance.length>0) {
   allowancelist= JSON.parse(response.allowance);
@@ -824,7 +823,13 @@ if (response.allowance.length>0) {
     console.log(allowancelist)
     console.log(response.shifts.id)
     this.UpdatelabourForm = this.formBuilder.group({
-      SalaryAmount: [response.workforce_salary, [Validators.required,]],
+      SalaryAmount:    
+      // this.formBuilder.control({
+      //   value:response.workforce_salary,
+      //   readonly:this.type== 0?true: false,
+      // } , [Validators.required,]),
+      [
+        response.workforce_salary, [Validators.required,]],
       shift: [response.shifts.id, [Validators.required,]],
       numberOfWorkers: [response.no_of_workers, Validators.required],
       // shift: [null, Validators.required],
@@ -892,7 +897,10 @@ if (response.allowance.length>0) {
       formData.append('project_id', this.projectiD.toString());
       formData.append('user_id', this.userId.toString());
       formData.append('party_id', this.currentpartyId.toString());
-      formData.append('workforce_id', this.currentworkforceId.toString());
+      if ( this.type==2) {
+        formData.append('workforce_id', this.currentworkforceId.toString());
+      }
+    
       formData.append('date', this.todayDate.toString());
       formData.append('no_of_worker', this.UpdatelabourForm.get('numberOfWorkers')?.value.toString());
       formData.append('shift_id', this.UpdatelabourForm.get('shift')?.value.toString());

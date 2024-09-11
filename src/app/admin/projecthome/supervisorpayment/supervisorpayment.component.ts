@@ -452,7 +452,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
       formData.append("additional_charges", this.Supervisortypeform.get("additionalcharges")?.value.toString());
       formData.append("discount", this.Supervisortypeform.get("Discount")?.value.toString());
       formData.append("total_amount", this.calculateTotal().toString());
-      formData.append("category", 'other_expense');
+      formData.append("category", 'supervisor_payment');
    
       formData.append("payment_out", this.Supervisortypeform.get("Payment")?.value.toString());
       formData.append("payment_method", this.Supervisortypeform.get("cheque")?.value.toString());

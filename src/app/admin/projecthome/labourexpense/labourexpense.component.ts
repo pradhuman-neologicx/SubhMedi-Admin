@@ -454,7 +454,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         formData.append("additional_charges", this.Labourtypeform.get("additionalcharges")?.value.toString());
         formData.append("discount", this.Labourtypeform.get("Discount")?.value.toString());
         formData.append("total_amount", this.calculateTotal().toString());
-        formData.append("category", 'other_expense');
+        formData.append("category", 'labour_expense');
      
         formData.append("payment_out", this.Labourtypeform.get("Payment")?.value.toString());
         formData.append("payment_method", this.Labourtypeform.get("cheque")?.value.toString());
