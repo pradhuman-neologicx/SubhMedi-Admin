@@ -40,24 +40,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -79,24 +63,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -119,24 +87,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -171,24 +123,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -222,24 +158,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -271,24 +191,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -317,24 +221,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -370,26 +258,9 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
-    
     );
   }
 
@@ -404,24 +275,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -452,24 +307,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -492,26 +331,9 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
-    
     );
   }
 
@@ -529,24 +351,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -571,24 +377,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -608,24 +398,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -643,24 +417,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -680,24 +438,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -716,24 +458,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -761,24 +487,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -805,24 +515,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -851,24 +545,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -896,24 +574,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -939,26 +601,9 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
-    
     );
   }
 
@@ -982,24 +627,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1026,24 +655,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1069,26 +682,9 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
-    
     );
   }
 
@@ -1113,24 +709,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1163,24 +743,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1200,24 +764,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1234,24 +782,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1272,24 +804,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1312,24 +828,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1353,24 +853,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1398,24 +882,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1436,24 +904,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1533,24 +985,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1570,24 +1006,8 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
     
     );
@@ -1617,26 +1037,9 @@ export class EmployeeService {
     .pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-        if (
-          error.status === 422 &&
-          error.message &&
-          (
-            error.message.includes('The selected user id is invalid') ||
-            error.message.includes('Your account has been deactivated') ||
-            error.message.includes('Your token has been expired') ||
-            error.message.includes('Your token has been expired. Please login again.')
-          )
-        ) {
-          // Log the user out and navigate to sign-in page
-          this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-          this.router.navigate(['/sign_in']); // Navigate to home route
-          alert(error.message); // Show alert with error message
-        } else if (error && error.message) {
-          // Display error message
-          alert(error.message);
-        } 
+     this.erromessagefunction(error)
+
       })
-    
     );
   }
   
