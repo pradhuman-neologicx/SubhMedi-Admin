@@ -33,9 +33,9 @@ export class DirectAccessGuard implements CanActivate {
         console.log(this.router);
         var loginAs=this.jwtService.getLoginAs();
         if(loginAs!=undefined){
-          this.router.navigate(["/admin"]); //Navigate away to signIn page
+          this.router.navigate(["/sign_in"]); //Navigate away to signIn page
         }else{
-          this.router.navigate(["/home"]); //Navigate away to signIn page
+          this.router.navigate(["/dashboard"]); //Navigate away to signIn page
         }
        
         return false;

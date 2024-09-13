@@ -22,6 +22,7 @@ import { MaterialsComponent } from './admin/masters/materials/materials.componen
 
 import { WorkforceComponent } from './admin/masters/workforce/workforce.component';
 import { ViewpartiesComponent } from './admin/parties/viewparties/viewparties.component';
+import { AuthGuard } from './core/auth/auth-guard';
 
 const routes: Routes = [
 
@@ -45,14 +46,17 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'parties',
         component: PartiesComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'viewparties/:id',
         component: ViewpartiesComponent,
+        canActivate: [AuthGuard],
       },
 
     
@@ -67,12 +71,12 @@ const routes: Routes = [
               {
                 path: 'ongoing',
                 component: OongoingComponent,
-                // canActivate: [AuthGuard],
+                canActivate: [AuthGuard],
               },
               {
                 path: 'completed',
                 component: CcompletedComponent,
-                // canActivate: [AuthGuard],
+                canActivate: [AuthGuard],
               },
             
     
@@ -87,29 +91,29 @@ const routes: Routes = [
       {
         path: 'project_home/:id',
         component: ProjecthomeComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       
             children: [
               { path: '', redirectTo: 'project_parties', pathMatch: 'full' },
               {
                 path: 'project_parties',
                 component: HomepartiesComponent,
-                // canActivate: [AuthGuard],
+                canActivate: [AuthGuard],
               },
               {
                 path: 'project_transactions',
                 component: HometransactionsComponent,
-                // canActivate: [AuthGuard],
+                canActivate: [AuthGuard],
               },
               {
                 path: 'project_attendance',
                 component: HomeattendanceComponent,
-                // canActivate: [AuthGuard],
+                canActivate: [AuthGuard],
               },
               {
                 path: 'project_material',
                 component: HomematerialComponent,
-                // canActivate: [AuthGuard],
+                canActivate: [AuthGuard],
               },
             
     

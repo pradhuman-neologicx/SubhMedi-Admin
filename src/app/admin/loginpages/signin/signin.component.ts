@@ -58,6 +58,7 @@ export class SigninComponent {
       // Perform the action when both mobile number and OTP are provided.
       // For example, you can send the data to the server or navigate to the next page.
       console.log(
+        
         'Form submitted with mobile number:',
         this.Email,
         'and OTP:',
@@ -82,6 +83,7 @@ export class SigninComponent {
     private loginService: LoginService
   ) { }
   ngOnInit() {
+    this.jwtService.clearStorage();
     this.loginAS = this.jwtService.getLoginAs();
     this.signinform = this.formBuilder.group({
       Email: [
@@ -181,6 +183,7 @@ export class SigninComponent {
           this.jwtService.savePartyId(response.data.party_id);
           this.jwtService.saveName(response.data.name);
           this.jwtService.saveType(response.data.type);
+          this.jwtService.isLoggedIn(true);
           this.router.navigate(['/dashboard'], { queryParams: { success: 'true' } });
           this.erroroutput = false;
         } else {
