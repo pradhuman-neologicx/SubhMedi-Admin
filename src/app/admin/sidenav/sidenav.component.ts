@@ -14,14 +14,12 @@ interface MenuItem {
 
 @Component({
   selector: 'app-sidenav',
-  templateUrl:'./sidenav.component.html',
-  styleUrl: './sidenav.component.scss'
+  templateUrl: './sidenav.component.html',
+  styleUrl: './sidenav.component.scss',
 })
 export class SidenavComponent {
-
   menuItems: MenuItem[] = [];
   @Input() collapsed: boolean = false;
-
 
   // constructor(private route: ActivatedRoute, private jwtService: JwtService,
   //   private employeeService: EmployeeService, private router: Router, private dataService: DataService) {
@@ -40,26 +38,22 @@ export class SidenavComponent {
   //   return currentRoute.startsWith(route);
   // }
 
-
-  // expandedIndex: number | null = null; 
+  // expandedIndex: number | null = null;
 
   // isExpanded(index: number,): boolean {
   //   return this.expandedIndex === index;
   // }
   // toggleSubmenu(index: number): void {
   //   if (this.expandedIndex=== index) {
-  //     this.expandedIndex = null; 
+  //     this.expandedIndex = null;
   //   } else {
   //     this.expandedIndex = index;
   //   }
   // }
 
-
-
   ProfilePicSizeClass(): string {
     return this.collapsed ? 'profile-pic-small' : 'profile-pic-large';
   }
-
 
   ShortnameB(): string {
     return this.collapsed ? 'shortname-small-b' : 'shortname-big-b';
@@ -69,19 +63,14 @@ export class SidenavComponent {
     return this.collapsed ? 'shortname-small' : 'shortname-big';
   }
 
-
   sideNavCollapsed(): boolean {
     return this.collapsed;
   }
 
   loginAS!: number;
   paneluserId!: String;
-  roles:any
+  roles: any;
   ngOnInit(): void {
-
-
-
-
     this.menuItems = [
       {
         index: 1,
@@ -91,10 +80,43 @@ export class SidenavComponent {
       },
       {
         index: 2,
-        icon: 'home',
-        label: 'Project',
-        route: 'project',
+        icon: 'supervisor_account',
+        label: 'User Management',
+        route: 'user-management',
+        subItems: [
+          {
+            index: 1,
+            icon: 'group',
+            label: 'App Users',
+            route: 'user-management/app-users',
+          },
+
+          {
+            index: 2,
+            icon: 'group',
+            label: 'Silent Users',
+            route: 'user-management/silent-users',
+          },
+        ],
       },
+      {
+        index: 3,
+        icon: 'import_contacts',
+        label: 'Subscription management',
+        route: 'subscription',
+      },
+      {
+        index: 4,
+        icon: 'import_contacts',
+        label: 'Advertising management',
+        route: 'advertising',
+      },
+      // {
+      //   index: 2,
+      //   icon: 'home',
+      //   label: 'Project',
+      //   route: 'project',
+      // },
 
       // {
       //   index: 3,
@@ -102,14 +124,13 @@ export class SidenavComponent {
       //   label: 'Attendance',
       //   route: 'attendance',
       // },
-     
-      {
-        index: 3,
-        icon: 'analytics',
-        label: 'parties',
-        route: 'parties',
-      },
 
+      // {
+      //   index: 3,
+      //   icon: 'analytics',
+      //   label: 'parties',
+      //   route: 'parties',
+      // },
 
       // {
       //   index: 1,
@@ -124,45 +145,28 @@ export class SidenavComponent {
       //   route: 'materials',
       // },
 
-      {
-        index: 5,
-        icon: 'supervisor_account',
-        label: 'Masters',
-        route: 'masters',
-        subItems: [
-          {
-            index: 1,
-            icon: 'import_contacts',
-            label: 'Units',
-            route: 'masters/units',
-          },
+      // {
+      //   index: 5,
+      //   icon: 'supervisor_account',
+      //   label: 'Masters',
+      //   route: 'masters',
+      //   subItems: [
+      //     {
+      //       index: 1,
+      //       icon: 'import_contacts',
+      //       label: 'Units',
+      //       route: 'masters/units',
+      //     },
 
-          {
-            index: 2,
-            icon: 'group',
-            label: 'Materials',
-            route: 'masters/materials',
-          },
+      //     {
+      //       index: 2,
+      //       icon: 'group',
+      //       label: 'Materials',
+      //       route: 'masters/materials',
+      //     },
+      //   ],
+      // },
 
-          // {
-          //   index: 3,
-          //   icon: 'group',
-          //   label: 'Workforce',
-          //   route: 'masters/workforce',
-          // },
-
-          
-        
-
-         
-
-        
-        ],
-      },
-
-
-
-      
       // {
       //   index: 5,
       //   icon: 'analytics',
@@ -176,9 +180,6 @@ export class SidenavComponent {
       //   label: 'Old Mock Test',
       //   route: '/admin/oldmocktest',
       // },
-   
-
-      
 
       // {
       //   index: 2,
@@ -198,70 +199,59 @@ export class SidenavComponent {
       //       label: 'Student Onboard',
       //       route: '/admin/livetest/attempted',
       //     },
-          
+
       //   ]
       // }
-
-      
-      
-
     ];
-    
-
-
-
-
-
-
   }
 
-//   ngOnInit(): void {
-//     // this.roles = this.jwtService.getRoles();
-//     // this.paneluserId = this.jwtService.getpanelUserId();
-//     if (this.paneluserId != undefined) {
-//         this.GetProfiledetails();
-//     }
-//     // this.ImageUrl = this.jwtService.getImageUrl();
+  //   ngOnInit(): void {
+  //     // this.roles = this.jwtService.getRoles();
+  //     // this.paneluserId = this.jwtService.getpanelUserId();
+  //     if (this.paneluserId != undefined) {
+  //         this.GetProfiledetails();
+  //     }
+  //     // this.ImageUrl = this.jwtService.getImageUrl();
 
-//     this.menuItems = [];
+  //     this.menuItems = [];
 
-//     this.roles.forEach((role:any) => {
-//         switch (role.roleName) {
-//             case 'Admin':
-//                 this.addAdminMenuItems();
-//                 break;
-//             case 'Front Office':
-//                 this.addFrontOfficeMenuItems();
-//                 break;
-//             case 'Back Office':
-//                 this.addBackOfficeMenuItems();
-//                 break;
-//             case 'Floor Incharge':
-//                 this.addFloorInchargeMenuItems();
-//                 break;
-//             case 'Account Executive':
-//                 this.addAccountExecutiveMenuItems();
-//                 break;
-//             case 'CEO':
-//                 this.addCeoMenuItems();
-//                 break;
-//             case 'Teacher':
-//                 this.addTeacherMenuItems();
-//                 break;
-//             case 'Test Series Executive':
-//                 this.addTestSeriesExecutiveMenuItems();
-//                 break;
-//             case 'Student':
-//                 this.addStudentMenuItems();
-//                 break;
-//         }
-//     });
+  //     this.roles.forEach((role:any) => {
+  //         switch (role.roleName) {
+  //             case 'Admin':
+  //                 this.addAdminMenuItems();
+  //                 break;
+  //             case 'Front Office':
+  //                 this.addFrontOfficeMenuItems();
+  //                 break;
+  //             case 'Back Office':
+  //                 this.addBackOfficeMenuItems();
+  //                 break;
+  //             case 'Floor Incharge':
+  //                 this.addFloorInchargeMenuItems();
+  //                 break;
+  //             case 'Account Executive':
+  //                 this.addAccountExecutiveMenuItems();
+  //                 break;
+  //             case 'CEO':
+  //                 this.addCeoMenuItems();
+  //                 break;
+  //             case 'Teacher':
+  //                 this.addTeacherMenuItems();
+  //                 break;
+  //             case 'Test Series Executive':
+  //                 this.addTestSeriesExecutiveMenuItems();
+  //                 break;
+  //             case 'Student':
+  //                 this.addStudentMenuItems();
+  //                 break;
+  //         }
+  //     });
 
-//     // Remove duplicate menu items (if any)
-//     this.menuItems = this.removeDuplicateMenuItems(this.menuItems);
-// }
+  //     // Remove duplicate menu items (if any)
+  //     this.menuItems = this.removeDuplicateMenuItems(this.menuItems);
+  // }
 
-addAdminMenuItems() {
+  addAdminMenuItems() {
     this.menuItems.push(
       // {
       //   index: 1,
@@ -373,10 +363,6 @@ addAdminMenuItems() {
           //   label: 'Student Drop',
           //   route: 'session_management/student_drop',
           // },
-
-          
-
-          
         ],
       },
 
@@ -413,11 +399,7 @@ addAdminMenuItems() {
             label: 'Students',
             route: 'student_management/all_students',
           },
-
-          
-
-          
-        ]
+        ],
       },
 
       {
@@ -551,48 +533,13 @@ addAdminMenuItems() {
             label: 'Onboard History',
             route: 'reports/onboard_history',
           },
-
-          
         ],
-      },
+      }
     );
+  }
 
-}
-
-addFrontOfficeMenuItems() {
-  const studentManagementItem=
-      {
-        index: 2,
-        icon: 'supervisor_account',
-        label: 'Student Management',
-        route: 'student_management',
-        subItems: [
-      
-          {
-            index: 1,
-            icon: 'contact_support',
-            label: 'Inquiry Management',
-            route: 'student_management/inquiry_management',
-          },
-          {
-            index: 2,
-            icon: 'how_to_reg',
-            label: 'Student Onboard',
-            route: 'student_management/student_onboard',
-          },
-        ]
-      };
-          // Check if "Student Management" item already exists
-          const exists = this.menuItems.some((item: any) => item.label === studentManagementItem.label);
-
-          // If it doesn't exist, add it
-          if (!exists) {
-              this.menuItems.push(studentManagementItem);
-          }
-}
-addBackOfficeMenuItems(){
-  const studentManagementItem=
-    {
+  addFrontOfficeMenuItems() {
+    const studentManagementItem = {
       index: 2,
       icon: 'supervisor_account',
       label: 'Student Management',
@@ -610,94 +557,126 @@ addBackOfficeMenuItems(){
           label: 'Student Onboard',
           route: 'student_management/student_onboard',
         },
-        
-      ]
+      ],
     };
     // Check if "Student Management" item already exists
-    const exists = this.menuItems.some((item: any) => item.label === studentManagementItem.label);
+    const exists = this.menuItems.some(
+      (item: any) => item.label === studentManagementItem.label
+    );
 
     // If it doesn't exist, add it
     if (!exists) {
-        this.menuItems.push(studentManagementItem);
+      this.menuItems.push(studentManagementItem);
     }
-}
-addFloorInchargeMenuItems(){
- const studentManagementItem=
-    {
-      index: 2,
-      icon: 'how_to_reg',
-      label: 'Attendance Management',
-      route: 'attendance',
-      subItems: [
-     
-        {
-          index: 1,
-          icon: 'person',
-          label: 'Student',
-          route: 'attendance/student'
-        }
-      ]
-    };
- // Check if "Student Management" item already exists
- const exists = this.menuItems.some((item: any) => item.label === studentManagementItem.label);
-
- // If it doesn't exist, add it
- if (!exists) {
-     this.menuItems.push(studentManagementItem);
- }
-}
-addAccountExecutiveMenuItems() {
-  const studentManagementItem = {
+  }
+  addBackOfficeMenuItems() {
+    const studentManagementItem = {
       index: 2,
       icon: 'supervisor_account',
       label: 'Student Management',
       route: 'student_management',
       subItems: [
-          {
-              index: 1,
-              icon: 'how_to_reg',
-              label: 'Pending Fees Students',
-              route: 'student_management/student_pending',
-          },
-      ]
-  };
+        {
+          index: 1,
+          icon: 'contact_support',
+          label: 'Inquiry Management',
+          route: 'student_management/inquiry_management',
+        },
+        {
+          index: 2,
+          icon: 'how_to_reg',
+          label: 'Student Onboard',
+          route: 'student_management/student_onboard',
+        },
+      ],
+    };
+    // Check if "Student Management" item already exists
+    const exists = this.menuItems.some(
+      (item: any) => item.label === studentManagementItem.label
+    );
 
-  // Check if "Student Management" item already exists
-  const existingIndex = this.menuItems.findIndex((item: any) => item.label === studentManagementItem.label);
-
-  // If it doesn't exist, add it
-  if (existingIndex === -1) {
+    // If it doesn't exist, add it
+    if (!exists) {
       this.menuItems.push(studentManagementItem);
-  } else {
+    }
+  }
+  addFloorInchargeMenuItems() {
+    const studentManagementItem = {
+      index: 2,
+      icon: 'how_to_reg',
+      label: 'Attendance Management',
+      route: 'attendance',
+      subItems: [
+        {
+          index: 1,
+          icon: 'person',
+          label: 'Student',
+          route: 'attendance/student',
+        },
+      ],
+    };
+    // Check if "Student Management" item already exists
+    const exists = this.menuItems.some(
+      (item: any) => item.label === studentManagementItem.label
+    );
+
+    // If it doesn't exist, add it
+    if (!exists) {
+      this.menuItems.push(studentManagementItem);
+    }
+  }
+  addAccountExecutiveMenuItems() {
+    const studentManagementItem = {
+      index: 2,
+      icon: 'supervisor_account',
+      label: 'Student Management',
+      route: 'student_management',
+      subItems: [
+        {
+          index: 1,
+          icon: 'how_to_reg',
+          label: 'Pending Fees Students',
+          route: 'student_management/student_pending',
+        },
+      ],
+    };
+
+    // Check if "Student Management" item already exists
+    const existingIndex = this.menuItems.findIndex(
+      (item: any) => item.label === studentManagementItem.label
+    );
+
+    // If it doesn't exist, add it
+    if (existingIndex === -1) {
+      this.menuItems.push(studentManagementItem);
+    } else {
       // If it exists, merge the subItems
       const existingItem = this.menuItems[existingIndex];
-      existingItem.subItems = (existingItem.subItems || []).concat(studentManagementItem.subItems);
+      existingItem.subItems = (existingItem.subItems || []).concat(
+        studentManagementItem.subItems
+      );
       this.menuItems[existingIndex] = existingItem;
-  }
+    }
 
-  // Add other menu items as before
-  this.menuItems.push(
-      {
+    // Add other menu items as before
+    this.menuItems.push({
+      index: 1,
+      icon: 'payment',
+      label: 'Fees Management',
+      route: 'fees',
+      subItems: [
+        {
           index: 1,
           icon: 'payment',
-          label: 'Fees Management',
-          route: 'fees',
-          subItems: [
-              {
-                  index: 1,
-                  icon: 'payment',
-                  label: 'Fee Collection',
-                  route: 'fees/fees_management',
-              },
-          ]
-      }
-  );
-}
+          label: 'Fee Collection',
+          route: 'fees/fees_management',
+        },
+      ],
+    });
+  }
 
-
-addCeoMenuItems(){
-  this.menuItems.push(
-    {
+  addCeoMenuItems() {
+    this.menuItems.push({
       index: 2,
       icon: 'assignment',
       label: 'Reports',
@@ -721,21 +700,17 @@ addCeoMenuItems(){
           label: 'Test Series',
           route: 'reports/test-series',
         },
-        
-
-        
       ],
-    },
-);
-}
-addTeacherMenuItems(){
-  this.menuItems.push(
-    // Add the specific menu items for the front office role here
-);
-}
-addTestSeriesExecutiveMenuItems(){
-  this.menuItems.push(
-    {
+    });
+  }
+  addTeacherMenuItems() {
+    this.menuItems
+      .push
+      // Add the specific menu items for the front office role here
+      ();
+  }
+  addTestSeriesExecutiveMenuItems() {
+    this.menuItems.push({
       index: 1,
       icon: 'assessment',
       label: 'Test Series Management',
@@ -748,37 +723,35 @@ addTestSeriesExecutiveMenuItems(){
           route: 'test_Series/test_master',
         },
       ],
-    },
-);
-}
-addStudentMenuItems(){
-  this.menuItems.push(
-    // Add the specific menu items for the front office role here
-);
-}
-
-// Define similar methods for other roles
-
-removeDuplicateMenuItems(menuItems:any) {
-    let uniqueItems:any;
-    const seenRoutes = new Set();
-   if(menuItems!=undefined){
-    menuItems.forEach((item:any) => {
-      if(item!=undefined){
-        if(item.route!=undefined){
-        if (!seenRoutes.has(item.route)) {
-          uniqueItems.push(item);
-          seenRoutes.add(item.route);
-      }
-      }
-    }
-      
     });
-   }
-  
+  }
+  addStudentMenuItems() {
+    this.menuItems
+      .push
+      // Add the specific menu items for the front office role here
+      ();
+  }
+
+  // Define similar methods for other roles
+
+  removeDuplicateMenuItems(menuItems: any) {
+    let uniqueItems: any;
+    const seenRoutes = new Set();
+    if (menuItems != undefined) {
+      menuItems.forEach((item: any) => {
+        if (item != undefined) {
+          if (item.route != undefined) {
+            if (!seenRoutes.has(item.route)) {
+              uniqueItems.push(item);
+              seenRoutes.add(item.route);
+            }
+          }
+        }
+      });
+    }
 
     return uniqueItems;
-}
+  }
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;
@@ -789,15 +762,9 @@ removeDuplicateMenuItems(menuItems:any) {
   }
   ImageUrl!: String;
 
-
-
-
-
-
   name!: string;
   email!: string;
   // profilePhotoPath!:string;
-
 
   // GetProfiledetails() {
   //   const body = { "userId": this.paneluserId };
@@ -817,19 +784,14 @@ removeDuplicateMenuItems(menuItems:any) {
   getShortName(user: any) {
     if (this.name != undefined) {
       if (this.name != null) {
-        return this.name.charAt(0)
+        return this.name.charAt(0);
       } else {
-        return ''
+        return '';
       }
     } else {
-      return ''
+      return '';
     }
   }
-
-
-
-
-
 
   // old code of get profile details
 
@@ -847,17 +809,12 @@ removeDuplicateMenuItems(menuItems:any) {
   //     });
   // }
 
-
-
-
-
   isExpanded: boolean = false;
 
   // Function to toggle the expansion state
   toggleExpansion() {
     this.isExpanded = !this.isExpanded;
   }
-
 
   expandedSubmenu: string | null = null;
 
@@ -869,15 +826,10 @@ removeDuplicateMenuItems(menuItems:any) {
     if (this.expandedSubmenu === route) {
       this.expandedSubmenu = null;
     } else {
-      this.expandedSubmenu = route; 
+      this.expandedSubmenu = route;
     }
   }
   closeSubmenu(): void {
     this.expandedSubmenu = null; // Close submenu
   }
-
 }
-
-
-
-

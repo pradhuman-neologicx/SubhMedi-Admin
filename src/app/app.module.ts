@@ -53,9 +53,11 @@ import { MachineryexpenseComponent } from './admin/projecthome/machineryexpense/
 import { ElectricexpenseComponent } from './admin/projecthome/electricexpense/electricexpense.component';
 import { WaterexpenseComponent } from './admin/projecthome/waterexpense/waterexpense.component';
 import { SupervisorpaymentComponent } from './admin/projecthome/supervisorpayment/supervisorpayment.component';
-
-
-
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { SubscriptionManagementComponent } from './admin/subscription-management/subscription-management.component';
+import { AdvertisingManagementComponent } from './admin/advertising-management/advertising-management.component';
+import { AppUsersComponent } from './admin/user-management/app-users/app-users.component';
+import { SilentUsersComponent } from './admin/user-management/silent-users/silent-users.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,13 +98,12 @@ import { SupervisorpaymentComponent } from './admin/projecthome/supervisorpaymen
     ElectricexpenseComponent,
     WaterexpenseComponent,
     SupervisorpaymentComponent,
-
- 
-  
- 
-
-   
-    ],
+    UserManagementComponent,
+    SubscriptionManagementComponent,
+    AdvertisingManagementComponent,
+    AppUsersComponent,
+    SilentUsersComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -114,16 +115,15 @@ import { SupervisorpaymentComponent } from './admin/projecthome/supervisorpaymen
     NgSelectModule,
     MatMenuModule,
     NgxPaginationModule,
-   
   ],
   providers: [
     DataService,
     ApiService,
     JwtService,
-    DatePipe, 
+    DatePipe,
     EmployeeService,
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -23,9 +23,13 @@ import { MaterialsComponent } from './admin/masters/materials/materials.componen
 import { WorkforceComponent } from './admin/masters/workforce/workforce.component';
 import { ViewpartiesComponent } from './admin/parties/viewparties/viewparties.component';
 import { AuthGuard } from './core/auth/auth-guard';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { AppUsersComponent } from './admin/user-management/app-users/app-users.component';
+import { SilentUsersComponent } from './admin/user-management/silent-users/silent-users.component';
+import { SubscriptionManagementComponent } from './admin/subscription-management/subscription-management.component';
+import { AdvertisingManagementComponent } from './admin/advertising-management/advertising-management.component';
 
 const routes: Routes = [
-
   {
     path: '',
 
@@ -33,7 +37,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
       { path: 'sign_in', component: SigninComponent },
-      { path:'otp',component: OtpComponent},
+      { path: 'otp', component: OtpComponent },
       { path: 'forgot_password', component: ForgotPasswordComponent },
     ],
   },
@@ -46,106 +50,109 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
       },
       {
         path: 'parties',
         component: PartiesComponent,
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
       },
       {
         path: 'viewparties/:id',
         component: ViewpartiesComponent,
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
       },
-
-    
 
       {
         path: 'project',
         component: ProjecttComponent,
         // canActivate: [AuthGuard],
-      
-            children: [
-              { path: '', redirectTo: 'ongoing', pathMatch: 'full' },
-              {
-                path: 'ongoing',
-                component: OongoingComponent,
-                canActivate: [AuthGuard],
-              },
-              {
-                path: 'completed',
-                component: CcompletedComponent,
-                canActivate: [AuthGuard],
-              },
-            
-    
-            
-            ],
-          
-       
+
+        children: [
+          { path: '', redirectTo: 'ongoing', pathMatch: 'full' },
+          {
+            path: 'ongoing',
+            component: OongoingComponent,
+            // canActivate: [AuthGuard],
+          },
+          {
+            path: 'completed',
+            component: CcompletedComponent,
+            // canActivate: [AuthGuard],
+          },
+        ],
       },
-
-
 
       {
         path: 'project_home/:id',
         component: ProjecthomeComponent,
-        canActivate: [AuthGuard],
-      
-            children: [
-              { path: '', redirectTo: 'project_parties', pathMatch: 'full' },
-              {
-                path: 'project_parties',
-                component: HomepartiesComponent,
-                canActivate: [AuthGuard],
-              },
-              {
-                path: 'project_transactions',
-                component: HometransactionsComponent,
-                canActivate: [AuthGuard],
-              },
-              {
-                path: 'project_attendance',
-                component: HomeattendanceComponent,
-                canActivate: [AuthGuard],
-              },
-              {
-                path: 'project_material',
-                component: HomematerialComponent,
-                canActivate: [AuthGuard],
-              },
-            
-    
-            
-            ],
-          
-       
+        // canActivate: [AuthGuard],
+
+        children: [
+          { path: '', redirectTo: 'project_parties', pathMatch: 'full' },
+          {
+            path: 'project_parties',
+            component: HomepartiesComponent,
+            // canActivate: [AuthGuard],
+          },
+          {
+            path: 'project_transactions',
+            component: HometransactionsComponent,
+            // canActivate: [AuthGuard],
+          },
+          {
+            path: 'project_attendance',
+            component: HomeattendanceComponent,
+            // canActivate: [AuthGuard],
+          },
+          {
+            path: 'project_material',
+            component: HomematerialComponent,
+            // canActivate: [AuthGuard],
+          },
+        ],
       },
-
-
-
 
       {
         path: 'projectpartybalance/:id/:party_id',
         component: ProjectbalanceComponent,
         // canActivate: [AuthGuard],
-      
-        
-          
-       
       },
-
 
       {
         path: 'units',
         component: UnitsComponent,
-      
       },
       {
         path: 'materials',
         component: MaterialsComponent,
-       
+      },
+
+      {
+        path: 'user-management',
+
+        component: UserManagementComponent,
+
+        children: [
+          { path: '', redirectTo: 'app-users', pathMatch: 'full' },
+          {
+            path: 'app-users',
+            component: AppUsersComponent,
+          },
+
+          {
+            path: 'silent-users',
+            component: SilentUsersComponent,
+          },
+        ],
+      },
+      {
+        path: 'subscription',
+        component: SubscriptionManagementComponent,
+      },
+      {
+        path: 'advertising',
+        component: AdvertisingManagementComponent,
       },
 
       {
@@ -158,48 +165,30 @@ const routes: Routes = [
           {
             path: 'units',
             component: UnitsComponent,
-          
           },
 
           {
             path: 'materials',
             component: MaterialsComponent,
-           
           },
 
           {
             path: 'workforce',
             component: WorkforceComponent,
-           
           },
-
-        
-        
-
-         
-
         ],
       },
-
-
 
       // {
       //   path: 'student',
       //   component: StudentComponent,
       // },
-
     ],
   },
-
-
-
-
-
-
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

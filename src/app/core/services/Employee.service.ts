@@ -1,15 +1,14 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { ApiService } from "./api.service";
-import { JwtService } from "./jwt.service";
-import { BehaviorSubject, catchError, Observable, tap, throwError } from "rxjs";
-import { Router } from "@angular/router";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { ApiService } from './api.service';
+import { JwtService } from './jwt.service';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class EmployeeService {
-  
-  private approvalStageMessage = new BehaviorSubject("");
+  private approvalStageMessage = new BehaviorSubject('');
   currentApprovalStageMessage = this.approvalStageMessage.asObservable();
   GetBatches: any;
   updateBatches: any;
@@ -20,246 +19,204 @@ export class EmployeeService {
     private apiservice: ApiService,
     private jwtService: JwtService,
     private router: Router
-  ) { }
- 
+  ) {}
 
-
-
-   getOngoingProject(search:any): Observable<any> {
-    var user= this.jwtService.getpanelUserId();
+  getOngoingProject(search: any): Observable<any> {
+    var user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-    const body={
-      "user_id":user,
-       "search":search!=undefined?search:""
-  }
-    return this.apiservice.post(`ongoing-projects`,body,   headers )
-    .pipe(
-      tap((error: any) => {
-        console.log('Response received:', error);
-     this.erromessagefunction(error)
-
-      })
-    
-    );
-  }
-
- 
-  changestatus(unit_id: string, status: any): Observable<any> {
-    var user= this.jwtService.getpanelUserId();
-    const token = this.jwtService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
     const body = {
-      "unit_id": unit_id,
-      "status": status
+      user_id: user,
+      search: search != undefined ? search : '',
     };
-    return this.apiservice.post(`change-unit-status`,body,   headers )
-    .pipe(
+    return this.apiservice.post(`ongoing-projects`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
-
+  changestatus(unit_id: string, status: any): Observable<any> {
+    var user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    const body = {
+      unit_id: unit_id,
+      status: status,
+    };
+    return this.apiservice.post(`change-unit-status`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
 
   changesmaterialtatus(material_id: string, status: any): Observable<any> {
-    var user= this.jwtService.getpanelUserId();
+    var user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
     const body = {
-      "material_id": material_id,
-      "status": status
+      material_id: material_id,
+      status: status,
     };
-    return this.apiservice.post(`change-material-status`,body,   headers )
-    .pipe(
+    return this.apiservice.post(`change-material-status`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
-
-
-  getProjectPartiesBalance(projectId: any, partyId: any, date_range?: any, start_date?: string, end_date?: string): Observable<any> {
+  getProjectPartiesBalance(
+    projectId: any,
+    partyId: any,
+    date_range?: any,
+    start_date?: string,
+    end_date?: string
+  ): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Retrieving the user ID
     const token = this.jwtService.getToken(); // Retrieving the token
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
+
     // Creating the body object with optional fields
     const body = {
-      'user_id': user,
-      'project_id': projectId,
-      'party_id': partyId,
-      ...(date_range ? { 'date_range': date_range } : {}),
-      ...(start_date ? { 'start_date': start_date } : {}),
-      ...(end_date ? { 'end_date': end_date } : {}),
-   
-     
-     
+      user_id: user,
+      project_id: projectId,
+      party_id: partyId,
+      ...(date_range ? { date_range: date_range } : {}),
+      ...(start_date ? { start_date: start_date } : {}),
+      ...(end_date ? { end_date: end_date } : {}),
     };
     console.log('Request Body:', body);
-  
+
     // Sending the POST request with the constructed body and headers
-    return this.apiservice.post('project-party-detail', body, headers)
-    .pipe(
+    return this.apiservice.post('project-party-detail', body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-  
 
-  getPartiesproject( partyId: any,search:any, date_range?: any ): Observable<any> {
+  getPartiesproject(
+    partyId: any,
+    search: any,
+    date_range?: any
+  ): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Retrieving the user ID
     const token = this.jwtService.getToken(); // Retrieving the token
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
+
     // Creating the body object with optional fields
     const body = {
-      'user_id': user,
-    
-      'party_id': partyId,
-          "search":search!=undefined?search:"",
-      ...(date_range ? { 'date_range': date_range } : {}),
-      
-    
-     
-     
+      user_id: user,
+
+      party_id: partyId,
+      search: search != undefined ? search : '',
+      ...(date_range ? { date_range: date_range } : {}),
     };
     console.log('Request Body:', body);
-  
+
     // Sending the POST request with the constructed body and headers
-    return this.apiservice.post('party-projects', body, headers)
-    .pipe(
+    return this.apiservice.post('party-projects', body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
-
   }
-
-
-
-
-
-
-
 
   getProjectParties(project_id: any, search: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
+
     const body = {
-      'user_id': user,
-      'project_id': project_id,
-      "search":search!=undefined?search:""
+      user_id: user,
+      project_id: project_id,
+      search: search != undefined ? search : '',
     };
-  
-    return this.apiservice.post(`project-parties`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`project-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-  
 
-
-  gettransaction(project_id: any, transaction_type:any,search: any): Observable<any> {
+  gettransaction(
+    project_id: any,
+    transaction_type: any,
+    search: any
+  ): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
-    const body = {
-      'user_id': user,
-      'project_id': project_id,
-      "search":search!=undefined?search:"",
-      ...(transaction_type ? { 'transaction_type': transaction_type } : {}),
-      // 'transaction_type': transaction_type,
 
+    const body = {
+      user_id: user,
+      project_id: project_id,
+      search: search != undefined ? search : '',
+      ...(transaction_type ? { transaction_type: transaction_type } : {}),
+      // 'transaction_type': transaction_type,
     };
-  
-    return this.apiservice.post(`transactions-list`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`transactions-list`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-  
 
-
-
-
-
-
-
-
-  
-  getmaterialpurchaes(project_id: any, type:any,search: any): Observable<any> {
+  getmaterialpurchaes(
+    project_id: any,
+    type: any,
+    search: any
+  ): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
-    const body = {
-      'user_id': user,
-      'project_id': project_id,
-      "search":search!=undefined?search:"",
-      ...(type ? { 'type': type } : {}),
-      // 'transaction_type': transaction_type,
 
+    const body = {
+      user_id: user,
+      project_id: project_id,
+      search: search != undefined ? search : '',
+      ...(type ? { type: type } : {}),
+      // 'transaction_type': transaction_type,
     };
-  
-    return this.apiservice.post(`materials-list`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`materials-list`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
     );
   }
@@ -267,58 +224,51 @@ export class EmployeeService {
   GetState() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-    return this.apiservice.get("states",headers)
-    .pipe(
+    return this.apiservice.get('states', headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
-
-
-
-  getattendace(project_id: any,date:any, partytype:any,search:any): Observable<any> {
+  getattendace(
+    project_id: any,
+    date: any,
+    partytype: any,
+    search: any
+  ): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
+
     const body = {
-      'user_id': user,
-      'project_id': project_id,
-      "date":date,
-      "search":search!=undefined?search:"",
-      ...(partytype ? { 'party_type': partytype } : {}),
+      user_id: user,
+      project_id: project_id,
+      date: date,
+      search: search != undefined ? search : '',
+      ...(partytype ? { party_type: partytype } : {}),
       // 'transaction_type': transaction_type,
-  
     };
-  
-    return this.apiservice.post(`attendance`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`attendance`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
 
   getCity(state_id: any): Observable<any> {
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
 
@@ -327,44 +277,34 @@ export class EmployeeService {
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`cities`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`cities`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
     );
   }
-
-
-
 
   GetStaff() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-    return this.apiservice.get("staffs", headers)
-    .pipe(
+    return this.apiservice.get('staffs', headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
 
   getClientParties(): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
@@ -373,352 +313,278 @@ export class EmployeeService {
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
 
   createProject(requestbody: any): Observable<any> {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
+
     // Make the POST request to the server
-    return this.apiservice.post(`projects`, requestbody,  headers )
-    .pipe(
+    return this.apiservice.post(`projects`, requestbody, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-  
-
 
   GetunitsApi() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-    return this.apiservice.get("get-all-units",headers)
-    .pipe(
+    return this.apiservice.get('get-all-units', headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
-
-
-
 
   Getunitsformarray() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-    return this.apiservice.get("get-units",headers)
-    .pipe(
+    return this.apiservice.get('get-units', headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
-
-
 
   GetpartynamelistApi() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-    return this.apiservice.get("suppliers",headers)
-    .pipe(
+    return this.apiservice.get('suppliers', headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
-
-
 
   getsubcontractorParties(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
       type: 'sub-contractor',
       user_id: user,
-    project_id: project_id,
+      project_id: project_id,
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
-
 
   getotherexpenseParties(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
       type: '',
       user_id: user,
-    project_id: project_id,
+      project_id: project_id,
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
-
-  
-
 
   getlaboiurParties(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
       type: '',
       user_id: user,
-    project_id: project_id,
+      project_id: project_id,
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
-
-
 
   getwaterParties(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
       type: '',
       user_id: user,
-    project_id: project_id,
+      project_id: project_id,
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
 
   getmaintainanceParties(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
       type: '',
       user_id: user,
-    project_id: project_id,
+      project_id: project_id,
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
     );
   }
-
 
   getelectricParties(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
       type: '',
       user_id: user,
-    project_id: project_id,
+      project_id: project_id,
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
-
 
   getfuelParties(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
       type: '',
       user_id: user,
-    project_id: project_id,
+      project_id: project_id,
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
 
   getsupervisorParties(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
       type: 'staff',
       user_id: user,
-    project_id: project_id,
+      project_id: project_id,
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
     );
   }
-
-  
 
   getsalarytype(project_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
     const body = {
       type: 'salary',
       user_id: user,
-    project_id: project_id,
+      project_id: project_id,
     };
 
     // Make the POST request to the server
-    return this.apiservice.post(`list-parties`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`list-parties`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
-
-
-
 
   getTransactionParty(projectId: any): Observable<any> {
     const userId = this.jwtService.getpanelUserId(); // Get the user ID
@@ -739,209 +605,161 @@ export class EmployeeService {
     console.log('Constructed URL:', url);
 
     // Make the GET request using HttpClient
-    return this.apiservice.get(url,  headers )
-    .pipe(
+    return this.apiservice.get(url, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
-
-
-
 
   GetmattlistApi() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-    return this.apiservice.get("get-materials",headers)
-    .pipe(
+    return this.apiservice.get('get-materials', headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
 
   GetmaterialApi() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-    return this.apiservice.get("get-all-materials",headers)
-    .pipe(
+    return this.apiservice.get('get-all-materials', headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-
 
   createunits(body: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
-    
-  
-    return this.apiservice.post(`add-unit`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`add-unit`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
-
-  updateunits(body:any,): Observable<any> {
+  updateunits(body: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
+
     // const body = {
     //   unit_id: unit_id,
     // };
-  
-    return this.apiservice.post(`update-unit`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`update-unit`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
-
-
-  updatematerials(body:any,): Observable<any> {
+  updatematerials(body: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
+
     // const body = {
     //   unit_id: unit_id,
     // };
-  
-    return this.apiservice.post(`update-material`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`update-material`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
-
-
-
-  getbalance(project_id: any, party_id:any): Observable<any> {
+  getbalance(project_id: any, party_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
+
     const body = {
-      'user_id': user,
-      'project_id': project_id,
-      'party_id': party_id,
-   
+      user_id: user,
+      project_id: project_id,
+      party_id: party_id,
     };
-  
-    return this.apiservice.post(`salary-amount`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`salary-amount`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-  
-
 
   creatematerial(body: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
- 
-  
-    return this.apiservice.post(`add-material`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`add-material`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
-
-
-  purchasematerials(body:any): Observable<any> {
+  purchasematerials(body: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      
+      Authorization: `Bearer ${token}`,
     });
 
-    
-
     // Make the POST request to the server
-    return this.apiservice.post(`purchase-materials`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`purchase-materials`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
-
-
-  erromessagefunction(error: any)  {
+  erromessagefunction(error: any) {
     console.log('Response received:', error);
-    var response = error  
-   var errorMessage 
-    if (typeof response.message === 'object' && response.message !== null && !Array.isArray(response.message)) {
+    var response = error;
+    var errorMessage;
+    if (
+      typeof response.message === 'object' &&
+      response.message !== null &&
+      !Array.isArray(response.message)
+    ) {
       errorMessage = JSON.stringify(response.message);
     } else {
       errorMessage = response.message;
@@ -950,12 +768,12 @@ export class EmployeeService {
     if (
       error.status === 422 &&
       error.message &&
-      (
-        errorMessage.includes('The selected user id is invalid') ||
+      (errorMessage.includes('The selected user id is invalid') ||
         errorMessage.includes('Your account has been deactivated') ||
         errorMessage.includes('Your token has been expired') ||
-        errorMessage.includes('Your token has been expired. Please login again.')
-      )
+        errorMessage.includes(
+          'Your token has been expired. Please login again.'
+        ))
     ) {
       // Log the user out and navigate to sign-in page
       this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
@@ -964,106 +782,61 @@ export class EmployeeService {
     } else if (error && error.message) {
       // Display error message
       alert(errorMessage);
-    } 
+    }
   }
 
-
-
-
-  addsubcotractorpaymentout(body:any): Observable<any> {
+  addsubcotractorpaymentout(body: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      
+      Authorization: `Bearer ${token}`,
     });
 
-    
-
     // Make the POST request to the server
-    return this.apiservice.post(`payment-transaction-out`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`payment-transaction-out`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
-  addsubcotractorpaymenin(body:any): Observable<any> {
+  addsubcotractorpaymenin(body: any): Observable<any> {
     const user = this.jwtService.getpanelUserId(); // Replace with your actual method to get the user ID
     const token = this.jwtService.getToken(); // Get the token for authorization
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      
+      Authorization: `Bearer ${token}`,
     });
 
-    
-
     // Make the POST request to the server
-    return this.apiservice.post(`payment-transaction-in`, body,  headers )
-    .pipe(
+    return this.apiservice.post(`payment-transaction-in`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
-
-
-
-
-
-  getpartybills(id: any, type:any,party_id:any): Observable<any> {
+  getpartybills(id: any, type: any, party_id: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-  
-    const body = {
-      'id': id,
-      'type': type,
-      'party_id': party_id,
 
+    const body = {
+      id: id,
+      type: type,
+      party_id: party_id,
     };
-  
-    return this.apiservice.post(`party-bills`, body,  headers )
-    .pipe(
+
+    return this.apiservice.post(`party-bills`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
     );
   }
-  
-
-
-
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Method to update user status
-
- 
-

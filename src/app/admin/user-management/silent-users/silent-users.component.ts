@@ -8,14 +8,15 @@ import {
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { material, units } from 'src/app/core/model-class/employee';
+import { units } from 'src/app/core/model-class/employee';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
-  selector: 'app-materials',
-  templateUrl: './materials.component.html',
-  styleUrl: './materials.component.scss',
+  selector: 'app-silent-users',
+  templateUrl: './silent-users.component.html',
+  styleUrl: './silent-users.component.scss',
+
   animations: [
     trigger('succesfullyMesaage', [
       state(
@@ -68,7 +69,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     ]),
   ],
 })
-export class MaterialsComponent {
+export class SilentUsersComponent {
   FilterForm!: FormGroup;
 
   showreset: any = false;
@@ -79,7 +80,7 @@ export class MaterialsComponent {
   page: number = 1;
   searchbarform!: FormGroup;
   CreateliveexamForm!: FormGroup;
-  materialcrealteform!: FormGroup;
+  unitsformscreate!: FormGroup;
 
   orderviewform!: FormGroup;
 
@@ -114,14 +115,22 @@ export class MaterialsComponent {
     this.searchbarform = this.formBuilder.group({
       searchbar: ['', [Validators.required]],
     });
-
-    this.materialcrealteform = this.formBuilder.group({
-      materialname: ['', [Validators.required]],
-      Description: ['', [Validators.required]],
-      selectUnits: ['', [Validators.required]],
+    this.unitsformscreate = this.formBuilder.group({
+      projectname: ['', [Validators.required]],
+      Address: [''],
+      State: [''],
+      City: [''],
+      SelectClient: ['', [Validators.required]],
+      Selectstaff: [''],
+      description: [''],
+      StartDate: [''],
+      endDate: [''],
     });
 
-    // this.Getmaterialfun();
+    this.unitsformscreate = this.formBuilder.group({
+      unitsname: ['', [Validators.required]],
+    });
+
     // this.Getunitsfun();
   }
 
@@ -131,19 +140,48 @@ export class MaterialsComponent {
   submitted: any;
   errorMessage: any;
 
-  materialopen: boolean = false;
-  materialupdateopen: boolean = false;
+  Creatunitopen: boolean = false;
+  updateunitopen: boolean = false;
   OpenCreateModal() {
-    this.materialopen = true;
+    this.Creatunitopen = true;
   }
   closeModal() {
-    this.materialopen = false;
-    this.materialupdateopen = false;
+    this.Creatunitopen = false;
+    this.updateunitopen = false;
   }
-
+  userstable = [
+    {
+      id: 1,
+      name: 'John Doe',
+      email: 'john@example.com',
+      number: '9876543210',
+      is_active: true,
+    },
+    {
+      id: 2,
+      name: 'Alice Smith',
+      email: 'alice@example.com',
+      number: '8765432109',
+      is_active: false,
+    },
+    {
+      id: 3,
+      name: 'Robert Johnson',
+      email: 'robert@example.com',
+      number: '7654321098',
+      is_active: true,
+    },
+    {
+      id: 4,
+      name: 'Emily Brown',
+      email: 'emily@example.com',
+      number: '6543210987',
+      is_active: false,
+    },
+  ];
   unitstable: any;
-  // Getmaterialfun() {
-  //   this.employeeService.GetmaterialApi().subscribe((response: any) => {
+  // Getunitsfun() {
+  //   this.employeeService.GetunitsApi().subscribe((response: any) => {
   //     if (response.status === 200) {
   //       this.unitstable = response.data;
   //       // this.fillformdate(response.data);
@@ -151,17 +189,17 @@ export class MaterialsComponent {
   //   });
   // }
 
-  async Status(material_id: string, is_active: any) {
+  async Status(unit_id: string, is_active: any) {
     const actionMessage = is_active ? 'activated' : 'deactivated';
 
     this.employeeService
-      .changesmaterialtatus(material_id, is_active)
+      .changestatus(unit_id, is_active)
 
       .subscribe((response: any) => {
         console.log(response);
         if (response.status === 200) {
           // this.successName = actionMessage;
-          // this.Getmaterialfun();
+          // this.Getunitsfun();
           setTimeout(() => {
             // this.openSecondsuccess = true;
             setTimeout(() => {
@@ -172,37 +210,21 @@ export class MaterialsComponent {
       });
   }
 
-  unitsids: any;
-  // Getunitsfun() {
-  //   this.employeeService.GetunitsApi().subscribe((response: any) => {
-  //     if (response.status === 200) {
-  //       this.unitsids = response.data.filter(
-  //         (item: any) => item.is_active == 1
-  //       );
-  //     }
-  //   });
-  // }
+  createunits() {
+    console.log(this.unitsformscreate.get('unitsname')?.value);
 
-  creatematerial() {
-    console.log(this.materialcrealteform.get('Description')?.value);
-    console.log(this.materialcrealteform.get('materialname')?.value);
+    if (this.unitsformscreate.valid) {
+      this.units.name = this.unitsformscreate.get('unitsname')?.value;
 
-    if (this.materialcrealteform.valid) {
-      this.material.name = this.materialcrealteform.get('materialname')?.value;
-      this.material.description =
-        this.materialcrealteform.get('Description')?.value;
-      this.material.unit_id =
-        this.materialcrealteform.get('selectUnits')?.value;
-
-      const body = JSON.stringify(this.material);
+      const body = JSON.stringify(this.units);
       console.log(body);
-      this.employeeService.creatematerial(body).subscribe((response: any) => {
+      this.employeeService.createunits(body).subscribe((response: any) => {
         console.log(response);
         if (response.status === 200) {
           this.closeModal();
           // this.successName = 'Batch';
           // this.ngOnInit();
-          // this.Getmaterialfun();
+          // this.Getunitsfun();
           // this.dataService.changeMessage({ message: "units Created" });
           // this.router.navigate(['/master/units']);
           setTimeout(() => {
@@ -218,25 +240,22 @@ export class MaterialsComponent {
     }
   }
 
-  materialupdate() {
-    console.log(this.materialupdateform.get('unitsname')?.value);
+  updateunits() {
+    console.log(this.unitsformupdate.get('unitsname')?.value);
 
-    if (this.materialupdateform.valid) {
-      this.material.name = this.materialupdateform.get('materialname')?.value;
-      this.material.description =
-        this.materialupdateform.get('Description')?.value;
-      this.material.unit_id = this.materialupdateform.get('selectUnits')?.value;
-      this.material.material_id = this.unit_id;
+    if (this.unitsformupdate.valid) {
+      this.units.name = this.unitsformupdate.get('unitsname')?.value;
+      this.units.unit_id = this.unit_id;
 
-      const body = JSON.stringify(this.material);
+      const body = JSON.stringify(this.units);
       console.log(body);
-      this.employeeService.updatematerials(body).subscribe((response: any) => {
+      this.employeeService.updateunits(body).subscribe((response: any) => {
         console.log(response);
         if (response.status === 200) {
           this.closeModal();
           // this.successName = 'Batch';
           // this.ngOnInit();
-          // this.Getmaterialfun();
+          // this.Getunitsfun();
           // this.dataService.changeMessage({ message: "units Created" });
           // this.router.navigate(['/master/units']);
           setTimeout(() => {
@@ -253,11 +272,10 @@ export class MaterialsComponent {
   }
 
   units: units = new units();
-  material: material = new material();
 
   unit_id: any;
 
-  materialupdateform!: FormGroup;
+  unitsformupdate!: FormGroup;
   OpenEditModal(units: any): void {
     this.unit_id = units.id;
 
@@ -267,11 +285,9 @@ export class MaterialsComponent {
         return;
       }
 
-      this.materialupdateopen = true;
-      this.materialupdateform = this.formBuilder.group({
-        selectUnits: [units.unit.id, [Validators.required]],
-        materialname: [units.name, [Validators.required]],
-        Description: [units.description, [Validators.required]],
+      this.updateunitopen = true;
+      this.unitsformupdate = this.formBuilder.group({
+        unitsname: [units.name, [Validators.required]],
       });
     } catch (error) {
       console.error('An error occurred while opening edit modal:', error);
@@ -487,45 +503,4 @@ export class MaterialsComponent {
   //     );
   // }
   downloadcourseFile() {}
-
-  // BulkuploadCourseFun() {
-  //   if (this.Bulkuploadform.valid) {
-  //     const formData: FormData = new FormData();
-  //     if (this.selectedfile != undefined) {
-  //       const file = this.selectedfile;
-  //       formData.append("xlsx", file, file.name);
-  //       console.log(formData);
-
-  //       this.employeeService.BulkuploadCourseapi(formData).subscribe((response: any) => {
-  //         this.errorMessage = response.errorMessage;
-  //         if (response.statusCode === 200 || response.statusCode === 201) {
-  //           console.log(response);
-  //           this.closeModal();
-  //           this.successName = 'Upload Bulk';
-  //           this.openSecondsuccess = true;
-  //           this.removeFile();
-  //           this.ngOnInit();
-  //           this.getNewCourses();
-  //           setTimeout(() => {
-  //             this.openSecondsuccess = true;
-  //             setTimeout(() => {
-  //               this.openSecondsuccess = false;
-  //             }, 1800);
-  //           }, 200);
-
-  //         } else {
-  //           this.submitted = false;
-  //         }
-  //       });
-  //     }
-  //     else {
-  //       console.log("Please Select file");
-  //       // Handle the case where no file is selected or form is invalid
-  //     }
-
-  //   }
-  //   else {
-  //     this.Bulkuploadform.markAllAsTouched();
-  //   }
-  // }
 }
