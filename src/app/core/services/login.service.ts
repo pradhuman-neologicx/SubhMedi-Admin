@@ -60,7 +60,7 @@ export class LoginService {
 
 
 
-    return this.apiservice.postwithoutbody(`user/logout`,headers)
+    return this.apiservice.post(`user/logout`,{},headers)
       .pipe(
         tap((error: any) => {
           console.log('Response received:', error);

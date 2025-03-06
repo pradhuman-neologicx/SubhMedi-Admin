@@ -105,9 +105,9 @@ export class ApiService {
         catchError(this.handleError)
       );
   }
-  post(path: string, body: any, header: any): Observable<any> {
+  post(path: string, body: any, headers: any): Observable<any> {
     return this.http
-      .post(`${environment.api_url}${path}`, body, { headers: header })
+      .post(`${environment.api_url}${path}`, body, { headers })
       .pipe(
         catchError(this.formatErrors),
         retry(1),
