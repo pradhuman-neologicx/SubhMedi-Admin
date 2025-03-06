@@ -127,7 +127,7 @@ export class AppUsersComponent {
     });
 
     this.unitsformscreate = this.formBuilder.group({
-      unitsname: ['', [Validators.required]],
+      usernname: ['', [Validators.required]],
     });
 
     // this.Getunitsfun();
@@ -139,28 +139,28 @@ export class AppUsersComponent {
       name: 'John Doe',
       email: 'john@example.com',
       number: '9876543210',
-      is_active: true,
+      status: 1,
     },
     {
       id: 2,
       name: 'Alice Smith',
       email: 'alice@example.com',
       number: '8765432109',
-      is_active: false,
+      status: 1,
     },
     {
       id: 3,
       name: 'Robert Johnson',
       email: 'robert@example.com',
       number: '7654321098',
-      is_active: true,
+      status: 0,
     },
     {
       id: 4,
       name: 'Emily Brown',
       email: 'emily@example.com',
       number: '6543210987',
-      is_active: false,
+      is_active: 0,
     },
   ];
   idString: any;
@@ -170,15 +170,19 @@ export class AppUsersComponent {
   errorMessage: any;
 
   Creatunitopen: boolean = false;
-  updateunitopen: boolean = false;
+  updateusersopen: boolean = false;
   OpenCreateModal() {
     this.Creatunitopen = true;
   }
   closeModal() {
     this.Creatunitopen = false;
-    this.updateunitopen = false;
+    this.updateusersopen = false;
   }
-
+  navigateToViewUsers(user: any) {
+    this.router.navigate(['/user-management/view-users'], {
+      state: { userData: user },
+    });
+  }
   // unitstable: any;
   // // Getunitsfun() {
   // //   this.employeeService.GetunitsApi().subscribe((response: any) => {
@@ -211,10 +215,10 @@ export class AppUsersComponent {
   }
 
   createunits() {
-    console.log(this.unitsformscreate.get('unitsname')?.value);
+    console.log(this.unitsformscreate.get('usernname')?.value);
 
     if (this.unitsformscreate.valid) {
-      this.units.name = this.unitsformscreate.get('unitsname')?.value;
+      this.units.name = this.unitsformscreate.get('usernname')?.value;
 
       const body = JSON.stringify(this.units);
       console.log(body);
@@ -241,10 +245,12 @@ export class AppUsersComponent {
   }
 
   updateunits() {
-    console.log(this.unitsformupdate.get('unitsname')?.value);
+    console.log(this.usersformupdate.get('usernname')?.value);
 
-    if (this.unitsformupdate.valid) {
-      this.units.name = this.unitsformupdate.get('unitsname')?.value;
+    if (this.usersformupdate.valid) {
+      this.units.name = this.usersformupdate.get('usernname')?.value;
+      this.units.email = this.usersformupdate.get('usernemail')?.value;
+      this.units.number = this.usersformupdate.get('usernnumber')?.value;
       this.units.unit_id = this.unit_id;
 
       const body = JSON.stringify(this.units);
@@ -275,7 +281,7 @@ export class AppUsersComponent {
 
   unit_id: any;
 
-  unitsformupdate!: FormGroup;
+  usersformupdate!: FormGroup;
   OpenEditModal(units: any): void {
     this.unit_id = units.id;
 
@@ -285,9 +291,11 @@ export class AppUsersComponent {
         return;
       }
 
-      this.updateunitopen = true;
-      this.unitsformupdate = this.formBuilder.group({
-        unitsname: [units.name, [Validators.required]],
+      this.updateusersopen = true;
+      this.usersformupdate = this.formBuilder.group({
+        usernname: [units.name, [Validators.required]],
+        usernemail: [units.email, [Validators.required]],
+        usernnumber: [units.number, [Validators.required]],
       });
     } catch (error) {
       console.error('An error occurred while opening edit modal:', error);

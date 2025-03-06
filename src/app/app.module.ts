@@ -58,6 +58,9 @@ import { SubscriptionManagementComponent } from './admin/subscription-management
 import { AdvertisingManagementComponent } from './admin/advertising-management/advertising-management.component';
 import { AppUsersComponent } from './admin/user-management/app-users/app-users.component';
 import { SilentUsersComponent } from './admin/user-management/silent-users/silent-users.component';
+import { ViewAppUsersComponent } from './admin/user-management/app-users/view-app-users/view-app-users.component';
+import { ViewSilentUsersComponent } from './admin/user-management/silent-users/view-silent-users/view-silent-users.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -103,6 +106,8 @@ import { SilentUsersComponent } from './admin/user-management/silent-users/silen
     AdvertisingManagementComponent,
     AppUsersComponent,
     SilentUsersComponent,
+    ViewAppUsersComponent,
+    ViewSilentUsersComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,75 @@
 
 <div class="container">
   <div class="card border-0 mb-4 py-0 tabel-card">
+    <div class="d-md-flex justify-content-between align-items-center my-3">
+      <div class="d-flex align-items-center mb-md-0 mb-2">
+        <span class="me-1 show-entery-text">Show</span>
+        <select
+          class="form-control form-select show-entries-select"
+          (change)="onTableSizeChange($event)"
+        >
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+        <span class="ms-1 show-entery-text">entries</span>
+      </div>
+
+      <div class="d-flex align-items-center">
+        <!-- <form [formGroup]="searchbarform" class="d-flex align-items-center">
+        <span class="me-1">Search:</span>
+        <div
+          [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+        >
+          <input
+            type="text"
+            class="form-control search-user position-relative"
+            type="text"
+            autocomplete="off"
+            formControlName="searchbar"
+            [ngClass]="{
+              'is-invalid':
+                searchbarform.controls['searchbar'].errors &&
+                (searchbarform.controls['searchbar'].touched ||
+                  searchbarform.controls['searchbar'].dirty)
+            }"
+          />
+          <div
+            class="text-danger error-message d-block"
+            *ngIf="
+              searchbarform.controls['searchbar'].errors &&
+              (searchbarform.controls['searchbar'].touched ||
+                searchbarform.controls['searchbar'].dirty)
+            "
+          >
+            <p
+              class="fw-light text-danger search-required"
+              *ngIf="searchbarform.controls['searchbar'].errors['required']"
+            >
+              This is required
+            </p>
+          </div>
+        </div>
+
+        <button class="btn btn-primary search-btn ms-2" (click)="searchfun()">
+          <span
+            ><i class="fa-solid fa-magnifying-glass form-control-feedback"></i
+          ></span>
+        </button>
+        <button
+          class="btn btn-primary search-btn ms-2"
+          (click)="resetsearchbar()"
+          type="submit"
+          *ngIf="showreset == true"
+        >
+          <span
+            ><i class="fa-solid fa-rotate-right form-control-feedback"></i
+          ></span>
+        </button>
+      </form> -->
+      </div>
+    </div>
+
     <table class="table table-hover">
       <thead class="table-header-trailer">
         <tr>
@@ -29,14 +98,13 @@
             <p class="table-heading table-new-heading">Number</p>
           </th>
 
-          <!-- 
-                    <th>
-                        <p class="table-heading table-new-heading">Status</p>
-                    </th> -->
+          <th>
+            <p class="table-heading table-new-heading">Status</p>
+          </th>
 
-          <!-- <th>
+          <th>
             <p class="table-heading table-new-heading">Action</p>
-          </th> -->
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -58,44 +126,52 @@
             </p>
           </td>
 
-          <!-- <td>
-                        <p class="table-detail text-capitalize table-detail-new">
-                            {{ units.is_active }}
-                        </p>
-                    </td> -->
+          <td>
+            <p
+              [ngClass]="{
+                'active-status': users.status == 1 ? 1 : 0,
+                'deactive-status': users.status == 1 ? 0 : 1
+              }"
+            >
+              {{ users.status == 1 ? "active" : "deactive" }}
+            </p>
+          </td>
 
-          <!-- <td>
+          <td>
             <p>
               <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
 
               <mat-menu #menu="matMenu">
-               
-                <button mat-menu-item (click)="OpenEditModal(users)">
+                <button
+                  mat-menu-item
+                  *ngIf="users.status == 1"
+                  (click)="OpenEditModal(users)"
+                >
                   Edit Details
+                </button>
+                <button mat-menu-item (click)="navigateToViewUsers(users)">
+                  View Details
                 </button>
                 <button
                   mat-menu-item
                   *ngIf="users.is_active; else inactiveButton"
-                  (click)="Status(users.id, 0)"
                 >
                   Deactivate
                 </button>
                 <ng-template #inactiveButton>
-                  <button mat-menu-item (click)="Status(users.id, 1)">
-                    Activate
-                  </button>
+                  <button mat-menu-item>Activate</button>
                 </ng-template>
               </mat-menu>
             </p>
-          </td> -->
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-
+<!-- 
 <div
   *ngIf="Creatunitopen"
   class="your-animation-class modal-container"
@@ -123,32 +199,32 @@
           <div class="modal-content-width card-body mb-0">
             <div class="row">
               <div class="col-lg-12 col-md-12 mb-3">
-                <label for="unitsname" class="form-label form-lable-custom"
+                <label for="usernname" class="form-label form-lable-custom"
                   >Units Name</label
                 >
                 <input
                   type="text"
                   class="form-control form-input-custom"
-                  formControlName="unitsname"
+                  formControlName="usernname"
                   [ngClass]="{
                     'is-invalid':
-                      unitsformscreate.controls['unitsname'].errors &&
-                      (unitsformscreate.controls['unitsname'].touched ||
-                        unitsformscreate.controls['unitsname'].dirty)
+                      unitsformscreate.controls['usernname'].errors &&
+                      (unitsformscreate.controls['usernname'].touched ||
+                        unitsformscreate.controls['usernname'].dirty)
                   }"
                 />
                 <div
                   class="text-danger error-message"
                   *ngIf="
-                    unitsformscreate.controls['unitsname'].errors &&
-                    (unitsformscreate.controls['unitsname'].touched ||
-                      unitsformscreate.controls['unitsname'].dirty)
+                    unitsformscreate.controls['usernname'].errors &&
+                    (unitsformscreate.controls['usernname'].touched ||
+                      unitsformscreate.controls['usernname'].dirty)
                   "
                 >
                   <p
                     class="fw-light text-danger"
                     *ngIf="
-                      unitsformscreate.controls['unitsname'].errors['required']
+                      unitsformscreate.controls['usernname'].errors['required']
                     "
                   >
                     Name is Requried
@@ -180,10 +256,10 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
 <div
-  *ngIf="updateunitopen"
+  *ngIf="updateusersopen"
   class="your-animation-class modal-container"
   aria-labelledby="modal-title"
   role="dialog"
@@ -191,12 +267,12 @@
 >
   <div class="modal-content modal-content-50" [@fadeIn]>
     <div>
-      <form [formGroup]="unitsformupdate">
+      <form [formGroup]="usersformupdate">
         <div class="card">
           <div
             class="card-header bg-white d-flex justify-content-between algin-items-center"
           >
-            <h5 class="modal-title pt-1">Update Units</h5>
+            <h5 class="modal-title pt-1">Update App Users</h5>
             <button
               class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
               type="button"
@@ -209,35 +285,101 @@
           <div class="modal-content-width card-body mb-0">
             <div class="row">
               <div class="col-lg-12 col-md-12 mb-3">
-                <label for="unitsname" class="form-label form-lable-custom"
-                  >Units Name</label
+                <label for="usernname" class="form-label form-lable-custom"
+                  >User Name</label
                 >
                 <input
                   type="text"
                   class="form-control form-input-custom"
-                  formControlName="unitsname"
+                  formControlName="usernname"
                   [ngClass]="{
                     'is-invalid':
-                      unitsformupdate.controls['unitsname'].errors &&
-                      (unitsformupdate.controls['unitsname'].touched ||
-                        unitsformupdate.controls['unitsname'].dirty)
+                      usersformupdate.controls['usernname'].errors &&
+                      (usersformupdate.controls['usernname'].touched ||
+                        usersformupdate.controls['usernname'].dirty)
                   }"
                 />
                 <div
                   class="text-danger error-message"
                   *ngIf="
-                    unitsformupdate.controls['unitsname'].errors &&
-                    (unitsformupdate.controls['unitsname'].touched ||
-                      unitsformupdate.controls['unitsname'].dirty)
+                    usersformupdate.controls['usernname'].errors &&
+                    (usersformupdate.controls['usernname'].touched ||
+                      usersformupdate.controls['usernname'].dirty)
                   "
                 >
                   <p
                     class="fw-light text-danger"
                     *ngIf="
-                      unitsformupdate.controls['unitsname'].errors['required']
+                      usersformupdate.controls['usernname'].errors['required']
                     "
                   >
                     Name is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 mb-3">
+                <label for="usernemail" class="form-label form-lable-custom"
+                  >User Email</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-input-custom"
+                  formControlName="usernemail"
+                  [ngClass]="{
+                    'is-invalid':
+                      usersformupdate.controls['usernemail'].errors &&
+                      (usersformupdate.controls['usernemail'].touched ||
+                        usersformupdate.controls['usernemail'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    usersformupdate.controls['usernemail'].errors &&
+                    (usersformupdate.controls['usernemail'].touched ||
+                      usersformupdate.controls['usernemail'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      usersformupdate.controls['usernemail'].errors['required']
+                    "
+                  >
+                    Email is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 mb-3">
+                <label for="usernnumber" class="form-label form-lable-custom"
+                  >User Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-input-custom"
+                  formControlName="usernnumber"
+                  [ngClass]="{
+                    'is-invalid':
+                      usersformupdate.controls['usernnumber'].errors &&
+                      (usersformupdate.controls['usernnumber'].touched ||
+                        usersformupdate.controls['usernnumber'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    usersformupdate.controls['usernnumber'].errors &&
+                    (usersformupdate.controls['usernnumber'].touched ||
+                      usersformupdate.controls['usernnumber'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      usersformupdate.controls['usernnumber'].errors['required']
+                    "
+                  >
+                    Number is Requried
                   </p>
                 </div>
               </div>

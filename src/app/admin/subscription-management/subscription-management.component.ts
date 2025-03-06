@@ -156,7 +156,7 @@ export class SubscriptionManagementComponent {
       stores: 5,
       plans: 1000,
       staff: 10,
-      is_active: true,
+      status: 1,
     },
     {
       id: 2,
@@ -165,7 +165,7 @@ export class SubscriptionManagementComponent {
       stores: 5,
       plans: 1000,
       staff: 10,
-      is_active: true,
+      status: 0,
     },
   ];
   unitstable: any;

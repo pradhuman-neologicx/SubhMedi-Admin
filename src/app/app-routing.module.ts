@@ -28,6 +28,8 @@ import { AppUsersComponent } from './admin/user-management/app-users/app-users.c
 import { SilentUsersComponent } from './admin/user-management/silent-users/silent-users.component';
 import { SubscriptionManagementComponent } from './admin/subscription-management/subscription-management.component';
 import { AdvertisingManagementComponent } from './admin/advertising-management/advertising-management.component';
+import { ViewAppUsersComponent } from './admin/user-management/app-users/view-app-users/view-app-users.component';
+import { ViewSilentUsersComponent } from './admin/user-management/silent-users/view-silent-users/view-silent-users.component';
 
 const routes: Routes = [
   {
@@ -141,8 +143,16 @@ const routes: Routes = [
           },
 
           {
+            path: 'view-users',
+            component: ViewAppUsersComponent,
+          },
+          {
             path: 'silent-users',
             component: SilentUsersComponent,
+          },
+          {
+            path: 'view-silentusers',
+            component: ViewSilentUsersComponent,
           },
         ],
       },
