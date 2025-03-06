@@ -8,116 +8,68 @@
         {{ title }}
       </h3>
     </div>
-
-    <form [formGroup]="signinform" (ngSubmit)="onSubmit()">
-      <div
-        class="mb-3"
-        *ngIf="!signinform.get('Email')?.disabled && !showOTPField"
-      >
-        <label
-          class="d-block text-capitalize form-label form-lable-custom"
-          for="Email"
-          >Enter Your Email</label
-        >
-        <input
-          type="text"
-          class="d-block form-control form-input-custom"
-          formControlName="Email"
-          placeholder="Enter Your Email"
-          [ngClass]="{
-            'is-invalid':
-              signinform.controls['Email'].errors &&
-              (signinform.controls['Email'].touched ||
-                signinform.controls['Email'].dirty)
-          }"
-        />
-        <div
-          class="text-danger error-message"
-          *ngIf="
-            signinform.controls['Email'].errors &&
-            (signinform.controls['Email'].touched ||
-              signinform.controls['Email'].dirty)
-          "
-        >
-          <p
-            class="fw-light text-danger"
-            *ngIf="signinform.controls['Email'].errors['required']"
-          >
-            Email is required
-          </p>
-          <p
-            class="fw-light text-danger"
-            *ngIf="signinform.controls['Email'].errors['pattern']"
-          >
-            Please Enter correct email
-          </p>
-        </div>
+    <form [formGroup]="signIn">
+      <div class="mb-3">
+          <label
+              class="d-block text-capitalize form-label form-lable-custom"
+              for="Email">Enter Your Email</label>
+          <input type="text"
+              class="d-block  form-control form-input-custom"
+              formControlName="Email"
+              placeholder="Enter Your Email"
+              [ngClass]="{ 'is-invalid':signIn.controls['Email'].errors && (signIn.controls['Email'].touched || signIn.controls['Email'].dirty) }">
+          <div class="text-danger error-message"
+              *ngIf="signIn.controls['Email'].errors && (signIn.controls['Email'].touched || signIn.controls['Email'].dirty)">
+              <p class="fw-light    text-danger"
+                  *ngIf="signIn.controls['Email'].errors['required']">
+                  Email is required</p>
+              <p class="fw-light  text-danger"
+                  *ngIf="signIn.controls['Email'].errors['pattern']">
+                  Please Enter correct email</p>
+          </div>
       </div>
-      <!-- new code for otp -->
-      <div
-        class="mb-3"
-        *ngIf="
-          showOTPField &&
-          signinform.get('Email')?.valid &&
-          signinform.get('Email')?.value.length
-        "
-      >
-        <label for="otp" class="form-label">Enter OTP</label>
-        <input
-          type="text"
-          class="form-control input-custom"
-          formControlName="otp"
-          [ngClass]="{
-            'is-invalid':
-              signinform.get('otp')!.errors &&
-              !matched &&
-              (signinform.get('otp')!.touched || signinform.get('otp')!.dirty)
-          }"
-        />
-        <div
-          class="text-danger"
-          *ngIf="
-            signinform.get('otp')?.hasError('required') &&
-            (signinform.get('otp')?.touched || signinform.get('otp')?.dirty)
-          "
-        >
-          <p class="fw-light fs-5 text-end text-danger mb-0">OTP is required</p>
-        </div>
-        <div class="text-end d-flex align-items-center justify-content-end">
+
+      <div class="mb-3 position-relative">
+          <label
+              class="d-block text-capitalize form-label form-lable-custom"
+              for="Password">Enter Your
+              Password</label>
+          <input type="text" autocomplete="off" #passwordfield
+              [type]="password"
+              class="d-block form-control form-input-custom erro-icon"
+              formControlName="Password"
+              placeholder="Enter Your Password"
+              [ngClass]="{ 'is-invalid':signIn.controls['Password'].errors && (signIn.controls['Password'].touched || signIn.controls['Password'].dirty) }">
+          <span
+              (click)="passwordfield.type=passwordfield.type=='password'?'text':'password'"
+              class="fa fa-fw field-icon password-btn toggle-password me-3 eye-button"
+              [ngClass]="(passwordfield.type=='password')?' fa-eye':' fa-eye-slash'"
+              autocomplete="off"></span>
+          <div class="text-danger error-message"
+              *ngIf="signIn.controls['Password'].errors && (signIn.controls['Password'].touched || signIn.controls['Password'].dirty)">
+              <p class="fw-light  text-danger "
+                  *ngIf="signIn.controls['Password'].errors['required']">Password
+                  is
+                  required</p>
+              <p class="fw-light  text-danger "
+                  *ngIf="signIn.controls['Password'].errors['minlength']">Please
+                  enter Correct Password</p>
+              <p class="fw-light  text-danger"
+                  *ngIf="signIn.controls['Password'].errors['maxlength']">Please
+                  enter Correct Password</p>
+          </div>
+          <p class="text-end text-primary cursor mt-1"
+              routerLink="/forgot_password">Forgot Password</p>
+      </div>
+      <div>
           <button
-            type="button"
-            [disabled]="disableResend"
-            (click)="VerifyEmail()"
-            class="main-btnfs me-1 py-1 text-primary bg-transparent border-0 d-flex justify-content-center"
-          ></button>
-        </div>
+              class=" btn  btn-custom-primary  px-5  mt-3   w-100 text-white"
+              (click)="AdminLoginfun()"  >Continue</button>
+          <div class="text-end error-message " *ngIf="!submitted">
+              <p class="fw-light text-danger">{{errorMessage}}</p>
+          </div>
       </div>
-      <div class="text-center">
-        <button
-          *ngIf="!showOTPField"
-          class="btn btn-primary rounded main-btn px-5 mt-4 mb-3"
-          type="button"
-          routerLink="/dashboard"
-          routerLinkActive="active"
-        >
-          Send OTP
-        </button>
-      </div>
-
-      <div class="text-center">
-        <button
-          *ngIf="showOTPField"
-          class="btn btn-primary rounded main-btn px-5 mt-4 mb-3"
-          type="button"
-          (click)="VerifyOtp(); markAllAsTouched()"
-        >
-          Verify OTP
-        </button>
-      </div>
-      <p class="text-danger fs-5 text-end" *ngIf="erroroutput">
-        *{{ errorMessage }}
-      </p>
-    </form>
+  </form>
   </div>
 </div>
 

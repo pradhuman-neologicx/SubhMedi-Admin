@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { JwtService } from 'src/app/core/services/jwt.service';
+import { LoginService } from 'src/app/core/services/login.service';
 // import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
@@ -16,7 +17,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     searchQuery: string = '';
   
     constructor(private elementRef: ElementRef,private router: Router,
-      private jwtService: JwtService
+      private jwtService: JwtService ,private loginService: LoginService,
     ) { }
   
     clearSearch(): void {
@@ -57,8 +58,9 @@ import { JwtService } from 'src/app/core/services/jwt.service';
         this.closeMenu();
       }
     }
-  
+    userId:any
     ngOnInit() {
+      this.userId = this.jwtService.getpanelUserId();
       // this.router.events.subscribe(event => {
       //   if (event instanceof NavigationEnd) {
       //     this.closeMenu();
@@ -67,10 +69,30 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     }
     
   
-    logout() {
-      this.jwtService.clearStorage();
-      this.router.navigate(["/sign_in"]);
-    }
-  
+    // logout() {
+    //   this.jwtService.clearStorage();
+    //   this.router.navigate(["/sign_in"]);
+    // }
+    errorMessage: any;
+    showErrorMessage: boolean = false;
+    submitted!: boolean;
+    openSecondsuccess: boolean = false;
+    successName: any = "";
+    
+  logout() {
+     this.loginService.Adminlogout().subscribe((response: any) => {
+        this.errorMessage = response.message;
+        if (response.status === 200) {
+          this.jwtService.clearStorage();
+          this.router.navigate(["/sign_in"]);
+      } else {
+          this.submitted = false;
+        }
+      });
+    
+    
+ 
+    
+  }
   
   }

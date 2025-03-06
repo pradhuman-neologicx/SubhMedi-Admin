@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { JwtService } from './jwt.service';
@@ -115,6 +115,16 @@ export class ApiService {
       );
 
   }
+  postwithoutbody(path: string, headers: HttpHeaders): Observable<any> {
+    return this.http
+      .post(`${environment.api_url}${path}`, {}, { headers }) // Correct placement of headers
+      .pipe(
+        catchError(this.formatErrors),
+        retry(1),
+        catchError(this.handleError)
+      );
+  }
+  
 
   
   postWithoutHeader(path: string, body: any): Observable<any> {

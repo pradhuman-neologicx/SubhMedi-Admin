@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,  
-  api_url: 'subhmedi.mobilogicx.com/api/',
+  api_url: 'https://subhmedi.mobilogicx.com/api/',
 };
 
 

@@ -39,7 +39,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
       { path: 'sign_in', component: SigninComponent },
-      { path: 'otp', component: OtpComponent },
+      { path: 'reset_password', component: OtpComponent },
       { path: 'forgot_password', component: ForgotPasswordComponent },
     ],
   },

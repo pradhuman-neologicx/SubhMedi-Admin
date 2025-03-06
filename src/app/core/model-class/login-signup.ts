@@ -45,8 +45,11 @@ export class ForgotPasswordRes {
 
 
 export class ChangePassword {
-  password!: string;
-  confirmPassword!: string;
+  password: any;
+  password_confirmation: any;
+  user_id: any;
+  type: any;
+
 }
 
 export class ChangePasswordresponse {

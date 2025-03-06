@@ -94,7 +94,19 @@ getRoles() {
   savepanelUserId(userid: Number) {
     window.localStorage['panel_user_id'] = userid;
   }
+  getadminame(): String {
+    return window.localStorage['adminname'];
+  }
 
+  saveadminame(adminname: string) {
+    window.localStorage['adminname'] = adminname;
+  }
+
+  
+
+  saveAdminToken(Token: String) {
+    window.localStorage['Token'] = Token;
+  }
 
   getpanelPartyId(): Number {
     return window.localStorage['Party_id'];
