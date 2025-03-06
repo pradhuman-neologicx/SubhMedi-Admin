@@ -1,0 +1,490 @@
+<div class="container mx-auto mb-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="text-primary table-heading-detail">Subscription Management</h1>
+    <button
+      class="btn btn-primary main-btnfs px-3 py-2"
+      (click)="OpenCreateModal()"
+    >
+      Add Subscription
+    </button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card border-0 mb-4 py-0 tabel-card">
+    <div class="d-md-flex justify-content-between align-items-center my-3">
+      <div class="d-flex align-items-center mb-md-0 mb-2">
+        <span class="me-1 show-entery-text">Show</span>
+        <select
+          class="form-control form-select show-entries-select"
+          (change)="onTableSizeChange($event)"
+        >
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+        <span class="ms-1 show-entery-text">entries</span>
+      </div>
+
+      <div class="d-flex align-items-center">
+        <!-- <form [formGroup]="searchbarform" class="d-flex align-items-center">
+        <span class="me-1">Search:</span>
+        <div
+          [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+        >
+          <input
+            type="text"
+            class="form-control search-user position-relative"
+            type="text"
+            autocomplete="off"
+            formControlName="searchbar"
+            [ngClass]="{
+              'is-invalid':
+                searchbarform.controls['searchbar'].errors &&
+                (searchbarform.controls['searchbar'].touched ||
+                  searchbarform.controls['searchbar'].dirty)
+            }"
+          />
+          <div
+            class="text-danger error-message d-block"
+            *ngIf="
+              searchbarform.controls['searchbar'].errors &&
+              (searchbarform.controls['searchbar'].touched ||
+                searchbarform.controls['searchbar'].dirty)
+            "
+          >
+            <p
+              class="fw-light text-danger search-required"
+              *ngIf="searchbarform.controls['searchbar'].errors['required']"
+            >
+              This is required
+            </p>
+          </div>
+        </div>
+
+        <button class="btn btn-primary search-btn ms-2" (click)="searchfun()">
+          <span
+            ><i class="fa-solid fa-magnifying-glass form-control-feedback"></i
+          ></span>
+        </button>
+        <button
+          class="btn btn-primary search-btn ms-2"
+          (click)="resetsearchbar()"
+          type="submit"
+          *ngIf="showreset == true"
+        >
+          <span
+            ><i class="fa-solid fa-rotate-right form-control-feedback"></i
+          ></span>
+        </button>
+      </form> -->
+      </div>
+    </div>
+    <table class="table table-hover">
+      <thead class="table-header-trailer">
+        <tr>
+          <th>
+            <p class="table-heading table-new-heading">Sr. No.</p>
+          </th>
+
+          <th>
+            <p class="table-heading table-new-heading">Plan Name</p>
+          </th>
+          <th>
+            <p class="table-heading table-new-heading">Plan Duration(Months)</p>
+          </th>
+          <th>
+            <p class="table-heading table-new-heading">Number of Stores</p>
+          </th>
+          <th>
+            <p class="table-heading table-new-heading">Price of Plan</p>
+          </th>
+          <th>
+            <p class="table-heading table-new-heading">No. of Staff</p>
+          </th>
+
+          <th>
+            <p class="table-heading table-new-heading">Status</p>
+          </th>
+
+          <!-- <th>
+              <p class="table-heading table-new-heading">Action</p>
+            </th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let users of userstable; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <p class="table-detail text-capitalize table-detail-new">
+              {{ users.name }}
+            </p>
+          </td>
+          <td>
+            <p class="table-detail text-capitalize table-detail-new">
+              {{ users.duration }}
+            </p>
+          </td>
+          <td>
+            <p class="table-detail text-capitalize table-detail-new">
+              {{ users.stores }}
+            </p>
+          </td>
+          <td>
+            <p class="table-detail text-capitalize table-detail-new">
+              {{ users.plans }}
+            </p>
+          </td>
+          <td>
+            <p class="table-detail text-capitalize table-detail-new">
+              {{ users.staff }}
+            </p>
+          </td>
+
+          <td>
+            <p
+              [ngClass]="{
+                'active-status': users.status == 1 ? 1 : 0,
+                'deactive-status': users.status == 1 ? 0 : 1
+              }"
+            >
+              {{ users.status == 1 ? "active" : "deactive" }}
+            </p>
+          </td>
+
+          <td>
+            <p>
+              <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item *ngIf="users.status == 1">
+                  Edit Details
+                </button>
+                <button mat-menu-item>View Details</button>
+                <!-- <button mat-menu-item>Deactive</button>
+                <ng-template #inactiveButton>
+                  <button mat-menu-item>Activate</button>
+                </ng-template> -->
+                <button
+                  mat-menu-item
+                  *ngIf="users.status == 1; else inactiveButton"
+                >
+                  Deactivate
+                </button>
+                <ng-template #inactiveButton>
+                  <button mat-menu-item>Activate</button>
+                </ng-template>
+              </mat-menu>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div
+  *ngIf="Creatunitopen"
+  class="your-animation-class modal-container"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-content modal-content-50" [@fadeIn]>
+    <div>
+      <form [formGroup]="unitsformscreate">
+        <div class="card">
+          <div
+            class="card-header bg-white d-flex justify-content-between algin-items-center"
+          >
+            <h5 class="modal-title pt-1">Create Silent Users</h5>
+            <button
+              class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+              type="button"
+              (click)="closeModal()"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div class="modal-content-width card-body mb-0">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 mb-3">
+                <label for="unitsname" class="form-label form-lable-custom">
+                  Plan Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-input-custom"
+                  formControlName="unitsname"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformscreate.controls['unitsname'].errors &&
+                      (unitsformscreate.controls['unitsname'].touched ||
+                        unitsformscreate.controls['unitsname'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformscreate.controls['unitsname'].errors &&
+                    (unitsformscreate.controls['unitsname'].touched ||
+                      unitsformscreate.controls['unitsname'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformscreate.controls['unitsname'].errors['required']
+                    "
+                  >
+                    Name is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label for="unitsname" class="form-label form-lable-custom">
+                  Plan Duration (in Months)</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsname"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformscreate.controls['unitsname'].errors &&
+                      (unitsformscreate.controls['unitsname'].touched ||
+                        unitsformscreate.controls['unitsname'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformscreate.controls['unitsname'].errors &&
+                    (unitsformscreate.controls['unitsname'].touched ||
+                      unitsformscreate.controls['unitsname'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformscreate.controls['unitsname'].errors['required']
+                    "
+                  >
+                    Plan Duration is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label for="unitsname" class="form-label form-lable-custom">
+                  Number of Stores</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsname"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformscreate.controls['unitsname'].errors &&
+                      (unitsformscreate.controls['unitsname'].touched ||
+                        unitsformscreate.controls['unitsname'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformscreate.controls['unitsname'].errors &&
+                    (unitsformscreate.controls['unitsname'].touched ||
+                      unitsformscreate.controls['unitsname'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformscreate.controls['unitsname'].errors['required']
+                    "
+                  >
+                    Number is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label for="unitsname" class="form-label form-lable-custom">
+                  Price of Plan</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsname"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformscreate.controls['unitsname'].errors &&
+                      (unitsformscreate.controls['unitsname'].touched ||
+                        unitsformscreate.controls['unitsname'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformscreate.controls['unitsname'].errors &&
+                    (unitsformscreate.controls['unitsname'].touched ||
+                      unitsformscreate.controls['unitsname'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformscreate.controls['unitsname'].errors['required']
+                    "
+                  >
+                    Price is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label for="unitsname" class="form-label form-lable-custom">
+                  No. of Staff</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsname"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformscreate.controls['unitsname'].errors &&
+                      (unitsformscreate.controls['unitsname'].touched ||
+                        unitsformscreate.controls['unitsname'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformscreate.controls['unitsname'].errors &&
+                    (unitsformscreate.controls['unitsname'].touched ||
+                      unitsformscreate.controls['unitsname'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformscreate.controls['unitsname'].errors['required']
+                    "
+                  >
+                    Number is Requried
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer text-end me-4">
+              <button
+                class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600"
+                type="button"
+                (click)="closeModal()"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn btn-primary main-btnfs px-4 py-2"
+                type="button"
+                (click)="createunits()"
+              >
+                Create
+              </button>
+            </div>
+            <div class="text-end error-message" *ngIf="!submitted">
+              <p class="fw-light text-danger">{{ errorMessage }}</p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="updateunitopen"
+  class="your-animation-class modal-container"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-content modal-content-50" [@fadeIn]>
+    <div>
+      <form [formGroup]="unitsformupdate">
+        <div class="card">
+          <div
+            class="card-header bg-white d-flex justify-content-between algin-items-center"
+          >
+            <h5 class="modal-title pt-1">Update Units</h5>
+            <button
+              class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+              type="button"
+              (click)="closeModal()"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div class="modal-content-width card-body mb-0">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 mb-3">
+                <label for="unitsname" class="form-label form-lable-custom"
+                  >Units Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-input-custom"
+                  formControlName="unitsname"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformupdate.controls['unitsname'].errors &&
+                      (unitsformupdate.controls['unitsname'].touched ||
+                        unitsformupdate.controls['unitsname'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformupdate.controls['unitsname'].errors &&
+                    (unitsformupdate.controls['unitsname'].touched ||
+                      unitsformupdate.controls['unitsname'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformupdate.controls['unitsname'].errors['required']
+                    "
+                  >
+                    Name is Requried
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer text-end me-4">
+              <button
+                class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600"
+                type="button"
+                (click)="closeModal()"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn btn-primary main-btnfs px-4 py-2"
+                type="button"
+                (click)="updateunits()"
+              >
+                Update
+              </button>
+            </div>
+            <div class="text-end error-message" *ngIf="!submitted">
+              <p class="fw-light text-danger">{{ errorMessage }}</p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

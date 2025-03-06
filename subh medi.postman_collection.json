@@ -1,0 +1,405 @@
+{
+	"info": {
+		"_postman_id": "56528b68-8a5b-449f-b6b4-e707e60fabac",
+		"name": "subh medi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37474477"
+	},
+	"item": [
+		{
+			"name": "app users",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "bhanu",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "bala@mailsac.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "confirm_password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "8596741230",
+									"type": "text"
+								},
+								{
+									"key": "whatsapp_mobile",
+									"value": "8596412563",
+									"type": "text"
+								},
+								{
+									"key": "receive_marketing_info",
+									"value": "0",
+									"description": "0,1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{$url}}app-user/register",
+							"host": [
+								"{{$url}}app-user"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send-otp",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "identifier",
+									"value": "bala@mailsac.com",
+									"description": "email or mobile",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{$url}}send-otp",
+							"host": [
+								"{{$url}}send-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify-otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "identifier",
+									"value": "bala@mailsac.com",
+									"type": "text"
+								},
+								{
+									"key": "otp",
+									"value": "8283",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{$url}}verify-otp",
+							"host": [
+								"{{$url}}verify-otp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "banners",
+			"item": [
+				{
+					"name": "create banner",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|X53r68wXFPjyl62JnJVGh0yaQLpwjgx5pqwtlrhu",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Krishna/Downloads/WhatsApp Image 2024-01-31 at 10.47.25 PM.jpeg"
+								},
+								{
+									"key": "description",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{$url}}banner",
+							"host": [
+								"{{$url}}banner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-banners",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|X53r68wXFPjyl62JnJVGh0yaQLpwjgx5pqwtlrhu",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{$url}}banner?page&limit",
+							"host": [
+								"{{$url}}banner"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": null
+								},
+								{
+									"key": "status_filter",
+									"value": "0",
+									"description": "0,1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get banner by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|X53r68wXFPjyl62JnJVGh0yaQLpwjgx5pqwtlrhu",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{$url}}banner/1",
+							"host": [
+								"{{$url}}banner"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update banner",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|X53r68wXFPjyl62JnJVGh0yaQLpwjgx5pqwtlrhu",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Krishna/Pictures/lord-radha-krishna-beautiful-wallpaper-hindu-god-colorful-background-163718626.jpg"
+								},
+								{
+									"key": "description",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "put",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{$url}}banner/1",
+							"host": [
+								"{{$url}}banner"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "identifier",
+							"value": "1204524",
+							"description": "email (or mobile only for app)",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "app_user",
+							"description": "admin,app_user",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{$local}}user/login",
+					"host": [
+						"{{$local}}user"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|R44QZyAb3nNYWWGteBIFI3U7cjJyrJSE9tSSxrGc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{$local}}user/logout",
+					"host": [
+						"{{$local}}user"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "$url",
+			"value": "subhmedi.mobilogicx.com/api/",
+			"type": "string"
+		},
+		{
+			"key": "$local",
+			"value": "http://127.0.0.1:8000/api/",
+			"type": "string"
+		}
+	]
+}

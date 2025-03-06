@@ -1,0 +1,327 @@
+<div class="container mx-auto mb-4 ">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="text-primary table-heading-detail">Materials</h1>
+        <button class="btn btn-primary main-btnfs px-3 py-2" (click)="OpenCreateModal()">Add Materials</button>
+    </div>
+</div>
+
+
+
+
+
+<div class="container">
+
+
+
+
+    <div class="card border-0 mb-4 py-0 tabel-card">
+
+
+
+
+
+
+
+        <table class="table table-hover">
+            <thead class="table-header-trailer">
+                <tr>
+                    <th>
+                        <p class="table-heading table-new-heading">Serial No.</p>
+                    </th>
+
+                    <th>
+                        <p class="table-heading table-new-heading">Material Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Unit Name</p>
+                    </th>
+                    <th>
+                        <p class="table-heading table-new-heading">Description</p>
+                    </th>
+
+
+                    <th>
+                        <p class="table-heading table-new-heading">Status</p>
+                    </th>
+
+                    <th>
+                        <p class="table-heading table-new-heading">Action</p>
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let units of unitstable; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{units.name }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{units.unit.name }}</p>
+                    </td>
+                    <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{units.description }}</p>
+                    </td>
+
+                    <td>
+                        <p
+                            [ngClass]="{'active-status':units.is_active== 1 ? 1 : 0,'deactive-status':units.is_active == 1 ? 0 : 1}">
+                            {{ units.is_active == 1 ? "active" :
+                            "deactive" }}
+                        </td>
+                    <!-- <td>
+                        <p class="table-detail text-capitalize table-detail-new">
+                            {{ units.is_active }}
+                        </p>
+                    </td> -->
+
+
+                    <td>
+                        <p>
+                            <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+
+                            <mat-menu #menu="matMenu">
+                                <!-- <button mat-menu-item>View Details</button> -->
+                                <button mat-menu-item (click)="OpenEditModal(units)">Edit Details</button>
+                                <button mat-menu-item
+                                *ngIf="units.is_active; else inactiveButton"
+                                (click)="Status(units.id,0)">Deactivate</button>
+                            <ng-template #inactiveButton>
+                                <button mat-menu-item
+                                    (click)="Status(units.id, 1)">Activate</button>
+                            </ng-template>
+                            </mat-menu>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+<div *ngIf="materialopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-50" [@fadeIn]>
+        <div>
+            <form [formGroup]="materialcrealteform">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                        <h5 class="modal-title pt-1">Create Materials</h5>
+                        <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                            type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+
+                  
+
+
+
+
+
+                    <div class="modal-content-width card-body mb-0">
+                        <div class="row">
+
+                          
+
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="materialname" class="form-label form-lable-custom">Material Name</label>
+                                <input type="text" class="form-control form-input-custom" formControlName="materialname"
+                                    [ngClass]="{ 'is-invalid':materialcrealteform.controls['materialname'].errors && (materialcrealteform.controls['materialname'].touched || materialcrealteform.controls['materialname'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="materialcrealteform.controls['materialname'].errors && (materialcrealteform.controls['materialname'].touched || materialcrealteform.controls['materialname'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="materialcrealteform.controls['materialname'].errors['required']">
+                                        Name
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label class="d-block text-capitalize form-label form-lable-custom"
+                                    for="selectUnits">Select Units</label>
+                                <select type="text" class="d-block  form-select form-control form-input-custom"
+                                    #selectUnits formControlName="selectUnits"
+                                    [ngClass]="{ 'is-invalid':materialcrealteform.controls['selectUnits'].errors && (materialcrealteform.controls['selectUnits'].touched || materialcrealteform.controls['selectUnits'].dirty) }">
+                                  
+                                      <option *ngFor="let units of unitsids" [value]="units.id">
+                                        {{ units.name }}
+                                      </option>
+                                </select>
+                                <div class="text-danger error-message"
+                                    *ngIf="materialcrealteform.controls['selectUnits'].errors && (materialcrealteform.controls['selectUnits'].touched || materialcrealteform.controls['selectUnits'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="materialcrealteform.controls['selectUnits'].errors['required']">Select Unit
+                                        is required</p>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="Description" class="form-label form-lable-custom">Description</label>
+                                <textarea class="form-control form-input-custom" formControlName="Description" row="5"
+                                    [ngClass]="{ 'is-invalid':materialcrealteform.controls['Description'].errors && (materialcrealteform.controls['Description'].touched || materialcrealteform.controls['Description'].dirty) }"></textarea>
+                                <div class="text-danger error-message"
+                                    *ngIf="materialcrealteform.controls['Description'].errors && (materialcrealteform.controls['Description'].touched || materialcrealteform.controls['Description'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="materialcrealteform.controls['Description'].errors['required']">
+                                        Description
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="modal-footer text-end me-4">
+                            <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                                (click)="closeModal()">Cancel</button>
+                            <button class="btn btn-primary main-btnfs px-4 py-2" type="button"
+                                (click)="creatematerial();">Create</button>
+                        </div>
+                        <div class="text-end error-message" *ngIf="!submitted">
+                            <p class="fw-light text-danger">{{errorMessage}}</p>
+                        </div>
+
+                    </div>
+                    </div>
+
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div *ngIf="materialupdateopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="modal-content modal-content-50" [@fadeIn]>
+        <div>
+            <form [formGroup]="materialupdateform">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                        <h5 class="modal-title pt-1">Update Materials</h5>
+                        <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                            type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+
+                  
+
+
+
+
+
+                    <div class="modal-content-width card-body mb-0">
+                        <div class="row">
+
+                      
+
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="materialname" class="form-label form-lable-custom">Material Name</label>
+                                <input type="text" class="form-control form-input-custom" formControlName="materialname"
+                                    [ngClass]="{ 'is-invalid':materialupdateform.controls['materialname'].errors && (materialupdateform.controls['materialname'].touched || materialupdateform.controls['materialname'].dirty) }">
+                                <div class="text-danger error-message"
+                                    *ngIf="materialupdateform.controls['materialname'].errors && (materialupdateform.controls['materialname'].touched || materialupdateform.controls['materialname'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="materialupdateform.controls['materialname'].errors['required']">
+                                        Name
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label class="d-block text-capitalize form-label form-lable-custom"
+                                    for="selectUnits">Select Units</label>
+                                <select type="text" class="d-block  form-select form-control form-input-custom"
+                                    #selectUnits formControlName="selectUnits"
+                                    [ngClass]="{ 'is-invalid':materialupdateform.controls['selectUnits'].errors && (materialupdateform.controls['selectUnits'].touched || materialupdateform.controls['selectUnits'].dirty) }">
+                                  
+                                      <option *ngFor="let units of unitsids" [value]="units.id">
+                                        {{ units.name }}
+                                      </option>
+                                </select>
+                                <div class="text-danger error-message"
+                                    *ngIf="materialupdateform.controls['selectUnits'].errors && (materialupdateform.controls['selectUnits'].touched || materialupdateform.controls['selectUnits'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="materialupdateform.controls['selectUnits'].errors['required']">Select Unit
+                                        is required</p>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-lg-12 col-md-12 mb-3">
+                                <label for="Description" class="form-label form-lable-custom">Description</label>
+                                <textarea class="form-control form-input-custom" formControlName="Description" row="5"
+                                    [ngClass]="{ 'is-invalid':materialupdateform.controls['Description'].errors && (materialupdateform.controls['Description'].touched || materialupdateform.controls['Description'].dirty) }"></textarea>
+                                <div class="text-danger error-message"
+                                    *ngIf="materialupdateform.controls['Description'].errors && (materialupdateform.controls['Description'].touched || materialupdateform.controls['Description'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="materialupdateform.controls['Description'].errors['required']">
+                                        Description
+                                        is Requried</p>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="modal-footer text-end me-4">
+                            <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                                (click)="closeModal()">Cancel</button>
+                            <button class="btn btn-primary main-btnfs px-4 py-2" type="button"
+                                (click)="materialupdate();">Update</button>
+                        </div>
+                        <div class="text-end error-message" *ngIf="!submitted">
+                            <p class="fw-light text-danger">{{errorMessage}}</p>
+                        </div>
+
+                    </div>
+                    </div>
+
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+

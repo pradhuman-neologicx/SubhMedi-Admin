@@ -1,0 +1,1128 @@
+<div class="container">
+    <div class="row">
+        <!-- Card for Advance Paid -->
+        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Balance</h6>
+                    <p class="card-text">{{ balance }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card for Pending to Pay -->
+        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Total In</h6>
+                    <p class="card-text">{{ sum_in }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+            <div class="card custom-card border-0 cursor h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">Total Out</h6>
+                    <p class="card-text2">{{ sum_out }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="container">
+
+
+
+
+
+        <form [formGroup]="FilterForm">
+            <div class="row mb-2">
+                <div class="col-lg-4">
+                    <label class="form-label form-lable-custom" for="filter">Search</label>
+                    <input type="text" class="form-control px-4 py-2 mt-2 ml-2" placeholder="Search" #filter
+                        formControlName="filter"
+                        [ngClass]="{ 'is-invalid':FilterForm.controls['filter'].errors && (FilterForm.controls['filter'].touched || FilterForm.controls['filter'].dirty) }">
+                    <div class="text-danger error-message"
+                        *ngIf="FilterForm.controls['filter'].errors && ( FilterForm.controls['filter'].touched ||  FilterForm.controls['filter'].dirty)">
+                        <p class="fw-light  text-danger" *ngIf="FilterForm.controls['filter'].errors['required']">
+                            Name is required</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <label class="form-label form-lable-custom" for="Transactiontype">Transaction type</label>
+                    <select class="form-select form-control px-4 py-2 mt-2 ml-2" #Transactiontype
+                        formControlName="Transactiontype">
+                        >
+                        <!-- <option [selected]="true" value="all">All</option> -->
+                        <option value="in_transaction">Transaction In</option>
+                        <option value="miscellaneous_expense">Miscellaneous Expense</option>
+                        <option value="material_purchase">Material Purchase</option>
+                        <option value="petty_expense">Petty Expense</option>
+                        <option value="other_expense">Other Expense</option>
+                        <option value="sub_contractor_payment">Sub Contractor Payment</option>
+                        <option value="payment_out">Payment Out</option>
+                        <option value="material_transaction">Material Transaction</option>
+                        <!-- <option value="labour_expense">Labour Expenses</option> -->
+                        <!-- <option value="fuel_expense">Fuel Expenses</option>
+                        <option value="maintenance_expense">Machinery / Maintenance Expenses</option>
+                        <option value="electric_expense">Electric Expenses</option>
+                        <option value="water_expense">Water Expenses</option>
+                        <option value="supervisor_payment">Supervisor Payment</option> -->
+                       
+
+                 
+                    </select>
+
+                </div>
+
+
+                <div class="col-lg-4 mt-4">
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 me-3" type="button"
+                        (click)="Getalltranslations(1)">Search</button>
+                    <button class="btn btn-primary main-btnfs px-4 py-2 mt-2 ml-2" type="button"
+                        (click)="resetFilter()">Reset</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="d-flex  justify-content-end align-items-center mt-3 mb-3">
+            <!-- <h1 class="admin-heading">Order Management </h1> -->
+                <button class="btn btn-primary main-btnfs px-3 py-2 me-2" (click)="transactionpaymwentincreatemodal()">
+                    Payment In
+                </button>
+                <button class="btn btn-primary main-btnfs px-3 py-2 " (click)="  transactioncreatemodal()"> Payment Out
+                </button>
+            
+        </div>
+
+        <div class="card border-0 mb-4 py-0 tabel-card tab-pane  fade show active">
+            <table class="table table-hover">
+                <thead class="table-header-trailer">
+                    <tr>
+                        <th>
+                            <p class="table-heading table-new-heading">Serial No.</p>
+                        </th>
+
+                        <th>
+                            <p class="table-heading table-new-heading">Transaction</p>
+                        </th>
+                        <th>
+                            <p class="table-heading table-new-heading">Transaction Type</p>
+                        </th>
+                        <th>
+                            <p class="table-heading table-new-heading">Amount</p>
+                        </th>
+                        <th>
+                            <p class="table-heading table-new-heading">Date</p>
+                        </th>
+
+
+                        <th>
+                            <p class="table-heading table-new-heading">Action</p>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let party of transactiontable; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                            <p class="table-detail text-capitalize table-detail-new">
+                                {{party.party }}</p>
+                        </td>
+                        <td>
+                            <p class="table-detail text-capitalize table-detail-new">
+                                {{party.name }}</p>
+                        </td>
+                        <td>
+                            <p class="table-detail text-capitalize td-width table-detail-new">{{
+                                party.amount }}</p>
+                        </td>
+                        <td>
+                            <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                                party.date}}</p>
+                        </td>
+
+                        <!-- <td>
+                        <p class="table-detail text-capitalize table-detail-new" [ngClass]="{
+                             'status-to-pay': party.status === 'to pay',
+                             'status-to-receive': party.status === 'to receive',
+                             'status-settled': party.status === 'settled'
+                           }">
+                            {{ party.status }}
+                        </p>
+                    </td> -->
+
+
+                        <td>
+                            <p>
+                                <button mat-icon-button class="p-0" [matMenuTriggerFor]="menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="viewmodel(party.id,party.type,party.party_id)">View Details</button>
+                                    <button mat-menu-item>Edit Details</button>
+                                </mat-menu>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div *ngIf="addsubcontractoropen" class="your-animation-class modal-container" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="modal-content modal-content-50">
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title pt-1 mb-0 tt-color">Payment Out</h5>
+                    <button class="btn btn-primary cross-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                        (click)="closeModal()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+
+                <div class="modal-content-width card-body mb-0">
+
+
+                    <div class="row">
+                        <form [formGroup]="addcategoryform">
+
+
+                            <div class="mb-3 ">
+                                <label class="form-label form-lable-custom" for="category">
+                                    Select Category</label>
+                                <select class="form-select form-input-custom" formControlName="category" #category
+                                    (change)="onchangecategory(category.value)"
+                                   
+                                    [ngClass]="{ 'is-invalid': addcategoryform.controls['category'].errors && (addcategoryform.controls['category'].touched || addcategoryform.controls['category'].dirty) }">
+                                    <!-- <option value="Petty Expenses">Petty Expenses</option> -->
+                                    <option value="Miscellaneous Expenses">Miscellaneous Expenses</option>
+                                    <option value="Sub Contractor Payment">Sub Contractor Payment</option>
+                                    <option value="Other Expense">Other Expense</option>
+                                    <option value="Material Purchase">Material Purchase</option>
+                                    <option value="Salary">Salary</option>
+                                    <!-- <option value="Labour Expenses">Labour Expenses</option> -->
+                                    <option value="Fuel Expenses">Fuel Expenses</option>
+                                    <option value="Machinery Expenses">Machinery / Maintenance Expenses</option>
+                                    <option value="Electric Expenses">Electric Expenses</option>
+                                    <option value="Water Expenses">Water Expenses</option>
+                                    <option value="Supervisor Payment">Supervisor Payment</option>
+                                </select>
+                                <div class="text-danger error-message"
+                                    *ngIf="addcategoryform.controls['category'].errors && (addcategoryform.controls['category'].touched || addcategoryform.controls['category'].dirty)">
+                                    <p class="fw-light text-danger"
+                                        *ngIf="addcategoryform.controls['category'].errors['required']">
+                                        Select Category is required
+                                    </p>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+
+
+                    <div *ngIf="catergory=='Sub Contractor Payment'">
+                        <app-subcontracterpayementout [renewType]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-subcontracterpayementout>
+                    </div>
+                    <div *ngIf="catergory=='Other Expense'">
+                        <app-otherexpensepaymentout [otherexpensetype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-otherexpensepaymentout>
+                    </div>
+
+                    <div *ngIf="catergory=='Material Purchase'">
+                        <app-materialpurchase [materialpurchase]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-materialpurchase>
+                    </div>
+                    <div *ngIf="catergory=='Salary'">
+                        <app-salary [salarytype]="clickadd" (selectedIn)="selectEventHanderIn($event)"></app-salary>
+                    </div>
+                    <div *ngIf="catergory=='Petty Expenses'">
+                        <app-pettyexpense [pettytype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-pettyexpense>
+                    </div>
+
+                    <div *ngIf="catergory=='Miscellaneous Expenses'">
+                        <app-miscelaniousexpenses [miscellonustype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-miscelaniousexpenses>
+                    </div>
+
+<!-- 
+                    <div *ngIf="catergory=='Labour Expenses'">
+                        <app-labourexpense [Labourtype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-labourexpense>
+                    </div> -->
+
+                    <div *ngIf="catergory=='Fuel Expenses'">
+                        <app-fuelexpense [fueltype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-fuelexpense>
+                    </div>
+                    <div *ngIf="catergory=='Machinery Expenses'">
+                        <app-machineryexpense [machinerytype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-machineryexpense>
+                    </div>
+
+
+                    <div *ngIf="catergory=='Electric Expenses'">
+                        <app-electricexpense [electrictype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-electricexpense>
+                    </div>
+
+                    <div *ngIf="catergory=='Water Expenses'">
+                        <app-waterexpense [watertype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-waterexpense>
+                    </div>
+
+
+                    <div *ngIf="catergory=='Supervisor Payment'">
+                        <app-supervisorpayment [Supervisortype]="clickadd"
+                            (selectedIn)="selectEventHanderIn($event)"></app-supervisorpayment>
+                    </div>
+
+                </div>
+
+
+
+                <div class="modal-footer text-end me-4">
+                    <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                        (click)="closeModal()">Cancel</button>
+                    <button class="btn btn-custom-primary  px-4 py-2" type="button"
+                        (click)="Createadd()">Create</button>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div *ngIf="addpaymentinopen" class="your-animation-class modal-container" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="modal-content modal-content-50">
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title pt-1 mb-0 tt-color">Payment In</h5>
+                    <button class="btn btn-primary cross-btn bg-transparent border-0 pb-0 pt-1 text-black" type="button"
+                        (click)="closeModal()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+
+                <div class="modal-content-width card-body mb-0">
+
+
+                    <div class="row">
+
+                        <div>
+                            <app-paymentout [paymentintype]="clickin"
+                                (selectedIn)="selectEventHanderIn($event)"></app-paymentout>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+
+                <div class="modal-footer text-end me-4">
+                    <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                        (click)="closeModal()">Cancel</button>
+                    <button class="btn btn-custom-primary  px-4 py-2" type="button"
+                        (click)="paymentinadd()">Create</button>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+//view bills //
+
+<div *ngIf="billsopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+aria-modal="true">
+<div class="modal-content modal-content-75" [@fadeIn]>
+    <div (click)="ClickpayfeesModalconent($event)">
+
+        <div class="card">
+
+            <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                <h5 class="modal-title pt-1"> Billing Information</h5>
+                <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                    type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div>
+                <div class="modal-content-width mb-0 card-body pt-2">
+                    <div class="container">
+                        <div class="receipt-container" id="print-section">
+                            <div class="header d-flex">
+                                <!-- <div>
+                                    <img src="./assets/logo-sign.png" class="fee-recipet-img">
+                                </div> -->
+                                <div class="ms-3">
+                          
+<!-- 
+                                    <p>"Gayn Tower" Near Shivebari Circle,  Old Shivbari Road, Bikaner (Raj.)</p>
+                                    <p>Contact: +91-80030948-91/92/93</p>
+                                    <p>Email: synthesisbikaner@gmail.com</p>
+                                    <p>GSTIN: 08AFFS8636Q1Z8</p>
+                                    <p>PAN NO.: ABFFS8636Q</p> -->
+
+                                </div>
+                            </div>
+                            <!-- <p class="institute">An Institute
+                                for
+                                AIIMS/NEET/IIT-JEE(Main &
+                                Advanced)/VIII, IX, X, XI & XII
+                                Foundation</p> -->
+
+                            <hr>
+                            <div class="receipt-info d-flex justify-content-between">
+                                
+                                <div>
+                                    <label>Amount</label>
+                                   
+                                </div>
+                                <div>
+                                    <!-- <label>Date</label> -->
+                                    <span>{{billstable!=undefined?billstable.amount:""}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="details">
+                                <div>
+                                    <label>Paid At</label>
+                                    <span>{{billstable!=undefined?billstable.paid_at:""}}</span>
+                                </div>
+                                <!-- <label>Details of Receiver</label> -->
+                                <div>
+                                    <label>Party Name</label>
+                                    <span>{{billstable!=undefined?billstable.party_name:""}}</span>
+                                </div>
+                                <div>
+                                    <label>Project Name</label>
+                                    <span>{{billstable!=undefined?billstable.project:""}}</span>
+                                </div>
+                        
+                            
+                             
+                           
+
+                          
+                                <hr>
+                             
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-12" *ngIf="billstable.image!=undefined">
+                                <div *ngIf="billstable.image.length>0"  class="d-flex justify-content-between">
+                                <label>Image</label>
+                                <div class="text-end">
+                                <a href="{{billstable.image}}" target="_blank">
+                                    <img src="{{billstable.image}}" class="document-img mb-3 d-flex justity-content-end">
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                          
+
+                            <table class="table table-hover">
+                                <thead class="table-header-trailer">
+                                    <tr>
+                                        <th>
+                                            <p class="table-heading table-new-heading">Serial No.</p>
+                                        </th>
+                
+                                        <th>
+                                            <p class="table-heading table-new-heading">Item</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-heading table-new-heading">Qty.</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-heading table-new-heading">Rate</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-heading table-new-heading">Unit</p>
+                                        </th>
+                
+                
+                                    
+                
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let party of billstable.materials; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>
+                                            <p class="table-detail text-capitalize table-detail-new">
+                                                {{party.material_name }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="table-detail text-capitalize table-detail-new">
+                                                {{party.quantity }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="table-detail text-capitalize td-width table-detail-new">{{
+                                                party.unit_rate }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                                                party.unit}}</p>
+                                        </td>
+                
+                                 
+                
+                
+                                    
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="total-amount">
+                                <div>
+                                    <label>Sub Total 
+                                        </label>
+                                        <span>{{billstable!=undefined?billstable.sub_total:""}}</span>
+                                </div>
+                                <div>
+                                    <label>Additional Charges</label>
+                                    <span>{{billstable!=undefined?billstable.additional_charges:""}}</span>
+                                </div>
+                                <div>
+                                    <label>Discount</label>
+                                    <span>{{billstable!=undefined?billstable.discount:""}}</span>
+                                </div>
+                             
+                                <div>
+                                    <label>Total Amount
+                                        </label>
+                                        <span>{{billstable!=undefined?billstable.amount:""}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                        
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer text-end  me-4 pt-2 pb-2">
+                    <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                        (click)="closeModal()">Cancel</button>
+                 
+
+                </div>
+
+            </div>
+
+           
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="Subcontractoropen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+aria-modal="true">
+<div class="modal-content modal-content-75" [@fadeIn]>
+    <div (click)="ClickpayfeesModalconent($event)">
+
+        <div class="card">
+
+            <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                <h5 class="modal-title pt-1"> Billing Information</h5>
+                <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                    type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div>
+                <div class="modal-content-width mb-0 card-body pt-2">
+                    <div class="container">
+                        <div class="receipt-container" id="print-section">
+                            <div class="header d-flex">
+                                <!-- <div>
+                                    <img src="./assets/logo-sign.png" class="fee-recipet-img">
+                                </div> -->
+                                <div class="ms-3">
+                          
+<!-- 
+                                    <p>"Gayn Tower" Near Shivebari Circle,  Old Shivbari Road, Bikaner (Raj.)</p>
+                                    <p>Contact: +91-80030948-91/92/93</p>
+                                    <p>Email: synthesisbikaner@gmail.com</p>
+                                    <p>GSTIN: 08AFFS8636Q1Z8</p>
+                                    <p>PAN NO.: ABFFS8636Q</p> -->
+
+                                </div>
+                            </div>
+                            <!-- <p class="institute">An Institute
+                                for
+                                AIIMS/NEET/IIT-JEE(Main &
+                                Advanced)/VIII, IX, X, XI & XII
+                                Foundation</p> -->
+
+                            <hr>
+                            <div class="receipt-info d-flex justify-content-between">
+                                
+                                <div>
+                                    <label>Amount</label>
+                                   
+                                </div>
+                                <div>
+                                    <!-- <label>Date</label> -->
+                                    <span>{{subcontrtable!=undefined?subcontrtable.total_amount:""}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="details">
+                                <div>
+                                    <label>Paid At</label>
+                                    <span>{{subcontrtable!=undefined?subcontrtable.paid_at:""}}</span>
+                                </div>
+                                <!-- <label>Details of Receiver</label> -->
+                                <div>
+                                    <label>To</label>
+                                    <span>{{subcontrtable!=undefined?subcontrtable.to:""}}</span>
+                                </div>
+                                <div>
+                                    <label>From</label>
+                                    <span>{{subcontrtable!=undefined?subcontrtable.from:""}}</span>
+                                </div>
+                    
+                            
+                             
+                           
+
+                          
+                                <hr>
+                             
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-12" *ngIf="subcontrtable.image!=undefined">
+                                <div *ngIf="subcontrtable.image.length>0"  class="d-flex justify-content-between">
+                                <label>Image</label>
+                                <div class="text-end">
+                                <a href="{{subcontrtable.image}}" target="_blank">
+                                    <img src="{{subcontrtable.image}}" class="document-img mb-3 d-flex justity-content-end">
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                          
+                            <table class="table table-hover">
+                                <thead class="table-header-trailer">
+                                    <tr>
+                                        <th>
+                                            <p class="table-heading table-new-heading">Serial No.</p>
+                                        </th>
+                
+                                        <th>
+                                            <p class="table-heading table-new-heading">Task</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-heading table-new-heading">Qty.</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-heading table-new-heading">Rate</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-heading table-new-heading">Unit</p>
+                                        </th>
+                
+                
+                                    
+                
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let party of subcontrtable.tasks; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>
+                                            <p class="table-detail text-capitalize table-detail-new">
+                                                {{party.task_name }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="table-detail text-capitalize table-detail-new">
+                                                {{party.quantity }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="table-detail text-capitalize td-width table-detail-new">{{
+                                                party.unit_rate }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="table-detail text-capitalize ms-2 table-detail-new">{{
+                                                party.unit}}</p>
+                                        </td>
+                
+                                 
+                
+                
+                                    
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="total-amount">
+                                <div>
+                                    <label>Sub Total 
+                                        </label>
+                                        <span>{{subcontrtable!=undefined?subcontrtable.sub_total:""}}</span>
+                                </div>
+                                <div>
+                                    <label>Additional Charges</label>
+                                    <span>{{subcontrtable!=undefined?subcontrtable.additional_charges:""}}</span>
+                                </div>
+                                <div>
+                                    <label>Discount</label>
+                                    <span>{{subcontrtable!=undefined?subcontrtable.discount:""}}</span>
+                                </div>
+                             
+                                <div>
+                                    <label>Total Amount
+                                        </label>
+                                        <span>{{subcontrtable!=undefined?subcontrtable.total_amount:""}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                        
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer text-end  me-4 pt-2 pb-2">
+                    <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                        (click)="closeModal()">Cancel</button>
+                 
+
+                </div>
+
+            </div>
+
+           
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="otherexpenseopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+aria-modal="true">
+<div class="modal-content modal-content-75" [@fadeIn]>
+    <div (click)="ClickpayfeesModalconent($event)">
+
+        <div class="card">
+
+            <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                <h5 class="modal-title pt-1"> Billing Information</h5>
+                <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                    type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div>
+                <div class="modal-content-width mb-0 card-body pt-2">
+                    <div class="container">
+                        <div class="receipt-container" id="print-section">
+                            <div class="header d-flex">
+                                <!-- <div>
+                                    <img src="./assets/logo-sign.png" class="fee-recipet-img">
+                                </div> -->
+                                <div class="ms-3">
+                          
+<!-- 
+                                    <p>"Gayn Tower" Near Shivebari Circle,  Old Shivbari Road, Bikaner (Raj.)</p>
+                                    <p>Contact: +91-80030948-91/92/93</p>
+                                    <p>Email: synthesisbikaner@gmail.com</p>
+                                    <p>GSTIN: 08AFFS8636Q1Z8</p>
+                                    <p>PAN NO.: ABFFS8636Q</p> -->
+
+                                </div>
+                            </div>
+                            <!-- <p class="institute">An Institute
+                                for
+                                AIIMS/NEET/IIT-JEE(Main &
+                                Advanced)/VIII, IX, X, XI & XII
+                                Foundation</p> -->
+
+                            <hr>
+                            <div class="receipt-info d-flex justify-content-between">
+                                
+                                <div>
+                                    <label>Amount</label>
+                                   
+                                </div>
+                                <div>
+                                    <!-- <label>Date</label> -->
+                                    <span>{{otherexpenetable!=undefined?otherexpenetable.total_amount:""}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="details">
+                                <div>
+                                    <label>Paid At</label>
+                                    <span>{{otherexpenetable!=undefined?otherexpenetable.paid_at:""}}</span>
+                                </div>
+                                <!-- <label>Details of Receiver</label> -->
+                                <div>
+                                    <label>Party Name</label>
+                                    <span>{{otherexpenetable!=undefined?otherexpenetable.party:""}}</span>
+                                </div>
+                                <div>
+                                    <label>Project Name</label>
+                                    <span>{{otherexpenetable!=undefined?otherexpenetable.project:""}}</span>
+                                </div>
+                                <!-- <div>
+                                    <label>Image</label>
+                                    <span>{{otherexpenetable!=undefined?otherexpenetable.image:""}}</span>
+                                </div> -->
+                            
+                             
+                           
+
+                          
+                                <hr>
+                             
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-12" *ngIf="otherexpenetable.image!=undefined">
+                                <div *ngIf="otherexpenetable.image.length>0"  class="d-flex justify-content-between">
+                                <label>Image</label>
+                                <div class="text-end">
+                                <a href="{{otherexpenetable.image}}" target="_blank">
+                                    <img src="{{otherexpenetable.image}}" class="document-img mb-3 d-flex justity-content-end">
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                          
+                            <table class="table table-hover">
+                                <thead class="table-header-trailer">
+                                    <tr>
+                                        <th>
+                                            <p class="table-heading table-new-heading">Serial No.</p>
+                                        </th>
+                
+                                        <th>
+                                            <p class="table-heading table-new-heading">Task</p>
+                                        </th>
+                                     
+                
+                                        <th>
+                                            <p class="table-heading table-new-heading">Amount</p>
+                                        </th>
+                                     
+                
+                
+                                    
+                
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let party of otherexpenetable.tasks; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>
+                                            <p class="table-detail text-capitalize table-detail-new">
+                                                {{party.task_name }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="table-detail text-capitalize table-detail-new">
+                                                {{party.amount }}</p>
+                                        </td>
+                                    
+                
+                                 
+                
+                
+                                    
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="total-amount">
+                                <div>
+                                    <label>Sub Total 
+                                        </label>
+                                        <span>{{otherexpenetable!=undefined?otherexpenetable.sub_total:""}}</span>
+                                </div>
+                                <div>
+                                    <label>Additional Charges</label>
+                                    <span>{{otherexpenetable!=undefined?otherexpenetable.additional_charges:""}}</span>
+                                </div>
+                                <div>
+                                    <label>Discount</label>
+                                    <span>{{otherexpenetable!=undefined?otherexpenetable.discount:""}}</span>
+                                </div>
+                             
+                                <div>
+                                    <label>Total Amount
+                                        </label>
+                                        <span>{{otherexpenetable!=undefined?otherexpenetable.total_amount:""}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                        
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer text-end  me-4 pt-2 pb-2">
+                    <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                        (click)="closeModal()">Cancel</button>
+                 
+
+                </div>
+
+            </div>
+
+           
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="paymenteopen" class=" your-animation-class modal-container" aria-labelledby="modal-title" role="dialog"
+aria-modal="true">
+<div class="modal-content modal-content-75" [@fadeIn]>
+    <div (click)="ClickpayfeesModalconent($event)">
+
+        <div class="card">
+
+            <div class="card-header bg-white d-flex justify-content-between algin-items-center">
+                <h5 class="modal-title pt-1"> Billing Information</h5>
+                <button class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+                    type="button" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div>
+                <div class="modal-content-width mb-0 card-body pt-2">
+                    <div class="container">
+                        <div class="receipt-container" id="print-section">
+                            <div class="header d-flex">
+                                <!-- <div>
+                                    <img src="./assets/logo-sign.png" class="fee-recipet-img">
+                                </div> -->
+                                <div class="ms-3">
+                          
+<!-- 
+                                    <p>"Gayn Tower" Near Shivebari Circle,  Old Shivbari Road, Bikaner (Raj.)</p>
+                                    <p>Contact: +91-80030948-91/92/93</p>
+                                    <p>Email: synthesisbikaner@gmail.com</p>
+                                    <p>GSTIN: 08AFFS8636Q1Z8</p>
+                                    <p>PAN NO.: ABFFS8636Q</p> -->
+
+                                </div>
+                            </div>
+                            <!-- <p class="institute">An Institute
+                                for
+                                AIIMS/NEET/IIT-JEE(Main &
+                                Advanced)/VIII, IX, X, XI & XII
+                                Foundation</p> -->
+
+                            <hr>
+                            <div class="receipt-info d-flex justify-content-between">
+                                
+                                <div>
+                                    <label>Amount</label>
+                                   
+                                </div>
+                                <div>
+                                    <!-- <label>Date</label> -->
+                                    <span>{{paytable!=undefined?paytable.amount:""}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="details">
+                                <div>
+                                    <label>Paid At</label>
+                                    <span>{{paytable!=undefined?paytable.paid_at:""}}</span>
+                                </div>
+                                <div>
+                                    <label>To</label>
+                                    <span>{{paytable!=undefined?paytable.to:""}}</span>
+                                </div>
+                                <div>
+                                    <label>From</label>
+                                    <span>{{paytable!=undefined?paytable.from:""}}</span>
+                                </div>
+                                <div>
+                                    <label>Project Name</label>
+                                    <span>{{paytable!=undefined?paytable.project:""}}</span>
+                                </div>
+                      
+                               
+                                
+                                    <!-- <span>{{paytable!=undefined?paytable.image:""}}</span> -->
+                             
+                            
+                            
+                           
+
+                          
+                                <hr>
+                             
+
+                            </div>
+                     
+                            <div class="col-lg-12 col-md-12 col-12" *ngIf="paytable.image!=undefined">
+                                <div *ngIf="paytable.image.length>0"  class="d-flex justify-content-between">
+                                <label>Image</label>
+                                <div class="text-end">
+                                <a href="{{paytable.image}}" target="_blank">
+                                    <img src="{{paytable.image}}" class="document-img mb-3 d-flex justity-content-end">
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                          
+                            <hr>
+                        
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer text-end  me-4 pt-2 pb-2">
+                    <button class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600" type="button"
+                        (click)="closeModal()">Cancel</button>
+                 
+
+                </div>
+
+            </div>
+
+           
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+    <div *ngIf="openSecondsuccess" class="your-animation-class modal-container-success" [@slideIn]
+        aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div>
+            <div class=" p-4 d-flex justify-content-between align-items-center success-content">
+                <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+                <p class="text-green-900 text-capitalize">{{ successName }}
+                    successfully</p>
+            </div>
+        </div>
+    </div>
