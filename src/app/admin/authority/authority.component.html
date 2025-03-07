@@ -336,12 +336,12 @@
   >
     <div class="modal-content modal-content-50" [@fadeIn]>
       <div (click)="ClickexamModalconent($event)">
-        <form [formGroup]="bannerupdate">
+        <form [formGroup]="authorityupdate">
           <div class="card">
             <div
               class="card-header bg-white d-flex justify-content-between algin-items-center"
             >
-              <h5 class="modal-title pt-1">Update Company</h5>
+              <h5 class="modal-title pt-1">Update Authority</h5>
               <button
                 class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
                 type="button"
@@ -351,285 +351,73 @@
               </button>
             </div>
             <div class="modal-content-width card-body mb-0 pb-0">
-              <div class="row">
-                <!-- <div class="col-lg-12 col-md-12 mb-3">
-                    <label class="d-block text-capitalize form-label admin-form-lable" for="BannerType">Banner
-                        Type</label>
-                    <select type="text" class="d-block  form-select form-control form-input-custom"
-                        #BannerType formControlName="BannerType" (change)="typebannervalidatioupdate(BannerType.value)"
-                        [ngClass]="{ 'is-invalid':bannerupdate.controls['BannerType'].errors && (bannerupdate.controls['BannerType'].touched || bannerupdate.controls['BannerType'].dirty) }">
-                     
-                        <option value="Home">Home</option>
-                        <option value="Advertisement">Advertisement</option>
-                    </select>
-                    <div class="text-danger error-message"
-                        *ngIf="bannerupdate.controls['BannerType'].errors && (bannerupdate.controls['BannerType'].touched || bannerupdate.controls['BannerType'].dirty)">
-                        <p class="fw-light text-danger"
-                            *ngIf="bannerupdate.controls['BannerType'].errors['required']">Banner Type
-                            is required</p>
-                    </div>
-                </div> -->
-  
-                <!-- <div class="col-lg-12 col-md-12 mb-3">
-                  <label
-                    class="d-block text-capitalize form-label admin-form-lable"
-                    for="BannerType"
-                    >Banner Type</label
-                  >
-                  <input
-                    type="text"
-                    class="d-block form-control form-input-custom"
-                    #BannerType
-                    formControlName="BannerType"
-                    [readOnly]="true"
-                  />
-                </div> -->
-  
-                <div class="col-lg-12 col-md-12 mb-3">
-                  <label
-                    class="d-block text-capitalize form-label admin-form-lable"
-                    for="authorityname"
-                    >Company Name</label
-                  >
-                  <textarea
-                    class="d-block form-control form-input-custom"
-                    rows="3"
-                    formControlName="authorityname"
-                    #authorityname
-                    [minlength]="0"
-                    [maxlength]="500"
-                    [ngClass]="{
-                      'is-invalid':
-                        bannerupdate.controls['authorityname'].errors &&
-                        (bannerupdate.controls['authorityname'].touched ||
-                          bannerupdate.controls['authorityname'].dirty)
-                    }"
-                  ></textarea>
-  
-                  <div
-                    class="text-danger error-message"
-                    *ngIf="
-                      bannerupdate.controls['authorityname'].errors &&
-                      (bannerupdate.controls['authorityname'].touched ||
-                        bannerupdate.controls['authorityname'].dirty)
-                    "
-                  >
-                    <p
-                      class="fw-light text-danger"
-                      *ngIf="
-                        bannerupdate.controls['authorityname'].errors['required']
-                      "
-                    >
-                    Banner authorityname is required
-                    </p>
-                    <!-- <p class="fw-light text-danger" *ngIf="authoritycreate.controls['authorityname'].errors['maxlength']">Maximum
-                        500 characters allowed</p> -->
-                  </div>
-                </div>
-  
-                <!-- 
-                  <div class="col-lg-12 col-md-12 mb-3"
-        *ngIf="bannerupdate.controls['BannerType'].value === 'Advertisement'">
-            <label for="StartDate"
-              class="form-label admin-form-lable">Start Date</label>
-            <input type="datetime-local" class="form-control form-input-custom"  onkeydown="return false"
-              formControlName="StartDate"
-              placeholder="Select start date"
-              [ngClass]="{ 'is-invalid':bannerupdate.controls['StartDate'].errors && (bannerupdate.controls['StartDate'].touched || bannerupdate.controls['StartDate'].dirty) }">
-            <div class="text-danger error-message"
-              *ngIf="bannerupdate.controls['StartDate'].errors && (bannerupdate.controls['StartDate'].touched || bannerupdate.controls['StartDate'].dirty)">
-              <p class="fw-light text-danger"
-                *ngIf="bannerupdate.controls['StartDate'].errors['required']">
-                Start Date
-                is required</p>
-            </div>
-          </div>
+                <div class="row">
+              
     
+                  <div class="col-lg-12 col-md-12 mb-3">
+                    <label
+                      class="d-block text-capitalize form-label admin-form-lable"
+                      for="authorityname"
+                      >Authority Name</label
+                    >
+                    <input type="text"
+                      class="d-block form-control form-input-custom"
+                      rows="3"
+                      formControlName="authorityname"
+                      #authorityname
+                      [ngClass]="{
+                        'is-invalid':
+                        authorityupdate.controls['authorityname'].errors &&
+                          (authorityupdate.controls['authorityname'].touched ||
+                          authorityupdate.controls['authorityname'].dirty)
+                      }"
+                    >
     
-          <div class="col-lg-12 col-md-12 mb-3"
-          *ngIf="bannerupdate.controls['BannerType'].value === 'Advertisement'">
-            <label for="endDate"
-              class="form-label admin-form-lable">End Date</label>
-            <input type="datetime-local" class="form-control form-input-custom"  onkeydown="return false"
-              formControlName="endDate"
-              placeholder="Select start date"
-              [ngClass]="{ 'is-invalid':bannerupdate.controls['endDate'].errors && (bannerupdate.controls['endDate'].touched || bannerupdate.controls['endDate'].dirty) }">
-            <div class="text-danger error-message"
-              *ngIf="bannerupdate.controls['endDate'].errors && (bannerupdate.controls['endDate'].touched || bannerupdate.controls['endDate'].dirty)">
-              <p class="fw-light text-danger"
-                *ngIf="bannerupdate.controls['endDate'].errors['required']">
-                End Date
-                is required</p>
-            </div>
-          </div> -->
-  
-                <!-- <div
-                  class="col-lg-12 col-md-12 mb-3"
-                  *ngIf="
-                    bannerupdate.controls['BannerType'].value === 'Advertisement'
-                  "
-                >
-                  <label for="StartDate" class="form-label admin-form-lable"
-                    >Start Date</label
-                  >
-                  <input
-                    type="datetime-local"
-                    class="form-control form-input-custom"
-                    onkeydown="return false"
-                    formControlName="StartDate"
-                    placeholder="Select start date"
-                    [min]="todayDate"
-                    (change)="updatentoEndDateMin()"
-                    [ngClass]="{
-                      'is-invalid':
-                        bannerupdate.controls['StartDate'].errors &&
-                        (bannerupdate.controls['StartDate'].touched ||
-                          bannerupdate.controls['StartDate'].dirty)
-                    }"
-                  />
-                  <div
-                    class="text-danger error-message"
-                    *ngIf="
-                      bannerupdate.controls['StartDate'].errors &&
-                      (bannerupdate.controls['StartDate'].touched ||
-                        bannerupdate.controls['StartDate'].dirty)
-                    "
-                  >
-                    <p
-                      class="fw-light text-danger"
-                      *ngIf="
-                        bannerupdate.controls['StartDate'].errors['required']
-                      "
-                    >
-                      Start Date is required
-                    </p>
-                  </div>
-                </div>
-  
-                <div
-                  class="col-lg-12 col-md-12 mb-3"
-                  *ngIf="
-                    bannerupdate.controls['BannerType'].value === 'Advertisement'
-                  "
-                >
-                  <label for="endDate" class="form-label admin-form-lable"
-                    >End Date</label
-                  >
-                  <input
-                    type="datetime-local"
-                    class="form-control form-input-custom"
-                    onkeydown="return false"
-                    formControlName="endDate"
-                    placeholder="Select end date"
-                    [min]="bannerupdate.controls['StartDate'].value"
-                    [ngClass]="{
-                      'is-invalid':
-                        bannerupdate.controls['endDate'].errors &&
-                        (bannerupdate.controls['endDate'].touched ||
-                          bannerupdate.controls['endDate'].dirty)
-                    }"
-                  />
-                  <div
-                    class="text-danger error-message"
-                    *ngIf="
-                      bannerupdate.controls['endDate'].errors &&
-                      (bannerupdate.controls['endDate'].touched ||
-                        bannerupdate.controls['endDate'].dirty)
-                    "
-                  >
-                    <p
-                      class="fw-light text-danger"
-                      *ngIf="bannerupdate.controls['endDate'].errors['required']"
-                    >
-                      End Date is required
-                    </p>
-                  </div>
-                </div> -->
-                <!-- website banner -->
-                <div class="col-lg-12 col-md-12 mb-3">
-                  <div class="files-add text-center">
-                    <div class="d-inline-block">
-                      <!-- <p class="d-inline-block mb-0" *ngIf="!selectedFileNames.length">Drop files or</p> -->
-                      <label
-                        for="multiple-files"
-                        class="cursor text-color text-decoration-underline ms-3"
-                      >
-                        <input
-                          type="file"
-                          formControlName="Website"
-                          id="multiple-files"
-                          class="form-control d-none"
-                          accept="image/jpeg, image/jpg, image/png"
-                          (change)="onSingleFileSelected($event)"
-                          [required]="true"
-                          [ngClass]="{
-                            'is-invalid':
-                              bannerupdate.controls['Website'].errors &&
-                              (bannerupdate.controls['Website'].touched ||
-                                bannerupdate.controls['Website'].dirty)
-                          }"
-                        />
-                        Upload
-                      </label>
-                    </div>
-                    <!-- <p class="d-block text-decoration-none">{{ selectedFileNames.join(', ') }}</p> -->
-                  </div>
-                  <div
-                    class="text-danger"
-                    *ngIf="
-                      bannerupdate.controls['Website'].errors &&
-                      (bannerupdate.controls['Website'].touched ||
-                        bannerupdate.controls['Website'].dirty)
-                    "
-                  >
-                    <p
-                      class="fw-light fs-5 text-end text-danger"
-                      *ngIf="bannerupdate.controls['Website'].errors['required']"
-                    >
-                      Banner is required
-                    </p>
-                  </div>
-                  <div
-                    class="image-container position-relative mt-3 d-flex flex-wrap col-lg-5"
-                    *ngIf="selectedImages.length > 0"
-                  >
                     <div
-                      *ngFor="let image of selectedImages; let i = index"
-                      class="image-box col-lg-12"
+                      class="text-danger error-message"
+                      *ngIf="
+                        authorityupdate.controls['authorityname'].errors &&
+                        (authorityupdate.controls['authorityname'].touched ||
+                        authorityupdate.controls['authorityname'].dirty)
+                      "
                     >
-                      <img
-                        [src]="image.imageSrc"
-                        class="banner-img"
-                        [alt]="'Selected Image ' + (i + 1)"
-                      />
-                      <p class="image-name text-center text-wrap">
-                        {{ selectedFileNames[i] }}
+                      <p
+                        class="fw-light text-danger"
+                        *ngIf="
+                          authorityupdate.controls['authorityname'].errors['required']
+                        "
+                      >
+                      Authority Name is required
                       </p>
-                      <div class="cross-icon">
-                        <span (click)="removeImage(i)" class="image-remove cursor"
-                          ><i class="fa-solid fa-xmark"></i
-                        ></span>
+                      <!-- <p class="fw-light text-danger" *ngIf="authoritycreate.controls['authorityname'].errors['maxlength']">Maximum
+                          500 characters allowed</p> -->
+                    </div>
+                  </div>
+                  
+    
+               
+                  <div class="col-lg-12 col-md-12 mb-3">
+                      <label class="text-centerform-label form-lable-customm" for="State">Authority State</label>
+                      <select class="d-block form-control form-input-custom form-select" formControlName="State" #State
+  
+                        [ngClass]="{ 'is-invalid': authorityupdate.controls['State'].errors && (authorityupdate.controls['State'].touched || authorityupdate.controls['State'].dirty) }">
+                        <option *ngFor="let state of stateList" [value]="state.id">
+                          {{ state.name }}
+                        </option>
+                      </select>
+                      <div class="text-danger error-message"
+                        *ngIf="authorityupdate.controls['State'].errors && (authorityupdate.controls['State'].touched || authorityupdate.controls['State'].dirty)">
+                        <p class="fw-light text-danger" *ngIf="authorityupdate.controls['State'].errors['required']">Authority State is
+                          Required</p>
                       </div>
                     </div>
-                  </div>
-                  <p class="error-message text-danger" *ngIf="fileSizeError">
-                    {{ fileSizeError }}
-                  </p>
+               
+                
+    
+               
+                 
                 </div>
-  
-                <!-- mobileapp banner -->
-  
-                <!-- <p class="text-danger fs-5 mb-2">*Note:- Banner Size for
-        Mobile app 200px 200px </p> -->
-                <p class="text-danger fs-5 mb-2 mt-3">
-                  *Note:- Banner Size for Website 500px 500px
-                </p>
-  
-                <p class="text-danger fs-5 mb-2 mt-3">
-                  *Note: Banner Size for image must not be greater than 500px
-                </p>
               </div>
-            </div>
             <div class="modal-footer text-end me-4 mb-3">
               <button
                 class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600"
@@ -638,7 +426,7 @@
               >
                 Cancel
               </button>
-              <button class="btn btn-custom-primary px-4 py-2" type="submit" (click)="Updatecompany()">
+              <button class="btn btn-custom-primary px-4 py-2" type="submit" (click)="Updateauthority()">
                 Update
               </button>
             </div>
@@ -658,12 +446,12 @@
   >
     <div class="modal-content modal-content-50" [@fadeIn]>
       <div (click)="ClickexamModalconent($event)">
-        <form [formGroup]="bannerview">
+        <form [formGroup]="authorityview">
           <div class="card">
             <div
               class="card-header bg-white d-flex justify-content-between algin-items-center"
             >
-              <h5 class="modal-title pt-1">View Company</h5>
+              <h5 class="modal-title pt-1">View Authority</h5>
               <button
                 class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
                 type="button"
@@ -673,123 +461,37 @@
               </button>
             </div>
             <div class="modal-content-width card-body mb-0 pb-0">
-              <div class="row">
-                <!-- <div class="col-lg-12 col-md-12 mb-3">
-                  <label
-                    class="d-block text-capitalize form-label admin-form-lable"
-                    for="BannerType"
-                    >Banner Type</label
-                  >
-                  <input
-                    type="text"
-                    class="d-block form-control form-input-custom"
-                    #BannerType
-                    formControlName="BannerType"
-                    [readOnly]="true"
-                  />
-                </div> -->
-  
-                <div class="col-lg-12 col-md-12 mb-3">
-                  <label
-                    class="d-block text-capitalize form-label admin-form-lable"
-                    for="authorityname"
-                    >Company Name</label
-                  >
-                  <textarea
-                    class="d-block form-control form-input-custom"
-                    rows="3"
-                    formControlName="authorityname"
-                    #authorityname
-                    [readOnly]="true"
-                  >
-                  </textarea>
-                </div>
-  
-                <!-- <div
-                  class="col-lg-12 col-md-12 mb-3"
-                  *ngIf="
-                    bannerview.controls['BannerType'].value === 'Advertisement'
-                  "
-                >
-                  <label for="StartDate" class="form-label admin-form-lable"
-                    >Start Date</label
-                  >
-                  <input
-                    type="datetime-local"
-                    class="form-control form-input-custom"
-                    onkeydown="return false"
-                    formControlName="StartDate"
-                    [readOnly]="true"
-                  />
-                </div>
-  
-                <div
-                  class="col-lg-12 col-md-12 mb-3"
-                  *ngIf="
-                    bannerview.controls['BannerType'].value === 'Advertisement'
-                  "
-                >
-                  <label for="endDate" class="form-label admin-form-lable"
-                    >End Date</label
-                  >
-                  <input
-                    type="datetime-local"
-                    class="form-control form-input-custom"
-                    onkeydown="return false"
-                    formControlName="endDate"
-                    [readOnly]="true"
-                  />
-                </div> -->
-  
-                <!-- website banner -->
-                <div class="col-lg-12 col-md-12 mb-3">
-                  <div class="">
-                    <div class="d-inline-block">
-                      <!-- <p class="d-inline-block mb-0" *ngIf="!selectedFileNames.length">Drop files or</p> -->
-                      <label
-                        for="multiple-files"
-                        class="cursor text-color text-decoration-underline ms-3"
-                      >
-                        <input
-                          type="file"
-                          formControlName="Website"
-                          id="multiple-files"
-                          class="form-control d-none"
-                          accept="image/jpeg, image/jpg, image/png"
-                          [required]="true"
-                          [readOnly]="true"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                  <div
-                    class="image-container position-relative mt-3 d-flex flex-wrap col-lg-5"
-                    *ngIf="selectedImages.length > 0"
-                  >
-                    <div
-                      *ngFor="let image of selectedImages; let i = index"
-                      class="image-box col-lg-12"
+                <div class="row">
+              
+    
+                  <div class="col-lg-12 col-md-12 mb-3">
+                    <label
+                      class="d-block text-capitalize form-label admin-form-lable"
+                      for="authorityname"
+                      >Authority Name</label
                     >
-                      <img
-                        [src]="image.imageSrc"
-                        class="banner-img"
-                        [alt]="'Selected Image ' + (i + 1)"
-                      />
-                      <p class="image-name text-center text-wrap">
-                        {{ selectedFileNames[i] }}
-                      </p>
-                      <!-- <div class="cross-icon">
-                        <span (click)="removeImage(i)"
-                            class="image-remove cursor"><i
-                                class="fa-solid fa-xmark"></i></span>
-                    </div> -->
-                    </div>
+                    <input type="text"
+                      class="d-block form-control form-input-custom"
+                      rows="3"
+                      formControlName="authorityname"
+                      #authorityname
+                    [readOnly]="true" >
                   </div>
-                  <!-- <p class="error-message" *ngIf="fileSizeError">{{
-                fileSizeError }}</p> -->
+                  
+    
+               
+                  <div class="col-lg-12 col-md-12 mb-3">
+                      <label class="text-centerform-label form-lable-customm" for="State">Authority State</label>
+                      <input type="text"
+                      class="d-block form-control form-input-custom" formControlName="State" #State [readOnly]="true" >
+                    </div>
+               
+                
+    
+               
+                 
                 </div>
               </div>
-            </div>
             <div class="modal-footer text-end mb-4 me-4">
               <!-- <button
                 class="btn btn-custom-primary px-4 py-2 me-4"

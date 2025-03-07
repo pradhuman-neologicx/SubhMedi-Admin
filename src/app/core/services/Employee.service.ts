@@ -190,6 +190,51 @@ export class EmployeeService {
     );
   }
 
+
+  updateauthority(body: any, authorityId: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+  });
+
+  // Only set Content-Type if body is NOT FormData
+  if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+  }
+
+
+    return this.apiservice.post(`authority/` + authorityId, body,headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+
+
+  getauthobyID(authorityId: any): Observable<any> {
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+       'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = `authority/` + authorityId;
+    // Make the POST request to the server
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+
+
+
   Getbanners(tableSize: any, page: any, status_filter: any) {
     // const userId = this.jwtService.getpanelUserId();
     // const token = this.jwtService.getToken();

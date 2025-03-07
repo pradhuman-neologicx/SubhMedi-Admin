@@ -86,8 +86,8 @@ export class AuthorityComponent {
   page: number = 1;
   searchbarform!: FormGroup;
   authoritycreate!: FormGroup;
-  bannerupdate!: FormGroup;
-  bannerview!: FormGroup;
+  authorityupdate!: FormGroup;
+  authorityview!: FormGroup;
   authoritycreateopen: boolean = false;
   banneviewopen: boolean = false;
   companyupdateopen: boolean = false;
@@ -121,19 +121,15 @@ export class AuthorityComponent {
       authorityname: ['',[Validators.required]],
       State: ['', [Validators.required]],
     });
-    this.bannerupdate = this.formBuilder.group({
-      // BannerType: [''],
-      // description: [description, [Validators.required,],],
-      description: ['', [Validators.required]],
-      Website: ['', [Validators.required]],
-
-      // StartDate: [''],
-      // endDate: [''],
+    this.authorityupdate = this.formBuilder.group({
+      
+      authorityname: ['',[Validators.required]],
+      State: ['', [Validators.required]],
     });
-    this.bannerview = this.formBuilder.group({
+    this.authorityview = this.formBuilder.group({
      
-      description: [''],
-      Website: [''],
+      authorityname: [''],
+      State: [''],
    
     });
 
@@ -662,8 +658,8 @@ export class AuthorityComponent {
     }
   }
   updatentoEndDateMin(): void {
-    const startDateControl = this.bannerupdate.controls['StartDate'];
-    const endDateControl = this.bannerupdate.controls['endDate'];
+    const startDateControl = this.authorityupdate.controls['StartDate'];
+    const endDateControl = this.authorityupdate.controls['endDate'];
     if (startDateControl && endDateControl) {
       endDateControl.setValue(null); // Clear the end date if start date changes
       endDateControl.setErrors(null); // Reset validation errors on end date
@@ -889,7 +885,7 @@ export class AuthorityComponent {
   onSingleFileSelectedU(event: any) {
     const file = event.target.files[0];
     if (file) {
-      var bannertype = this.bannerupdate.get('BannerType')?.value;
+      var bannertype = this.authorityupdate.get('BannerType')?.value;
       if (bannertype == 'Advertisement') {
         const fileType = file.type;
         const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -1000,7 +996,7 @@ export class AuthorityComponent {
     if (file) {
       const maxSizeBytes = 5000000;
       var maxHeight: any;
-      var bannertype = this.bannerview.get('BannerType')?.value;
+      var bannertype = this.authorityview.get('BannerType')?.value;
       if (bannertype == 'Advertisement') {
         // 5MB for the file
         maxHeight = 500;
@@ -1160,35 +1156,26 @@ export class AuthorityComponent {
     console.log(invalid);
     return invalid;
   }
-
-  Updatecompany() {
-    if (this.bannerupdate.valid) {
+  authorityId:any
+  Updateauthority() {
+    if (this.authorityupdate.valid) {
       const formData: FormData = new FormData();
    
       formData.append(
         'name',
-        this.bannerupdate.get('description')?.value
+        this.authorityupdate.get('authorityname')?.value
+      );
+   
+      formData.append(
+        'state_id',
+        this.authorityupdate.get('State')?.value
       );
       formData.append("_method", "put");
-    
-      if (this.selectedFiles.length > 0) {
-        const file = this.selectedFiles[0];
-        formData.append('image', file, file.name);
-      } else {
-        this.submitted = false;
-        this.errorMessage = 'please select file';
-        return;
-      }
-      if (
-        this.selectedFileNames.toString().includes('jpeg') ||
-        this.selectedFileNames.toString().includes('jpg') ||
-        this.selectedFileNames.toString().includes('png')
-      ) {
-        this.employeeService.updatecompany(formData,this.companyId).subscribe((response: any) => {
+        this.employeeService.updateauthority(formData,this.authorityId).subscribe((response: any) => {
           console.log(response);
           if (response.status === 200 || response.status === 201) {
             this.closeModal();
-            this.successName = 'Company Updated';
+            this.successName = 'Authority Updated';
             this.ngOnInit();
             this.Getauthority();
             setTimeout(() => {
@@ -1213,16 +1200,12 @@ export class AuthorityComponent {
             alert(this.errorMessage);
           }
         });
-      } else {
-        this.submitted = false;
-        this.errorMessage = 'please select correct file';
-        this.bannerupdate.markAllAsTouched();
-      }
+      
     } else {
       this.submitted = false;
       this.errorMessage = 'please Enter All The Details';
-      this.bannerupdate.markAllAsTouched();
-      console.log(this.findInvalidControls(this.bannerupdate));
+      this.authorityupdate.markAllAsTouched();
+      console.log(this.findInvalidControls(this.authorityupdate));
     }
   }
 
@@ -1328,8 +1311,8 @@ export class AuthorityComponent {
 
 
 
-  GetgetcompanybyID() {
-    this.employeeService.getcompanybyID(this.companyId).subscribe((response: any) => {
+  GetauthoritybyID() {
+    this.employeeService.getauthobyID(this.authorityId).subscribe((response: any) => {
       if (response.status === 200 || response.status === 201) {
 
         this.fillformdate(response.data);
@@ -1342,490 +1325,42 @@ export class AuthorityComponent {
 
   async fillformdate(response: any) {
 
-      this.bannerupdate = this.formBuilder.group({
+      this.authorityupdate = this.formBuilder.group({
       
-        description: [response.name],
-        Website: [response.image, [Validators.required]],
+        authorityname: [response.name,[Validators.required]],
+        State: [response.state_id, [Validators.required]],
       });
   
 
-      var file = await this.createFile(response.image);
-      // if (file) {
-      //   var bannertype = response.type;
-      //   if (bannertype == 'Advertisement') {
-      //     const fileType = file.type;
-      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-      //     if (!validImageTypes.includes(fileType)) {
-      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-      //       this.selectedImages = [];
-      //       this.selectedFileNames = [];
-      //       this.selectedFiles = [];
-      //       return;
-      //     }
-      //     const maxSizeBytes = 5000000;
-      //     if (file.size > maxSizeBytes) {
-      //       this.selectedImages = [];
-      //       this.selectedFileNames = [];
-      //       this.selectedFiles = [];
-      //       this.fileSizeError =
-      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-      //       return;
-      //     }
-
-      //     const reader = new FileReader();
-      //     this.selectedFileNames = [file.name];
-      //     this.selectedFiles = [file];
-
-      //     reader.onload = () => {
-      //       if (typeof reader.result === 'string' || reader.result === null) {
-      //         const id = this.generateUniqueId();
-      //         const imageSrc = reader.result as string;
-      //         const image = new Image();
-      //         image.src = imageSrc;
-
-      //         image.onload = () => {
-      //           if (image.width === 1878 && image.height === 281) {
-      //             this.selectedImages = [{ imageSrc, id }];
-      //             this.fileSizeError = '';
-      //           } else {
-      //             this.selectedImages = [];
-      //             this.selectedFileNames = [];
-      //             this.selectedFiles = [];
-      //             this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
-      //           }
-      //         };
-      //       }
-      //     };
-
-      //     reader.readAsDataURL(file);
-      //   } else {
-      //     const maxSizeBytes = 5000000;
-      //     var maxHeight: any;
-      //     const fileType = file.type;
-      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-      //     if (!validImageTypes.includes(fileType)) {
-      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-      //       this.selectedImages = [];
-      //       this.selectedFileNames = [];
-      //       this.selectedFiles = [];
-      //       return;
-      //     }
-
-      //     if (bannertype == 'Advertisement') {
-      //       // 5MB for the file
-      //       maxHeight = 500;
-      //     } else {
-      //       maxHeight = 700;
-      //     }
-      //     if (file.size > maxSizeBytes) {
-      //       this.selectedImages = [];
-      //       this.selectedFileNames = [];
-      //       this.selectedFiles = [];
-      //       this.fileSizeError =
-      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-      //       return;
-      //     }
-
-      //     const reader = new FileReader();
-      //     this.selectedFileNames = [file.name];
-      //     this.selectedFiles = [file];
-
-      //     reader.onload = () => {
-      //       if (typeof reader.result === 'string' || reader.result === null) {
-      //         const id = this.generateUniqueId();
-      //         const imageSrc = reader.result as string;
-      //         const image = new Image();
-      //         image.src = imageSrc;
-
-      //         image.onload = () => {
-      //           if (image.height > maxHeight) {
-      //             this.selectedImages = [];
-      //             this.selectedFileNames = [];
-      //             this.selectedFiles = [];
-      //             this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-      //           } else {
-      //             this.selectedImages = [{ imageSrc, id }];
-      //             this.fileSizeError = '';
-      //           }
-      //         };
-      //       }
-      //     };
-
-      //     reader.readAsDataURL(file);
-      //   }
-      // }
-      if (file) {
-        const maxSizeBytes = 5000000;
-        var maxHeight: any;
-        const fileType = file.type;
-        const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-      
-        if (!validImageTypes.includes(fileType)) {
-          this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          return;
-        }
-      
-        maxHeight = 700;
-      
-        if (file.size > maxSizeBytes) {
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          this.fileSizeError =
-            'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-          return;
-        }
-      
-        const reader = new FileReader();
-        this.selectedFileNames = [file.name];
-        this.selectedFiles = [file];
-      
-        reader.onload = () => {
-          if (typeof reader.result === 'string' || reader.result === null) {
-            const id = this.generateUniqueId();
-            const imageSrc = reader.result as string;
-            const image = new Image();
-            image.src = imageSrc;
-      
-            image.onload = () => {
-              if (image.height > maxHeight) {
-                this.selectedImages = [];
-                this.selectedFileNames = [];
-                this.selectedFiles = [];
-                this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-              } else {
-                this.selectedImages = [{ imageSrc, id }];
-                this.fileSizeError = '';
-              }
-            };
-          }
-        };
-      
-        reader.readAsDataURL(file);
-      }
       
     } 
    
     
     async fillviewformdate(response: any) {
 
-      this.bannerview = this.formBuilder.group({
+      this.authorityview = this.formBuilder.group({
       
-        description: [response.name],
-        Website: [response.image, [Validators.required]],
+       
+        authorityname: [response.name],
+        State: [response.state.name],
       });
   
 
-      var file = await this.createFile(response.image);
-      // if (file) {
-      //   var bannertype = response.type;
-      //   if (bannertype == 'Advertisement') {
-      //     const fileType = file.type;
-      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-      //     if (!validImageTypes.includes(fileType)) {
-      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-      //       this.selectedImages = [];
-      //       this.selectedFileNames = [];
-      //       this.selectedFiles = [];
-      //       return;
-      //     }
-      //     const maxSizeBytes = 5000000;
-      //     if (file.size > maxSizeBytes) {
-      //       this.selectedImages = [];
-      //       this.selectedFileNames = [];
-      //       this.selectedFiles = [];
-      //       this.fileSizeError =
-      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-      //       return;
-      //     }
-
-      //     const reader = new FileReader();
-      //     this.selectedFileNames = [file.name];
-      //     this.selectedFiles = [file];
-
-      //     reader.onload = () => {
-      //       if (typeof reader.result === 'string' || reader.result === null) {
-      //         const id = this.generateUniqueId();
-      //         const imageSrc = reader.result as string;
-      //         const image = new Image();
-      //         image.src = imageSrc;
-
-      //         image.onload = () => {
-      //           if (image.width === 1878 && image.height === 281) {
-      //             this.selectedImages = [{ imageSrc, id }];
-      //             this.fileSizeError = '';
-      //           } else {
-      //             this.selectedImages = [];
-      //             this.selectedFileNames = [];
-      //             this.selectedFiles = [];
-      //             this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
-      //           }
-      //         };
-      //       }
-      //     };
-
-      //     reader.readAsDataURL(file);
-      //   } else {
-      //     const maxSizeBytes = 5000000;
-      //     var maxHeight: any;
-      //     const fileType = file.type;
-      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-      //     if (!validImageTypes.includes(fileType)) {
-      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-      //       this.selectedImages = [];
-      //       this.selectedFileNames = [];
-      //       this.selectedFiles = [];
-      //       return;
-      //     }
-
-      //     if (bannertype == 'Advertisement') {
-      //       // 5MB for the file
-      //       maxHeight = 500;
-      //     } else {
-      //       maxHeight = 700;
-      //     }
-      //     if (file.size > maxSizeBytes) {
-      //       this.selectedImages = [];
-      //       this.selectedFileNames = [];
-      //       this.selectedFiles = [];
-      //       this.fileSizeError =
-      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-      //       return;
-      //     }
-
-      //     const reader = new FileReader();
-      //     this.selectedFileNames = [file.name];
-      //     this.selectedFiles = [file];
-
-      //     reader.onload = () => {
-      //       if (typeof reader.result === 'string' || reader.result === null) {
-      //         const id = this.generateUniqueId();
-      //         const imageSrc = reader.result as string;
-      //         const image = new Image();
-      //         image.src = imageSrc;
-
-      //         image.onload = () => {
-      //           if (image.height > maxHeight) {
-      //             this.selectedImages = [];
-      //             this.selectedFileNames = [];
-      //             this.selectedFiles = [];
-      //             this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-      //           } else {
-      //             this.selectedImages = [{ imageSrc, id }];
-      //             this.fileSizeError = '';
-      //           }
-      //         };
-      //       }
-      //     };
-
-      //     reader.readAsDataURL(file);
-      //   }
-      // }
-      if (file) {
-        const maxSizeBytes = 5000000;
-        var maxHeight: any;
-        const fileType = file.type;
-        const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-      
-        if (!validImageTypes.includes(fileType)) {
-          this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          return;
-        }
-      
-        maxHeight = 700;
-      
-        if (file.size > maxSizeBytes) {
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          this.fileSizeError =
-            'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-          return;
-        }
-      
-        const reader = new FileReader();
-        this.selectedFileNames = [file.name];
-        this.selectedFiles = [file];
-      
-        reader.onload = () => {
-          if (typeof reader.result === 'string' || reader.result === null) {
-            const id = this.generateUniqueId();
-            const imageSrc = reader.result as string;
-            const image = new Image();
-            image.src = imageSrc;
-      
-            image.onload = () => {
-              if (image.height > maxHeight) {
-                this.selectedImages = [];
-                this.selectedFileNames = [];
-                this.selectedFiles = [];
-                this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-              } else {
-                this.selectedImages = [{ imageSrc, id }];
-                this.fileSizeError = '';
-              }
-            };
-          }
-        };
-      
-        reader.readAsDataURL(file);
-      }
+  
       
     } 
     
 
-    companyId: any;
+    
   async OpenEditModal(banner: any) {
    // this.banneviewopen = false;
    this.companyupdateopen = true
     this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
-    this.companyId = banner.id;
-this.GetgetcompanybyID();
-    // try {
-    //   if (!banner || !banner.id) {
-    //     console.error('unit ID is undefined or null.');
-    //     return;
-    //   }
-
-    //   this.companyupdateopen = true;
-    //   this.bannerupdate = this.formBuilder.group({
-    //     // BannerType: [banner.type, [
-    //     //   Validators.required,
-    //     // ],],
-    //     // BannerType: [banner.type],
-    //     description: [banner.description, [Validators.required]],
-    //     Website: [banner.image, [Validators.required]],
-
-    //     // StartDate: [
-    //     //   this.convertDate24(banner.start_time),
-    //     //   [Validators.required],
-    //     // ],
-    //     // endDate: [this.convertDate24(banner.end_time), [Validators.required]],
-    //   });
-    //   // this.typebannervalidatioupdate(banner.type);
-
-    //   var file = await this.createFile(banner.image);
-    //   if (file) {
-    //     var bannertype = banner.type;
-    //     if (bannertype == 'Advertisement') {
-    //       const fileType = file.type;
-    //       const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-    //       if (!validImageTypes.includes(fileType)) {
-    //         this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //         this.selectedImages = [];
-    //         this.selectedFileNames = [];
-    //         this.selectedFiles = [];
-    //         return;
-    //       }
-    //       const maxSizeBytes = 5000000;
-    //       if (file.size > maxSizeBytes) {
-    //         this.selectedImages = [];
-    //         this.selectedFileNames = [];
-    //         this.selectedFiles = [];
-    //         this.fileSizeError =
-    //           'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //         return;
-    //       }
-
-    //       const reader = new FileReader();
-    //       this.selectedFileNames = [file.name];
-    //       this.selectedFiles = [file];
-
-    //       reader.onload = () => {
-    //         if (typeof reader.result === 'string' || reader.result === null) {
-    //           const id = this.generateUniqueId();
-    //           const imageSrc = reader.result as string;
-    //           const image = new Image();
-    //           image.src = imageSrc;
-
-    //           image.onload = () => {
-    //             if (image.width === 1878 && image.height === 281) {
-    //               this.selectedImages = [{ imageSrc, id }];
-    //               this.fileSizeError = '';
-    //             } else {
-    //               this.selectedImages = [];
-    //               this.selectedFileNames = [];
-    //               this.selectedFiles = [];
-    //               this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
-    //             }
-    //           };
-    //         }
-    //       };
-
-    //       reader.readAsDataURL(file);
-    //     } else {
-    //       const maxSizeBytes = 5000000;
-    //       var maxHeight: any;
-    //       const fileType = file.type;
-    //       const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-    //       if (!validImageTypes.includes(fileType)) {
-    //         this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //         this.selectedImages = [];
-    //         this.selectedFileNames = [];
-    //         this.selectedFiles = [];
-    //         return;
-    //       }
-
-    //       if (bannertype == 'Advertisement') {
-    //         // 5MB for the file
-    //         maxHeight = 500;
-    //       } else {
-    //         maxHeight = 700;
-    //       }
-    //       if (file.size > maxSizeBytes) {
-    //         this.selectedImages = [];
-    //         this.selectedFileNames = [];
-    //         this.selectedFiles = [];
-    //         this.fileSizeError =
-    //           'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //         return;
-    //       }
-
-    //       const reader = new FileReader();
-    //       this.selectedFileNames = [file.name];
-    //       this.selectedFiles = [file];
-
-    //       reader.onload = () => {
-    //         if (typeof reader.result === 'string' || reader.result === null) {
-    //           const id = this.generateUniqueId();
-    //           const imageSrc = reader.result as string;
-    //           const image = new Image();
-    //           image.src = imageSrc;
-
-    //           image.onload = () => {
-    //             if (image.height > maxHeight) {
-    //               this.selectedImages = [];
-    //               this.selectedFileNames = [];
-    //               this.selectedFiles = [];
-    //               this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-    //             } else {
-    //               this.selectedImages = [{ imageSrc, id }];
-    //               this.fileSizeError = '';
-    //             }
-    //           };
-    //         }
-    //       };
-
-    //       reader.readAsDataURL(file);
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error('An error occurred while opening edit modal:', error);
-    // }
+    this.authorityId = banner.id;
+this.GetauthoritybyID();
+  
   }
 
   async OpenviewModal(banner: any) {
@@ -1833,8 +1368,8 @@ this.GetgetcompanybyID();
       this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
-    this.companyId = banner.id;
-    this.GetgetcompanybyID();
+    this.authorityId = banner.id;
+    this.GetauthoritybyID();
 
     
   }
@@ -1873,19 +1408,19 @@ this.GetgetcompanybyID();
   }
 
   typebannervalidatioupdate(value: any) {
-    this.bannerupdate.get('StartDate')?.clearValidators();
-    this.bannerupdate.get('endDate')?.clearValidators();
+    this.authorityupdate.get('StartDate')?.clearValidators();
+    this.authorityupdate.get('endDate')?.clearValidators();
 
-    if (this.bannerupdate.get('BannerType')?.value === 'Advertisement') {
-      this.bannerupdate.get('StartDate')?.setValidators(Validators.required);
-      this.bannerupdate.get('endDate')?.setValidators(Validators.required);
+    if (this.authorityupdate.get('BannerType')?.value === 'Advertisement') {
+      this.authorityupdate.get('StartDate')?.setValidators(Validators.required);
+      this.authorityupdate.get('endDate')?.setValidators(Validators.required);
     } else {
-      this.bannerupdate.get('StartDate')?.clearValidators();
-      this.bannerupdate.get('endDate')?.clearValidators();
+      this.authorityupdate.get('StartDate')?.clearValidators();
+      this.authorityupdate.get('endDate')?.clearValidators();
     }
     // Update validation status
 
-    this.bannerupdate.get('StartDate')?.updateValueAndValidity();
-    this.bannerupdate.get('endDate')?.updateValueAndValidity();
+    this.authorityupdate.get('StartDate')?.updateValueAndValidity();
+    this.authorityupdate.get('endDate')?.updateValueAndValidity();
   }
 }
