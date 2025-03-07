@@ -106,7 +106,23 @@ export class EmployeeService {
     );
   }
 
+  getbannerrbyID(bannerId: any): Observable<any> {
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+       'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
 
+    var url = `banner/` + bannerId;
+    // Make the POST request to the server
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
   createbanner(body: any): Observable<any> {
     // const user = this.jwtService.getpanelUserId();
     

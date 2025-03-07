@@ -118,7 +118,7 @@ export class AdvertisingManagementComponent {
     // });
     this.bannercreate = this.formBuilder.group({
       // BannerType: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: [''],
       Website: ['', [Validators.required]],
 
       // StartDate: ['', [Validators.required]],
@@ -134,11 +134,10 @@ export class AdvertisingManagementComponent {
       // endDate: [''],
     });
     this.bannerview = this.formBuilder.group({
-      BannerType: [''],
+     
       description: [''],
       Website: [''],
-      StartDate: [''],
-      endDate: [''],
+   
     });
 
     this.GetBanners();
@@ -1317,39 +1316,32 @@ export class AdvertisingManagementComponent {
     return formattedDate;
   }
 
-  banner_id: any;
-  async OpenEditModal(banner: any) {
-    // this.studentdetails = banner;
-    // this.banneviewopen = false;
-    this.selectedImages = [];
-    this.banner_id = banner.id;
 
-    try {
-      if (!banner || !banner.id) {
-        console.error('unit ID is undefined or null.');
-        return;
+
+
+  Getbannerbyid() {
+    this.employeeService.getbannerrbyID(this.banner_id).subscribe((response: any) => {
+      if (response.status === 200) {
+
+        this.fillformdate(response.data);
+
       }
 
-      this.bannerupdateopen = true;
+    });
+  }
+
+  async fillformdate(response: any) {
+
       this.bannerupdate = this.formBuilder.group({
-        // BannerType: [banner.type, [
-        //   Validators.required,
-        // ],],
-        // BannerType: [banner.type],
-        description: [banner.description, [Validators.required]],
-        Website: [banner.image, [Validators.required]],
-
-        // StartDate: [
-        //   this.convertDate24(banner.start_time),
-        //   [Validators.required],
-        // ],
-        // endDate: [this.convertDate24(banner.end_time), [Validators.required]],
+      
+        description: [response.description],
+        Website: [response.image, [Validators.required]],
       });
-      // this.typebannervalidatioupdate(banner.type);
+  
 
-      var file = await this.createFile(banner.image);
+      var file = await this.createFile(response.image);
       if (file) {
-        var bannertype = banner.type;
+        var bannertype = response.type;
         if (bannertype == 'Advertisement') {
           const fileType = file.type;
           const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -1454,9 +1446,154 @@ export class AdvertisingManagementComponent {
           reader.readAsDataURL(file);
         }
       }
-    } catch (error) {
-      console.error('An error occurred while opening edit modal:', error);
-    }
+    } 
+   
+    
+   
+    
+
+  banner_id: any;
+  async OpenEditModal(banner: any) {
+   // this.banneviewopen = false;
+   this.bannerupdateopen = true
+    this.selectedImages = [];
+    this.selectedFileNames = [];
+    this.selectedFiles = [];
+    this.banner_id = banner.id;
+this.Getbannerbyid();
+    // try {
+    //   if (!banner || !banner.id) {
+    //     console.error('unit ID is undefined or null.');
+    //     return;
+    //   }
+
+    //   this.bannerupdateopen = true;
+    //   this.bannerupdate = this.formBuilder.group({
+    //     // BannerType: [banner.type, [
+    //     //   Validators.required,
+    //     // ],],
+    //     // BannerType: [banner.type],
+    //     description: [banner.description, [Validators.required]],
+    //     Website: [banner.image, [Validators.required]],
+
+    //     // StartDate: [
+    //     //   this.convertDate24(banner.start_time),
+    //     //   [Validators.required],
+    //     // ],
+    //     // endDate: [this.convertDate24(banner.end_time), [Validators.required]],
+    //   });
+    //   // this.typebannervalidatioupdate(banner.type);
+
+    //   var file = await this.createFile(banner.image);
+    //   if (file) {
+    //     var bannertype = banner.type;
+    //     if (bannertype == 'Advertisement') {
+    //       const fileType = file.type;
+    //       const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    //       if (!validImageTypes.includes(fileType)) {
+    //         this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+    //         this.selectedImages = [];
+    //         this.selectedFileNames = [];
+    //         this.selectedFiles = [];
+    //         return;
+    //       }
+    //       const maxSizeBytes = 5000000;
+    //       if (file.size > maxSizeBytes) {
+    //         this.selectedImages = [];
+    //         this.selectedFileNames = [];
+    //         this.selectedFiles = [];
+    //         this.fileSizeError =
+    //           'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+    //         return;
+    //       }
+
+    //       const reader = new FileReader();
+    //       this.selectedFileNames = [file.name];
+    //       this.selectedFiles = [file];
+
+    //       reader.onload = () => {
+    //         if (typeof reader.result === 'string' || reader.result === null) {
+    //           const id = this.generateUniqueId();
+    //           const imageSrc = reader.result as string;
+    //           const image = new Image();
+    //           image.src = imageSrc;
+
+    //           image.onload = () => {
+    //             if (image.width === 1878 && image.height === 281) {
+    //               this.selectedImages = [{ imageSrc, id }];
+    //               this.fileSizeError = '';
+    //             } else {
+    //               this.selectedImages = [];
+    //               this.selectedFileNames = [];
+    //               this.selectedFiles = [];
+    //               this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
+    //             }
+    //           };
+    //         }
+    //       };
+
+    //       reader.readAsDataURL(file);
+    //     } else {
+    //       const maxSizeBytes = 5000000;
+    //       var maxHeight: any;
+    //       const fileType = file.type;
+    //       const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    //       if (!validImageTypes.includes(fileType)) {
+    //         this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+    //         this.selectedImages = [];
+    //         this.selectedFileNames = [];
+    //         this.selectedFiles = [];
+    //         return;
+    //       }
+
+    //       if (bannertype == 'Advertisement') {
+    //         // 5MB for the file
+    //         maxHeight = 500;
+    //       } else {
+    //         maxHeight = 700;
+    //       }
+    //       if (file.size > maxSizeBytes) {
+    //         this.selectedImages = [];
+    //         this.selectedFileNames = [];
+    //         this.selectedFiles = [];
+    //         this.fileSizeError =
+    //           'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+    //         return;
+    //       }
+
+    //       const reader = new FileReader();
+    //       this.selectedFileNames = [file.name];
+    //       this.selectedFiles = [file];
+
+    //       reader.onload = () => {
+    //         if (typeof reader.result === 'string' || reader.result === null) {
+    //           const id = this.generateUniqueId();
+    //           const imageSrc = reader.result as string;
+    //           const image = new Image();
+    //           image.src = imageSrc;
+
+    //           image.onload = () => {
+    //             if (image.height > maxHeight) {
+    //               this.selectedImages = [];
+    //               this.selectedFileNames = [];
+    //               this.selectedFiles = [];
+    //               this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
+    //             } else {
+    //               this.selectedImages = [{ imageSrc, id }];
+    //               this.fileSizeError = '';
+    //             }
+    //           };
+    //         }
+    //       };
+
+    //       reader.readAsDataURL(file);
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.error('An error occurred while opening edit modal:', error);
+    // }
   }
 
   async OpenviewModal(banner: any) {
