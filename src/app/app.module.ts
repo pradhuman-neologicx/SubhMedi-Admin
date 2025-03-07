@@ -60,6 +60,7 @@ import { AppUsersComponent } from './admin/user-management/app-users/app-users.c
 import { SilentUsersComponent } from './admin/user-management/silent-users/silent-users.component';
 import { ViewAppUsersComponent } from './admin/user-management/app-users/view-app-users/view-app-users.component';
 import { ViewSilentUsersComponent } from './admin/user-management/silent-users/view-silent-users/view-silent-users.component';
+import { CompaniesComponent } from './admin/companies/companies.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { ViewSilentUsersComponent } from './admin/user-management/silent-users/v
     SilentUsersComponent,
     ViewAppUsersComponent,
     ViewSilentUsersComponent,
+    CompaniesComponent,
   ],
   imports: [
     BrowserModule,

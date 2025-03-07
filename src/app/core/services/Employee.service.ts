@@ -60,7 +60,69 @@ export class EmployeeService {
   }
 
 
+  changestatuss(id: any, status: any, type: any): Observable<any> {
+    // var user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+       'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    const body = {
+      id: id,
+      status: status,
+      type: type,
+    };
+    return this.apiservice.post(`change-status`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
 
+  Getconpanies(tableSize: any, page: any,search:any ,status_filter: any) {
+    // const userId = this.jwtService.getpanelUserId();
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+       'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = '';
+    if (tableSize != 'all') {
+      url = `company?limit=` + tableSize + '&page=' + page;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '&search=' + search;
+        }
+      }
+      if (status_filter != undefined) {
+        if (status_filter.length > 0) {
+          url = url + '&status_filter=' + status_filter;
+        }
+      }
+    } else {
+      url = `company?`;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '?search=' + search;
+        }
+      }
+      if (status_filter != undefined) {
+        if (status_filter.length > 0) {
+          url = url + '?status_filter=' + status_filter;
+        }
+      }
+    }
+
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
 
   Getbanners(tableSize: any, page: any, status_filter: any) {
     // const userId = this.jwtService.getpanelUserId();
@@ -123,6 +185,48 @@ export class EmployeeService {
       })
     );
   }
+
+  getcompanybyID(companyId: any): Observable<any> {
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+       'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = `company/` + companyId;
+    // Make the POST request to the server
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  updatecompany(body: any, companyId: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+  });
+
+  // Only set Content-Type if body is NOT FormData
+  if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+  }
+
+
+    return this.apiservice.post(`company/` + companyId, body,headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+
+
   createbanner(body: any): Observable<any> {
     // const user = this.jwtService.getpanelUserId();
     
@@ -145,7 +249,26 @@ export class EmployeeService {
   }
 
  
+ createcompany(body: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+    
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+  });
 
+  // Only set Content-Type if body is NOT FormData
+  if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+  }
+
+    return this.apiservice.post(`company`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
 
 
   updatebanner(body: any, bannerId: any): Observable<any> {

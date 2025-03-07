@@ -1,0 +1,220 @@
+.files-add {
+    font-size: 16px;
+    border: 1px dashed #1d1f5e;
+    padding: 16px 10px;
+}
+
+
+
+
+.admin-banner {
+    // max-width: 100px;
+    // min-height: 40px;
+    // height: 50px;
+    width: 100px;
+    min-height: 40px;
+    height: 50px;
+    object-fit: cover;
+}
+
+
+
+.image-container {
+    // display: flex;
+    // flex-wrap: wrap;
+    // gap: 0px !important;
+    // margin: 0 !important;
+    // / Adds spacing between images /
+    // margin-top: 20px;
+}
+
+.image-box {
+    position: relative;
+    height: 150px;
+}
+
+
+
+
+
+
+
+
+.cross-icon {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    background-color: red;
+    border-radius: 50%;
+    padding: 2px;
+    cursor: pointer;
+    z-index: 9999999;
+    padding: 3px 8px 3px 8px;
+    font-size: 15px;
+    color: #fff;
+}
+
+.image-remove {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+
+.banner-img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    // object-fit: cover;
+    border-radius: 4px;
+    z-index: 1;
+    padding: 10px;
+}
+
+.image-container::before,
+.image-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 100%;
+}
+
+.form-check-input {
+    width: 21px;
+    height: 22px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    // background-color: #fff;
+    padding: 5px;
+    // border: 1px solid #d45812;
+    position: relative;
+    cursor: pointer;
+}
+
+//   .form-check-input:hover {
+//     background-color: #fff;
+//   }
+
+//   .form-check-input:focus {
+//     outline: none;
+//     background-color: #fff;
+//     box-shadow: none;
+//   }
+
+//   .form-check-input:active {
+//     background-color: #fff;
+//   }
+
+
+
+//  upload excel file css
+.upload-excel-file {
+    background-color: #f6f9ff;
+    font-weight: 400;
+    font-size: 18px;
+    border: 1px dashed #acb6e5;
+    color: #1d1f5e;
+    width: 100%;
+    padding: 12px;
+}
+
+
+
+.upload-excel-file:hover {
+    background-color: #f6f9ff;
+    font-weight: 400;
+    font-size: 18px;
+    border: 1px dashed #acb6e5;
+    color: #1d1f5e;
+    width: 100%;
+    padding: 12px;
+}
+
+
+.selected-file {
+    display: inline-block;
+    border: 1px dashed #1d1f5e;
+    background-color: #f6f9ff;
+    color: #1d1f5e;
+    border-radius: 4px;
+    font-size: 18px;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.selected-file span {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.remove-file {
+    position: absolute;
+    top: -18px;
+    right: -12px;
+    border: none;
+}
+
+
+.remove-file i {
+    border: none;
+    background-color: red;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 50%;
+    padding: 7px 8px 7px 9px;
+}
+
+.excle-file-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.btn-bulk {
+    background-color: #1d1f5e;
+    color: #fff;
+}
+
+.mark-success {
+    border: 1px solid green;
+    border-radius: 50%;
+    color: green;
+    padding: 15px 7px 8px 8px;
+
+}
+
+.mark-success i {
+    font-size: 24px;
+    padding: 5px 2px 6px 2px;
+}
+
+.mark-cross {
+    border: 1px solid red;
+    border-radius: 50%;
+    color: red;
+    padding: 15px 10px 8px 8px;
+}
+
+
+.mark-cross i {
+    font-size: 24px;
+    padding: 5px 2px 6px 3px;
+}
+
+.mark-success i {
+    font-size: 24px;
+    padding: 5px 2px 6px 2px;
+}
+
+.table-card {
+    box-shadow: unset;
+}

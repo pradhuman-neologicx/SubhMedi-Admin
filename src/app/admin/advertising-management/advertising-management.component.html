@@ -197,14 +197,18 @@
               <p>{{ formatDateCustom(banner.updated_at) }}</p>
             </td> -->
             <td>
-              <p
+              <!-- <p
                 [ngClass]="{
                   'active-status': banner.status == 1 ? 1 : 0,
                   'deactive-status': banner.status == 1 ? 0 : 1
                 }"
               >
-                {{ banner.status == 1 ? "active" : "deactive" }}
-              </p>
+                {{ banner.status == 1 ? "active" : "deactive" }} -->
+              <!-- </p> -->
+
+              <p [ngClass]="{'active-status':banner.status== 1 ? 1 : 0,'deactive-status':banner.status == 1 ? 0 : 1}">
+                {{ banner.status == 1 ? "active" :
+                "deactive" }}</p>
             </td>
 
             <td>
@@ -218,12 +222,12 @@
                   <button mat-menu-item>View Details</button>
                   <button
                     mat-menu-item
-                    *ngIf="banner.status == 1; else inactiveButton"
+                    *ngIf="banner.status == 1; else inactiveButton"  (click)="Status(banner.id,0)"
                   >
                     Deactivate
                   </button>
                   <ng-template #inactiveButton>
-                    <button mat-menu-item>Activate</button>
+                    <button mat-menu-item (click)="Status(banner.id,1)">Activate</button>
                   </ng-template>
                 </mat-menu>
               </p>

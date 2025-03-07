@@ -21,62 +21,64 @@ import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
-  selector: 'app-advertising-management',
-  templateUrl: './advertising-management.component.html',
-  styleUrl: './advertising-management.component.scss',
-  animations: [
-    trigger('succesfullyMesaage', [
-      state(
-        'void',
-        style({
-          transform: 'translateX(-30%)',
-          opacity: 0,
-        })
-      ),
-      transition(':enter, :leave', [
-        animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)'),
-      ]),
-    ]),
-    trigger('slideIn', [
-      state(
-        'void',
-        style({
-          transform: 'translateX(100%)',
-          opacity: 0,
-        })
-      ),
-      transition(':enter', [
-        animate(
-          '0.5s ease-out',
+  selector: 'app-companies',
+  templateUrl: './companies.component.html',
+  styleUrl: './companies.component.scss',
+    animations: [
+      trigger('succesfullyMesaage', [
+        state(
+          'void',
           style({
-            transform: 'translateX(0)', // Final position for slide-in effect
-            opacity: 1, // Final opacity
+            transform: 'translateX(-30%)',
+            opacity: 0,
           })
         ),
+        transition(':enter, :leave', [
+          animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)'),
+        ]),
       ]),
-    ]),
-
-    trigger('fadeIn', [
-      state(
-        'void',
-        style({
-          opacity: 0,
-          transform: 'scale(0.5)', // Start with smaller size
-        })
-      ),
-      transition(':enter', [
-        animate(
-          '0.5s ease-out',
+      trigger('slideIn', [
+        state(
+          'void',
           style({
-            opacity: 1,
-            transform: 'scale(1)', // Final size
+            transform: 'translateX(100%)',
+            opacity: 0,
           })
         ),
+        transition(':enter', [
+          animate(
+            '0.5s ease-out',
+            style({
+              transform: 'translateX(0)', // Final position for slide-in effect
+              opacity: 1, // Final opacity
+            })
+          ),
+        ]),
       ]),
-    ]),
-  ],
+  
+      trigger('fadeIn', [
+        state(
+          'void',
+          style({
+            opacity: 0,
+            transform: 'scale(0.5)', // Start with smaller size
+          })
+        ),
+        transition(':enter', [
+          animate(
+            '0.5s ease-out',
+            style({
+              opacity: 1,
+              transform: 'scale(1)', // Final size
+            })
+          ),
+        ]),
+      ]),
+    ],
 })
-export class AdvertisingManagementComponent {
+
+
+export class CompaniesComponent {
   showreset: any = false;
   searchText: any;
   tableSize: any = 10;
@@ -87,9 +89,9 @@ export class AdvertisingManagementComponent {
   bannercreate!: FormGroup;
   bannerupdate!: FormGroup;
   bannerview!: FormGroup;
-  bannercreateopen: boolean = false;
+  companycreateopen: boolean = false;
   banneviewopen: boolean = false;
-  bannerupdateopen: boolean = false;
+  companyupdateopen: boolean = false;
   displayedColumns: string[] = [
     'serialNo',
     'FeeType',
@@ -113,12 +115,12 @@ export class AdvertisingManagementComponent {
   user_id: any;
   ngOnInit(): void {
     this.user_id = this.jwtService.getpanelUserId();
-    // this.searchbarform = this.formBuilder.group({
-    //   searchbar: ["", [Validators.required,]]
-    // });
+    this.searchbarform = this.formBuilder.group({
+      searchbar: ["", [Validators.required,]]
+    });
     this.bannercreate = this.formBuilder.group({
       // BannerType: ['', [Validators.required]],
-      description: [''],
+      description: ['',[Validators.required]],
       Website: ['', [Validators.required]],
 
       // StartDate: ['', [Validators.required]],
@@ -127,8 +129,8 @@ export class AdvertisingManagementComponent {
     this.bannerupdate = this.formBuilder.group({
       // BannerType: [''],
       // description: [description, [Validators.required,],],
-      description: [''],
-      Website: [''],
+      description: ['', [Validators.required]],
+      Website: ['', [Validators.required]],
 
       // StartDate: [''],
       // endDate: [''],
@@ -158,7 +160,7 @@ export class AdvertisingManagementComponent {
   bannerTable: any;
   GetBanners() {
     this.employeeService
-      .Getbanners(this.tableSize, this.page, this.statusfilter)
+      .Getconpanies(this.tableSize, this.page, this.search, this.statusfilter)
       .subscribe((response: any) => {
         if (response.status === 200 || response.status === 201) {
           this.bannerTable = response.data.records;
@@ -682,11 +684,11 @@ export class AdvertisingManagementComponent {
     const actionMessage = status ? 'activated' : 'deactivated';
 
     this.employeeService
-      .changestatuss(id, status, 'Banner')
+      .changestatuss(id, status, 'Company')
 
       .subscribe((response: any) => {
         console.log(response);
-        if (response.status === 200 || response.status === 201) {
+        if (response.status === 200) {
           this.successName = actionMessage;
           this.GetBanners();
           setTimeout(() => {
@@ -700,20 +702,20 @@ export class AdvertisingManagementComponent {
   }
 
   bannermodal() {
-    this.bannercreateopen = true;
+    this.companycreateopen = true;
     this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
   }
   updatebannersmodal() {
-    this.bannerupdateopen = true;
+    this.companyupdateopen = true;
   }
   viewebannersmodal() {
     this.banneviewopen = true;
   }
   closeModal() {
-    this.bannercreateopen = false;
-    this.bannerupdateopen = false;
+    this.companycreateopen = false;
+    this.companyupdateopen = false;
     this.banneviewopen = false;
     this.bulkacitve = false;
     this.bulkdecitve = false;
@@ -729,8 +731,19 @@ export class AdvertisingManagementComponent {
     event.stopPropagation();
   }
 
-  searchfun() {}
-  resetsearchbar() {}
+  searchfun() {
+    if (this.searchbarform.valid) {
+      this.showreset = true;
+      this.search = this.searchbarform.get('searchbar')?.value;
+      this.GetBanners()
+    }
+    else {
+      this.searchbarform.markAllAsTouched();
+    }
+  }
+  resetsearchbar() {
+    window.location.reload();
+  }
   onTableSizeChange(event: any): void {
     this.tableSize = event.target.value;
     console.log(event.target.value);
@@ -1047,10 +1060,10 @@ export class AdvertisingManagementComponent {
     {
       heading0: '#',
       heading1: 'Image',
-      heading2: 'Description',
+      heading2: 'Company Name',
       // heading4: 'Date added',
       // heading5: 'Date modified',
-      heading6: 'Status',
+      // heading6: 'Status',
       heading7: 'Action',
     },
   ];
@@ -1075,23 +1088,15 @@ export class AdvertisingManagementComponent {
   // }
   studentdetails: any;
 
-  Createbanner() {
+  Createcompany() {
     if (this.bannercreate.valid) {
       const formData: FormData = new FormData();
-      // formData.append('user_id', this.user_id + '');
-      // formData.append("user_id", '1' + '');
-      // formData.append('type', this.bannercreate.get('BannerType')?.value);
+    
       formData.append(
-        'description',
+        'name',
         this.bannercreate.get('description')?.value
       );
-      // if (this.bannercreate.get('BannerType')?.value == 'Advertisement') {
-      //   formData.append(
-      //     'start_time',
-      //     this.bannercreate.get('StartDate')?.value
-      //   );
-      //   formData.append('end_time', this.bannercreate.get('endDate')?.value);
-      // }
+   
 
       if (this.selectedFiles.length > 0) {
         const file = this.selectedFiles[0];
@@ -1102,11 +1107,11 @@ export class AdvertisingManagementComponent {
         this.selectedFileNames.toString().includes('jpg') ||
         this.selectedFileNames.toString().includes('png')
       ) {
-        this.employeeService.createbanner(formData).subscribe((response: any) => {
+        this.employeeService.createcompany(formData).subscribe((response: any) => {
           console.log(response);
           if (response.status === 200 || response.status === 201) {
             this.closeModal();
-            this.successName = 'Banner Created';
+            this.successName = 'Company Created';
             this.ngOnInit();
             this.GetBanners();
             setTimeout(() => {
@@ -1152,12 +1157,12 @@ export class AdvertisingManagementComponent {
     return invalid;
   }
 
-  Updatebanner() {
+  Updatecompany() {
     if (this.bannerupdate.valid) {
       const formData: FormData = new FormData();
    
       formData.append(
-        'description',
+        'name',
         this.bannerupdate.get('description')?.value
       );
       formData.append("_method", "put");
@@ -1175,11 +1180,11 @@ export class AdvertisingManagementComponent {
         this.selectedFileNames.toString().includes('jpg') ||
         this.selectedFileNames.toString().includes('png')
       ) {
-        this.employeeService.updatebanner(formData,this.banner_id).subscribe((response: any) => {
+        this.employeeService.updatecompany(formData,this.companyId).subscribe((response: any) => {
           console.log(response);
           if (response.status === 200 || response.status === 201) {
             this.closeModal();
-            this.successName = 'Banner Updated';
+            this.successName = 'Company Updated';
             this.ngOnInit();
             this.GetBanners();
             setTimeout(() => {
@@ -1319,9 +1324,9 @@ export class AdvertisingManagementComponent {
 
 
 
-  Getbannerbyid() {
-    this.employeeService.getbannerrbyID(this.banner_id).subscribe((response: any) => {
-      if (response.status === 200) {
+  GetgetcompanybyID() {
+    this.employeeService.getcompanybyID(this.companyId).subscribe((response: any) => {
+      if (response.status === 200 || response.status === 201) {
 
         this.fillformdate(response.data);
 
@@ -1334,7 +1339,7 @@ export class AdvertisingManagementComponent {
 
       this.bannerupdate = this.formBuilder.group({
       
-        description: [response.description],
+        description: [response.name],
         Website: [response.image, [Validators.required]],
       });
   
@@ -1505,22 +1510,22 @@ export class AdvertisingManagementComponent {
    
     
 
-  banner_id: any;
+    companyId: any;
   async OpenEditModal(banner: any) {
    // this.banneviewopen = false;
-   this.bannerupdateopen = true
+   this.companyupdateopen = true
     this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
-    this.banner_id = banner.id;
-this.Getbannerbyid();
+    this.companyId = banner.id;
+this.GetgetcompanybyID();
     // try {
     //   if (!banner || !banner.id) {
     //     console.error('unit ID is undefined or null.');
     //     return;
     //   }
 
-    //   this.bannerupdateopen = true;
+    //   this.companyupdateopen = true;
     //   this.bannerupdate = this.formBuilder.group({
     //     // BannerType: [banner.type, [
     //     //   Validators.required,
@@ -1651,7 +1656,7 @@ this.Getbannerbyid();
 
   async OpenviewModal(banner: any) {
     this.selectedImages = [];
-    this.banner_id = banner.id;
+    this.companyId = banner.id;
     this.studentdetails = banner;
 
     try {

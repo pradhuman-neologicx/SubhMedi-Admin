@@ -30,6 +30,7 @@ import { SubscriptionManagementComponent } from './admin/subscription-management
 import { AdvertisingManagementComponent } from './admin/advertising-management/advertising-management.component';
 import { ViewAppUsersComponent } from './admin/user-management/app-users/view-app-users/view-app-users.component';
 import { ViewSilentUsersComponent } from './admin/user-management/silent-users/view-silent-users/view-silent-users.component';
+import { CompaniesComponent } from './admin/companies/companies.component';
 
 const routes: Routes = [
   {
@@ -163,6 +164,10 @@ const routes: Routes = [
       {
         path: 'advertising',
         component: AdvertisingManagementComponent,
+      },
+      {
+        path: 'companies',
+        component: CompaniesComponent,
       },
 
       {
