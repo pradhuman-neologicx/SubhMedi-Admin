@@ -13,6 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { EmployeeService } from 'src/app/core/services/Employee.service';
 // import { DataTableDirective } from 'angular-datatables';
 // import { Config } from 'datatables.net';
 // import { Subject } from 'rxjs';
@@ -105,7 +106,8 @@ export class AdvertisingManagementComponent {
   constructor(
     private formBuilder: FormBuilder,
     // private adminService: AdminService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+     private employeeService: EmployeeService,
   ) {}
 
   user_id: any;
@@ -115,21 +117,21 @@ export class AdvertisingManagementComponent {
     //   searchbar: ["", [Validators.required,]]
     // });
     this.bannercreate = this.formBuilder.group({
-      BannerType: ['', [Validators.required]],
+      // BannerType: ['', [Validators.required]],
       description: ['', [Validators.required]],
       Website: ['', [Validators.required]],
 
-      StartDate: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
+      // StartDate: ['', [Validators.required]],
+      // endDate: ['', [Validators.required]],
     });
     this.bannerupdate = this.formBuilder.group({
-      BannerType: [''],
+      // BannerType: [''],
       // description: [description, [Validators.required,],],
       description: [''],
       Website: [''],
 
-      StartDate: [''],
-      endDate: [''],
+      // StartDate: [''],
+      // endDate: [''],
     });
     this.bannerview = this.formBuilder.group({
       BannerType: [''],
@@ -139,7 +141,7 @@ export class AdvertisingManagementComponent {
       endDate: [''],
     });
 
-    // this.GetBanners();
+    this.GetBanners();
   }
   batchfloorList: any = [];
 
@@ -154,71 +156,71 @@ export class AdvertisingManagementComponent {
   }
 
   search: any;
-  // bannerTable: any;
-  // GetBanners() {
-  //   this.adminService
-  //     .Getbanners(this.tableSize, this.page, this.search, this.statusfilter)
-  //     .subscribe((response: any) => {
-  //       if (response.status === 200) {
-  //         this.bannerTable = response.data.records;
-  //         this.totalRecords = response.data.total;
-  //       }
-  //     });
-  // }
+  bannerTable: any;
+  GetBanners() {
+    this.employeeService
+      .Getbanners(this.tableSize, this.page, this.statusfilter)
+      .subscribe((response: any) => {
+        if (response.status === 200) {
+          this.bannerTable = response.data.records;
+          this.totalRecords = response.data.total;
+        }
+      });
+  }
 
   // Dummy data for bannerTable
-  bannerTable = [
-    {
-      id: 1,
-      image: 'IMG_1',
-      description: 'Banner 1 Description',
-      type: 'Promo',
-      created_at: new Date(),
-      updated_at: new Date(),
-      status: 1,
-      action: '',
-    },
-    {
-      id: 2,
-      image: 'IMG_2',
-      description: 'Banner 2 Description',
-      type: 'Advertisement',
-      created_at: new Date(),
-      updated_at: new Date(),
-      status: 0,
-      action: '',
-    },
-    {
-      id: 3,
-      image: 'IMG_3',
-      description: 'Banner 3 Description',
-      type: 'Campaign',
-      created_at: new Date(),
-      updated_at: new Date(),
-      status: 1,
-      action: '',
-    },
-    {
-      id: 4,
-      image: 'IMG_4',
-      description: 'Banner 4 Description',
-      type: 'Promo',
-      created_at: new Date(),
-      updated_at: new Date(),
-      status: 0,
-      action: '',
-    },
-    {
-      id: 5,
-      image: 'IMG_5',
-      description: 'Banner 5 Description',
-      type: 'Event',
-      created_at: new Date(),
-      updated_at: new Date(),
-      status: 1,
-      action: '',
-    },
-  ];
+  // bannerTable = [
+  //   {
+  //     id: 1,
+  //     image: 'IMG_1',
+  //     description: 'Banner 1 Description',
+  //     type: 'Promo',
+  //     created_at: new Date(),
+  //     updated_at: new Date(),
+  //     status: 1,
+  //     action: '',
+  //   },
+  //   {
+  //     id: 2,
+  //     image: 'IMG_2',
+  //     description: 'Banner 2 Description',
+  //     type: 'Advertisement',
+  //     created_at: new Date(),
+  //     updated_at: new Date(),
+  //     status: 0,
+  //     action: '',
+  //   },
+  //   {
+  //     id: 3,
+  //     image: 'IMG_3',
+  //     description: 'Banner 3 Description',
+  //     type: 'Campaign',
+  //     created_at: new Date(),
+  //     updated_at: new Date(),
+  //     status: 1,
+  //     action: '',
+  //   },
+  //   {
+  //     id: 4,
+  //     image: 'IMG_4',
+  //     description: 'Banner 4 Description',
+  //     type: 'Promo',
+  //     created_at: new Date(),
+  //     updated_at: new Date(),
+  //     status: 0,
+  //     action: '',
+  //   },
+  //   {
+  //     id: 5,
+  //     image: 'IMG_5',
+  //     description: 'Banner 5 Description',
+  //     type: 'Event',
+  //     created_at: new Date(),
+  //     updated_at: new Date(),
+  //     status: 1,
+  //     action: '',
+  //   },
+  // ];
 
   // Format date function
   formatDateCustom(date: Date): string {
@@ -245,7 +247,7 @@ export class AdvertisingManagementComponent {
     } else if (status === '0') {
       this.statusfilter = '0';
     }
-    // this.GetBanners();
+    this.GetBanners();
   }
 
   // ShowActive() {
@@ -734,11 +736,11 @@ export class AdvertisingManagementComponent {
     this.tableSize = event.target.value;
     console.log(event.target.value);
     this.page = 1;
-    // this.GetBanners();
+    this.GetBanners();
   }
   onTableDataChange(event: any) {
     this.page = event;
-    // this.GetBanners();
+    this.GetBanners();
   }
 
   selectedFileNames: string[] = [];
@@ -1047,9 +1049,8 @@ export class AdvertisingManagementComponent {
       heading0: '#',
       heading1: 'Image',
       heading2: 'Description',
-      heading3: 'Banner Type',
-      heading4: 'Date added',
-      heading5: 'Date modified',
+      // heading4: 'Date added',
+      // heading5: 'Date modified',
       heading6: 'Status',
       heading7: 'Action',
     },
@@ -1078,20 +1079,20 @@ export class AdvertisingManagementComponent {
   Createbanner() {
     if (this.bannercreate.valid) {
       const formData: FormData = new FormData();
-      formData.append('user_id', this.user_id + '');
+      // formData.append('user_id', this.user_id + '');
       // formData.append("user_id", '1' + '');
-      formData.append('type', this.bannercreate.get('BannerType')?.value);
+      // formData.append('type', this.bannercreate.get('BannerType')?.value);
       formData.append(
         'description',
         this.bannercreate.get('description')?.value
       );
-      if (this.bannercreate.get('BannerType')?.value == 'Advertisement') {
-        formData.append(
-          'start_time',
-          this.bannercreate.get('StartDate')?.value
-        );
-        formData.append('end_time', this.bannercreate.get('endDate')?.value);
-      }
+      // if (this.bannercreate.get('BannerType')?.value == 'Advertisement') {
+      //   formData.append(
+      //     'start_time',
+      //     this.bannercreate.get('StartDate')?.value
+      //   );
+      //   formData.append('end_time', this.bannercreate.get('endDate')?.value);
+      // }
 
       if (this.selectedFiles.length > 0) {
         const file = this.selectedFiles[0];
@@ -1102,35 +1103,35 @@ export class AdvertisingManagementComponent {
         this.selectedFileNames.toString().includes('jpg') ||
         this.selectedFileNames.toString().includes('png')
       ) {
-        // this.adminService.createbanner(formData).subscribe((response: any) => {
-        //   console.log(response);
-        //   if (response.status === 200) {
-        //     this.closeModal();
-        //     this.successName = 'Banner Created';
-        //     this.ngOnInit();
-        //     this.GetBanners();
-        //     setTimeout(() => {
-        //       this.openSecondsuccess = true;
-        //       setTimeout(() => {
-        //         this.openSecondsuccess = false;
-        //       }, 1800);
-        //     }, 200);
-        //   } else {
-        //     this.submitted = false;
-        //     if (
-        //       typeof (response.errors ?? response.message) === 'object' &&
-        //       (response.errors ?? response.message) !== null &&
-        //       !Array.isArray(response.errors ?? response.message)
-        //     ) {
-        //       this.errorMessage = JSON.stringify(
-        //         response.errors ?? response.message
-        //       );
-        //     } else {
-        //       this.errorMessage = response.errors;
-        //     }
-        //     alert(this.errorMessage);
-        //   }
-        // });
+        this.employeeService.createbanner(formData).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200) {
+            this.closeModal();
+            this.successName = 'Banner Created';
+            this.ngOnInit();
+            this.GetBanners();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
+              setTimeout(() => {
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+            if (
+              typeof (response.errors ?? response.message) === 'object' &&
+              (response.errors ?? response.message) !== null &&
+              !Array.isArray(response.errors ?? response.message)
+            ) {
+              this.errorMessage = JSON.stringify(
+                response.errors ?? response.message
+              );
+            } else {
+              this.errorMessage = response.errors;
+            }
+            alert(this.errorMessage);
+          }
+        });
       }
     } else {
       this.submitted = false;
@@ -1155,23 +1156,13 @@ export class AdvertisingManagementComponent {
   Updatebanner() {
     if (this.bannerupdate.valid) {
       const formData: FormData = new FormData();
-      formData.append('banner_id', this.banner_id + '');
-      formData.append('user_id', this.user_id + '');
-      // formData.append("type", this.bannerupdate.get("BannerType")?.value);
+   
       formData.append(
         'description',
         this.bannerupdate.get('description')?.value
       );
-      // formData.append("start_time", this.bannerupdate.get("StartDate")?.value);
-      // formData.append("end_time", this.bannerupdate.get("endDate")?.value);
-      if (this.bannerupdate.get('BannerType')?.value == 'Advertisement') {
-        formData.append(
-          'start_time',
-          this.bannerupdate.get('StartDate')?.value
-        );
-        formData.append('end_time', this.bannerupdate.get('endDate')?.value);
-      }
-
+      formData.append("_method", "put");
+    
       if (this.selectedFiles.length > 0) {
         const file = this.selectedFiles[0];
         formData.append('image', file, file.name);
@@ -1185,35 +1176,35 @@ export class AdvertisingManagementComponent {
         this.selectedFileNames.toString().includes('jpg') ||
         this.selectedFileNames.toString().includes('png')
       ) {
-        // this.adminService.updatebanner(formData).subscribe((response: any) => {
-        //   console.log(response);
-        //   if (response.status === 200) {
-        //     this.closeModal();
-        //     this.successName = 'Banner Updated';
-        //     this.ngOnInit();
-        //     this.GetBanners();
-        //     setTimeout(() => {
-        //       this.openSecondsuccess = true;
-        //       setTimeout(() => {
-        //         this.openSecondsuccess = false;
-        //       }, 1800);
-        //     }, 200);
-        //   } else {
-        //     this.submitted = false;
-        //     if (
-        //       typeof (response.errors ?? response.message) === 'object' &&
-        //       (response.errors ?? response.message) !== null &&
-        //       !Array.isArray(response.errors ?? response.message)
-        //     ) {
-        //       this.errorMessage = JSON.stringify(
-        //         response.errors ?? response.message
-        //       );
-        //     } else {
-        //       this.errorMessage = response.errors;
-        //     }
-        //     alert(this.errorMessage);
-        //   }
-        // });
+        this.employeeService.updatebanner(formData,this.banner_id).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200) {
+            this.closeModal();
+            this.successName = 'Banner Updated';
+            this.ngOnInit();
+            this.GetBanners();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
+              setTimeout(() => {
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+            if (
+              typeof (response.errors ?? response.message) === 'object' &&
+              (response.errors ?? response.message) !== null &&
+              !Array.isArray(response.errors ?? response.message)
+            ) {
+              this.errorMessage = JSON.stringify(
+                response.errors ?? response.message
+              );
+            } else {
+              this.errorMessage = response.errors;
+            }
+            alert(this.errorMessage);
+          }
+        });
       } else {
         this.submitted = false;
         this.errorMessage = 'please select correct file';
@@ -1328,8 +1319,8 @@ export class AdvertisingManagementComponent {
 
   banner_id: any;
   async OpenEditModal(banner: any) {
-    this.studentdetails = banner;
-    this.banneviewopen = false;
+    // this.studentdetails = banner;
+    // this.banneviewopen = false;
     this.selectedImages = [];
     this.banner_id = banner.id;
 
@@ -1344,17 +1335,17 @@ export class AdvertisingManagementComponent {
         // BannerType: [banner.type, [
         //   Validators.required,
         // ],],
-        BannerType: [banner.type],
+        // BannerType: [banner.type],
         description: [banner.description, [Validators.required]],
         Website: [banner.image, [Validators.required]],
 
-        StartDate: [
-          this.convertDate24(banner.start_time),
-          [Validators.required],
-        ],
-        endDate: [this.convertDate24(banner.end_time), [Validators.required]],
+        // StartDate: [
+        //   this.convertDate24(banner.start_time),
+        //   [Validators.required],
+        // ],
+        // endDate: [this.convertDate24(banner.end_time), [Validators.required]],
       });
-      this.typebannervalidatioupdate(banner.type);
+      // this.typebannervalidatioupdate(banner.type);
 
       var file = await this.createFile(banner.image);
       if (file) {

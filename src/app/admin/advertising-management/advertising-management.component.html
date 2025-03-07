@@ -134,16 +134,16 @@
             <th>
               <p class="table-heading">{{ detail.heading2 }}</p>
             </th>
-            <th>
+            <!-- <th>
               <p class="table-heading">{{ detail.heading3 }}</p>
-            </th>
-            <th>
+            </th> -->
+            <!-- <th>
               <p class="table-heading text-capitalize">{{ detail.heading4 }}</p>
             </th>
 
             <th>
-              <p class="table-heading text-capitalize">{{ detail.heading5 }}</p>
-            </th>
+              <p class="table-heading text-capitalize">{{ detail.heading5 }}</p> -->
+            <!-- </th> -->
             <th>
               <p class="table-heading text-capitalize">{{ detail.heading6 }}</p>
             </th>
@@ -153,7 +153,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let banner of bannerTable; index as i">
+          <tr *ngFor="let banner of bannerTable | paginate: {itemsPerPage: tableSize!='all'?tableSize:totalRecords,
+                    currentPage: page , totalItems: totalRecords};index as i">
             <!-- <td>
               <div class="attendance-checkbox p-0">
                 <input
@@ -186,15 +187,15 @@
             <td>
               <p>{{ banner.description }}</p>
             </td>
-            <td>
+            <!-- <td>
               <p>{{ banner.type }}</p>
-            </td>
-            <td>
+            </td> -->
+            <!-- <td>
               <p>{{ formatDateCustom(banner.created_at) }}</p>
             </td>
             <td>
               <p>{{ formatDateCustom(banner.updated_at) }}</p>
-            </td>
+            </td> -->
             <td>
               <p
                 [ngClass]="{
@@ -213,7 +214,7 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item *ngIf="banner.status == 1">Edit</button>
+                  <button   mat-menu-item *ngIf="banner.status == 1" (click)="OpenEditModal(banner)">Edit</button>
                   <button mat-menu-item>View Details</button>
                   <button
                     mat-menu-item
@@ -230,25 +231,14 @@
           </tr>
         </tbody>
       </table>
-      <!-- <div
-        class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
-      >
-        <span class="showalltext"
-          >Showing
-          {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }} to
-          {{
-            tableSize * page <= totalRecords ? tableSize * page : totalRecords
-          }}
-          of {{ totalRecords != undefined ? totalRecords : "" }} entries</span
-        >
-        <pagination-controls
-          previousLabel="Prev"
-          nextLabel="Next"
-          [responsive]="true"
-          (pageChange)="onTableDataChange($event)"
-          target="_top"
-        ></pagination-controls>
-      </div> -->
+      <div class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center">
+        <span class="showalltext">Showing
+          {{(tableSize*(page-1))>0?tableSize*(page-1)+1:1}} to
+          {{(tableSize*(page))<=totalRecords?tableSize*(page):totalRecords}} of
+            {{totalRecords!=undefined?totalRecords:""}} entries</span>
+            <pagination-controls previousLabel="Prev" nextLabel="Next" [responsive]=true
+              (pageChange)="onTableDataChange($event)" target="_top"></pagination-controls>
+      </div>
     </div>
   </div>
 </div>
@@ -279,7 +269,7 @@
           </div>
           <div class="modal-content-width card-body mb-0 pb-0">
             <div class="row">
-              <div class="col-lg-12 col-md-12 mb-3">
+              <!-- <div class="col-lg-12 col-md-12 mb-3">
                 <label
                   class="d-block text-capitalize form-label admin-form-lable"
                   for="BannerType"
@@ -318,13 +308,13 @@
                     Banner Type is required
                   </p>
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-lg-12 col-md-12 mb-3">
                 <label
                   class="d-block text-capitalize form-label admin-form-lable"
                   for="description"
-                  >Description</label
+                  >Banner Description</label
                 >
                 <textarea
                   class="d-block form-control form-input-custom"
@@ -332,7 +322,7 @@
                   formControlName="description"
                   #description
                   [minlength]="0"
-                  [maxlength]="500"
+                  [maxlength]="300"
                   [ngClass]="{
                     'is-invalid':
                       bannercreate.controls['description'].errors &&
@@ -355,14 +345,14 @@
                       bannercreate.controls['description'].errors['required']
                     "
                   >
-                    Description is required
+                  Banner Description is required
                   </p>
                   <!-- <p class="fw-light text-danger" *ngIf="bannercreate.controls['description'].errors['maxlength']">Maximum
                       500 characters allowed</p> -->
                 </div>
               </div>
 
-              <div
+              <!-- <div
                 class="col-lg-12 col-md-12 mb-3"
                 *ngIf="
                   bannercreate.controls['BannerType'].value === 'Advertisement'
@@ -443,7 +433,7 @@
                     End Date is required
                   </p>
                 </div>
-              </div>
+              </div> -->
 
               <!-- website banner -->
               <div class="col-lg-12 col-md-12 mb-3">
@@ -578,7 +568,7 @@
             >
               Cancel
             </button>
-            <button class="btn btn-custom-primary px-4 py-2" type="submit">
+            <button class="btn btn-custom-primary px-4 py-2" type="submit" (click)="Createbanner()">
               Create
             </button>
           </div>
@@ -632,7 +622,7 @@
                   </div>
               </div> -->
 
-              <div class="col-lg-12 col-md-12 mb-3">
+              <!-- <div class="col-lg-12 col-md-12 mb-3">
                 <label
                   class="d-block text-capitalize form-label admin-form-lable"
                   for="BannerType"
@@ -645,13 +635,13 @@
                   formControlName="BannerType"
                   [readOnly]="true"
                 />
-              </div>
+              </div> -->
 
               <div class="col-lg-12 col-md-12 mb-3">
                 <label
                   class="d-block text-capitalize form-label admin-form-lable"
                   for="description"
-                  >Description</label
+                  >Banner Description</label
                 >
                 <textarea
                   class="d-block form-control form-input-custom"
@@ -682,7 +672,7 @@
                       bannerupdate.controls['description'].errors['required']
                     "
                   >
-                    Description is required
+                  Banner Description is required
                   </p>
                   <!-- <p class="fw-light text-danger" *ngIf="bannercreate.controls['description'].errors['maxlength']">Maximum
                       500 characters allowed</p> -->
@@ -725,7 +715,7 @@
           </div>
         </div> -->
 
-              <div
+              <!-- <div
                 class="col-lg-12 col-md-12 mb-3"
                 *ngIf="
                   bannerupdate.controls['BannerType'].value === 'Advertisement'
@@ -806,7 +796,7 @@
                     End Date is required
                   </p>
                 </div>
-              </div>
+              </div> -->
               <!-- website banner -->
               <div class="col-lg-12 col-md-12 mb-3">
                 <div class="files-add text-center">
@@ -900,7 +890,7 @@
             >
               Cancel
             </button>
-            <button class="btn btn-custom-primary px-4 py-2" type="submit">
+            <button class="btn btn-custom-primary px-4 py-2" type="submit" (click)="Updatebanner()">
               Update
             </button>
           </div>
