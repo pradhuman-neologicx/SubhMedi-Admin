@@ -31,6 +31,7 @@ import { AdvertisingManagementComponent } from './admin/advertising-management/a
 import { ViewAppUsersComponent } from './admin/user-management/app-users/view-app-users/view-app-users.component';
 import { ViewSilentUsersComponent } from './admin/user-management/silent-users/view-silent-users/view-silent-users.component';
 import { CompaniesComponent } from './admin/companies/companies.component';
+import { AuthorityComponent } from './admin/authority/authority.component';
 
 const routes: Routes = [
   {
@@ -168,6 +169,10 @@ const routes: Routes = [
       {
         path: 'companies',
         component: CompaniesComponent,
+      },
+      {
+        path: 'authority',
+        component: AuthorityComponent,
       },
 
       {

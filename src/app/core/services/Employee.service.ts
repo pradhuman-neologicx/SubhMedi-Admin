@@ -124,6 +124,72 @@ export class EmployeeService {
     );
   }
 
+
+  Getauthority(tableSize: any, page: any,search:any) {
+    // const userId = this.jwtService.getpanelUserId();
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+       'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = '';
+    if (tableSize != 'all') {
+      url = `authority?limit=` + tableSize + '&page=' + page;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '&search=' + search;
+        }
+      }
+      // if (status_filter != undefined) {
+      //   if (status_filter.length > 0) {
+      //     url = url + '&status_filter=' + status_filter;
+      //   }
+      // }
+    } else {
+      url = `authority?`;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '?search=' + search;
+        }
+      }
+      // if (status_filter != undefined) {
+      //   if (status_filter.length > 0) {
+      //     url = url + '?status_filter=' + status_filter;
+      //   }
+      // }
+    }
+
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  createauthority(body: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+    
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+  });
+
+  // Only set Content-Type if body is NOT FormData
+  if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+  }
+
+    return this.apiservice.post(`authority`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
   Getbanners(tableSize: any, page: any, status_filter: any) {
     // const userId = this.jwtService.getpanelUserId();
     // const token = this.jwtService.getToken();
@@ -466,6 +532,25 @@ export class EmployeeService {
         console.log('Response received:', error);
         this.erromessagefunction(error);
       })
+    );
+  }
+
+
+  GetStates() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.apiservice.get("states",headers)
+    .pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+     this.erromessagefunction(error)
+
+      })
+    
     );
   }
 
