@@ -1340,7 +1340,7 @@ export class CompaniesComponent {
 
       this.bannerupdate = this.formBuilder.group({
       
-        description: [response.name],
+        description: [response.name , [Validators.required]],
         Website: [response.image, [Validators.required]],
       });
   
