@@ -1329,6 +1329,7 @@ export class CompaniesComponent {
       if (response.status === 200 || response.status === 201) {
 
         this.fillformdate(response.data);
+        this.fillviewformdate(response.data);
 
       }
 
@@ -1507,7 +1508,176 @@ export class CompaniesComponent {
     } 
    
     
-   
+    async fillviewformdate(response: any) {
+
+      this.bannerview = this.formBuilder.group({
+      
+        description: [response.name],
+        Website: [response.image, [Validators.required]],
+      });
+  
+
+      var file = await this.createFile(response.image);
+      // if (file) {
+      //   var bannertype = response.type;
+      //   if (bannertype == 'Advertisement') {
+      //     const fileType = file.type;
+      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+      //     if (!validImageTypes.includes(fileType)) {
+      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       return;
+      //     }
+      //     const maxSizeBytes = 5000000;
+      //     if (file.size > maxSizeBytes) {
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       this.fileSizeError =
+      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+      //       return;
+      //     }
+
+      //     const reader = new FileReader();
+      //     this.selectedFileNames = [file.name];
+      //     this.selectedFiles = [file];
+
+      //     reader.onload = () => {
+      //       if (typeof reader.result === 'string' || reader.result === null) {
+      //         const id = this.generateUniqueId();
+      //         const imageSrc = reader.result as string;
+      //         const image = new Image();
+      //         image.src = imageSrc;
+
+      //         image.onload = () => {
+      //           if (image.width === 1878 && image.height === 281) {
+      //             this.selectedImages = [{ imageSrc, id }];
+      //             this.fileSizeError = '';
+      //           } else {
+      //             this.selectedImages = [];
+      //             this.selectedFileNames = [];
+      //             this.selectedFiles = [];
+      //             this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
+      //           }
+      //         };
+      //       }
+      //     };
+
+      //     reader.readAsDataURL(file);
+      //   } else {
+      //     const maxSizeBytes = 5000000;
+      //     var maxHeight: any;
+      //     const fileType = file.type;
+      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+      //     if (!validImageTypes.includes(fileType)) {
+      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       return;
+      //     }
+
+      //     if (bannertype == 'Advertisement') {
+      //       // 5MB for the file
+      //       maxHeight = 500;
+      //     } else {
+      //       maxHeight = 700;
+      //     }
+      //     if (file.size > maxSizeBytes) {
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       this.fileSizeError =
+      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+      //       return;
+      //     }
+
+      //     const reader = new FileReader();
+      //     this.selectedFileNames = [file.name];
+      //     this.selectedFiles = [file];
+
+      //     reader.onload = () => {
+      //       if (typeof reader.result === 'string' || reader.result === null) {
+      //         const id = this.generateUniqueId();
+      //         const imageSrc = reader.result as string;
+      //         const image = new Image();
+      //         image.src = imageSrc;
+
+      //         image.onload = () => {
+      //           if (image.height > maxHeight) {
+      //             this.selectedImages = [];
+      //             this.selectedFileNames = [];
+      //             this.selectedFiles = [];
+      //             this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
+      //           } else {
+      //             this.selectedImages = [{ imageSrc, id }];
+      //             this.fileSizeError = '';
+      //           }
+      //         };
+      //       }
+      //     };
+
+      //     reader.readAsDataURL(file);
+      //   }
+      // }
+      if (file) {
+        const maxSizeBytes = 5000000;
+        var maxHeight: any;
+        const fileType = file.type;
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      
+        if (!validImageTypes.includes(fileType)) {
+          this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+          this.selectedImages = [];
+          this.selectedFileNames = [];
+          this.selectedFiles = [];
+          return;
+        }
+      
+        maxHeight = 700;
+      
+        if (file.size > maxSizeBytes) {
+          this.selectedImages = [];
+          this.selectedFileNames = [];
+          this.selectedFiles = [];
+          this.fileSizeError =
+            'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+          return;
+        }
+      
+        const reader = new FileReader();
+        this.selectedFileNames = [file.name];
+        this.selectedFiles = [file];
+      
+        reader.onload = () => {
+          if (typeof reader.result === 'string' || reader.result === null) {
+            const id = this.generateUniqueId();
+            const imageSrc = reader.result as string;
+            const image = new Image();
+            image.src = imageSrc;
+      
+            image.onload = () => {
+              if (image.height > maxHeight) {
+                this.selectedImages = [];
+                this.selectedFileNames = [];
+                this.selectedFiles = [];
+                this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
+              } else {
+                this.selectedImages = [{ imageSrc, id }];
+                this.fileSizeError = '';
+              }
+            };
+          }
+        };
+      
+        reader.readAsDataURL(file);
+      }
+      
+    } 
     
 
     companyId: any;
@@ -1655,66 +1825,14 @@ this.GetgetcompanybyID();
   }
 
   async OpenviewModal(banner: any) {
-    this.selectedImages = [];
+    this.banneviewopen = true;
+      this.selectedImages = [];
+    this.selectedFileNames = [];
+    this.selectedFiles = [];
     this.companyId = banner.id;
-    this.studentdetails = banner;
+    this.GetgetcompanybyID();
 
-    try {
-      if (!banner || !banner.id) {
-        console.error('unit ID is undefined or null.');
-        return;
-      }
-
-      this.banneviewopen = true;
-      this.bannerview = this.formBuilder.group({
-        BannerType: [banner.type],
-        description: [banner.description],
-        Website: [banner.image],
-        StartDate: [this.convertDate24(banner.start_time)],
-        endDate: [this.convertDate24(banner.end_time)],
-      });
-      // this.typebannervalidatioupdate(banner.type)
-
-      var file = await this.createFile(banner.image);
-      if (file) {
-        const maxSizeBytes = 5000000;
-        var maxHeight: any;
-
-        maxHeight = 700;
-
-        if (file.size > maxSizeBytes) {
-          this.fileSizeError =
-            'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-          return;
-        }
-
-        const reader = new FileReader();
-        this.selectedFileNames = [file.name];
-        this.selectedFiles = [file];
-
-        reader.onload = () => {
-          if (typeof reader.result === 'string' || reader.result === null) {
-            const id = this.generateUniqueId();
-            const imageSrc = reader.result as string;
-            const image = new Image();
-            image.src = imageSrc;
-
-            image.onload = () => {
-              if (image.height > maxHeight) {
-                this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-              } else {
-                this.selectedImages = [{ imageSrc, id }];
-                this.fileSizeError = '';
-              }
-            };
-          }
-        };
-
-        reader.readAsDataURL(file);
-      }
-    } catch (error) {
-      console.error('An error occurred while opening edit modal:', error);
-    }
+    
   }
 
   async createFile(url: string) {
