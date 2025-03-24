@@ -1,12 +1,12 @@
 <div class="container mx-auto mb-4">
   <div class="d-flex justify-content-between align-items-center">
     <h1 class="text-primary table-heading-detail">Subscription Management</h1>
-    <button
+    <!-- <button
       class="btn btn-primary main-btnfs px-3 py-2"
       (click)="OpenCreateModal()"
     >
-      Add Subscriptionuj6u7j
-    </button>
+      Add Subscription
+    </button> -->
   </div>
 </div>
 
@@ -88,32 +88,32 @@
           </th>
 
           <th>
-            <p class="table-heading table-new-heading">Plan Name</p>
+            <p class="table-heading table-new-heading">Name</p>
           </th>
           <th>
-            <p class="table-heading table-new-heading">Plan Duration(Months)</p>
+            <p class="table-heading table-new-heading">Amount (Months)</p>
           </th>
           <th>
-            <p class="table-heading table-new-heading">Number of Stores</p>
+            <p class="table-heading table-new-heading">Amount (Yearly)</p>
           </th>
           <th>
-            <p class="table-heading table-new-heading">Price of Plan</p>
+            <p class="table-heading table-new-heading">Max. Store</p>
           </th>
           <th>
-            <p class="table-heading table-new-heading">No. of Staff</p>
-          </th>
-
-          <th>
-            <p class="table-heading table-new-heading">Status</p>
+            <p class="table-heading table-new-heading">Max. Staff</p>
           </th>
 
           <!-- <th>
-              <p class="table-heading table-new-heading">Action</p>
-            </th> -->
+            <p class="table-heading table-new-heading">Status</p>
+          </th> -->
+
+          <th>
+            <p class="table-heading table-new-heading">Action</p>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let users of userstable; let i = index">
+        <tr *ngFor="let users of unitstable; let i = index">
           <td>{{ i + 1 }}</td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
@@ -122,26 +122,26 @@
           </td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
-              {{ users.duration }}
+              {{ users.monthly_amount }}
             </p>
           </td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
-              {{ users.stores }}
+              {{ users.yearly_amount }}
             </p>
           </td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
-              {{ users.plans }}
+              {{ users.max_store }}
             </p>
           </td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
-              {{ users.staff }}
+              {{ users.max_staff }}
             </p>
           </td>
 
-          <td>
+          <!-- <td>
             <p
               [ngClass]="{
                 'active-status': users.status == 1 ? 1 : 0,
@@ -150,7 +150,7 @@
             >
               {{ users.status == 1 ? "active" : "deactive" }}
             </p>
-          </td>
+          </td> -->
 
           <td>
             <p>
@@ -159,15 +159,17 @@
               </button>
 
               <mat-menu #menu="matMenu">
-                <button mat-menu-item *ngIf="users.status == 1">
+                <button mat-menu-item (click)="OpenEditModal(users)">
                   Edit Details
                 </button>
-                <button mat-menu-item>View Details</button>
+                <button mat-menu-item (click)="openviewModal(users)">
+                  View Details
+                </button>
                 <!-- <button mat-menu-item>Deactive</button>
                 <ng-template #inactiveButton>
                   <button mat-menu-item>Activate</button>
                 </ng-template> -->
-                <button
+                <!-- <button
                   mat-menu-item
                   *ngIf="users.status == 1; else inactiveButton"
                 >
@@ -175,7 +177,7 @@
                 </button>
                 <ng-template #inactiveButton>
                   <button mat-menu-item>Activate</button>
-                </ng-template>
+                </ng-template> -->
               </mat-menu>
             </p>
           </td>
@@ -417,7 +419,7 @@
           <div
             class="card-header bg-white d-flex justify-content-between algin-items-center"
           >
-            <h5 class="modal-title pt-1">Update Units</h5>
+            <h5 class="modal-title pt-1">Update Subscription</h5>
             <button
               class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
               type="button"
@@ -431,12 +433,13 @@
             <div class="row">
               <div class="col-lg-12 col-md-12 mb-3">
                 <label for="unitsname" class="form-label form-lable-custom"
-                  >Units Name</label
+                  >Name</label
                 >
                 <input
                   type="text"
                   class="form-control form-input-custom"
                   formControlName="unitsname"
+                  readonly="true"
                   [ngClass]="{
                     'is-invalid':
                       unitsformupdate.controls['unitsname'].errors &&
@@ -459,6 +462,140 @@
                     "
                   >
                     Name is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsmonth" class="form-label form-lable-custom">
+                  Amount (in Months)</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsmonth"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformupdate.controls['unitsmonth'].errors &&
+                      (unitsformupdate.controls['unitsmonth'].touched ||
+                        unitsformupdate.controls['unitsmonth'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformupdate.controls['unitsmonth'].errors &&
+                    (unitsformupdate.controls['unitsmonth'].touched ||
+                      unitsformupdate.controls['unitsmonth'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformupdate.controls['unitsmonth'].errors['required']
+                    "
+                  >
+                    Amount is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsyearly" class="form-label form-lable-custom">
+                  Amount (in Yearly)</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsyearly"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformupdate.controls['unitsyearly'].errors &&
+                      (unitsformupdate.controls['unitsyearly'].touched ||
+                        unitsformupdate.controls['unitsyearly'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformupdate.controls['unitsyearly'].errors &&
+                    (unitsformupdate.controls['unitsyearly'].touched ||
+                      unitsformupdate.controls['unitsyearly'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformupdate.controls['unitsyearly'].errors['required']
+                    "
+                  >
+                    Amount is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsstore" class="form-label form-lable-custom">
+                  Max. Stores</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsstore"
+                  readonly="true"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformupdate.controls['unitsstore'].errors &&
+                      (unitsformupdate.controls['unitsstore'].touched ||
+                        unitsformupdate.controls['unitsstore'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformupdate.controls['unitsstore'].errors &&
+                    (unitsformupdate.controls['unitsstore'].touched ||
+                      unitsformupdate.controls['unitsstore'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformupdate.controls['unitsstore'].errors['required']
+                    "
+                  >
+                    Stores is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsstaff" class="form-label form-lable-custom">
+                  Max. Staff</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsstaff"
+                  readonly="true"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformupdate.controls['unitsstaff'].errors &&
+                      (unitsformupdate.controls['unitsstaff'].touched ||
+                        unitsformupdate.controls['unitsstaff'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformupdate.controls['unitsstaff'].errors &&
+                    (unitsformupdate.controls['unitsstaff'].touched ||
+                      unitsformupdate.controls['unitsstaff'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformupdate.controls['unitsstaff'].errors['required']
+                    "
+                  >
+                    Staff is Requried
                   </p>
                 </div>
               </div>
@@ -485,6 +622,156 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="viewunitopen"
+  class="your-animation-class modal-container"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-content modal-content-50" [@fadeIn]>
+    <div>
+      <form [formGroup]="unitsformview">
+        <div class="card">
+          <div
+            class="card-header bg-white d-flex justify-content-between algin-items-center"
+          >
+            <h5 class="modal-title pt-1">View Subscription</h5>
+            <button
+              class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+              type="button"
+              (click)="closeModal()"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div class="modal-content-width card-body mb-0">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 mb-3">
+                <label for="unitsname" class="form-label form-lable-custom"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-input-custom"
+                  formControlName="unitsname"
+                  readonly="true"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformview.controls['unitsname'].errors &&
+                      (unitsformview.controls['unitsname'].touched ||
+                        unitsformview.controls['unitsname'].dirty)
+                  }"
+                />
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsmonth" class="form-label form-lable-custom">
+                  Amount (in Months)</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsmonth"
+                  readonly="true"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformview.controls['unitsmonth'].errors &&
+                      (unitsformview.controls['unitsmonth'].touched ||
+                        unitsformview.controls['unitsmonth'].dirty)
+                  }"
+                />
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsyearly" class="form-label form-lable-custom">
+                  Amount (in Yearly)</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsyearly"
+                  readonly="true"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformview.controls['unitsyearly'].errors &&
+                      (unitsformview.controls['unitsyearly'].touched ||
+                        unitsformview.controls['unitsyearly'].dirty)
+                  }"
+                />
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsstore" class="form-label form-lable-custom">
+                  Max. Stores</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsstore"
+                  readonly="true"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformview.controls['unitsstore'].errors &&
+                      (unitsformview.controls['unitsstore'].touched ||
+                        unitsformview.controls['unitsstore'].dirty)
+                  }"
+                />
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsstaff" class="form-label form-lable-custom">
+                  Max. Staff</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-input-custom"
+                  formControlName="unitsstaff"
+                  readonly="true"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformview.controls['unitsstaff'].errors &&
+                      (unitsformview.controls['unitsstaff'].touched ||
+                        unitsformview.controls['unitsstaff'].dirty)
+                  }"
+                />
+              </div>
+            </div>
+            <div class="modal-footer text-end me-4">
+              <button
+                class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600"
+                type="button"
+                (click)="closeModal()"
+              >
+                Cancel
+              </button>
+            </div>
+            <div class="text-end error-message" *ngIf="!submitted">
+              <p class="fw-light text-danger">{{ errorMessage }}</p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="openSecondsuccess"
+  class="your-animation-class modal-container-success"
+  [@slideIn]
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div>
+    <div
+      class="p-4 d-flex justify-content-between align-items-center success-content"
+    >
+      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+      <p class="text-green-900 text-capitalize mb-0">
+        {{ successName }} successfully
+      </p>
     </div>
   </div>
 </div>

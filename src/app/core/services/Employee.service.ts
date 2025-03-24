@@ -59,12 +59,11 @@ export class EmployeeService {
     );
   }
 
-
   changestatuss(id: any, status: any, type: any): Observable<any> {
     // var user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-       'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
     const body = {
@@ -80,12 +79,12 @@ export class EmployeeService {
     );
   }
 
-  Getconpanies(tableSize: any, page: any,search:any ,status_filter: any) {
+  Getconpanies(tableSize: any, page: any, search: any, status_filter: any) {
     // const userId = this.jwtService.getpanelUserId();
     // const token = this.jwtService.getToken();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-       'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
 
@@ -124,13 +123,12 @@ export class EmployeeService {
     );
   }
 
-
-  Getauthority(tableSize: any, page: any,search:any) {
+  Getauthority(tableSize: any, page: any, search: any) {
     // const userId = this.jwtService.getpanelUserId();
     // const token = this.jwtService.getToken();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-       'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
 
@@ -171,16 +169,16 @@ export class EmployeeService {
 
   createauthority(body: any): Observable<any> {
     // const user = this.jwtService.getpanelUserId();
-    
+
     const token = this.jwtService.getToken();
     let headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-  });
+      Authorization: `Bearer ${token}`,
+    });
 
-  // Only set Content-Type if body is NOT FormData
-  if (!(body instanceof FormData)) {
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
       headers = headers.set('Content-Type', 'application/json');
-  }
+    }
 
     return this.apiservice.post(`authority`, body, headers).pipe(
       tap((error: any) => {
@@ -190,21 +188,19 @@ export class EmployeeService {
     );
   }
 
-
   updateauthority(body: any, authorityId: any): Observable<any> {
     // const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     let headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-  });
+      Authorization: `Bearer ${token}`,
+    });
 
-  // Only set Content-Type if body is NOT FormData
-  if (!(body instanceof FormData)) {
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
       headers = headers.set('Content-Type', 'application/json');
-  }
+    }
 
-
-    return this.apiservice.post(`authority/` + authorityId, body,headers).pipe(
+    return this.apiservice.post(`authority/` + authorityId, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
         this.erromessagefunction(error);
@@ -212,13 +208,11 @@ export class EmployeeService {
     );
   }
 
-
-
   getauthobyID(authorityId: any): Observable<any> {
     // const token = this.jwtService.getToken();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-       'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
 
@@ -232,15 +226,12 @@ export class EmployeeService {
     );
   }
 
-
-
-
   Getbanners(tableSize: any, page: any, status_filter: any) {
     // const userId = this.jwtService.getpanelUserId();
     // const token = this.jwtService.getToken();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-       'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
 
@@ -283,7 +274,7 @@ export class EmployeeService {
     // const token = this.jwtService.getToken();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-       'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
 
@@ -301,7 +292,7 @@ export class EmployeeService {
     // const token = this.jwtService.getToken();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-       'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
 
@@ -319,16 +310,15 @@ export class EmployeeService {
     // const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     let headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-  });
+      Authorization: `Bearer ${token}`,
+    });
 
-  // Only set Content-Type if body is NOT FormData
-  if (!(body instanceof FormData)) {
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
       headers = headers.set('Content-Type', 'application/json');
-  }
+    }
 
-
-    return this.apiservice.post(`company/` + companyId, body,headers).pipe(
+    return this.apiservice.post(`company/` + companyId, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
         this.erromessagefunction(error);
@@ -336,20 +326,18 @@ export class EmployeeService {
     );
   }
 
-
-
   createbanner(body: any): Observable<any> {
     // const user = this.jwtService.getpanelUserId();
-    
+
     const token = this.jwtService.getToken();
     let headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-  });
+      Authorization: `Bearer ${token}`,
+    });
 
-  // Only set Content-Type if body is NOT FormData
-  if (!(body instanceof FormData)) {
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
       headers = headers.set('Content-Type', 'application/json');
-  }
+    }
 
     return this.apiservice.post(`banner`, body, headers).pipe(
       tap((error: any) => {
@@ -359,19 +347,18 @@ export class EmployeeService {
     );
   }
 
- 
- createcompany(body: any): Observable<any> {
+  createcompany(body: any): Observable<any> {
     // const user = this.jwtService.getpanelUserId();
-    
+
     const token = this.jwtService.getToken();
     let headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-  });
+      Authorization: `Bearer ${token}`,
+    });
 
-  // Only set Content-Type if body is NOT FormData
-  if (!(body instanceof FormData)) {
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
       headers = headers.set('Content-Type', 'application/json');
-  }
+    }
 
     return this.apiservice.post(`company`, body, headers).pipe(
       tap((error: any) => {
@@ -381,28 +368,25 @@ export class EmployeeService {
     );
   }
 
-
   updatebanner(body: any, bannerId: any): Observable<any> {
     // const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     let headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-  });
+      Authorization: `Bearer ${token}`,
+    });
 
-  // Only set Content-Type if body is NOT FormData
-  if (!(body instanceof FormData)) {
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
       headers = headers.set('Content-Type', 'application/json');
-  }
+    }
 
-
-    return this.apiservice.post(`banner/` + bannerId, body,headers).pipe(
+    return this.apiservice.post(`banner/` + bannerId, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
         this.erromessagefunction(error);
       })
     );
   }
-
 
   changesmaterialtatus(material_id: string, status: any): Observable<any> {
     var user = this.jwtService.getpanelUserId();
@@ -580,22 +564,17 @@ export class EmployeeService {
     );
   }
 
-
   GetStates() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
-
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
-    return this.apiservice.get("states",headers)
-    .pipe(
+    return this.apiservice.get('states', headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
-     this.erromessagefunction(error)
-
+        this.erromessagefunction(error);
       })
-    
     );
   }
 
@@ -708,6 +687,19 @@ export class EmployeeService {
       'Content-Type': 'application/json',
     });
     return this.apiservice.get('get-all-units', headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+  GetSubscriptionApi() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.apiservice.get('subscription', headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
         this.erromessagefunction(error);
@@ -1040,7 +1032,25 @@ export class EmployeeService {
       })
     );
   }
+  updateSubscription(body: any, userId: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
 
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`subscription/` + userId, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
   updatematerials(body: any): Observable<any> {
     const user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();

@@ -247,34 +247,34 @@ export class AppUsersComponent {
   updateunits() {
     console.log(this.usersformupdate.get('usernname')?.value);
 
-    if (this.usersformupdate.valid) {
-      this.units.name = this.usersformupdate.get('usernname')?.value;
-      this.units.email = this.usersformupdate.get('usernemail')?.value;
-      this.units.number = this.usersformupdate.get('usernnumber')?.value;
-      this.units.unit_id = this.unit_id;
+    // if (this.usersformupdate.valid) {
+    //   this.units.name = this.usersformupdate.get('usernname')?.value;
+    //   this.units.email = this.usersformupdate.get('usernemail')?.value;
+    //   this.units.number = this.usersformupdate.get('usernnumber')?.value;
+    //   this.units.unit_id = this.unit_id;
 
-      const body = JSON.stringify(this.units);
-      console.log(body);
-      this.employeeService.updateunits(body).subscribe((response: any) => {
-        console.log(response);
-        if (response.status === 200) {
-          this.closeModal();
-          // this.successName = 'Batch';
-          // this.ngOnInit();
-          // this.Getunitsfun();
-          // this.dataService.changeMessage({ message: "units Created" });
-          // this.router.navigate(['/master/units']);
-          setTimeout(() => {
-            // this.openSecondsuccess = true;
-            setTimeout(() => {
-              // this.openSecondsuccess = false;
-            }, 1800);
-          }, 200);
-        } else {
-          // this.submitted = false;
-        }
-      });
-    }
+    //   const body = JSON.stringify(this.units);
+    //   console.log(body);
+    //   this.employeeService.updateunits(body).subscribe((response: any) => {
+    //     console.log(response);
+    //     if (response.status === 200) {
+    //       this.closeModal();
+    //       // this.successName = 'Batch';
+    //       // this.ngOnInit();
+    //       // this.Getunitsfun();
+    //       // this.dataService.changeMessage({ message: "units Created" });
+    //       // this.router.navigate(['/master/units']);
+    //       setTimeout(() => {
+    //         // this.openSecondsuccess = true;
+    //         setTimeout(() => {
+    //           // this.openSecondsuccess = false;
+    //         }, 1800);
+    //       }, 200);
+    //     } else {
+    //       // this.submitted = false;
+    //     }
+    //   });
+    // }
   }
 
   units: units = new units();

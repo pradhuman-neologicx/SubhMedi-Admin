@@ -80,6 +80,7 @@ export class SubscriptionManagementComponent {
   searchbarform!: FormGroup;
   CreateliveexamForm!: FormGroup;
   unitsformscreate!: FormGroup;
+  unitsformview!: FormGroup;
 
   orderviewform!: FormGroup;
 
@@ -114,23 +115,34 @@ export class SubscriptionManagementComponent {
     this.searchbarform = this.formBuilder.group({
       searchbar: ['', [Validators.required]],
     });
-    this.unitsformscreate = this.formBuilder.group({
-      projectname: ['', [Validators.required]],
-      Address: [''],
-      State: [''],
-      City: [''],
-      SelectClient: ['', [Validators.required]],
-      Selectstaff: [''],
-      description: [''],
-      StartDate: [''],
-      endDate: [''],
-    });
+    // this.unitsformscreate = this.formBuilder.group({
+    //   projectname: ['', [Validators.required]],
+    //   Address: [''],
+    //   State: [''],
+    //   City: [''],
+    //   SelectClient: ['', [Validators.required]],
+    //   Selectstaff: [''],
+    //   description: [''],
+    //   StartDate: [''],
+    //   endDate: [''],
+    // });
 
     this.unitsformscreate = this.formBuilder.group({
       unitsname: ['', [Validators.required]],
+      unitsmonth: ['', [Validators.required]],
+      unitsyearly: ['', [Validators.required]],
+      unitsstore: ['', [Validators.required]],
+      unitsstaff: ['', [Validators.required]],
+    });
+    this.unitsformview = this.formBuilder.group({
+      unitsname: ['', [Validators.required]],
+      unitsmonth: ['', [Validators.required]],
+      unitsyearly: ['', [Validators.required]],
+      unitsstore: ['', [Validators.required]],
+      unitsstaff: ['', [Validators.required]],
     });
 
-    // this.Getunitsfun();
+    this.Getunitsfun();
   }
 
   idString: any;
@@ -141,42 +153,25 @@ export class SubscriptionManagementComponent {
 
   Creatunitopen: boolean = false;
   updateunitopen: boolean = false;
+  viewunitopen: boolean = false;
   OpenCreateModal() {
     this.Creatunitopen = true;
   }
   closeModal() {
     this.Creatunitopen = false;
+    this.viewunitopen = false;
     this.updateunitopen = false;
   }
-  userstable = [
-    {
-      id: 1,
-      name: 'ABC',
-      duration: 3,
-      stores: 5,
-      plans: 1000,
-      staff: 10,
-      status: 1,
-    },
-    {
-      id: 2,
-      name: 'XYZ',
-      duration: 3,
-      stores: 5,
-      plans: 1000,
-      staff: 10,
-      status: 0,
-    },
-  ];
+
   unitstable: any;
-  // Getunitsfun() {
-  //   this.employeeService.GetunitsApi().subscribe((response: any) => {
-  //     if (response.status === 200) {
-  //       this.unitstable = response.data;
-  //       // this.fillformdate(response.data);
-  //     }
-  //   });
-  // }
+  Getunitsfun() {
+    this.employeeService.GetSubscriptionApi().subscribe((response: any) => {
+      if (response.status === 200) {
+        this.unitstable = response.data;
+        // this.fillformdate(response.data);
+      }
+    });
+  }
 
   async Status(unit_id: string, is_active: any) {
     const actionMessage = is_active ? 'activated' : 'deactivated';
@@ -229,54 +224,105 @@ export class SubscriptionManagementComponent {
     }
   }
 
+  successName: any = '';
+  openSecondsuccess: boolean = false;
+
   updateunits() {
     console.log(this.unitsformupdate.get('unitsname')?.value);
 
     if (this.unitsformupdate.valid) {
-      this.units.name = this.unitsformupdate.get('unitsname')?.value;
-      this.units.unit_id = this.unit_id;
+      // this.units.name = this.unitsformupdate.get('unitsname')?.value;
+      // this.units.monthly_amount = this.unitsformupdate.get('unitsmonth')?.value;
+      // this.units.yearly_amount = this.unitsformupdate.get('unitsyearly')?.value;
+      // this.units.user_id = this.unit_id;
+      const formData: FormData = new FormData();
 
-      const body = JSON.stringify(this.units);
-      console.log(body);
-      this.employeeService.updateunits(body).subscribe((response: any) => {
-        console.log(response);
-        if (response.status === 200) {
-          this.closeModal();
-          // this.successName = 'Batch';
-          // this.ngOnInit();
-          // this.Getunitsfun();
-          // this.dataService.changeMessage({ message: "units Created" });
-          // this.router.navigate(['/master/units']);
-          setTimeout(() => {
-            // this.openSecondsuccess = true;
-            setTimeout(() => {
-              // this.openSecondsuccess = false;
-            }, 1800);
-          }, 200);
-        } else {
-          // this.submitted = false;
-        }
+      // Basic Fields
+
+      formData.append(
+        'monthly_amount',
+        this.unitsformupdate.get('unitsmonth')?.value
+      );
+      formData.append(
+        'yearly_amount',
+        this.unitsformupdate.get('unitsyearly')?.value
+      );
+
+      formData.append('user_id', this.user_id);
+      formData.append('_method', 'put');
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
       });
+
+      // const body = JSON.stringify(this.units);
+      // console.log(body);
+      this.employeeService
+        .updateSubscription(formData, this.unitt_id)
+        .subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200) {
+            this.closeModal();
+            this.successName = 'Subscription Updated';
+            this.ngOnInit();
+            this.Getunitsfun();
+
+            setTimeout(() => {
+              this.openSecondsuccess = true;
+              setTimeout(() => {
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+          }
+        });
     }
   }
 
   units: units = new units();
 
-  unit_id: any;
+  unitt_id: any;
 
   unitsformupdate!: FormGroup;
-  OpenEditModal(units: any): void {
-    this.unit_id = units.id;
+  OpenEditModal(users: any): void {
+    this.unitt_id = users.id;
 
     try {
-      if (!units || !units.id) {
+      if (!users || !users.id) {
         console.error('unit ID is undefined or null.');
         return;
       }
 
       this.updateunitopen = true;
       this.unitsformupdate = this.formBuilder.group({
-        unitsname: [units.name, [Validators.required]],
+        unitsname: [users.name, [Validators.required]],
+        unitsmonth: [users.monthly_amount, [Validators.required]],
+        unitsyearly: [users.yearly_amount, [Validators.required]],
+        unitsstaff: [users.max_staff, [Validators.required]],
+        unitsstore: [users.max_store, [Validators.required]],
+      });
+    } catch (error) {
+      console.error('An error occurred while opening edit modal:', error);
+    }
+  }
+
+  // unitsformview!: FormGroup;
+  currrentClubId: any;
+  openviewModal(users: any): void {
+    this.unitt_id = users.id;
+
+    try {
+      if (!users || !users.id) {
+        console.error('unit ID is undefined or null.');
+        return;
+      }
+      this.viewunitopen = true;
+      this.unitsformview = this.formBuilder.group({
+        unitsname: [users.name, [Validators.required]],
+        unitsmonth: [users.monthly_amount, [Validators.required]],
+        unitsyearly: [users.yearly_amount, [Validators.required]],
+        unitsstaff: [users.max_staff, [Validators.required]],
+        unitsstore: [users.max_store, [Validators.required]],
       });
     } catch (error) {
       console.error('An error occurred while opening edit modal:', error);
