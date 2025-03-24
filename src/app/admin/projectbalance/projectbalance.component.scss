@@ -1,0 +1,163 @@
+.row {
+    display: flex;
+    justify-content: space-between; /* Adds space between the cards */
+  }
+  
+  .custom-card {
+    margin-right: 15px; /* Adds margin to the right side */
+     }
+  .card-body {
+  width: 100%; /* Adds margin to the right side */
+     }
+  
+     .main-btnfsss {
+        font-size: 16px;
+        margin-top: 18px;
+      }
+
+  
+  .card-text2{
+color: red;
+font-size: 18px;
+  }
+  
+  .card-title2{
+font-size: 22px;
+  }
+   
+  .card-text{
+color: green;
+font-size: 18px;
+  }
+   
+       
+  .active-status{
+    color: green;
+}
+.deactive-status{
+    color: red;
+}
+
+.rotate-icon{
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+  }
+
+
+
+  /* receipt.component.css */
+  .receipt-container {
+      width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #000;
+      background-color: #f9f9f9;
+      font-family: Arial, sans-serif;
+  }
+
+  .header {
+    //   text-align: center;
+  }
+
+  .header h2 {
+      margin: 0;
+  }
+
+  .receipt-info,
+  .details,
+  .total-amount,
+  .bank-details {
+      margin-bottom: 20px;
+  }
+
+  .receipt-info div,
+  .details div,
+  .total-amount div {
+      display: flex;
+      justify-content: space-between;
+  }
+
+  .receipt-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+  }
+
+  .receipt-table th,
+  .receipt-table td {
+      border: 1px solid #000;
+      padding: 10px;
+      text-align: left;
+  }
+
+  .total-amount div,
+  .bank-details div {
+      margin-bottom: 10px;
+  }
+
+  .footer {
+      text-align: right;
+  }
+
+  .footer p {
+      margin: 0;
+  }
+
+  hr {
+      border: none;
+      border-top: 1px solid #000;
+  }
+
+  .institute{
+    // background-color: #000;
+    color:#d45812;
+    padding: 6px;
+    margin-bottom: 20px;
+  }
+  .fee-recipet-img{
+    max-width: 120px;
+  }     
+
+  .heading-party{
+    font-size: 20px !important;
+}
+
+
+
+.button-container {
+  display: flex;
+}
+.button-label {
+  display: inline-block;
+  margin: 0 20px 0 0;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.button-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 0%;
+}
+
+.button-label span {
+  display: inline-block;
+  padding: 5px 2px;
+  width: 72px !important;
+}
+
+.button-label input:checked + span {
+  background-color: #36a292;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  height: 100%;
+}

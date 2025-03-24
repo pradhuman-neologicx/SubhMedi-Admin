@@ -1,0 +1,463 @@
+<div class="container">
+  <div class="d-flex justify-content-between algin-items-center">
+    <h1 class="text-primary table-heading-detail">View Silent Users</h1>
+    <div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-body p-0">
+      <div class="row">
+        <div class="my-3">
+          <!-- <ul class="d-flex list-unstyled text-center v_heading">
+            <li class="text-capitalize text-secondary col fs-6">App User No</li>
+            <li class="text-capitalize text-secondary col fs-6">
+              App User Name
+            </li>
+
+            <li class="text-capitalize text-secondary col fs-6">
+              App User Email
+            </li>
+            <li class="text-capitalize text-secondary col fs-6">
+              App User Number
+            </li>
+          </ul>
+          <ul class="d-flex list-unstyled text-center v_details">
+            <li
+              class="text-capitalize text-black-50 col fw-bold fs-5"
+              *ngFor="let user of userstable"
+            >
+              {{ user.userid }}
+            </li>
+            <li
+              class="text-capitalize text-black-50 col fw-bold fs-5"
+              *ngFor="let user of userstable"
+            >
+              {{ user.name }}
+            </li>
+            <li
+              class="text-capitalize text-black-50 col fw-bold fs-5"
+              *ngFor="let user of userstable"
+            >
+              {{ user.email }}
+            </li>
+            <li
+              class="text-capitalize text-black-50 col fw-bold fs-5"
+              *ngFor="let user of userstable"
+            >
+              {{ user.number }}
+            </li>
+          </ul> -->
+          <div class="user-info-card row text-center" *ngIf="silentUserData">
+            <div class="col-12 col-md-3 info-item">
+              <div class="info-label text-secondary fs-6">User ID</div>
+              <div
+                class="info-value text-secondary fw-bold fs-5 text-capitalize"
+              >
+                {{ silentUserData.id }}
+              </div>
+            </div>
+            <div class="col-12 col-md-3 info-item">
+              <div class="info-label text-secondary fs-6">User Name</div>
+              <div
+                class="info-value text-secondary fw-bold fs-5 text-capitalize"
+              >
+                {{ silentUserData.name }}
+              </div>
+            </div>
+            <div class="col-12 col-md-3 info-item">
+              <div class="info-label text-secondary fs-6">User Email</div>
+              <div
+                class="info-value text-secondary fw-bold fs-5 text-capitalize"
+              >
+                {{ silentUserData.email }}
+              </div>
+            </div>
+            <div class="col-12 col-md-3 info-item">
+              <div class="info-label text-secondary fs-6">User Number</div>
+              <div
+                class="info-value text-secondary fw-bold fs-5 text-capitalize"
+              >
+                {{ silentUserData.number }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-2">
+    <div class="card-body">
+      <ul class="nav nav-pills nav-justified" id="lineTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link active fw-bold"
+            id="store-line-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#store"
+            role="tab"
+            aria-controls="home"
+            aria-selected="true"
+            >Stores</a
+          >
+        </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link fw-bold"
+            id="employee-line-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#employee"
+            role="tab"
+            aria-controls="employee"
+            aria-selected="false"
+            >Employee</a
+          >
+        </li>
+
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link fw-bold"
+            id="expenses-line-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#documents"
+            role="tab"
+            aria-controls="documents"
+            aria-selected="false"
+            >Documents</a
+          >
+        </li>
+      </ul>
+      <div class="tab-content mt-3" id="lineTabContent">
+        <div
+          class="tab-pane fade active show"
+          id="store"
+          role="tabpanel"
+          aria-labelledby="store-line-tab"
+        >
+          <div class="table-responsive">
+            <div
+              id="custom_datatable_wrapper"
+              class="dataTables_wrappe overflow-hidden"
+            >
+              <div class="row">
+                <div class="col-sm-12">
+                  <table
+                    id="custom_datatable"
+                    class="table datatableForTabs"
+                    aria-describedby="custom_datatable_info"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 115.109px"
+                          aria-label="Sr No: activate to sort column ascending"
+                        >
+                          Sr No
+                        </th>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 140.953px"
+                          aria-label="Store No: activate to sort column ascending"
+                        >
+                          Store No
+                        </th>
+
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 211.359px"
+                          aria-label="Location: activate to sort column ascending"
+                        >
+                          Location
+                        </th>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 193.359px"
+                          aria-label="Start date: activate to sort column ascending"
+                        >
+                          Start date
+                        </th>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 136.297px"
+                          aria-label="Status: activate to sort column ascending"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="sorting sorting_asc"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 134.812px"
+                          aria-label="Action: activate to sort column descending"
+                          aria-sort="ascending"
+                        >
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="odd">
+                        <td valign="top" colspan="7" class="dataTables_empty">
+                          No data available in table
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="employee"
+          role="tabpanel"
+          aria-labelledby="employee-line-tab"
+        >
+          <div class="table-responsive">
+            <div
+              id="custom_datatable_wrapper"
+              class="dataTables_wrappe overflow-hidden"
+            >
+              <div class="row">
+                <div class="col-sm-12">
+                  <table
+                    id="custom_datatable"
+                    class="table datatableForTabs"
+                    aria-describedby="custom_datatable_info"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 115.109px"
+                          aria-label="Sr No: activate to sort column ascending"
+                        >
+                          Sr No
+                        </th>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 140.953px"
+                          aria-label="Employee No: activate to sort column ascending"
+                        >
+                          Employee No
+                        </th>
+
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 211.359px"
+                          aria-label="Designation: activate to sort column ascending"
+                        >
+                          Designation
+                        </th>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 193.359px"
+                          aria-label="Start date: activate to sort column ascending"
+                        >
+                          Start date
+                        </th>
+                        <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 136.297px"
+                          aria-label="Status: activate to sort column ascending"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="sorting sorting_asc"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 134.812px"
+                          aria-label="Action: activate to sort column descending"
+                          aria-sort="ascending"
+                        >
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="odd">
+                        <td valign="top" colspan="7" class="dataTables_empty">
+                          No data available in table
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="tab-pane fade"
+          id="documents"
+          role="tabpanel"
+          aria-labelledby="expenses-line-tab"
+        >
+          <div class="table-responsive">
+            <div
+              id="dataTableExample1_wrapper"
+              class="dataTables_wrapper overflow-hidden"
+            >
+              <div class="row dt-row">
+                <div class="col-sm-12">
+                  <table
+                    id="dataTableExample1"
+                    class="table table-striped datatableForTabs dataTable no-footer"
+                    aria-describedby="dataTableExample1_info"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          class="sorting_disabled"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 0px"
+                        >
+                          Sr No
+                        </th>
+                        <th
+                          class="sorting_disabled"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 0px"
+                        >
+                          Document Name
+                        </th>
+                        <th
+                          class="sorting_disabled"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 0px"
+                        >
+                          Document No
+                        </th>
+                        <th
+                          class="sorting_disabled"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 0px"
+                        >
+                          Valid From
+                        </th>
+                        <th
+                          class="sorting_disabled"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 0px"
+                        >
+                          Valid To
+                        </th>
+                        <th
+                          class="sorting_disabled"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 0px"
+                        >
+                          Issued By
+                        </th>
+                        <th
+                          class="sorting_disabled"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 0px"
+                        >
+                          Days Remaining
+                        </th>
+                        <th
+                          class="sorting_disabled"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 0px"
+                        >
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="let doc of documents; let i = index"
+                        [class.odd]="i % 2 === 0"
+                        [class.even]="i % 2 !== 0"
+                      >
+                        <td>{{ doc.id }}</td>
+                        <td>{{ doc.name }}</td>
+                        <td>{{ doc.code }}</td>
+                        <td>{{ doc.startDate }}</td>
+                        <td>{{ doc.endDate }}</td>
+                        <td>{{ doc.owner }}</td>
+                        <td>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-danger': doc.status === 'Expired',
+                              'bg-success': doc.status === 'Active'
+                            }"
+                          >
+                            {{ doc.status }}
+                          </span>
+                        </td>
+                        <td>
+                          <a [href]="doc.docUrl" target="_blank">
+                            <i class="fa-solid fa-eye" title="View"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

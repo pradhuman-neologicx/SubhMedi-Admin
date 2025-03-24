@@ -1,0 +1,668 @@
+
+
+<div class="row" >
+    <form [formGroup]="addotherexpenseorm">
+        <div class="mb-3 ">
+            <label class="d-block text-capitalize form-label form-lable-custom" for="date">Date
+            </label>
+            <input type="date" class="d-block form-control form-input-custom" formControlName="date"
+                [ngClass]="{ 'is-invalid':addotherexpenseorm.controls['date'].errors && (addotherexpenseorm.controls['date'].touched || addotherexpenseorm.controls['date'].dirty) }">
+            <div class="text-danger error-message"
+                *ngIf="addotherexpenseorm.controls['date'].errors && (addotherexpenseorm.controls['date'].touched || addotherexpenseorm.controls['date'].dirty)">
+                <p class="fw-light text-danger"
+                    *ngIf="addotherexpenseorm.controls['date'].errors['required']">
+                    Date is required</p>
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="mb-3 ">
+            <label class="form-label form-lable-custom"
+                for="selectpartyname">
+                Select Party Name</label>
+            <select class="form-select form-input-custom" formControlName="selectpartyname" #selectpartyname  (change)="onchange(selectpartyname.value)"
+                [ngClass]="{ 'is-invalid': addotherexpenseorm.controls['selectpartyname'].errors && (addotherexpenseorm.controls['selectpartyname'].touched || addotherexpenseorm.controls['selectpartyname'].dirty) }">
+                <option *ngFor="let party of partynamelist" [value]="party.id">
+                {{ party.name }}
+            </option>
+            </select>
+            <div class="text-danger error-message"
+                *ngIf="addotherexpenseorm.controls['selectpartyname'].errors && (addotherexpenseorm.controls['selectpartyname'].touched || addotherexpenseorm.controls['selectpartyname'].dirty)">
+                <p class="fw-light text-danger"
+                    *ngIf="addotherexpenseorm.controls['selectpartyname'].errors['required']">
+                    Select Party Name is required
+                </p>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="mb-3 ">
+            <label class="d-block text-capitalize form-label form-lable-custom" for="Balance">
+              Total Balance
+            </label>
+            <input type="text" class="d-block form-control form-input-custom"  
+                formControlName="Balance"  [readOnly]="true" >
+         
+        </div>
+
+
+
+
+
+
+
+
+    
+        
+
+
+
+        <!-- <div class="text-end mb-3">
+            <button class="btn btn-primary px-2 py-2" (click)="toggleAMatDetails()">
+                <span>
+                    <i class="fa-solid"
+                        [ngClass]="showreaddmaterialDetails ? 'fa-minus' : 'fa-plus'"></i>
+                </span>
+                Add Task
+            </button>
+        </div>
+
+
+
+      
+        <div formArrayName="materials" *ngIf="showreaddmaterialDetails">
+            <div *ngFor="let material of materials.controls; let i = index" [formGroupName]="i"
+                class="row mt-3">
+        
+               
+              
+
+                
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Task Name"
+                        formControlName="name" >
+                        <div
+                        class="text-danger error-message"
+                        *ngIf="materials.controls[i].get('name')?.invalid && (materials.controls[i].get('name')?.touched || materials.controls[i].get('name')?.dirty) && materials.controls[i].get('name')?.errors?.['required']">
+                        <p
+                            class="fw-light text-danger">This
+                            is Required</p>
+                    </div>
+                </div>
+
+
+
+             
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Discount"
+                        formControlName="discount" >
+                        <div
+                        class="text-danger error-message"
+                        *ngIf="materials.controls[i].get('discount')?.invalid && (materials.controls[i].get('discount')?.touched || materials.controls[i].get('discount')?.dirty) && materials.controls[i].get('discount')?.errors?.['required']">
+                        <p
+                            class="fw-light text-danger">This
+                            is Required</p>
+                    </div>
+
+                </div>
+
+              
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Quantity"
+                        formControlName="units">
+                        <div
+                        class="text-danger error-message"
+                        *ngIf="materials.controls[i].get('units')?.invalid && (materials.controls[i].get('units')?.touched || materials.controls[i].get('units')?.dirty) && materials.controls[i].get('units')?.errors?.['required']">
+                        <p
+                            class="fw-light text-danger">This
+                            is Required</p>
+                    </div>
+                </div>
+
+              
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Unit Rate"
+                        formControlName="unitsRange">
+                        <div
+                        class="text-danger error-message"
+                        *ngIf="materials.controls[i].get('unitsRange')?.invalid && (materials.controls[i].get('unitsRange')?.touched || materials.controls[i].get('unitsRange')?.dirty) && materials.controls[i].get('unitsRange')?.errors?.['required']">
+                        <p
+                            class="fw-light text-danger">This
+                            is Required</p>
+                    </div>
+                </div>
+
+           
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Amount" [value]="calculatePerMaterialAmount(i,0)"
+                        formControlName="subtotal" [readOnly]="true">
+
+                </div>
+
+            </div>
+        </div> -->
+
+
+
+
+
+
+        <div class="text-end mb-3">
+            <button class="btn btn-primary px-2 py-2" (click)="addTask()">
+              <span>
+                <i class="fa-solid fa-plus"></i>
+              </span>
+              Add Task
+            </button>
+          </div>
+          
+          <!-- FormArray for selected materials -->
+          <div formArrayName="materials" >
+            <div *ngFor="let material of materials.controls; let i = index" [formGroupName]="i" class="row mt-3">
+              <!-- Name Field -->
+              <div class="col-md-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Task Name"
+                  formControlName="name"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    materials.controls[i].get('name')?.invalid &&
+                    (materials.controls[i].get('name')?.touched || materials.controls[i].get('name')?.dirty) &&
+                    materials.controls[i].get('name')?.errors?.['required']
+                  "
+                >
+                  <p class="fw-light text-danger">This is Required</p>
+                </div>
+              </div>
+          
+
+
+
+
+<!-- 
+              <div class="col-md-6">
+            
+                <select class="form-control" formControlName="Unitsnew"  placeholder="Units" >
+                    
+                  
+                    <option *ngFor="let units of getunitslist" [value]="units.id">
+                    {{ units.name }}
+                </option>
+                </select>
+                <div
+                class="text-danger error-message"
+                *ngIf="
+                  materials.controls[i].get('Unitsnew')?.invalid &&
+                  (materials.controls[i].get('Unitsnew')?.touched || materials.controls[i].get('Unitsnew')?.dirty) &&
+                  materials.controls[i].get('Unitsnew')?.errors?.['required']
+                "
+              >
+                <p class="fw-light text-danger">This is Required</p>
+              </div>
+            </div> -->
+    
+
+
+
+            
+          
+              <!-- Units Field -->
+              <!-- <div class="col-md-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Quantity"
+                  formControlName="units"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    materials.controls[i].get('units')?.invalid &&
+                    (materials.controls[i].get('units')?.touched || materials.controls[i].get('units')?.dirty) &&
+                    materials.controls[i].get('units')?.errors?.['required']
+                  "
+                >
+                  <p class="fw-light text-danger">This is Required</p>
+                </div>
+              </div> -->
+          
+              <!-- Units Range Field -->
+              <!-- <div class="col-md-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Unit Rate"
+                  formControlName="unitsRange"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    materials.controls[i].get('unitsRange')?.invalid &&
+                    (materials.controls[i].get('unitsRange')?.touched || materials.controls[i].get('unitsRange')?.dirty) &&
+                    materials.controls[i].get('unitsRange')?.errors?.['required']
+                  "
+                >
+                  <p class="fw-light text-danger">This is Required</p>
+                </div>
+              </div> -->
+          
+              <!-- Sub Total Field -->
+              <div class="col-md-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Amount"
+                  [value]="calculatePerMaterialAmount(i, 0)"
+                  formControlName="subtotal"
+                
+                />
+                <div
+                class="text-danger error-message"
+                *ngIf="
+                  materials.controls[i].get('subtotal')?.invalid &&
+                  (materials.controls[i].get('subtotal')?.touched || materials.controls[i].get('subtotal')?.dirty) &&
+                  materials.controls[i].get('subtotal')?.errors?.['required']
+                "
+              >
+                <p class="fw-light text-danger">This is Required</p>
+              </div>
+              </div>
+          
+              <!-- Remove Button -->
+              <div class="col-md-12 text-end">
+                <button class="btn btn-danger mt-2" (click)="removeTask(i)">Remove</button>
+              </div>
+            </div>
+          </div>
+          
+
+
+
+
+
+
+        <div class="mb-3 ">
+            <label class="d-block text-capitalize form-label form-lable-custom" for="Amount">
+             Subtotal Amount
+            </label>
+            <input type="text" class="d-block form-control form-input-custom"  [value]="calculateSubTotal()"
+                formControlName="SubTotal" [readOnly]="true">
+
+        </div>
+
+
+
+
+        <!-- <div class="mb-3 ">
+        <label class="d-block text-capitalize form-label form-lable-custom" for="description">Description</label>
+        <textarea class="d-block form-control form-input-custom" rows="3" formControlName="description"
+            placeholder="Enter Your description"
+            [ngClass]="{ 'is-invalid': addotherexpenseorm.controls['description'].errors && (addotherexpenseorm.controls['description'].touched || addotherexpenseorm.controls['description'].dirty) }"></textarea>
+        <div class="text-danger error-message"
+            *ngIf="addotherexpenseorm.controls['description'].errors && (addotherexpenseorm.controls['description'].touched || addotherexpenseorm.controls['description'].dirty)">
+            <p class="fw-light text-danger"
+                *ngIf="addotherexpenseorm.controls['description'].errors['required']">
+                Description is required
+            </p>
+
+        </div>
+    </div> -->
+
+
+
+
+        <div class="text-end mb-3">
+            <button class="btn btn-primary px-2 py-2" (click)="toggleADetails()">
+                <span>
+                    <i class="fa-solid"
+                        [ngClass]="showadditionalDetails ? 'fa-minus' : 'fa-plus'"></i>
+                </span>
+                Additional Charges
+            </button>
+        </div>
+
+
+        <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showadditionalDetails">
+            <div class="row mx-0">
+
+                <div class="col-lg-6">
+                    <label for="additionalcharges" class="form-label form-lable-custom">Additional
+                        charges</label>
+                    <input type="text" class="form-control form-input-custom"
+                        formControlName="additionalcharges"
+                        [ngClass]="{ 'is-invalid': addotherexpenseorm.controls['additionalcharges'].errors && (addotherexpenseorm.controls['additionalcharges'].touched || addotherexpenseorm.controls['additionalcharges'].dirty) }">
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="text-end mb-3">
+            <button class="btn btn-primary px-2 py-2" (click)="toggleDDetails()">
+                <span>
+                    <i class="fa-solid"
+                        [ngClass]="showdiscountDetails ? 'fa-minus' : 'fa-plus'"></i>
+                </span>
+                Add Discount
+            </button>
+        </div>
+
+
+        <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showdiscountDetails">
+            <div class="row mx-0">
+
+                <div class="col-lg-6">
+                    <label for="Discount" class="form-label form-lable-custom"> Add Discount</label>
+                    <input type="text" class="form-control form-input-custom"
+                        formControlName="Discount"
+                        [ngClass]="{ 'is-invalid': addotherexpenseorm.controls['Discount'].errors && (addotherexpenseorm.controls['Discount'].touched || addotherexpenseorm.controls['Discount'].dirty) }">
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+        <div class="text-end mb-3">
+            <button class="btn btn-primary px-2 py-2" (click)="togglePAYDetails()">
+                <span>
+                    <i class="fa-solid" [ngClass]="showpaymentDetails ? 'fa-minus' : 'fa-plus'"></i>
+                </span>
+                Payment Out
+            </button>
+        </div>
+
+        <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showpaymentDetails">
+            <div class="row mx-0">
+
+                <div class="col-lg-6">
+                    <label for="Payment" class="form-label form-lable-custom">Payment Out</label>
+                    <input type="text" class="form-control form-input-custom"
+                        formControlName="Payment"
+                        [ngClass]="{ 'is-invalid': addotherexpenseorm.controls['Payment'].errors && (addotherexpenseorm.controls['Payment'].touched || addotherexpenseorm.controls['Payment'].dirty) }">
+                </div>
+
+                <!-- <div class="col-lg-6">
+                    <label for="Balance" class="form-label form-lable-custom">Balance</label>
+                    <input type="text" class="form-control form-input-custom"  [value]="calculatebalanceTotal()"
+                        formControlName="Balance" [readOnly]="true">
+                </div> -->
+
+                <!-- Add checkboxes below the Payment input field -->
+                <div class="col-lg-12 col-md-12 mb-3 mt-3">
+                    <label for="cheque"
+                        class="form-label lable-custom">Payment Method</label>
+                    <div class="d-flex mt-2">
+                        <div class="form-check me-3">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio"
+                                    name="cheque"
+                                    formControlName="cheque"
+                                    id="0" value="0"
+                                    [ngClass]="{ 'is-invalid':addotherexpenseorm.controls['cheque'].errors && (addotherexpenseorm.controls['cheque'].touched || addotherexpenseorm.controls['cheque'].dirty) }">
+                                    Cash
+                            </label>
+                        </div>
+
+                        <div class="form-check  me-3">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio"
+                                    name="cheque"
+                                    formControlName="cheque"
+                                    id="1" value="1" [ngClass]="{ 'is-invalid':addotherexpenseorm.controls['cheque'].errors && (addotherexpenseorm.controls['cheque'].touched || addotherexpenseorm.controls['cheque'].dirty) }">
+                                Bank Transfer
+                            </label>
+                        </div>
+
+                        <div class="form-check  ms-2">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio"
+                                    name="cheque"
+                                    formControlName="cheque"
+                                    id="2" value="2" [ngClass]="{ 'is-invalid':addotherexpenseorm.controls['cheque'].errors && (addotherexpenseorm.controls['cheque'].touched || addotherexpenseorm.controls['cheque'].dirty) }">
+                                    Cheque
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <div class="text-danger mt-2 d-block"
+                        *ngIf="addotherexpenseorm.controls['cheque'].errors && (addotherexpenseorm.controls['cheque'].touched || addotherexpenseorm.controls['cheque'].dirty)">
+                        <p class="fw-light  text-danger"
+                            *ngIf="addotherexpenseorm.controls['cheque'].errors['required']">
+                            Payment Method is required
+                        </p>
+                    </div>
+                </div>
+                <!-- <div class="d-flex mt-3">
+                    <div class="form-check me-3">
+                        <input class="form-check-input" type="checkbox" id="cheque"
+                            formControlName="cheque">
+                        <label class="form-check-label" for="cheque">Cheque</label>
+                    </div>
+                    <div class="form-check me-3">
+                        <input class="form-check-input" type="checkbox" id="debitCard"
+                            formControlName="debitCard">
+                        <label class="form-check-label" for="debitCard"></label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="cash"
+                            formControlName="cash">
+                        <label class="form-check-label" for="cash">Cash</label>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- <div class="text-end mb-3">
+        <button class="btn btn-primary px-2 py-2" (click)="togglePAYDetails()">
+            <span>
+                <i class="fa-solid" [ngClass]="showpaymentDetails ? 'fa-minus' : 'fa-plus'"></i>
+            </span>
+         Payment Out 
+        </button>
+    </div>
+
+
+    <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showpaymentDetails">
+        <div class="row mx-0">
+
+            <div class="col-lg-6">
+                <label for="Payment" class="form-label form-lable-custom">Payment Out </label>
+                <input type="text" class="form-control form-input-custom"
+                    formControlName="Payment">
+            
+            </div>
+
+
+        
+
+            <div class="col-lg-6">
+                <label for="Balance" class="form-label form-lable-custom">Balance
+                     </label>
+                <input type="text" class="form-control form-input-custom"
+                    formControlName="Balance" [readOnly]="true">
+            
+            </div>
+
+            
+
+
+        </div>
+
+    </div>
+-->
+
+
+
+
+        <div class="text-end mb-3">
+            <button class="btn btn-primary px-2 py-2" (click)="toggleNDetails()">
+                <span>
+                    <i class="fa-solid" [ngClass]="shownotesDetails ? 'fa-minus' : 'fa-plus'"></i>
+                </span>
+                Add Notes
+            </button>
+        </div>
+
+
+        <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="shownotesDetails">
+            <div class="row mx-0">
+
+                <div class="col-lg-6">
+                    <label for="Notes" class="form-label form-lable-custom"> Add Notes</label>
+                    <input type="text" class="form-control form-input-custom"
+                        formControlName="Notes"
+                        [ngClass]="{ 'is-invalid':addotherexpenseorm.controls['Notes'].errors && (addotherexpenseorm.controls['Notes'].touched || addotherexpenseorm.controls['Notes'].dirty) }">
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+        <div class="text-end mb-3">
+            <button class="btn btn-primary px-2 py-2" (click)="toggleRDetails()">
+                <span>
+                    <i class="fa-solid"
+                        [ngClass]="showreferenceDetails ? 'fa-minus' : 'fa-plus'"></i>
+                </span>
+                Reference Number
+            </button>
+        </div>
+
+
+        <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showreferenceDetails">
+            <div class="row mx-0">
+
+                <div class="col-lg-6">
+                    <label for="Reference" class="form-label form-lable-custom">Reference
+                        Number</label>
+                    <input type="text" class="form-control form-input-custom"
+                        formControlName="Reference"
+                        [ngClass]="{ 'is-invalid':addotherexpenseorm.controls['Reference'].errors && (addotherexpenseorm.controls['Reference'].touched || addotherexpenseorm.controls['Reference'].dirty) }">
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="mb-3 ">
+            <label class="d-block text-capitalize form-label form-lable-custom" for="Amount">Total
+                Amount
+            </label>
+            <input type="text" class="d-block form-control form-input-custom" [value]="calculateTotal()"
+                formControlName="Amount" [readOnly]="true">
+
+        </div>
+
+
+
+        <div class="col-lg-12 col-md-12" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)">
+            <label class="form-label form-lable-custom" for="profileimage">Upload Profile
+            </label>
+            <label for="fileInput" class="file-label" *ngIf="!imageUrl">
+                <span><img src="/assets/upload-icon.png" class="upload-icon" alt></span>
+                <p class="text-gray-500"> Drag and drop or browse to choose
+                    a file </p>
+            </label>
+            <div class="custom-file-upload position-relative" (click)="fileInput.click()">
+                <input type="file" id="fileInput" #fileInput
+                    accept="image/jpeg, image/jpg, image/png" (change)="onFileSelected($event)"
+                    formControlName="profileimage"
+                    [ngClass]="{ 'is-invalid': addotherexpenseorm.controls['profileimage'].errors && (addotherexpenseorm.controls['profileimage'].touched || addotherexpenseorm.controls['profileimage'].dirty) }">
+                <button *ngIf="imageUrl" (click)="clearFile($event)" class="remove-button">
+                    <span><i class="fa-solid fa-xmark cross-icon"></i></span>
+                </button>
+
+                <div *ngIf="imageUrl" class="image-container">
+                    <div class="black-layer"></div>
+                    <img [src]="imageUrl" alt="Profile Preview" class="Profile-image" />
+                </div>
+            </div>
+            <!-- <div class="text-danger error-message"
+      *ngIf="addotherexpenseorm.controls['ProfileImage'].errors && (addotherexpenseorm.controls['ProfileImage'].touched || addotherexpenseorm.controls['ProfileImage'].dirty)">
+      <p class="fw-light  text-danger"
+        *ngIf="addotherexpenseorm.controls['ProfileImage'].errors['required']">
+        Profile is required</p>
+    </div> -->
+        </div>
+
+
+
+
+    </form>
+
+</div>

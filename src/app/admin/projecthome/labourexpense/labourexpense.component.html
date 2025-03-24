@@ -1,0 +1,307 @@
+<div class="row" >
+    <form [formGroup]="Labourtypeform">
+        <div class="mb-3 ">
+            <label class="d-block text-capitalize form-label form-lable-custom" for="date">Date
+            </label>
+            <input type="date" class="d-block form-control form-input-custom" formControlName="date"
+                [ngClass]="{ 'is-invalid':Labourtypeform.controls['date'].errors && (Labourtypeform.controls['date'].touched || Labourtypeform.controls['date'].dirty) }">
+            <div class="text-danger error-message"
+                *ngIf="Labourtypeform.controls['date'].errors && (Labourtypeform.controls['date'].touched || Labourtypeform.controls['date'].dirty)">
+                <p class="fw-light text-danger"
+                    *ngIf="Labourtypeform.controls['date'].errors['required']">
+                    Date is required</p>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <div class="mb-3 ">
+            <label class="form-label form-lable-custom"
+                for="selectpartyname">
+                Select Party Name</label>
+            <select class="form-select form-input-custom" formControlName="selectpartyname" #selectpartyname  (change)="onchange(selectpartyname.value)"
+                [ngClass]="{ 'is-invalid': Labourtypeform.controls['selectpartyname'].errors && (Labourtypeform.controls['selectpartyname'].touched || Labourtypeform.controls['selectpartyname'].dirty) }">
+                <option *ngFor="let party of partynamelist" [value]="party.id">
+                {{ party.name }}
+            </option>
+            </select>
+            <!-- <div class="text-danger error-message"
+                *ngIf="Labourtypeform.controls['selectpartyname'].errors && (Labourtypeform.controls['selectpartyname'].touched || Labourtypeform.controls['selectpartyname'].dirty)">
+                <p class="fw-light text-danger"
+                    *ngIf="Labourtypeform.controls['selectpartyname'].errors['required']">
+                    Select Party Name is required
+                </p>
+            </div> -->
+        </div>
+
+
+
+
+
+
+
+
+        <div class="mb-3 ">
+            <label class="d-block text-capitalize form-label form-lable-custom" for="Balance">
+              Total Balance
+            </label>
+            <input type="text" class="d-block form-control form-input-custom"  
+                formControlName="Balance"  [readOnly]="true" >
+         
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="mb-3 ">
+            <label class="d-block text-capitalize form-label form-lable-custom" for="Amount">
+             Amount Given
+            </label>
+            <input type="text" class="d-block form-control form-input-custom"  
+                formControlName="SubTotal" 
+                [ngClass]="{ 'is-invalid': Labourtypeform.controls['SubTotal'].errors && (Labourtypeform.controls['SubTotal'].touched || Labourtypeform.controls['SubTotal'].dirty) }">
+                <div class="text-danger error-message"
+                *ngIf="Labourtypeform.controls['SubTotal'].errors && (Labourtypeform.controls['SubTotal'].touched || Labourtypeform.controls['SubTotal'].dirty)">
+                <p class="fw-light text-danger"
+                    *ngIf="Labourtypeform.controls['SubTotal'].errors['required']">
+                    Amount Given is required
+                </p>
+            </div>
+        </div>
+
+
+
+
+         <div class="mb-3 ">
+        <label class="d-block text-capitalize form-label form-lable-custom" for="description">Description</label>
+        <textarea class="d-block form-control form-input-custom" rows="3" formControlName="description"
+            placeholder="Enter Your description"
+            [ngClass]="{ 'is-invalid': Labourtypeform.controls['description'].errors && (Labourtypeform.controls['description'].touched || Labourtypeform.controls['description'].dirty) }"></textarea>
+        <div class="text-danger error-message"
+            *ngIf="Labourtypeform.controls['description'].errors && (Labourtypeform.controls['description'].touched || Labourtypeform.controls['description'].dirty)">
+            <p class="fw-light text-danger"
+                *ngIf="Labourtypeform.controls['description'].errors['required']">
+                Description is required
+            </p>
+
+        </div>
+    </div> 
+
+
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+     
+
+
+
+        <div class="col-lg-12 col-md-12 mb-3 ps-0" >
+            <div class="row mx-0">
+
+          
+                <!-- Add checkboxes below the Payment input field -->
+                <div class="col-lg-12 col-md-12 mb-3 mt-3">
+                    <label for="cheque"
+                        class="form-label lable-custom">Payment Method</label>
+                    <div class="d-flex mt-2">
+                        <div class="form-check me-3">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio"
+                                    name="cheque"
+                                    formControlName="cheque"
+                                    id="0" value="0"
+                                    [ngClass]="{ 'is-invalid':Labourtypeform.controls['cheque'].errors && (Labourtypeform.controls['cheque'].touched || Labourtypeform.controls['cheque'].dirty) }">
+                                    Cash
+                            </label>
+                        </div>
+
+                        <div class="form-check  me-3">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio"
+                                    name="cheque"
+                                    formControlName="cheque"
+                                    id="1" value="1" [ngClass]="{ 'is-invalid':Labourtypeform.controls['cheque'].errors && (Labourtypeform.controls['cheque'].touched || Labourtypeform.controls['cheque'].dirty) }">
+                                Bank Transfer
+                            </label>
+                        </div>
+
+                        <div class="form-check  ms-2">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio"
+                                    name="cheque"
+                                    formControlName="cheque"
+                                    id="2" value="2" [ngClass]="{ 'is-invalid':Labourtypeform.controls['cheque'].errors && (Labourtypeform.controls['cheque'].touched || Labourtypeform.controls['cheque'].dirty) }">
+                                    Cheque
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <div class="text-danger mt-2 d-block"
+                        *ngIf="Labourtypeform.controls['cheque'].errors && (Labourtypeform.controls['cheque'].touched || Labourtypeform.controls['cheque'].dirty)">
+                        <p class="fw-light  text-danger"
+                            *ngIf="Labourtypeform.controls['cheque'].errors['required']">
+                            Payment Method is required
+                        </p>
+                    </div>
+                </div>
+                <!-- <div class="d-flex mt-3">
+                    <div class="form-check me-3">
+                        <input class="form-check-input" type="checkbox" id="cheque"
+                            formControlName="cheque">
+                        <label class="form-check-label" for="cheque">Cheque</label>
+                    </div>
+                    <div class="form-check me-3">
+                        <input class="form-check-input" type="checkbox" id="debitCard"
+                            formControlName="debitCard">
+                        <label class="form-check-label" for="debitCard"></label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="cash"
+                            formControlName="cash">
+                        <label class="form-check-label" for="cash">Cash</label>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- <div class="text-end mb-3">
+        <button class="btn btn-primary px-2 py-2" (click)="togglePAYDetails()">
+            <span>
+                <i class="fa-solid" [ngClass]="showpaymentDetails ? 'fa-minus' : 'fa-plus'"></i>
+            </span>
+         Payment Out 
+        </button>
+    </div>
+
+
+    <div class="col-lg-12 col-md-12 mb-3 ps-0" *ngIf="showpaymentDetails">
+        <div class="row mx-0">
+
+            <div class="col-lg-6">
+                <label for="Payment" class="form-label form-lable-custom">Payment Out </label>
+                <input type="text" class="form-control form-input-custom"
+                    formControlName="Payment">
+            
+            </div>
+
+
+        
+
+            <div class="col-lg-6">
+                <label for="Balance" class="form-label form-lable-custom">Balance
+                     </label>
+                <input type="text" class="form-control form-input-custom"
+                    formControlName="Balance" [readOnly]="true">
+            
+            </div>
+
+            
+
+
+        </div>
+
+    </div>
+-->
+
+
+
+
+      
+
+
+
+     
+
+
+
+
+
+
+
+
+
+    
+
+
+
+        <div class="col-lg-12 col-md-12" (drop)="onDrop($event)" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)">
+            <label class="form-label form-lable-custom" for="profileimage">Upload Profile
+            </label>
+            <label for="fileInput" class="file-label" *ngIf="!imageUrl">
+                <span><img src="/assets/upload-icon.png" class="upload-icon" alt></span>
+                <p class="text-gray-500"> Drag and drop or browse to choose
+                    a file </p>
+            </label>
+            <div class="custom-file-upload position-relative" (click)="fileInput.click()">
+                <input type="file" id="fileInput" #fileInput
+                    accept="image/jpeg, image/jpg, image/png" (change)="onFileSelected($event)"
+                    formControlName="profileimage"
+                    [ngClass]="{ 'is-invalid': Labourtypeform.controls['profileimage'].errors && (Labourtypeform.controls['profileimage'].touched || Labourtypeform.controls['profileimage'].dirty) }">
+                <button *ngIf="imageUrl" (click)="clearFile($event)" class="remove-button">
+                    <span><i class="fa-solid fa-xmark cross-icon"></i></span>
+                </button>
+
+                <div *ngIf="imageUrl" class="image-container">
+                    <div class="black-layer"></div>
+                    <img [src]="imageUrl" alt="Profile Preview" class="Profile-image" />
+                </div>
+            </div>
+            <!-- <div class="text-danger error-message"
+      *ngIf="Labourtypeform.controls['ProfileImage'].errors && (Labourtypeform.controls['ProfileImage'].touched || Labourtypeform.controls['ProfileImage'].dirty)">
+      <p class="fw-light  text-danger"
+        *ngIf="Labourtypeform.controls['ProfileImage'].errors['required']">
+        Profile is required</p>
+    </div> -->
+        </div>
+
+
+
+
+    </form>
+
+</div>

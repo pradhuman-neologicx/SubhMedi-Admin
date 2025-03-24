@@ -1,0 +1,17 @@
+.modal-container-success {
+    position: fixed;
+    top: 12%;
+    right: 2%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999999;
+    box-shadow: -2px 3px 5px 0px rgba(0, 0, 0, 0.5);
+  }
+  .modal-title {
+    font-size: 22px;
+    font-weight: 500 !important;
+    color: #d45812;
+  }
+  

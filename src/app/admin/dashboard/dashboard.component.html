@@ -1,0 +1,32 @@
+<div
+  *ngIf="openSecondsuccess"
+  class="your-animation-class modal-container-success"
+  [@slideIn]
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div>
+    <div
+      class="p-4 d-flex justify-content-between align-items-center success-content"
+    >
+      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+      <p class="text-green-900 text-capitalize mb-0">Login successfully</p>
+    </div>
+  </div>
+</div>
+
+<div class="container mx-auto mb-4 home-banner">
+  <div class="d-flex justify-content-center align-items-center">
+    <h1 class="text-primary heading-dashboard">Welcome Back {{ name }} !!!</h1>
+    <div></div>
+  </div>
+  <div class="welcome-container mt-5 text-center">
+    <h3>Welcome to Subh Medi hiuh</h3>
+    <p>Your trusted partner in pharmaceutical distribution.</p>
+    <p>
+      Manage Users, Manage orders, track inventory, and streamline your
+      operations efficiently.
+    </p>
+  </div>
+</div>
