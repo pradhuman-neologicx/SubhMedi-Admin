@@ -207,9 +207,13 @@ body {
   display: inline;
   display: block;
   margin: 6px auto;
-  box-shadow: 1px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  // box-shadow: 1px 0px 5px 0px rgba(0, 0, 0, 0.3);
 }
 
+.logo-imageNew {
+  max-width: 175px;
+  // filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.3));
+}
 
 .login-border-text {
   display: inline-block;

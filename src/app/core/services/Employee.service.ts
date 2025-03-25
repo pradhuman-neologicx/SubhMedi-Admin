@@ -1155,7 +1155,7 @@ export class EmployeeService {
       alert(errorMessage); // Show alert with error message
     } else if (error && error.message) {
       // Display error message
-      alert(errorMessage);
+      // alert(errorMessage);
     }
   }
 

@@ -8,12 +8,14 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiService {
-  constructor(private http: HttpClient, private jwtService: JwtService,
+  constructor(
+    private http: HttpClient,
+    private jwtService: JwtService,
     private router: Router
-  ) { }
+  ) {}
 
   private formatErrors(error: any) {
-    let errorMessage = "";
+    let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // client-side error
       errorMessage = `Error: ${error.error.message}`;
@@ -55,7 +57,7 @@ export class ApiService {
   //       this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
   //       this.router.navigate(['/sign_in']); // Navigate to home route
   //       alert(error.error.message); // Show alert with error message
-       
+
   //     } else if (error.error && error.error.message) {
   //       alert(error.error.message); // Show alert with error message
   //     } else {
@@ -80,7 +82,7 @@ export class ApiService {
   // }
   get(path: string, header: any): Observable<any> {
     return this.http
-      .get(`${environment.api_url}${path}`,  { headers: header })
+      .get(`${environment.api_url}${path}`, { headers: header })
       .pipe(catchError(this.formatErrors));
     // }else{
     //   return window.alert("Connection Offline");
@@ -113,7 +115,6 @@ export class ApiService {
         retry(1),
         catchError(this.handleError)
       );
-
   }
   postwithoutbody(path: string, headers: HttpHeaders): Observable<any> {
     return this.http
@@ -124,9 +125,7 @@ export class ApiService {
         catchError(this.handleError)
       );
   }
-  
 
-  
   postWithoutHeader(path: string, body: any): Observable<any> {
     return this.http
       .post(`${environment.api_url}${path}`, body)
@@ -154,7 +153,7 @@ export class ApiService {
         catchError(this.handleError)
       );
   }
-  handleError(error:any) {
+  handleError(error: any) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // client-side error
@@ -166,7 +165,7 @@ export class ApiService {
     //console.log(errorMessage+"er");
     window.alert(errorMessage);
     return throwError(() => {
-        return errorMessage;
+      return errorMessage;
     });
   }
 }
