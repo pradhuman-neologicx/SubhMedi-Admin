@@ -42,7 +42,7 @@ import { LoginService } from 'src/app/core/services/login.service';
     ResetPassword!: FormGroup;
     Token: any;
     ngOnInit() {
-      this.userId = this.jwtService.getpanelUserId();
+      // this.userId = this.jwtService.getpanelUserId();
       this.route.url.subscribe(segments => {
         // Access the last segment which contains the token
         this.userId = segments[segments.length - 2].path;
