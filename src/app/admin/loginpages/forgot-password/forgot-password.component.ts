@@ -85,7 +85,7 @@ export class ForgotPasswordComponent implements OnInit {
        if (response.status === 200) {
          this.closeModal();
          this.submitted=true;
-         this.router.navigate(['/reset_password']);
+        //  this.router.navigate(['/reset_password']);
          // this.successName = 'Foget Passoword';
          // setTimeout(() => {
          //   this.openSecondsuccess = true;
