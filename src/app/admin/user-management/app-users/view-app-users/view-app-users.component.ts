@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { EmployeeService } from 'src/app/core/services/Employee.service';
 // import { CourseService } from 'src/app/core/services/course.service';
 // import { DataService } from 'src/app/core/services/data.service';
 // import { JwtService } from 'src/app/core/services/jwt.service';
@@ -85,17 +86,19 @@ export class ViewAppUsersComponent {
     // private courseService: CourseService,
     // private jwtService: JwtService,
     private router: Router,
+    private employeeService: EmployeeService,
     private route: ActivatedRoute,
     private datePipe: DatePipe
   ) {
     this.maxDate = new Date();
     const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
-    this.projectiD = router.url.slice(0).split(urlDelimitators)[2];
+    this.appUserID = router.url.slice(0).split(urlDelimitators)[3];
+    console.log(this.appUserID);
   }
 
   addworkforceform!: FormGroup;
   userId: any;
-  projectiD: any;
+  appUserID: any;
   ngOnInit(): void {
     // this.projectiD = this.route.snapshot.paramMap.get('id');
     // this.userId = this.jwtService.getpanelUserId();
@@ -111,7 +114,7 @@ export class ViewAppUsersComponent {
       Salary: ['', [Validators.required]],
     });
 
-    // this.GetStaffFun();
+    this.GetAppUserfun();
 
     this.GetPartyType();
     // this.GetAttendanceFun();
@@ -162,6 +165,17 @@ export class ViewAppUsersComponent {
   searchfun() {
     this.showreset = true;
   }
+  userstable: any;
+  GetAppUserfun() {
+    this.employeeService
+      .GetAppUserIdApi(this.appUserID)
+      .subscribe((response: any) => {
+        if (response.status === 200 || response.status === 201) {
+          this.userstable = response.data;
+          console.log(this.userstable);
+        }
+      });
+  }
 
   resetsearchbar() {}
 
@@ -174,7 +188,12 @@ export class ViewAppUsersComponent {
   // projectiD: any;
 
   ViewDetailopen: boolean = false;
-
+  isExpanded: { [key: number]: boolean } = {};
+  // Toggle description expand/collapse state
+  toggleDescription(eventId: number, event: Event): void {
+    event.preventDefault(); // Prevents page reload on anchor click
+    this.isExpanded[eventId] = !this.isExpanded[eventId];
+  }
   OpenViewDetails(): void {
     this.ViewDetailopen = true;
   }

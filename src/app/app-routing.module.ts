@@ -145,7 +145,7 @@ const routes: Routes = [
           },
 
           {
-            path: 'view-users',
+            path: 'view-users/:id',
             component: ViewAppUsersComponent,
           },
           {

@@ -27,57 +27,57 @@
       </div>
 
       <div class="d-flex align-items-center">
-        <!-- <form [formGroup]="searchbarform" class="d-flex align-items-center">
-        <span class="me-1">Search:</span>
-        <div
-          [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
-        >
-          <input
-            type="text"
-            class="form-control search-user position-relative"
-            type="text"
-            autocomplete="off"
-            formControlName="searchbar"
-            [ngClass]="{
-              'is-invalid':
+        <form [formGroup]="searchbarform" class="d-flex align-items-center">
+          <span class="me-1">Search:</span>
+          <div
+            [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+          >
+            <input
+              type="text"
+              class="form-control search-user position-relative"
+              type="text"
+              autocomplete="off"
+              formControlName="searchbar"
+              [ngClass]="{
+                'is-invalid':
+                  searchbarform.controls['searchbar'].errors &&
+                  (searchbarform.controls['searchbar'].touched ||
+                    searchbarform.controls['searchbar'].dirty)
+              }"
+            />
+            <div
+              class="text-danger error-message d-block"
+              *ngIf="
                 searchbarform.controls['searchbar'].errors &&
                 (searchbarform.controls['searchbar'].touched ||
                   searchbarform.controls['searchbar'].dirty)
-            }"
-          />
-          <div
-            class="text-danger error-message d-block"
-            *ngIf="
-              searchbarform.controls['searchbar'].errors &&
-              (searchbarform.controls['searchbar'].touched ||
-                searchbarform.controls['searchbar'].dirty)
-            "
-          >
-            <p
-              class="fw-light text-danger search-required"
-              *ngIf="searchbarform.controls['searchbar'].errors['required']"
+              "
             >
-              This is required
-            </p>
+              <p
+                class="fw-light text-danger search-required"
+                *ngIf="searchbarform.controls['searchbar'].errors['required']"
+              >
+                This is required
+              </p>
+            </div>
           </div>
-        </div>
 
-        <button class="btn btn-primary search-btn ms-2" (click)="searchfun()">
-          <span
-            ><i class="fa-solid fa-magnifying-glass form-control-feedback"></i
-          ></span>
-        </button>
-        <button
-          class="btn btn-primary search-btn ms-2"
-          (click)="resetsearchbar()"
-          type="submit"
-          *ngIf="showreset == true"
-        >
-          <span
-            ><i class="fa-solid fa-rotate-right form-control-feedback"></i
-          ></span>
-        </button>
-      </form> -->
+          <button class="btn btn-primary search-btn ms-2" (click)="searchfun()">
+            <span
+              ><i class="fa-solid fa-magnifying-glass form-control-feedback"></i
+            ></span>
+          </button>
+          <button
+            class="btn btn-primary search-btn ms-2"
+            (click)="resetsearchbar()"
+            type="submit"
+            *ngIf="showreset == true"
+          >
+            <span
+              ><i class="fa-solid fa-rotate-right form-control-feedback"></i
+            ></span>
+          </button>
+        </form>
       </div>
     </div>
 
@@ -92,15 +92,18 @@
             <p class="table-heading table-new-heading">Name</p>
           </th>
           <th>
+            <p class="table-heading table-new-heading">Role</p>
+          </th>
+          <th>
             <p class="table-heading table-new-heading">Email</p>
           </th>
           <th>
             <p class="table-heading table-new-heading">Number</p>
           </th>
 
-          <th>
+          <!-- <th>
             <p class="table-heading table-new-heading">Status</p>
-          </th>
+          </th> -->
 
           <th>
             <p class="table-heading table-new-heading">Action</p>
@@ -108,11 +111,27 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let users of userstable; let i = index">
+        <tr
+          *ngFor="
+            let users of userstable
+              | paginate
+                : {
+                    itemsPerPage: tableSize != 'all' ? tableSize : totalRecords,
+                    currentPage: page,
+                    totalItems: totalRecords
+                  };
+            index as i
+          "
+        >
           <td>{{ i + 1 }}</td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
               {{ users.name }}
+            </p>
+          </td>
+          <td>
+            <p class="table-detail text-capitalize table-detail-new">
+              {{ users.role || "free user" }}
             </p>
           </td>
           <td>
@@ -122,11 +141,11 @@
           </td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
-              {{ users.number }}
+              {{ users.mobile }}
             </p>
           </td>
 
-          <td>
+          <!-- <td>
             <p
               [ngClass]="{
                 'active-status': users.status == 1 ? 1 : 0,
@@ -135,7 +154,7 @@
             >
               {{ users.status == 1 ? "active" : "deactive" }}
             </p>
-          </td>
+          </td> -->
 
           <td>
             <p>
@@ -144,17 +163,17 @@
               </button>
 
               <mat-menu #menu="matMenu">
-                <button
+                <!-- <button
                   mat-menu-item
                   *ngIf="users.status == 1"
                   (click)="OpenEditModal(users)"
                 >
                   Edit Details
-                </button>
-                <button mat-menu-item (click)="navigateToViewUsers(users)">
+                </button> -->
+                <button mat-menu-item (click)="viewmmodal(users.id)">
                   View Details
                 </button>
-                <button
+                <!-- <button
                   mat-menu-item
                   *ngIf="users.is_active; else inactiveButton"
                 >
@@ -162,13 +181,30 @@
                 </button>
                 <ng-template #inactiveButton>
                   <button mat-menu-item>Activate</button>
-                </ng-template>
+                </ng-template> -->
               </mat-menu>
             </p>
           </td>
         </tr>
       </tbody>
     </table>
+    <div
+      class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+    >
+      <span class="showalltext"
+        >Showing
+        {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }} to
+        {{ tableSize * page <= totalRecords ? tableSize * page : totalRecords }}
+        of {{ totalRecords != undefined ? totalRecords : "" }} entries</span
+      >
+      <pagination-controls
+        previousLabel="Prev"
+        nextLabel="Next"
+        [responsive]="true"
+        (pageChange)="onTableDataChange($event)"
+        target="_top"
+      ></pagination-controls>
+    </div>
   </div>
 </div>
 <!-- 
@@ -284,7 +320,7 @@
 
           <div class="modal-content-width card-body mb-0">
             <div class="row">
-              <div class="col-lg-12 col-md-12 mb-3">
+              <div class="col-12 col-md-6 mb-3">
                 <label for="usernname" class="form-label form-lable-custom"
                   >User Name</label
                 >
@@ -317,7 +353,40 @@
                   </p>
                 </div>
               </div>
-              <div class="col-lg-12 col-md-12 mb-3">
+              <div class="col-12 col-md-6 mb-3">
+                <label for="usernrole" class="form-label form-lable-custom"
+                  >User Role</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-input-custom"
+                  formControlName="usernrole"
+                  [ngClass]="{
+                    'is-invalid':
+                      usersformupdate.controls['usernrole'].errors &&
+                      (usersformupdate.controls['usernrole'].touched ||
+                        usersformupdate.controls['usernrole'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    usersformupdate.controls['usernrole'].errors &&
+                    (usersformupdate.controls['usernrole'].touched ||
+                      usersformupdate.controls['usernrole'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      usersformupdate.controls['usernrole'].errors['required']
+                    "
+                  >
+                    Role is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
                 <label for="usernemail" class="form-label form-lable-custom"
                   >User Email</label
                 >
@@ -350,7 +419,7 @@
                   </p>
                 </div>
               </div>
-              <div class="col-lg-12 col-md-12 mb-3">
+              <div class="col-12 col-md-6 mb-3">
                 <label for="usernnumber" class="form-label form-lable-custom"
                   >User Number</label
                 >

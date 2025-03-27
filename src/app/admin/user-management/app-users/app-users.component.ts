@@ -128,41 +128,15 @@ export class AppUsersComponent {
 
     this.unitsformscreate = this.formBuilder.group({
       usernname: ['', [Validators.required]],
+      usernrole: ['', [Validators.required]],
+      usernemail: ['', [Validators.required]],
+      usernnumber: ['', [Validators.required]],
     });
 
-    // this.Getunitsfun();
+    this.Getuserfun();
   }
 
-  userstable = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john@example.com',
-      number: '9876543210',
-      status: 1,
-    },
-    {
-      id: 2,
-      name: 'Alice Smith',
-      email: 'alice@example.com',
-      number: '8765432109',
-      status: 1,
-    },
-    {
-      id: 3,
-      name: 'Robert Johnson',
-      email: 'robert@example.com',
-      number: '7654321098',
-      status: 0,
-    },
-    {
-      id: 4,
-      name: 'Emily Brown',
-      email: 'emily@example.com',
-      number: '6543210987',
-      is_active: 0,
-    },
-  ];
+  userstable: any;
   idString: any;
   id: any;
 
@@ -183,15 +157,30 @@ export class AppUsersComponent {
       state: { userData: user },
     });
   }
-  // unitstable: any;
-  // // Getunitsfun() {
-  // //   this.employeeService.GetunitsApi().subscribe((response: any) => {
-  // //     if (response.status === 200) {
-  // //       this.unitstable = response.data;
-  // //       // this.fillformdate(response.data);
-  // //     }
-  // //   });
-  // // }
+
+  viewmmodal(id: any) {
+    // Log the project_id to the console
+
+    console.log('id ID:', id);
+
+    // Navigate to the desired route with the project_id
+    this.router.navigate(['/user-management/view-users', id], {
+      // queryParams: { exam_type: exam_type },
+      // queryParams: { action: 'startNow' }
+    });
+  }
+
+  search: any;
+  Getuserfun() {
+    this.employeeService
+      .GetUserApi(this.user_id, this.tableSize, this.page, this.search)
+      .subscribe((response: any) => {
+        if (response.status === 200 || response.status === 201) {
+          this.userstable = response.data.records;
+          this.totalRecords = response.data.total;
+        }
+      });
+  }
 
   async Status(unit_id: string, is_active: any) {
     const actionMessage = is_active ? 'activated' : 'deactivated';
@@ -294,6 +283,7 @@ export class AppUsersComponent {
       this.updateusersopen = true;
       this.usersformupdate = this.formBuilder.group({
         usernname: [units.name, [Validators.required]],
+        usernrole: [units.role, [Validators.required]],
         usernemail: [units.email, [Validators.required]],
         usernnumber: [units.number, [Validators.required]],
       });
@@ -345,20 +335,27 @@ export class AppUsersComponent {
     },
   ];
 
-  searchfun() {}
-  resetsearchbar() {}
+  searchfun() {
+    if (this.searchbarform.valid) {
+      this.showreset = true;
+      this.search = this.searchbarform.get('searchbar')?.value;
+      this.Getuserfun();
+    } else {
+      this.searchbarform.markAllAsTouched();
+    }
+  }
+  resetsearchbar() {
+    window.location.reload();
+  }
   onTableSizeChange(event: any): void {
     this.tableSize = event.target.value;
     console.log(event.target.value);
     this.page = 1;
-    // if (this.searchbarform.valid && this.showreset==true) {
-    //   this.searchfun()
-    // }else{
-    //   this.getstudentsfunpagination(this.type);
-    // }
+    this.Getuserfun();
   }
   onTableDataChange(event: any) {
     this.page = event;
+    this.Getuserfun();
   }
 
   addeventmmodal() {

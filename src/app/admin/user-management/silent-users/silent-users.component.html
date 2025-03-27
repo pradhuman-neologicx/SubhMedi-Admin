@@ -27,57 +27,57 @@
       </div>
 
       <div class="d-flex align-items-center">
-        <!-- <form [formGroup]="searchbarform" class="d-flex align-items-center">
-        <span class="me-1">Search:</span>
-        <div
-          [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
-        >
-          <input
-            type="text"
-            class="form-control search-user position-relative"
-            type="text"
-            autocomplete="off"
-            formControlName="searchbar"
-            [ngClass]="{
-              'is-invalid':
+        <form [formGroup]="searchbarform" class="d-flex align-items-center">
+          <span class="me-1">Search:</span>
+          <div
+            [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+          >
+            <input
+              type="text"
+              class="form-control search-user position-relative"
+              type="text"
+              autocomplete="off"
+              formControlName="searchbar"
+              [ngClass]="{
+                'is-invalid':
+                  searchbarform.controls['searchbar'].errors &&
+                  (searchbarform.controls['searchbar'].touched ||
+                    searchbarform.controls['searchbar'].dirty)
+              }"
+            />
+            <div
+              class="text-danger error-message d-block"
+              *ngIf="
                 searchbarform.controls['searchbar'].errors &&
                 (searchbarform.controls['searchbar'].touched ||
                   searchbarform.controls['searchbar'].dirty)
-            }"
-          />
-          <div
-            class="text-danger error-message d-block"
-            *ngIf="
-              searchbarform.controls['searchbar'].errors &&
-              (searchbarform.controls['searchbar'].touched ||
-                searchbarform.controls['searchbar'].dirty)
-            "
-          >
-            <p
-              class="fw-light text-danger search-required"
-              *ngIf="searchbarform.controls['searchbar'].errors['required']"
+              "
             >
-              This is required
-            </p>
+              <p
+                class="fw-light text-danger search-required"
+                *ngIf="searchbarform.controls['searchbar'].errors['required']"
+              >
+                This is required
+              </p>
+            </div>
           </div>
-        </div>
 
-        <button class="btn btn-primary search-btn ms-2" (click)="searchfun()">
-          <span
-            ><i class="fa-solid fa-magnifying-glass form-control-feedback"></i
-          ></span>
-        </button>
-        <button
-          class="btn btn-primary search-btn ms-2"
-          (click)="resetsearchbar()"
-          type="submit"
-          *ngIf="showreset == true"
-        >
-          <span
-            ><i class="fa-solid fa-rotate-right form-control-feedback"></i
-          ></span>
-        </button>
-      </form> -->
+          <button class="btn btn-primary search-btn ms-2" (click)="searchfun()">
+            <span
+              ><i class="fa-solid fa-magnifying-glass form-control-feedback"></i
+            ></span>
+          </button>
+          <button
+            class="btn btn-primary search-btn ms-2"
+            (click)="resetsearchbar()"
+            type="submit"
+            *ngIf="showreset == true"
+          >
+            <span
+              ><i class="fa-solid fa-rotate-right form-control-feedback"></i
+            ></span>
+          </button>
+        </form>
       </div>
     </div>
 
@@ -108,7 +108,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let users of userstable; let i = index">
+        <tr
+          *ngFor="
+            let users of userstable
+              | paginate
+                : {
+                    itemsPerPage: tableSize != 'all' ? tableSize : totalRecords,
+                    currentPage: page,
+                    totalItems: totalRecords
+                  };
+            index as i
+          "
+        >
           <td>{{ i + 1 }}</td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
@@ -122,7 +133,7 @@
           </td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
-              {{ users.number }}
+              {{ users.mobile }}
             </p>
           </td>
 
@@ -169,6 +180,23 @@
         </tr>
       </tbody>
     </table>
+    <div
+      class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+    >
+      <span class="showalltext"
+        >Showing
+        {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }} to
+        {{ tableSize * page <= totalRecords ? tableSize * page : totalRecords }}
+        of {{ totalRecords != undefined ? totalRecords : "" }} entries</span
+      >
+      <pagination-controls
+        previousLabel="Prev"
+        nextLabel="Next"
+        [responsive]="true"
+        (pageChange)="onTableDataChange($event)"
+        target="_top"
+      ></pagination-controls>
+    </div>
   </div>
 </div>
 
@@ -198,7 +226,7 @@
 
           <div class="modal-content-width card-body mb-0">
             <div class="row">
-              <div class="col-lg-6 col-md-6 mb-3">
+              <div class="col-12 col-md-12 mb-3">
                 <label for="unitsname" class="form-label form-lable-custom">
                   Name</label
                 >
@@ -231,69 +259,142 @@
                   </p>
                 </div>
               </div>
-              <div class="col-lg-6 col-md-6 mb-3">
-                <label for="unitsname" class="form-label form-lable-custom">
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsemail" class="form-label form-lable-custom">
                   Email</label
                 >
                 <input
                   type="email"
                   class="form-control form-input-custom"
-                  formControlName="unitsname"
+                  formControlName="unitsemail"
                   [ngClass]="{
                     'is-invalid':
-                      unitsformscreate.controls['unitsname'].errors &&
-                      (unitsformscreate.controls['unitsname'].touched ||
-                        unitsformscreate.controls['unitsname'].dirty)
+                      unitsformscreate.controls['unitsemail'].errors &&
+                      (unitsformscreate.controls['unitsemail'].touched ||
+                        unitsformscreate.controls['unitsemail'].dirty)
                   }"
                 />
                 <div
                   class="text-danger error-message"
                   *ngIf="
-                    unitsformscreate.controls['unitsname'].errors &&
-                    (unitsformscreate.controls['unitsname'].touched ||
-                      unitsformscreate.controls['unitsname'].dirty)
+                    unitsformscreate.controls['unitsemail'].errors &&
+                    (unitsformscreate.controls['unitsemail'].touched ||
+                      unitsformscreate.controls['unitsemail'].dirty)
                   "
                 >
                   <p
                     class="fw-light text-danger"
                     *ngIf="
-                      unitsformscreate.controls['unitsname'].errors['required']
+                      unitsformscreate.controls['unitsemail'].errors['required']
                     "
                   >
                     Email is Requried
                   </p>
                 </div>
               </div>
-              <div class="col-lg-12 col-md-6 mb-3">
-                <label for="unitsname" class="form-label form-lable-custom">
+              <div class="col-12 col-md-6 mb-3">
+                <label for="unitsnumber" class="form-label form-lable-custom">
                   Number</label
                 >
                 <input
                   type="number"
                   class="form-control form-input-custom"
-                  formControlName="unitsname"
+                  formControlName="unitsnumber"
                   [ngClass]="{
                     'is-invalid':
-                      unitsformscreate.controls['unitsname'].errors &&
-                      (unitsformscreate.controls['unitsname'].touched ||
-                        unitsformscreate.controls['unitsname'].dirty)
+                      unitsformscreate.controls['unitsnumber'].errors &&
+                      (unitsformscreate.controls['unitsnumber'].touched ||
+                        unitsformscreate.controls['unitsnumber'].dirty)
                   }"
                 />
                 <div
                   class="text-danger error-message"
                   *ngIf="
-                    unitsformscreate.controls['unitsname'].errors &&
-                    (unitsformscreate.controls['unitsname'].touched ||
-                      unitsformscreate.controls['unitsname'].dirty)
+                    unitsformscreate.controls['unitsnumber'].errors &&
+                    (unitsformscreate.controls['unitsnumber'].touched ||
+                      unitsformscreate.controls['unitsnumber'].dirty)
                   "
                 >
                   <p
                     class="fw-light text-danger"
                     *ngIf="
-                      unitsformscreate.controls['unitsname'].errors['required']
+                      unitsformscreate.controls['unitsnumber'].errors[
+                        'required'
+                      ]
                     "
                   >
                     Number is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="password" class="form-label form-lable-custom">
+                  Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control form-input-custom"
+                  formControlName="password"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformscreate.controls['password'].errors &&
+                      (unitsformscreate.controls['password'].touched ||
+                        unitsformscreate.controls['password'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformscreate.controls['password'].errors &&
+                    (unitsformscreate.controls['password'].touched ||
+                      unitsformscreate.controls['password'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformscreate.controls['password'].errors['required']
+                    "
+                  >
+                    Password is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label
+                  for="confirmpassword"
+                  class="form-label form-lable-custom"
+                >
+                  Confirm Password</label
+                >
+                <input
+                  type="confirmpassword"
+                  class="form-control form-input-custom"
+                  formControlName="confirmpassword"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformscreate.controls['confirmpassword'].errors &&
+                      (unitsformscreate.controls['confirmpassword'].touched ||
+                        unitsformscreate.controls['confirmpassword'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformscreate.controls['confirmpassword'].errors &&
+                    (unitsformscreate.controls['confirmpassword'].touched ||
+                      unitsformscreate.controls['confirmpassword'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformscreate.controls['confirmpassword'].errors[
+                        'required'
+                      ]
+                    "
+                  >
+                    Confirm Password is Requried
                   </p>
                 </div>
               </div>
@@ -309,7 +410,7 @@
               <button
                 class="btn btn-primary main-btnfs px-4 py-2"
                 type="button"
-                (click)="createunits()"
+                (click)="createSilentUser()"
               >
                 Create
               </button>
@@ -472,6 +573,26 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="openSecondsuccess"
+  class="your-animation-class modal-container-success"
+  [@slideIn]
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div>
+    <div
+      class="p-4 d-flex justify-content-between align-items-center success-content"
+    >
+      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+      <p class="text-green-900 text-capitalize mb-0">
+        {{ successName }} successfully
+      </p>
     </div>
   </div>
 </div>

@@ -116,27 +116,21 @@ export class SilentUsersComponent {
       searchbar: ['', [Validators.required]],
     });
     this.unitsformscreate = this.formBuilder.group({
-      projectname: ['', [Validators.required]],
-      Address: [''],
-      State: [''],
-      City: [''],
-      SelectClient: ['', [Validators.required]],
-      Selectstaff: [''],
-      description: [''],
-      StartDate: [''],
-      endDate: [''],
-    });
-
-    this.unitsformscreate = this.formBuilder.group({
       unitsname: ['', [Validators.required]],
+      unitsemail: ['', [Validators.required]],
+      unitsnumber: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      confirmpassword: ['', [Validators.required]],
     });
 
-    // this.Getunitsfun();
+    this.GetSilentUserfun();
   }
 
   idString: any;
   id: any;
 
+  successName: any = '';
+  openSecondsuccess: boolean = false;
   submitted: any;
   errorMessage: any;
 
@@ -149,51 +143,24 @@ export class SilentUsersComponent {
     this.Creatunitopen = false;
     this.updateusersopen = false;
   }
-  userstable = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john@example.com',
-      number: '9876543210',
-      status: 0,
-    },
-    {
-      id: 2,
-      name: 'Alice Smith',
-      email: 'alice@example.com',
-      number: '8765432109',
-      status: 1,
-    },
-    {
-      id: 3,
-      name: 'Robert Johnson',
-      email: 'robert@example.com',
-      number: '7654321098',
-      status: 1,
-    },
-    {
-      id: 4,
-      name: 'Emily Brown',
-      email: 'emily@example.com',
-      number: '6543210987',
-      status: 0,
-    },
-  ];
+  userstable: any;
 
   navigateToViewUsers(user: any) {
     this.router.navigate(['/user-management/view-silentusers'], {
       state: { userData: user },
     });
   }
-  unitstable: any;
-  // Getunitsfun() {
-  //   this.employeeService.GetunitsApi().subscribe((response: any) => {
-  //     if (response.status === 200) {
-  //       this.unitstable = response.data;
-  //       // this.fillformdate(response.data);
-  //     }
-  //   });
-  // }
+  search: any;
+  GetSilentUserfun() {
+    this.employeeService
+      .GetSilentUserApi(this.user_id, this.tableSize, this.page, this.search)
+      .subscribe((response: any) => {
+        if (response.status === 200 || response.status === 201) {
+          this.userstable = response.data.records;
+          this.totalRecords = response.data.total;
+        }
+      });
+  }
 
   async Status(unit_id: string, is_active: any) {
     const actionMessage = is_active ? 'activated' : 'deactivated';
@@ -216,33 +183,45 @@ export class SilentUsersComponent {
       });
   }
 
-  createunits() {
-    console.log(this.unitsformscreate.get('unitsname')?.value);
-
+  createSilentUser() {
     if (this.unitsformscreate.valid) {
-      this.units.name = this.unitsformscreate.get('unitsname')?.value;
+      const formData: FormData = new FormData();
+      formData.append('user_id', this.user_id);
+      formData.append('name', this.unitsformscreate.get('unitsname')?.value);
+      formData.append('email', this.unitsformscreate.get('unitsemail')?.value);
+      formData.append(
+        'mobile',
+        this.unitsformscreate.get('unitsnumber')?.value
+      );
+      formData.append('password', this.unitsformscreate.get('password')?.value);
+      formData.append(
+        'confirm_password',
+        this.unitsformscreate.get('confirmpassword')?.value
+      );
 
-      const body = JSON.stringify(this.units);
-      console.log(body);
-      this.employeeService.createunits(body).subscribe((response: any) => {
-        console.log(response);
-        if (response.status === 200) {
-          this.closeModal();
-          // this.successName = 'Batch';
-          // this.ngOnInit();
-          // this.Getunitsfun();
-          // this.dataService.changeMessage({ message: "units Created" });
-          // this.router.navigate(['/master/units']);
-          setTimeout(() => {
-            // this.openSecondsuccess = true;
-            setTimeout(() => {
-              // this.openSecondsuccess = false;
-            }, 1800);
-          }, 200);
-        } else {
-          // this.submitted = false;
-        }
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
       });
+
+      this.employeeService
+        .createSilentUserApi(formData)
+        .subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 201 || response.status === 200) {
+            this.closeModal();
+            this.successName = 'Slent User Created';
+            this.ngOnInit();
+            this.GetSilentUserfun();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
+              setTimeout(() => {
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+          }
+        });
     }
   }
 
@@ -345,20 +324,27 @@ export class SilentUsersComponent {
     },
   ];
 
-  searchfun() {}
-  resetsearchbar() {}
+  searchfun() {
+    if (this.searchbarform.valid) {
+      this.showreset = true;
+      this.search = this.searchbarform.get('searchbar')?.value;
+      this.GetSilentUserfun();
+    } else {
+      this.searchbarform.markAllAsTouched();
+    }
+  }
+  resetsearchbar() {
+    window.location.reload();
+  }
   onTableSizeChange(event: any): void {
     this.tableSize = event.target.value;
     console.log(event.target.value);
     this.page = 1;
-    // if (this.searchbarform.valid && this.showreset==true) {
-    //   this.searchfun()
-    // }else{
-    //   this.getstudentsfunpagination(this.type);
-    // }
+    this.GetSilentUserfun();
   }
   onTableDataChange(event: any) {
     this.page = event;
+    this.GetSilentUserfun();
   }
 
   addeventmmodal() {

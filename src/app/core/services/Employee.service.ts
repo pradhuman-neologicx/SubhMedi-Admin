@@ -693,6 +693,101 @@ export class EmployeeService {
       })
     );
   }
+  GetUserApi(user_id: any, tableSize: any, page: any, search: any) {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = '';
+    if (tableSize != 'all') {
+      url = `app-users?user_id=${user_id}&limit=${tableSize}&page=${page}`;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '&search=' + search;
+        }
+      }
+    } else {
+      url = `app-users?user_id=${user_id}`;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '&search=' + search;
+        }
+      }
+    }
+
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+  GetAppUserIdApi(user_id: any) {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    // var url = `app-users?user_id=${user_id}`;
+    const url = `app-users/${user_id}`;
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+  GetSilentUserApi(user_id: any, tableSize: any, page: any, search: any) {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = '';
+    if (tableSize != 'all') {
+      url = `silent-users?user_id=${user_id}&limit=${tableSize}&page=${page}`;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '&search=' + search;
+        }
+      }
+    } else {
+      url = `silent-users?user_id=${user_id}`;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '&search=' + search;
+        }
+      }
+    }
+
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  createSilentUserApi(body: any): Observable<any> {
+    const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      // 'Content-Type': 'application/json',
+    });
+
+    return this.apiservice.post(`app-users`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
   GetSubscriptionApi() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({

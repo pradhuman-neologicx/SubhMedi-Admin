@@ -8,13 +8,13 @@
     <div class="card-body p-0">
       <div class="row">
         <div class="my-3">
-          <div class="user-info-card row text-center" *ngIf="appUserData">
+          <div class="user-info-card row text-center" *ngIf="userstable">
             <div class="col-12 col-md-3 info-item">
               <div class="info-label text-secondary fs-6">User ID</div>
               <div
                 class="info-value text-secondary fw-bold fs-5 text-capitalize"
               >
-                {{ appUserData.id }}
+                {{ userstable.user.id }}
               </div>
             </div>
             <div class="col-12 col-md-3 info-item">
@@ -22,7 +22,7 @@
               <div
                 class="info-value text-secondary fw-bold fs-5 text-capitalize"
               >
-                {{ appUserData.name }}
+                {{ userstable.user.name }}
               </div>
             </div>
             <div class="col-12 col-md-3 info-item">
@@ -30,7 +30,7 @@
               <div
                 class="info-value text-secondary fw-bold fs-5 text-capitalize"
               >
-                {{ appUserData.email }}
+                {{ userstable.user.email }}
               </div>
             </div>
             <div class="col-12 col-md-3 info-item">
@@ -38,7 +38,7 @@
               <div
                 class="info-value text-secondary fw-bold fs-5 text-capitalize"
               >
-                {{ appUserData.number }}
+                {{ userstable.user.mobile }}
               </div>
             </div>
           </div>
@@ -121,6 +121,18 @@
                           Sr No
                         </th>
                         <th
+                          class="sorting sorting_asc"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 134.812px"
+                          aria-label="Action: activate to sort column descending"
+                          aria-sort="ascending"
+                        >
+                          Store Image
+                        </th>
+                        <th
                           class="sorting"
                           tabindex="0"
                           aria-controls="custom_datatable"
@@ -129,7 +141,7 @@
                           style="width: 140.953px"
                           aria-label="Store No: activate to sort column ascending"
                         >
-                          Store No
+                          Agency Name
                         </th>
 
                         <th
@@ -141,7 +153,7 @@
                           style="width: 211.359px"
                           aria-label="Location: activate to sort column ascending"
                         >
-                          Location
+                          Owner Name
                         </th>
                         <th
                           class="sorting"
@@ -152,7 +164,7 @@
                           style="width: 193.359px"
                           aria-label="Start date: activate to sort column ascending"
                         >
-                          Start date
+                          Owner Email
                         </th>
                         <th
                           class="sorting"
@@ -163,7 +175,20 @@
                           style="width: 136.297px"
                           aria-label="Status: activate to sort column ascending"
                         >
-                          Status
+                          Owner Contact
+                        </th>
+
+                        <th
+                          class="sorting sorting_asc"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 134.812px"
+                          aria-label="Action: activate to sort column descending"
+                          aria-sort="ascending"
+                        >
+                          Store Email
                         </th>
                         <th
                           class="sorting sorting_asc"
@@ -175,14 +200,95 @@
                           aria-label="Action: activate to sort column descending"
                           aria-sort="ascending"
                         >
-                          Action
+                          Store Contact
+                        </th>
+                        <th
+                          class="sorting sorting_asc"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 134.812px"
+                          aria-label="Action: activate to sort column descending"
+                          aria-sort="ascending"
+                        >
+                          Store Address
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="odd">
+                      <!-- <tr class="odd">
                         <td valign="top" colspan="7" class="dataTables_empty">
                           No data available in table
+                        </td>
+                      </tr> -->
+                      <tr
+                        *ngFor="let doc of userstable.stores; let i = index"
+                        [class.odd]="i % 2 === 0"
+                        [class.even]="i % 2 !== 0"
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          <a
+                            [href]="doc.store_image"
+                            target="_blank"
+                            class="cursor"
+                          >
+                            <img
+                              class="admin-banner"
+                              *ngIf="doc.store_image != undefined"
+                              [src]="doc.store_image"
+                              alt="banner image"
+                            />
+                          </a>
+                        </td>
+                        <td>
+                          {{ doc.agency_name }}
+                        </td>
+                        <td>{{ doc.owner_name }}</td>
+                        <td>{{ doc.owner_email }}</td>
+                        <td>{{ doc.owner_contact_no }}</td>
+
+                        <td>
+                          {{ doc.store_email }}
+                        </td>
+                        <td>
+                          {{ doc.store_contact }}
+                        </td>
+                        <!-- <td>
+                          {{ doc.store_address }}
+                        </td> -->
+                        <td>
+                          <p>
+                            <!-- Display description based on toggle -->
+                            {{
+                              isExpanded[doc.store_address]
+                                ? doc.store_address ?? ""
+                                : (doc.store_address ?? "" | slice : 0 : 10)
+                            }}
+                            <span
+                              *ngIf="
+                                (doc.store_address ?? '').length > 10 &&
+                                !isExpanded[doc.store_address]
+                              "
+                              >...</span
+                            >
+                          </p>
+
+                          <!-- Conditionally show View More/View Less only if description length > 100 -->
+                          <a
+                            *ngIf="(doc.store_address ?? '').length > 25"
+                            href="#"
+                            (click)="
+                              toggleDescription(doc.store_address, $event)
+                            "
+                          >
+                            {{
+                              isExpanded[doc.store_address]
+                                ? "View Less"
+                                : "View More"
+                            }}
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -230,9 +336,9 @@
                           rowspan="1"
                           colspan="1"
                           style="width: 140.953px"
-                          aria-label="Trip No: activate to sort column ascending"
+                          aria-label="Name: activate to sort column ascending"
                         >
-                          Employee No
+                          Name
                         </th>
 
                         <th
@@ -242,9 +348,9 @@
                           rowspan="1"
                           colspan="1"
                           style="width: 211.359px"
-                          aria-label="Designation: activate to sort column ascending"
+                          aria-label="Email: activate to sort column ascending"
                         >
-                          Designation
+                          Email
                         </th>
                         <th
                           class="sorting"
@@ -253,9 +359,9 @@
                           rowspan="1"
                           colspan="1"
                           style="width: 193.359px"
-                          aria-label="Start date: activate to sort column ascending"
+                          aria-label="Mobile: activate to sort column ascending"
                         >
-                          Start date
+                          Mobile
                         </th>
                         <th
                           class="sorting"
@@ -264,11 +370,22 @@
                           rowspan="1"
                           colspan="1"
                           style="width: 136.297px"
-                          aria-label="Status: activate to sort column ascending"
+                          aria-label="Role: activate to sort column ascending"
                         >
-                          Status
+                          Role
                         </th>
                         <th
+                          class="sorting"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 136.297px"
+                          aria-label="Rights: activate to sort column ascending"
+                        >
+                          Rights
+                        </th>
+                        <!-- <th
                           class="sorting sorting_asc"
                           tabindex="0"
                           aria-controls="custom_datatable"
@@ -279,14 +396,49 @@
                           aria-sort="ascending"
                         >
                           Action
-                        </th>
+                        </th> -->
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="odd">
-                        <td valign="top" colspan="7" class="dataTables_empty">
-                          No data available in table
+                      <tr
+                        *ngFor="let doc of userstable.employees; let i = index"
+                        [class.odd]="i % 2 === 0"
+                        [class.even]="i % 2 !== 0"
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          {{ doc.name }}
                         </td>
+                        <td>{{ doc.email }}</td>
+                        <td>{{ doc.mobile || "-----" }}</td>
+                        <td>{{ doc.role }}</td>
+                        <td>
+                          {{
+                            doc.rights === "view_only"
+                              ? "View Only"
+                              : doc.rights === "compliance_doc"
+                              ? "Compliance Doc"
+                              : doc.rights === "compliance_edit"
+                              ? "Compliance Edit"
+                              : doc.rights
+                          }}
+                        </td>
+                        <!-- <td>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-danger': doc.status === 'Expired',
+                              'bg-success': doc.status === 'Active'
+                            }"
+                          >
+                            {{ doc.status }}
+                          </span>
+                        </td> -->
+                        <!-- <td>
+                          <a [href]="doc.compliance_document" target="_blank">
+                            <i class="fa-solid fa-eye" title="View"></i>
+                          </a>
+                        </td> -->
                       </tr>
                     </tbody>
                   </table>
@@ -330,7 +482,7 @@
                           colspan="1"
                           style="width: 0px"
                         >
-                          Document Name
+                          Identity Proof
                         </th>
                         <th
                           class="sorting_disabled"
@@ -338,7 +490,7 @@
                           colspan="1"
                           style="width: 0px"
                         >
-                          Document No
+                          License Number
                         </th>
                         <th
                           class="sorting_disabled"
@@ -364,37 +516,50 @@
                         >
                           Issued By
                         </th>
-                        <th
+                        <!-- <th
                           class="sorting_disabled"
                           rowspan="1"
                           colspan="1"
                           style="width: 0px"
                         >
                           Days Remaining
-                        </th>
+                        </th> -->
                         <th
                           class="sorting_disabled"
                           rowspan="1"
                           colspan="1"
                           style="width: 0px"
                         >
-                          Action
+                          View Document
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr
-                        *ngFor="let doc of documents; let i = index"
+                        *ngFor="let doc of userstable.licenses; let i = index"
                         [class.odd]="i % 2 === 0"
                         [class.even]="i % 2 !== 0"
                       >
-                        <td>{{ doc.id }}</td>
-                        <td>{{ doc.name }}</td>
-                        <td>{{ doc.code }}</td>
-                        <td>{{ doc.startDate }}</td>
-                        <td>{{ doc.endDate }}</td>
-                        <td>{{ doc.owner }}</td>
+                        <td>{{ i + 1 }}</td>
                         <td>
+                          <a
+                            [href]="doc.identity_proof"
+                            target="_blank"
+                            class="cursor"
+                          >
+                            <img
+                              class="admin-banner"
+                              *ngIf="doc.identity_proof != undefined"
+                              [src]="doc.identity_proof"
+                              alt="banner image"
+                            />
+                          </a>
+                        </td>
+                        <td>{{ doc.license_number }}</td>
+                        <td>{{ doc.created_at | date : "yyyy-MM-dd" }}</td>
+                        <td>{{ doc.expiry_date }}</td>
+                        <td>{{ doc.issued_by }}</td>
+                        <!-- <td>
                           <span
                             class="badge"
                             [ngClass]="{
@@ -404,9 +569,9 @@
                           >
                             {{ doc.status }}
                           </span>
-                        </td>
+                        </td> -->
                         <td>
-                          <a [href]="doc.docUrl" target="_blank">
+                          <a [href]="doc.compliance_document" target="_blank">
                             <i class="fa-solid fa-eye" title="View"></i>
                           </a>
                         </td>
