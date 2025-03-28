@@ -1,41 +1,43 @@
+:host * {
+  transition: all 500ms ease-in-out;
+}
 
-:host *{
-    transition: all 500ms ease-in-out;
-  }
-  
 
-  .no-box-shadow.mat-nav-list {
-    box-shadow: none !important;
-  }
-  
-  .mat-expansion-panel{
-    border-radius: 0 !important;
-  }
+.no-box-shadow.mat-nav-list {
+  box-shadow: none !important;
+}
 
-  
+.mat-expansion-panel {
+  border-radius: 0 !important;
+}
 
-  .custom-header:focus {
-    //  background-color: #f0f0f0;   Set the background color */
-    // border-bottom: 1px solid #ccc; /* Add a border */
-    padding: 8px 16px; /* Adjust padding as needed */
-  }
-  
-  .custom-icon {
-    color: #007bff;
-    margin-right: 8px; 
-  }
-  
-  .custom-label {
-    font-size: 16px; /* Set the font size */
-    color: #333; /* Set the color of the label */
-  }
-  
-  .profileborder{
-    height: 135px;
-    width: 135px;
-    border: 6px solid #36a292;
-    border-radius: 50%;
-    position: relative;
+
+
+.custom-header:focus {
+  //  background-color: #f0f0f0;   Set the background color */
+  // border-bottom: 1px solid #ccc; /* Add a border */
+  padding: 8px 16px;
+  /* Adjust padding as needed */
+}
+
+.custom-icon {
+  color: #007bff;
+  margin-right: 8px;
+}
+
+.custom-label {
+  font-size: 16px;
+  /* Set the font size */
+  color: #333;
+  /* Set the color of the label */
+}
+
+.profileborder {
+  height: 135px;
+  width: 135px;
+  border: 6px solid #1075bc;
+  border-radius: 50%;
+  position: relative;
 }
 
 
@@ -71,7 +73,7 @@
 .shortname-big-b {
   height: 135px;
   width: 135px;
-  border: 6px solid #36a292;
+  border: 6px solid #1075bc;
   border-radius: 50%;
   position: relative;
 }
@@ -94,10 +96,10 @@
 .shortname-small-b {
   height: 38px;
   width: 38px;
-  border: 3px solid #36a292;
+  border: 3px solid #1075bc;
   border-radius: 50%;
   position: relative;
-  margin-right:15px;
+  margin-right: 15px;
 }
 
 
@@ -144,30 +146,30 @@
 }
 
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded .submenu-list {
-  color: #36a292 !important;
+  color: #1075bc !important;
 }
 
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded .submenu-list mat-icon {
-  color:#36a292 !important;
+  color: #1075bc !important;
 }
 
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded .submenu-list span {
-  color:#36a292 !important;
+  color: #1075bc !important;
 }
 
 :host ::ng-deep .mat-expansion-indicator::after {
-  border-color: #000; 
+  border-color: #000;
   border-style: inset !important;
 }
 
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator::after {
-  border-color: #36a292; 
+  border-color: #1075bc;
   border-style: inset !important;
 }
 
 
 .mat-expansion-panel-body {
-  padding: 0  0 0px 20px !important;
+  padding: 0 0 0px 20px !important;
 }
 
 .header-text {
@@ -185,6 +187,7 @@
   margin: 0 !important;
   font-size: 0.8rem !important;
 }
+
 .sidenav-header {
   padding-top: 24px;
   text-align: center;
@@ -218,9 +221,9 @@ mat-sidenav-content {
 
 .selected-menu-items {
   border-left: 3px solid;
-  border-left-color: #36a292;
-  background-color: #36a292 !important;
-  border-radius:0 !important;
+  border-left-color: #1075bc;
+  background-color: #1075bc !important;
+  border-radius: 0 !important;
   margin-bottom: 10px;
 }
 
@@ -238,11 +241,9 @@ mat-sidenav-content {
 }
 
 .selected-submenu span {
-  color: #36a292 !important;
+  color: #1075bc !important;
 }
 
 .selected-submenu .mat-icon {
-  color: #36a292 !important;
+  color: #1075bc !important;
 }
-
-
