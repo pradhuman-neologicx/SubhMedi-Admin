@@ -222,7 +222,26 @@ export class ViewAppUsersComponent {
     //   console.log(this.PartTypeList);
     // });
   }
+  async Status(id: string, tag: any) {
+    const actionMessage = 'Status Changed';
 
+    this.employeeService
+      .changeStoreTag(id, tag, this.appUserID)
+
+      .subscribe((response: any) => {
+        console.log(response);
+        if (response.status === 200 || response.status === 201) {
+          this.successName = actionMessage;
+          this.GetAppUserfun();
+          setTimeout(() => {
+            this.openSecondsuccess = true;
+            setTimeout(() => {
+              this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+        }
+      });
+  }
   filteredPartyTypes: any;
   filterPartyTypes(partyTypes: any[]): any[] {
     // Define the types you want to filter

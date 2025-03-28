@@ -96,10 +96,7 @@
           aria-labelledby="store-line-tab"
         >
           <div class="table-responsive">
-            <div
-              id="custom_datatable_wrapper"
-              class="dataTables_wrappe overflow-hidden"
-            >
+            <div id="custom_datatable_wrapper" class="dataTables_wrappe">
               <div class="row">
                 <div class="col-sm-12">
                   <table
@@ -214,6 +211,30 @@
                         >
                           Store Address
                         </th>
+                        <th
+                          class="sorting sorting_asc"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 134.812px"
+                          aria-label="Action: activate to sort column descending"
+                          aria-sort="ascending"
+                        >
+                          Store Tag
+                        </th>
+                        <th
+                          class="sorting sorting_asc"
+                          tabindex="0"
+                          aria-controls="custom_datatable"
+                          rowspan="1"
+                          colspan="1"
+                          style="width: 134.812px"
+                          aria-label="Action: activate to sort column descending"
+                          aria-sort="ascending"
+                        >
+                          Action
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -289,6 +310,54 @@
                                 : "View More"
                             }}
                           </a>
+                        </td>
+                        <td>
+                          <!-- {{ doc.store_tag }} -->
+                          <p
+                            [ngClass]="{
+                              'active-status': doc.store_tag === 'exclusive',
+                              'deactive-status': doc.store_tag === 'verified'
+                            }"
+                          >
+                            {{
+                              doc.store_tag === "exclusive"
+                                ? "Exclusive"
+                                : "Verified"
+                            }}
+                          </p>
+                        </td>
+                        <td>
+                          <p>
+                            <button
+                              mat-icon-button
+                              class="p-0"
+                              [matMenuTriggerFor]="menu"
+                            >
+                              <mat-icon>more_vert</mat-icon>
+                            </button>
+
+                            <mat-menu #menu="matMenu">
+                              <button
+                                mat-menu-item
+                                *ngIf="
+                                  doc.store_tag === 'exclusive';
+                                  else inactiveButton
+                                "
+                                (click)="Status(doc.id, 'verified')"
+                              >
+                                Verified
+                              </button>
+
+                              <ng-template #inactiveButton>
+                                <button
+                                  mat-menu-item
+                                  (click)="Status(doc.id, 'exclusive')"
+                                >
+                                  Exclusive
+                                </button>
+                              </ng-template>
+                            </mat-menu>
+                          </p>
                         </td>
                       </tr>
                     </tbody>
@@ -584,6 +653,25 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="openSecondsuccess"
+  class="your-animation-class modal-container-success"
+  [@slideIn]
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div>
+    <div
+      class="p-4 d-flex justify-content-between align-items-center success-content"
+    >
+      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+      <p class="text-green-900 text-capitalize mb-0">
+        {{ successName }} successfully
+      </p>
     </div>
   </div>
 </div>

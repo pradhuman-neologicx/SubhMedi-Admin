@@ -78,6 +78,26 @@ export class EmployeeService {
       })
     );
   }
+  changeStoreTag(store_id: any, tag: any, app_user_id: any): Observable<any> {
+    var user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    const body = {
+      user_id: user,
+      store_id: store_id,
+      tag: tag,
+      app_user_id: app_user_id,
+    };
+    return this.apiservice.post(`store-tag`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
 
   Getconpanies(tableSize: any, page: any, search: any, status_filter: any) {
     // const userId = this.jwtService.getpanelUserId();
