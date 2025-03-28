@@ -162,21 +162,21 @@ export class SilentUsersComponent {
       });
   }
 
-  async Status(unit_id: string, is_active: any) {
-    const actionMessage = is_active ? 'activated' : 'deactivated';
+  async Status(id: string, status: any) {
+    const actionMessage = status ? 'activated' : 'deactivated';
 
     this.employeeService
-      .changestatus(unit_id, is_active)
+      .changestatuss(id, status, 'Staff')
 
       .subscribe((response: any) => {
         console.log(response);
-        if (response.status === 200) {
-          // this.successName = actionMessage;
-          // this.Getunitsfun();
+        if (response.status === 200 || response.status === 201) {
+          this.successName = actionMessage;
+          this.GetSilentUserfun();
           setTimeout(() => {
-            // this.openSecondsuccess = true;
+            this.openSecondsuccess = true;
             setTimeout(() => {
-              // this.openSecondsuccess = false;
+              this.openSecondsuccess = false;
             }, 1800);
           }, 200);
         }

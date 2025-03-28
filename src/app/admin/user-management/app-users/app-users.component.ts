@@ -142,6 +142,8 @@ export class AppUsersComponent {
 
   submitted: any;
   errorMessage: any;
+  successName: any = '';
+  openSecondsuccess: boolean = false;
 
   Creatunitopen: boolean = false;
   updateusersopen: boolean = false;
@@ -182,27 +184,6 @@ export class AppUsersComponent {
       });
   }
 
-  async Status(unit_id: string, is_active: any) {
-    const actionMessage = is_active ? 'activated' : 'deactivated';
-
-    this.employeeService
-      .changestatus(unit_id, is_active)
-
-      .subscribe((response: any) => {
-        console.log(response);
-        if (response.status === 200) {
-          // this.successName = actionMessage;
-          // this.Getunitsfun();
-          setTimeout(() => {
-            // this.openSecondsuccess = true;
-            setTimeout(() => {
-              // this.openSecondsuccess = false;
-            }, 1800);
-          }, 200);
-        }
-      });
-  }
-
   createunits() {
     console.log(this.unitsformscreate.get('usernname')?.value);
 
@@ -232,7 +213,26 @@ export class AppUsersComponent {
       });
     }
   }
+  async Status(id: string, status: any) {
+    const actionMessage = status ? 'activated' : 'deactivated';
 
+    this.employeeService
+      .changestatuss(id, status, 'Staff')
+
+      .subscribe((response: any) => {
+        console.log(response);
+        if (response.status === 200 || response.status === 201) {
+          this.successName = actionMessage;
+          this.Getuserfun();
+          setTimeout(() => {
+            this.openSecondsuccess = true;
+            setTimeout(() => {
+              this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+        }
+      });
+  }
   updateunits() {
     console.log(this.usersformupdate.get('usernname')?.value);
 

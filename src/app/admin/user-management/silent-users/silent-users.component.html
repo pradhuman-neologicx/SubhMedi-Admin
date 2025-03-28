@@ -140,11 +140,11 @@
           <td>
             <p
               [ngClass]="{
-                'active-status': users.status == 1 ? 1 : 0,
-                'deactive-status': users.status == 1 ? 0 : 1
+                'active-status': users.is_active == 1 ? 1 : 0,
+                'deactive-status': users.is_active == 1 ? 0 : 1
               }"
             >
-              {{ users.status == 1 ? "active" : "deactive" }}
+              {{ users.is_active == 1 ? "active" : "deactive" }}
             </p>
           </td>
 
@@ -155,24 +155,27 @@
               </button>
 
               <mat-menu #menu="matMenu">
-                <button
+                <!-- <button
                   mat-menu-item
                   *ngIf="users.status == 1"
                   (click)="OpenEditModal(users)"
                 >
                   Edit Details
                 </button>
-                <button mat-menu-item (click)="navigateToViewUsers(users)">
+                <button mat-menu-item (click)="navigateToViewUsers(users.id)">
                   View Details
-                </button>
+                </button> -->
                 <button
                   mat-menu-item
-                  *ngIf="users.status == 1; else inactiveButton"
+                  *ngIf="users.is_active == 1; else inactiveButton"
+                  (click)="Status(users.id, 0)"
                 >
                   Deactivate
                 </button>
                 <ng-template #inactiveButton>
-                  <button mat-menu-item>Activate</button>
+                  <button mat-menu-item (click)="Status(users.id, 1)">
+                    Activate
+                  </button>
                 </ng-template>
               </mat-menu>
             </p>

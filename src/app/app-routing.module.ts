@@ -153,7 +153,7 @@ const routes: Routes = [
             component: SilentUsersComponent,
           },
           {
-            path: 'view-silentusers',
+            path: 'view-silentusers/:id',
             component: ViewSilentUsersComponent,
           },
         ],

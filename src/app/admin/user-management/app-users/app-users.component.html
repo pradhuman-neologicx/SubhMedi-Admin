@@ -101,9 +101,9 @@
             <p class="table-heading table-new-heading">Number</p>
           </th>
 
-          <!-- <th>
+          <th>
             <p class="table-heading table-new-heading">Status</p>
-          </th> -->
+          </th>
 
           <th>
             <p class="table-heading table-new-heading">Action</p>
@@ -145,16 +145,16 @@
             </p>
           </td>
 
-          <!-- <td>
+          <td>
             <p
               [ngClass]="{
-                'active-status': users.status == 1 ? 1 : 0,
-                'deactive-status': users.status == 1 ? 0 : 1
+                'active-status': users.is_active == 1 ? 1 : 0,
+                'deactive-status': users.is_active == 1 ? 0 : 1
               }"
             >
-              {{ users.status == 1 ? "active" : "deactive" }}
+              {{ users.is_active == 1 ? "active" : "deactive" }}
             </p>
-          </td> -->
+          </td>
 
           <td>
             <p>
@@ -173,15 +173,18 @@
                 <button mat-menu-item (click)="viewmmodal(users.id)">
                   View Details
                 </button>
-                <!-- <button
+                <button
                   mat-menu-item
-                  *ngIf="users.is_active; else inactiveButton"
+                  *ngIf="users.is_active == 1; else inactiveButton"
+                  (click)="Status(users.id, 0)"
                 >
                   Deactivate
                 </button>
                 <ng-template #inactiveButton>
-                  <button mat-menu-item>Activate</button>
-                </ng-template> -->
+                  <button mat-menu-item (click)="Status(users.id, 1)">
+                    Activate
+                  </button>
+                </ng-template>
               </mat-menu>
             </p>
           </td>
@@ -475,6 +478,25 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="openSecondsuccess"
+  class="your-animation-class modal-container-success"
+  [@slideIn]
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div>
+    <div
+      class="p-4 d-flex justify-content-between align-items-center success-content"
+    >
+      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+      <p class="text-green-900 text-capitalize mb-0">
+        {{ successName }} successfully
+      </p>
     </div>
   </div>
 </div>
