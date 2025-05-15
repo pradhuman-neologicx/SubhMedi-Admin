@@ -21,62 +21,64 @@ import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
-  selector: 'app-advertising-management',
-  templateUrl: './advertising-management.component.html',
-  styleUrl: './advertising-management.component.scss',
-  animations: [
-    trigger('succesfullyMesaage', [
-      state(
-        'void',
-        style({
-          transform: 'translateX(-30%)',
-          opacity: 0,
-        })
-      ),
-      transition(':enter, :leave', [
-        animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)'),
-      ]),
-    ]),
-    trigger('slideIn', [
-      state(
-        'void',
-        style({
-          transform: 'translateX(100%)',
-          opacity: 0,
-        })
-      ),
-      transition(':enter', [
-        animate(
-          '0.5s ease-out',
+  selector: 'app-companies',
+  templateUrl: './companies.component.html',
+  styleUrl: './companies.component.scss',
+    animations: [
+      trigger('succesfullyMesaage', [
+        state(
+          'void',
           style({
-            transform: 'translateX(0)', // Final position for slide-in effect
-            opacity: 1, // Final opacity
+            transform: 'translateX(-30%)',
+            opacity: 0,
           })
         ),
+        transition(':enter, :leave', [
+          animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)'),
+        ]),
       ]),
-    ]),
-
-    trigger('fadeIn', [
-      state(
-        'void',
-        style({
-          opacity: 0,
-          transform: 'scale(0.5)', // Start with smaller size
-        })
-      ),
-      transition(':enter', [
-        animate(
-          '0.5s ease-out',
+      trigger('slideIn', [
+        state(
+          'void',
           style({
-            opacity: 1,
-            transform: 'scale(1)', // Final size
+            transform: 'translateX(100%)',
+            opacity: 0,
           })
         ),
+        transition(':enter', [
+          animate(
+            '0.5s ease-out',
+            style({
+              transform: 'translateX(0)', // Final position for slide-in effect
+              opacity: 1, // Final opacity
+            })
+          ),
+        ]),
       ]),
-    ]),
-  ],
+  
+      trigger('fadeIn', [
+        state(
+          'void',
+          style({
+            opacity: 0,
+            transform: 'scale(0.5)', // Start with smaller size
+          })
+        ),
+        transition(':enter', [
+          animate(
+            '0.5s ease-out',
+            style({
+              opacity: 1,
+              transform: 'scale(1)', // Final size
+            })
+          ),
+        ]),
+      ]),
+    ],
 })
-export class AdvertisingManagementComponent {
+
+
+export class CompaniesComponent {
   showreset: any = false;
   searchText: any;
   tableSize: any = 10;
@@ -87,9 +89,9 @@ export class AdvertisingManagementComponent {
   bannercreate!: FormGroup;
   bannerupdate!: FormGroup;
   bannerview!: FormGroup;
-  bannercreateopen: boolean = false;
+  companycreateopen: boolean = false;
   banneviewopen: boolean = false;
-  bannerupdateopen: boolean = false;
+  companyupdateopen: boolean = false;
   displayedColumns: string[] = [
     'serialNo',
     'FeeType',
@@ -107,18 +109,18 @@ export class AdvertisingManagementComponent {
     private formBuilder: FormBuilder,
     // private adminService: AdminService,
     private jwtService: JwtService,
-    private employeeService: EmployeeService
+     private employeeService: EmployeeService,
   ) {}
 
   user_id: any;
   ngOnInit(): void {
     this.user_id = this.jwtService.getpanelUserId();
-    // this.searchbarform = this.formBuilder.group({
-    //   searchbar: ["", [Validators.required,]]
-    // });
+    this.searchbarform = this.formBuilder.group({
+      searchbar: ["", [Validators.required,]]
+    });
     this.bannercreate = this.formBuilder.group({
       // BannerType: ['', [Validators.required]],
-      description: [''],
+      description: ['',[Validators.required]],
       Website: ['', [Validators.required]],
 
       // StartDate: ['', [Validators.required]],
@@ -127,15 +129,17 @@ export class AdvertisingManagementComponent {
     this.bannerupdate = this.formBuilder.group({
       // BannerType: [''],
       // description: [description, [Validators.required,],],
-      description: [''],
-      Website: [''],
+      description: ['', [Validators.required]],
+      Website: ['', [Validators.required]],
 
       // StartDate: [''],
       // endDate: [''],
     });
     this.bannerview = this.formBuilder.group({
+     
       description: [''],
       Website: [''],
+   
     });
 
     this.GetBanners();
@@ -156,7 +160,7 @@ export class AdvertisingManagementComponent {
   bannerTable: any;
   GetBanners() {
     this.employeeService
-      .Getbanners(this.tableSize, this.page, this.statusfilter)
+      .Getconpanies(this.tableSize, this.page, this.search, this.statusfilter)
       .subscribe((response: any) => {
         if (response.status === 200 || response.status === 201) {
           this.bannerTable = response.data.records;
@@ -680,11 +684,11 @@ export class AdvertisingManagementComponent {
     const actionMessage = status ? 'activated' : 'deactivated';
 
     this.employeeService
-      .changestatuss(id, status, 'Banner')
+      .changestatuss(id, status, 'Company')
 
       .subscribe((response: any) => {
         console.log(response);
-        if (response.status === 200 || response.status === 201) {
+        if (response.status === 200) {
           this.successName = actionMessage;
           this.GetBanners();
           setTimeout(() => {
@@ -698,20 +702,20 @@ export class AdvertisingManagementComponent {
   }
 
   bannermodal() {
-    this.bannercreateopen = true;
+    this.companycreateopen = true;
     this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
   }
   updatebannersmodal() {
-    this.bannerupdateopen = true;
+    this.companyupdateopen = true;
   }
   viewebannersmodal() {
     this.banneviewopen = true;
   }
   closeModal() {
-    this.bannercreateopen = false;
-    this.bannerupdateopen = false;
+    this.companycreateopen = false;
+    this.companyupdateopen = false;
     this.banneviewopen = false;
     this.bulkacitve = false;
     this.bulkdecitve = false;
@@ -727,8 +731,19 @@ export class AdvertisingManagementComponent {
     event.stopPropagation();
   }
 
-  searchfun() {}
-  resetsearchbar() {}
+  searchfun() {
+    if (this.searchbarform.valid) {
+      this.showreset = true;
+      this.search = this.searchbarform.get('searchbar')?.value;
+      this.GetBanners()
+    }
+    else {
+      this.searchbarform.markAllAsTouched();
+    }
+  }
+  resetsearchbar() {
+    window.location.reload();
+  }
   onTableSizeChange(event: any): void {
     this.tableSize = event.target.value;
     console.log(event.target.value);
@@ -1045,10 +1060,10 @@ export class AdvertisingManagementComponent {
     {
       heading0: '#',
       heading1: 'Image',
-      heading2: 'Description',
+      heading2: 'Company Name',
       // heading4: 'Date added',
       // heading5: 'Date modified',
-      heading6: 'Status',
+      // heading6: 'Status',
       heading7: 'Action',
     },
   ];
@@ -1073,23 +1088,15 @@ export class AdvertisingManagementComponent {
   // }
   studentdetails: any;
 
-  Createbanner() {
+  Createcompany() {
     if (this.bannercreate.valid) {
       const formData: FormData = new FormData();
-      // formData.append('user_id', this.user_id + '');
-      // formData.append("user_id", '1' + '');
-      // formData.append('type', this.bannercreate.get('BannerType')?.value);
+    
       formData.append(
-        'description',
+        'name',
         this.bannercreate.get('description')?.value
       );
-      // if (this.bannercreate.get('BannerType')?.value == 'Advertisement') {
-      //   formData.append(
-      //     'start_time',
-      //     this.bannercreate.get('StartDate')?.value
-      //   );
-      //   formData.append('end_time', this.bannercreate.get('endDate')?.value);
-      // }
+   
 
       if (this.selectedFiles.length > 0) {
         const file = this.selectedFiles[0];
@@ -1100,37 +1107,35 @@ export class AdvertisingManagementComponent {
         this.selectedFileNames.toString().includes('jpg') ||
         this.selectedFileNames.toString().includes('png')
       ) {
-        this.employeeService
-          .createbanner(formData)
-          .subscribe((response: any) => {
-            console.log(response);
-            if (response.status === 200 || response.status === 201) {
-              this.closeModal();
-              this.successName = 'Banner Created';
-              this.ngOnInit();
-              this.GetBanners();
+        this.employeeService.createcompany(formData).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200 || response.status === 201) {
+            this.closeModal();
+            this.successName = 'Company Created';
+            this.ngOnInit();
+            this.GetBanners();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
               setTimeout(() => {
-                this.openSecondsuccess = true;
-                setTimeout(() => {
-                  this.openSecondsuccess = false;
-                }, 1800);
-              }, 200);
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+            if (
+              typeof (response.errors ?? response.message) === 'object' &&
+              (response.errors ?? response.message) !== null &&
+              !Array.isArray(response.errors ?? response.message)
+            ) {
+              this.errorMessage = JSON.stringify(
+                response.errors ?? response.message
+              );
             } else {
-              this.submitted = false;
-              if (
-                typeof (response.errors ?? response.message) === 'object' &&
-                (response.errors ?? response.message) !== null &&
-                !Array.isArray(response.errors ?? response.message)
-              ) {
-                this.errorMessage = JSON.stringify(
-                  response.errors ?? response.message
-                );
-              } else {
-                this.errorMessage = response.errors;
-              }
-              alert(this.errorMessage);
+              this.errorMessage = response.errors;
             }
-          });
+            alert(this.errorMessage);
+          }
+        });
       }
     } else {
       this.submitted = false;
@@ -1152,16 +1157,16 @@ export class AdvertisingManagementComponent {
     return invalid;
   }
 
-  Updatebanner() {
+  Updatecompany() {
     if (this.bannerupdate.valid) {
       const formData: FormData = new FormData();
-
+   
       formData.append(
-        'description',
+        'name',
         this.bannerupdate.get('description')?.value
       );
-      formData.append('_method', 'put');
-
+      formData.append("_method", "put");
+    
       if (this.selectedFiles.length > 0) {
         const file = this.selectedFiles[0];
         formData.append('image', file, file.name);
@@ -1175,37 +1180,35 @@ export class AdvertisingManagementComponent {
         this.selectedFileNames.toString().includes('jpg') ||
         this.selectedFileNames.toString().includes('png')
       ) {
-        this.employeeService
-          .updatebanner(formData, this.banner_id)
-          .subscribe((response: any) => {
-            console.log(response);
-            if (response.status === 200 || response.status === 201) {
-              this.closeModal();
-              this.successName = 'Banner Updated';
-              this.ngOnInit();
-              this.GetBanners();
+        this.employeeService.updatecompany(formData,this.companyId).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200 || response.status === 201) {
+            this.closeModal();
+            this.successName = 'Company Updated';
+            this.ngOnInit();
+            this.GetBanners();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
               setTimeout(() => {
-                this.openSecondsuccess = true;
-                setTimeout(() => {
-                  this.openSecondsuccess = false;
-                }, 1800);
-              }, 200);
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+            if (
+              typeof (response.errors ?? response.message) === 'object' &&
+              (response.errors ?? response.message) !== null &&
+              !Array.isArray(response.errors ?? response.message)
+            ) {
+              this.errorMessage = JSON.stringify(
+                response.errors ?? response.message
+              );
             } else {
-              this.submitted = false;
-              if (
-                typeof (response.errors ?? response.message) === 'object' &&
-                (response.errors ?? response.message) !== null &&
-                !Array.isArray(response.errors ?? response.message)
-              ) {
-                this.errorMessage = JSON.stringify(
-                  response.errors ?? response.message
-                );
-              } else {
-                this.errorMessage = response.errors;
-              }
-              alert(this.errorMessage);
+              this.errorMessage = response.errors;
             }
-          });
+            alert(this.errorMessage);
+          }
+        });
       } else {
         this.submitted = false;
         this.errorMessage = 'please select correct file';
@@ -1318,246 +1321,143 @@ export class AdvertisingManagementComponent {
     return formattedDate;
   }
 
-  Getbannerbyid() {
-    this.employeeService
-      .getbannerrbyID(this.banner_id)
-      .subscribe((response: any) => {
-        if (response.status === 200) {
-          this.fillformdate(response.data);
-          this.fillviewformdate(response.data);
-        }
-      });
+
+
+
+  GetgetcompanybyID() {
+    this.employeeService.getcompanybyID(this.companyId).subscribe((response: any) => {
+      if (response.status === 200 || response.status === 201) {
+
+        this.fillformdate(response.data);
+        this.fillviewformdate(response.data);
+
+      }
+
+    });
   }
 
   async fillformdate(response: any) {
-    this.bannerupdate = this.formBuilder.group({
-      description: [response.description],
-      Website: [response.image, [Validators.required]],
-    });
 
-    var file = await this.createFile(response.image);
-    // if (file) {
-    //   var bannertype = response.type;
-    //   if (bannertype == 'Advertisement') {
-    //     const fileType = file.type;
-    //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      this.bannerupdate = this.formBuilder.group({
+      
+        description: [response.name , [Validators.required]],
+        Website: [response.image, [Validators.required]],
+      });
+  
 
-    //     if (!validImageTypes.includes(fileType)) {
-    //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //       this.selectedImages = [];
-    //       this.selectedFileNames = [];
-    //       this.selectedFiles = [];
-    //       return;
-    //     }
-    //     const maxSizeBytes = 5000000;
-    //     if (file.size > maxSizeBytes) {
-    //       this.selectedImages = [];
-    //       this.selectedFileNames = [];
-    //       this.selectedFiles = [];
-    //       this.fileSizeError =
-    //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //       return;
-    //     }
+      var file = await this.createFile(response.image);
+      // if (file) {
+      //   var bannertype = response.type;
+      //   if (bannertype == 'Advertisement') {
+      //     const fileType = file.type;
+      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
-    //     const reader = new FileReader();
-    //     this.selectedFileNames = [file.name];
-    //     this.selectedFiles = [file];
+      //     if (!validImageTypes.includes(fileType)) {
+      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       return;
+      //     }
+      //     const maxSizeBytes = 5000000;
+      //     if (file.size > maxSizeBytes) {
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       this.fileSizeError =
+      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+      //       return;
+      //     }
 
-    //     reader.onload = () => {
-    //       if (typeof reader.result === 'string' || reader.result === null) {
-    //         const id = this.generateUniqueId();
-    //         const imageSrc = reader.result as string;
-    //         const image = new Image();
-    //         image.src = imageSrc;
+      //     const reader = new FileReader();
+      //     this.selectedFileNames = [file.name];
+      //     this.selectedFiles = [file];
 
-    //         image.onload = () => {
-    //           if (image.width === 1878 && image.height === 281) {
-    //             this.selectedImages = [{ imageSrc, id }];
-    //             this.fileSizeError = '';
-    //           } else {
-    //             this.selectedImages = [];
-    //             this.selectedFileNames = [];
-    //             this.selectedFiles = [];
-    //             this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
-    //           }
-    //         };
-    //       }
-    //     };
+      //     reader.onload = () => {
+      //       if (typeof reader.result === 'string' || reader.result === null) {
+      //         const id = this.generateUniqueId();
+      //         const imageSrc = reader.result as string;
+      //         const image = new Image();
+      //         image.src = imageSrc;
 
-    //     reader.readAsDataURL(file);
-    //   } else {
-    //     const maxSizeBytes = 5000000;
-    //     var maxHeight: any;
-    //     const fileType = file.type;
-    //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      //         image.onload = () => {
+      //           if (image.width === 1878 && image.height === 281) {
+      //             this.selectedImages = [{ imageSrc, id }];
+      //             this.fileSizeError = '';
+      //           } else {
+      //             this.selectedImages = [];
+      //             this.selectedFileNames = [];
+      //             this.selectedFiles = [];
+      //             this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
+      //           }
+      //         };
+      //       }
+      //     };
 
-    //     if (!validImageTypes.includes(fileType)) {
-    //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //       this.selectedImages = [];
-    //       this.selectedFileNames = [];
-    //       this.selectedFiles = [];
-    //       return;
-    //     }
+      //     reader.readAsDataURL(file);
+      //   } else {
+      //     const maxSizeBytes = 5000000;
+      //     var maxHeight: any;
+      //     const fileType = file.type;
+      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
-    //     if (bannertype == 'Advertisement') {
-    //       // 5MB for the file
-    //       maxHeight = 500;
-    //     } else {
-    //       maxHeight = 700;
-    //     }
-    //     if (file.size > maxSizeBytes) {
-    //       this.selectedImages = [];
-    //       this.selectedFileNames = [];
-    //       this.selectedFiles = [];
-    //       this.fileSizeError =
-    //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //       return;
-    //     }
+      //     if (!validImageTypes.includes(fileType)) {
+      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       return;
+      //     }
 
-    //     const reader = new FileReader();
-    //     this.selectedFileNames = [file.name];
-    //     this.selectedFiles = [file];
+      //     if (bannertype == 'Advertisement') {
+      //       // 5MB for the file
+      //       maxHeight = 500;
+      //     } else {
+      //       maxHeight = 700;
+      //     }
+      //     if (file.size > maxSizeBytes) {
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       this.fileSizeError =
+      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+      //       return;
+      //     }
 
-    //     reader.onload = () => {
-    //       if (typeof reader.result === 'string' || reader.result === null) {
-    //         const id = this.generateUniqueId();
-    //         const imageSrc = reader.result as string;
-    //         const image = new Image();
-    //         image.src = imageSrc;
+      //     const reader = new FileReader();
+      //     this.selectedFileNames = [file.name];
+      //     this.selectedFiles = [file];
 
-    //         image.onload = () => {
-    //           if (image.height > maxHeight) {
-    //             this.selectedImages = [];
-    //             this.selectedFileNames = [];
-    //             this.selectedFiles = [];
-    //             this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-    //           } else {
-    //             this.selectedImages = [{ imageSrc, id }];
-    //             this.fileSizeError = '';
-    //           }
-    //         };
-    //       }
-    //     };
+      //     reader.onload = () => {
+      //       if (typeof reader.result === 'string' || reader.result === null) {
+      //         const id = this.generateUniqueId();
+      //         const imageSrc = reader.result as string;
+      //         const image = new Image();
+      //         image.src = imageSrc;
 
-    //     reader.readAsDataURL(file);
-    //   }
-    // }
-    if (file) {
-      const maxSizeBytes = 5000000;
-      var maxHeight: any;
-      const fileType = file.type;
-      const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      //         image.onload = () => {
+      //           if (image.height > maxHeight) {
+      //             this.selectedImages = [];
+      //             this.selectedFileNames = [];
+      //             this.selectedFiles = [];
+      //             this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
+      //           } else {
+      //             this.selectedImages = [{ imageSrc, id }];
+      //             this.fileSizeError = '';
+      //           }
+      //         };
+      //       }
+      //     };
 
-      if (!validImageTypes.includes(fileType)) {
-        this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-        this.selectedImages = [];
-        this.selectedFileNames = [];
-        this.selectedFiles = [];
-        return;
-      }
-
-      maxHeight = 700;
-
-      if (file.size > maxSizeBytes) {
-        this.selectedImages = [];
-        this.selectedFileNames = [];
-        this.selectedFiles = [];
-        this.fileSizeError =
-          'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-        return;
-      }
-
-      const reader = new FileReader();
-      this.selectedFileNames = [file.name];
-      this.selectedFiles = [file];
-
-      reader.onload = () => {
-        if (typeof reader.result === 'string' || reader.result === null) {
-          const id = this.generateUniqueId();
-          const imageSrc = reader.result as string;
-          const image = new Image();
-          image.src = imageSrc;
-
-          image.onload = () => {
-            if (image.height > maxHeight) {
-              this.selectedImages = [];
-              this.selectedFileNames = [];
-              this.selectedFiles = [];
-              this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-            } else {
-              this.selectedImages = [{ imageSrc, id }];
-              this.fileSizeError = '';
-            }
-          };
-        }
-      };
-
-      reader.readAsDataURL(file);
-    }
-  }
-
-  async fillviewformdate(response: any) {
-    this.bannerview = this.formBuilder.group({
-      description: [response.description],
-      Website: [response.image, [Validators.required]],
-    });
-
-    var file = await this.createFile(response.image);
-    if (file) {
-      var bannertype = response.type;
-      if (bannertype == 'Advertisement') {
-        const fileType = file.type;
-        const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-        if (!validImageTypes.includes(fileType)) {
-          this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          return;
-        }
-        const maxSizeBytes = 5000000;
-        if (file.size > maxSizeBytes) {
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          this.fileSizeError =
-            'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-          return;
-        }
-
-        const reader = new FileReader();
-        this.selectedFileNames = [file.name];
-        this.selectedFiles = [file];
-
-        reader.onload = () => {
-          if (typeof reader.result === 'string' || reader.result === null) {
-            const id = this.generateUniqueId();
-            const imageSrc = reader.result as string;
-            const image = new Image();
-            image.src = imageSrc;
-
-            image.onload = () => {
-              if (image.width === 1878 && image.height === 281) {
-                this.selectedImages = [{ imageSrc, id }];
-                this.fileSizeError = '';
-              } else {
-                this.selectedImages = [];
-                this.selectedFileNames = [];
-                this.selectedFiles = [];
-                this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
-              }
-            };
-          }
-        };
-
-        reader.readAsDataURL(file);
-      } else {
+      //     reader.readAsDataURL(file);
+      //   }
+      // }
+      if (file) {
         const maxSizeBytes = 5000000;
         var maxHeight: any;
         const fileType = file.type;
         const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
+      
         if (!validImageTypes.includes(fileType)) {
           this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
           this.selectedImages = [];
@@ -1565,13 +1465,9 @@ export class AdvertisingManagementComponent {
           this.selectedFiles = [];
           return;
         }
-
-        if (bannertype == 'Advertisement') {
-          // 5MB for the file
-          maxHeight = 500;
-        } else {
-          maxHeight = 700;
-        }
+      
+        maxHeight = 700;
+      
         if (file.size > maxSizeBytes) {
           this.selectedImages = [];
           this.selectedFileNames = [];
@@ -1580,18 +1476,18 @@ export class AdvertisingManagementComponent {
             'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
           return;
         }
-
+      
         const reader = new FileReader();
         this.selectedFileNames = [file.name];
         this.selectedFiles = [file];
-
+      
         reader.onload = () => {
           if (typeof reader.result === 'string' || reader.result === null) {
             const id = this.generateUniqueId();
             const imageSrc = reader.result as string;
             const image = new Image();
             image.src = imageSrc;
-
+      
             image.onload = () => {
               if (image.height > maxHeight) {
                 this.selectedImages = [];
@@ -1605,80 +1501,201 @@ export class AdvertisingManagementComponent {
             };
           }
         };
-
+      
         reader.readAsDataURL(file);
       }
-    }
-    // if (file) {
-    //   const maxSizeBytes = 5000000;
-    //   var maxHeight: any;
-    //   const fileType = file.type;
-    //   const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      
+    } 
+   
+    
+    async fillviewformdate(response: any) {
 
-    //   if (!validImageTypes.includes(fileType)) {
-    //     this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //     this.selectedImages = [];
-    //     this.selectedFileNames = [];
-    //     this.selectedFiles = [];
-    //     return;
-    //   }
+      this.bannerview = this.formBuilder.group({
+      
+        description: [response.name],
+        Website: [response.image, [Validators.required]],
+      });
+  
 
-    //   maxHeight = 700;
+      var file = await this.createFile(response.image);
+      // if (file) {
+      //   var bannertype = response.type;
+      //   if (bannertype == 'Advertisement') {
+      //     const fileType = file.type;
+      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
-    //   if (file.size > maxSizeBytes) {
-    //     this.selectedImages = [];
-    //     this.selectedFileNames = [];
-    //     this.selectedFiles = [];
-    //     this.fileSizeError =
-    //       'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //     return;
-    //   }
+      //     if (!validImageTypes.includes(fileType)) {
+      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       return;
+      //     }
+      //     const maxSizeBytes = 5000000;
+      //     if (file.size > maxSizeBytes) {
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       this.fileSizeError =
+      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+      //       return;
+      //     }
 
-    //   const reader = new FileReader();
-    //   this.selectedFileNames = [file.name];
-    //   this.selectedFiles = [file];
+      //     const reader = new FileReader();
+      //     this.selectedFileNames = [file.name];
+      //     this.selectedFiles = [file];
 
-    //   reader.onload = () => {
-    //     if (typeof reader.result === 'string' || reader.result === null) {
-    //       const id = this.generateUniqueId();
-    //       const imageSrc = reader.result as string;
-    //       const image = new Image();
-    //       image.src = imageSrc;
+      //     reader.onload = () => {
+      //       if (typeof reader.result === 'string' || reader.result === null) {
+      //         const id = this.generateUniqueId();
+      //         const imageSrc = reader.result as string;
+      //         const image = new Image();
+      //         image.src = imageSrc;
 
-    //       image.onload = () => {
-    //         if (image.height > maxHeight) {
-    //           this.selectedImages = [];
-    //           this.selectedFileNames = [];
-    //           this.selectedFiles = [];
-    //           this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-    //         } else {
-    //           this.selectedImages = [{ imageSrc, id }];
-    //           this.fileSizeError = '';
-    //         }
-    //       };
-    //     }
-    //   };
+      //         image.onload = () => {
+      //           if (image.width === 1878 && image.height === 281) {
+      //             this.selectedImages = [{ imageSrc, id }];
+      //             this.fileSizeError = '';
+      //           } else {
+      //             this.selectedImages = [];
+      //             this.selectedFileNames = [];
+      //             this.selectedFiles = [];
+      //             this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
+      //           }
+      //         };
+      //       }
+      //     };
 
-    //   reader.readAsDataURL(file);
-    // }
-  }
+      //     reader.readAsDataURL(file);
+      //   } else {
+      //     const maxSizeBytes = 5000000;
+      //     var maxHeight: any;
+      //     const fileType = file.type;
+      //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
-  banner_id: any;
+      //     if (!validImageTypes.includes(fileType)) {
+      //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       return;
+      //     }
+
+      //     if (bannertype == 'Advertisement') {
+      //       // 5MB for the file
+      //       maxHeight = 500;
+      //     } else {
+      //       maxHeight = 700;
+      //     }
+      //     if (file.size > maxSizeBytes) {
+      //       this.selectedImages = [];
+      //       this.selectedFileNames = [];
+      //       this.selectedFiles = [];
+      //       this.fileSizeError =
+      //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+      //       return;
+      //     }
+
+      //     const reader = new FileReader();
+      //     this.selectedFileNames = [file.name];
+      //     this.selectedFiles = [file];
+
+      //     reader.onload = () => {
+      //       if (typeof reader.result === 'string' || reader.result === null) {
+      //         const id = this.generateUniqueId();
+      //         const imageSrc = reader.result as string;
+      //         const image = new Image();
+      //         image.src = imageSrc;
+
+      //         image.onload = () => {
+      //           if (image.height > maxHeight) {
+      //             this.selectedImages = [];
+      //             this.selectedFileNames = [];
+      //             this.selectedFiles = [];
+      //             this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
+      //           } else {
+      //             this.selectedImages = [{ imageSrc, id }];
+      //             this.fileSizeError = '';
+      //           }
+      //         };
+      //       }
+      //     };
+
+      //     reader.readAsDataURL(file);
+      //   }
+      // }
+      if (file) {
+        const maxSizeBytes = 5000000;
+        var maxHeight: any;
+        const fileType = file.type;
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      
+        if (!validImageTypes.includes(fileType)) {
+          this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
+          this.selectedImages = [];
+          this.selectedFileNames = [];
+          this.selectedFiles = [];
+          return;
+        }
+      
+        maxHeight = 700;
+      
+        if (file.size > maxSizeBytes) {
+          this.selectedImages = [];
+          this.selectedFileNames = [];
+          this.selectedFiles = [];
+          this.fileSizeError =
+            'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
+          return;
+        }
+      
+        const reader = new FileReader();
+        this.selectedFileNames = [file.name];
+        this.selectedFiles = [file];
+      
+        reader.onload = () => {
+          if (typeof reader.result === 'string' || reader.result === null) {
+            const id = this.generateUniqueId();
+            const imageSrc = reader.result as string;
+            const image = new Image();
+            image.src = imageSrc;
+      
+            image.onload = () => {
+              if (image.height > maxHeight) {
+                this.selectedImages = [];
+                this.selectedFileNames = [];
+                this.selectedFiles = [];
+                this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
+              } else {
+                this.selectedImages = [{ imageSrc, id }];
+                this.fileSizeError = '';
+              }
+            };
+          }
+        };
+      
+        reader.readAsDataURL(file);
+      }
+      
+    } 
+    
+
+    companyId: any;
   async OpenEditModal(banner: any) {
-    // this.banneviewopen = false;
-    this.bannerupdateopen = true;
+   // this.banneviewopen = false;
+   this.companyupdateopen = true
     this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
-    this.banner_id = banner.id;
-    this.Getbannerbyid();
+    this.companyId = banner.id;
+this.GetgetcompanybyID();
     // try {
     //   if (!banner || !banner.id) {
     //     console.error('unit ID is undefined or null.');
     //     return;
     //   }
 
-    //   this.bannerupdateopen = true;
+    //   this.companyupdateopen = true;
     //   this.bannerupdate = this.formBuilder.group({
     //     // BannerType: [banner.type, [
     //     //   Validators.required,
@@ -1809,11 +1826,13 @@ export class AdvertisingManagementComponent {
 
   async OpenviewModal(banner: any) {
     this.banneviewopen = true;
-    this.selectedImages = [];
+      this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
-    this.banner_id = banner.id;
-    this.Getbannerbyid();
+    this.companyId = banner.id;
+    this.GetgetcompanybyID();
+
+    
   }
 
   async createFile(url: string) {

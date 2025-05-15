@@ -111,6 +111,18 @@ export class SidenavComponent {
         label: 'Advertising management',
         route: 'advertising',
       },
+      {
+        index: 4,
+        icon: 'import_contacts',
+        label: 'Companies',
+        route: 'companies',
+      },
+      {
+        index: 4,
+        icon: 'import_contacts',
+        label: 'License Authority',
+        route: 'authority',
+      },
       // {
       //   index: 2,
       //   icon: 'home',

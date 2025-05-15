@@ -25,7 +25,6 @@ export class SignINResStudent {
   token!: string;
 }
 
-
 export class SendOtp {
   email!: string;
 }
@@ -38,18 +37,18 @@ export class OtpVerify {
   otp!: number;
 }
 
-
 export class ForgotPasswordRes {
   ForgotPasswordID!: String;
 }
 
-
 export class ChangePassword {
-  password!: string;
-  confirmPassword!: string;
+  password: any;
+  password_confirmation: any;
+  user_id: any;
+  type: any;
 }
 
 export class ChangePasswordresponse {
-  user_id!:String;
+  user_id!: String;
   message!: string;
 }

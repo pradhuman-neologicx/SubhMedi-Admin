@@ -30,6 +30,8 @@ import { SubscriptionManagementComponent } from './admin/subscription-management
 import { AdvertisingManagementComponent } from './admin/advertising-management/advertising-management.component';
 import { ViewAppUsersComponent } from './admin/user-management/app-users/view-app-users/view-app-users.component';
 import { ViewSilentUsersComponent } from './admin/user-management/silent-users/view-silent-users/view-silent-users.component';
+import { CompaniesComponent } from './admin/companies/companies.component';
+import { AuthorityComponent } from './admin/authority/authority.component';
 
 const routes: Routes = [
   {
@@ -39,7 +41,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
       { path: 'sign_in', component: SigninComponent },
-      { path: 'otp', component: OtpComponent },
+      { path: 'reset_password', component: OtpComponent },
       { path: 'forgot_password', component: ForgotPasswordComponent },
     ],
   },
@@ -163,6 +165,14 @@ const routes: Routes = [
       {
         path: 'advertising',
         component: AdvertisingManagementComponent,
+      },
+      {
+        path: 'companies',
+        component: CompaniesComponent,
+      },
+      {
+        path: 'authority',
+        component: AuthorityComponent,
       },
 
       {

@@ -59,6 +59,335 @@ export class EmployeeService {
     );
   }
 
+  changestatuss(id: any, status: any, type: any): Observable<any> {
+    // var user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    const body = {
+      id: id,
+      status: status,
+      type: type,
+    };
+    return this.apiservice.post(`change-status`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  Getconpanies(tableSize: any, page: any, search: any, status_filter: any) {
+    // const userId = this.jwtService.getpanelUserId();
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = '';
+    if (tableSize != 'all') {
+      url = `company?limit=` + tableSize + '&page=' + page;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '&search=' + search;
+        }
+      }
+      if (status_filter != undefined) {
+        if (status_filter.length > 0) {
+          url = url + '&status_filter=' + status_filter;
+        }
+      }
+    } else {
+      url = `company?`;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '?search=' + search;
+        }
+      }
+      if (status_filter != undefined) {
+        if (status_filter.length > 0) {
+          url = url + '?status_filter=' + status_filter;
+        }
+      }
+    }
+
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  Getauthority(tableSize: any, page: any, search: any) {
+    // const userId = this.jwtService.getpanelUserId();
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = '';
+    if (tableSize != 'all') {
+      url = `authority?limit=` + tableSize + '&page=' + page;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '&search=' + search;
+        }
+      }
+      // if (status_filter != undefined) {
+      //   if (status_filter.length > 0) {
+      //     url = url + '&status_filter=' + status_filter;
+      //   }
+      // }
+    } else {
+      url = `authority?`;
+      if (search != undefined) {
+        if (search.length > 0) {
+          url = url + '?search=' + search;
+        }
+      }
+      // if (status_filter != undefined) {
+      //   if (status_filter.length > 0) {
+      //     url = url + '?status_filter=' + status_filter;
+      //   }
+      // }
+    }
+
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  createauthority(body: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`authority`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  updateauthority(body: any, authorityId: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`authority/` + authorityId, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  getauthobyID(authorityId: any): Observable<any> {
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = `authority/` + authorityId;
+    // Make the POST request to the server
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  Getbanners(tableSize: any, page: any, status_filter: any) {
+    // const userId = this.jwtService.getpanelUserId();
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = '';
+    if (tableSize != 'all') {
+      url = `banner?limit=` + tableSize + '&page=' + page;
+      // if (search != undefined) {
+      //   if (search.length > 0) {
+      //     url = url + '&search=' + search;
+      //   }
+      // }
+      if (status_filter != undefined) {
+        if (status_filter.length > 0) {
+          url = url + '&status_filter=' + status_filter;
+        }
+      }
+    } else {
+      url = `banner?`;
+      // if (search != undefined) {
+      //   if (search.length > 0) {
+      //     url = url + '?search=' + search;
+      //   }
+      // }
+      if (status_filter != undefined) {
+        if (status_filter.length > 0) {
+          url = url + '?status_filter=' + status_filter;
+        }
+      }
+    }
+
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  getbannerrbyID(bannerId: any): Observable<any> {
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = `banner/` + bannerId;
+    // Make the POST request to the server
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  getcompanybyID(companyId: any): Observable<any> {
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = `company/` + companyId;
+    // Make the POST request to the server
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  updatecompany(body: any, companyId: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`company/` + companyId, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  createbanner(body: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`banner`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  createcompany(body: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`company`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  updatebanner(body: any, bannerId: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`banner/` + bannerId, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
   changesmaterialtatus(material_id: string, status: any): Observable<any> {
     var user = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
@@ -222,6 +551,20 @@ export class EmployeeService {
   }
 
   GetState() {
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.apiservice.get('states', headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  GetStates() {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api_url: 'subhmedi.mobilogicx.com/api/',
+  api_url: 'https://subhmedi.mobilogicx.com/api/',
 };

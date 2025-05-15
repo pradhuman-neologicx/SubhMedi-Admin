@@ -21,62 +21,63 @@ import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
 
 @Component({
-  selector: 'app-advertising-management',
-  templateUrl: './advertising-management.component.html',
-  styleUrl: './advertising-management.component.scss',
-  animations: [
-    trigger('succesfullyMesaage', [
-      state(
-        'void',
-        style({
-          transform: 'translateX(-30%)',
-          opacity: 0,
-        })
-      ),
-      transition(':enter, :leave', [
-        animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)'),
-      ]),
-    ]),
-    trigger('slideIn', [
-      state(
-        'void',
-        style({
-          transform: 'translateX(100%)',
-          opacity: 0,
-        })
-      ),
-      transition(':enter', [
-        animate(
-          '0.5s ease-out',
-          style({
-            transform: 'translateX(0)', // Final position for slide-in effect
-            opacity: 1, // Final opacity
-          })
-        ),
-      ]),
-    ]),
-
-    trigger('fadeIn', [
-      state(
-        'void',
-        style({
-          opacity: 0,
-          transform: 'scale(0.5)', // Start with smaller size
-        })
-      ),
-      transition(':enter', [
-        animate(
-          '0.5s ease-out',
-          style({
-            opacity: 1,
-            transform: 'scale(1)', // Final size
-          })
-        ),
-      ]),
-    ]),
-  ],
+  selector: 'app-authority',
+  templateUrl: './authority.component.html',
+  styleUrl: './authority.component.scss',
+   animations: [
+        trigger('succesfullyMesaage', [
+          state(
+            'void',
+            style({
+              transform: 'translateX(-30%)',
+              opacity: 0,
+            })
+          ),
+          transition(':enter, :leave', [
+            animate('0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)'),
+          ]),
+        ]),
+        trigger('slideIn', [
+          state(
+            'void',
+            style({
+              transform: 'translateX(100%)',
+              opacity: 0,
+            })
+          ),
+          transition(':enter', [
+            animate(
+              '0.5s ease-out',
+              style({
+                transform: 'translateX(0)', // Final position for slide-in effect
+                opacity: 1, // Final opacity
+              })
+            ),
+          ]),
+        ]),
+    
+        trigger('fadeIn', [
+          state(
+            'void',
+            style({
+              opacity: 0,
+              transform: 'scale(0.5)', // Start with smaller size
+            })
+          ),
+          transition(':enter', [
+            animate(
+              '0.5s ease-out',
+              style({
+                opacity: 1,
+                transform: 'scale(1)', // Final size
+              })
+            ),
+          ]),
+        ]),
+      ],
 })
-export class AdvertisingManagementComponent {
+
+export class AuthorityComponent {
   showreset: any = false;
   searchText: any;
   tableSize: any = 10;
@@ -84,12 +85,12 @@ export class AdvertisingManagementComponent {
   totalRecords: any;
   page: number = 1;
   searchbarform!: FormGroup;
-  bannercreate!: FormGroup;
-  bannerupdate!: FormGroup;
-  bannerview!: FormGroup;
-  bannercreateopen: boolean = false;
+  authoritycreate!: FormGroup;
+  authorityupdate!: FormGroup;
+  authorityview!: FormGroup;
+  authoritycreateopen: boolean = false;
   banneviewopen: boolean = false;
-  bannerupdateopen: boolean = false;
+  companyupdateopen: boolean = false;
   displayedColumns: string[] = [
     'serialNo',
     'FeeType',
@@ -107,38 +108,33 @@ export class AdvertisingManagementComponent {
     private formBuilder: FormBuilder,
     // private adminService: AdminService,
     private jwtService: JwtService,
-    private employeeService: EmployeeService
+     private employeeService: EmployeeService,
   ) {}
 
   user_id: any;
   ngOnInit(): void {
     this.user_id = this.jwtService.getpanelUserId();
-    // this.searchbarform = this.formBuilder.group({
-    //   searchbar: ["", [Validators.required,]]
-    // });
-    this.bannercreate = this.formBuilder.group({
-      // BannerType: ['', [Validators.required]],
-      description: [''],
-      Website: ['', [Validators.required]],
-
-      // StartDate: ['', [Validators.required]],
-      // endDate: ['', [Validators.required]],
+    this.searchbarform = this.formBuilder.group({
+      searchbar: ["", [Validators.required,]]
     });
-    this.bannerupdate = this.formBuilder.group({
-      // BannerType: [''],
-      // description: [description, [Validators.required,],],
-      description: [''],
-      Website: [''],
-
-      // StartDate: [''],
-      // endDate: [''],
+    this.authoritycreate = this.formBuilder.group({
+      authorityname: ['',[Validators.required]],
+      State: ['', [Validators.required]],
     });
-    this.bannerview = this.formBuilder.group({
-      description: [''],
-      Website: [''],
+    this.authorityupdate = this.formBuilder.group({
+      
+      authorityname: ['',[Validators.required]],
+      State: ['', [Validators.required]],
+    });
+    this.authorityview = this.formBuilder.group({
+     
+      authorityname: [''],
+      State: [''],
+   
     });
 
-    this.GetBanners();
+    this.Getauthority();
+    this.getState();
   }
   batchfloorList: any = [];
 
@@ -153,20 +149,20 @@ export class AdvertisingManagementComponent {
   }
 
   search: any;
-  bannerTable: any;
-  GetBanners() {
+  authorityTable: any;
+  Getauthority() {
     this.employeeService
-      .Getbanners(this.tableSize, this.page, this.statusfilter)
+      .Getauthority(this.tableSize, this.page, this.search)
       .subscribe((response: any) => {
         if (response.status === 200 || response.status === 201) {
-          this.bannerTable = response.data.records;
+          this.authorityTable = response.data.records;
           this.totalRecords = response.data.total;
         }
       });
   }
 
-  // Dummy data for bannerTable
-  // bannerTable = [
+  // Dummy data for authorityTable
+  // authorityTable = [
   //   {
   //     id: 1,
   //     image: 'IMG_1',
@@ -244,14 +240,14 @@ export class AdvertisingManagementComponent {
     } else if (status === '0') {
       this.statusfilter = '0';
     }
-    this.GetBanners();
+    this.Getauthority();
   }
 
   // ShowActive() {
   //   this.adminService
   //     .Getbanners(this.tableSize, this.page, this.search, '1')
   //     .subscribe((response: any) => {
-  //       this.bannerTable = response.data.records.filter(
+  //       this.authorityTable = response.data.records.filter(
   //         (o: any) => o.status === 1
   //       );
   //       this.totalRecords = response.data.total;
@@ -263,7 +259,7 @@ export class AdvertisingManagementComponent {
   //   this.adminService
   //     .Getbanners(this.tableSize, this.page, this.search, '0')
   //     .subscribe((response: any) => {
-  //       this.bannerTable = response.data.records.filter(
+  //       this.authorityTable = response.data.records.filter(
   //         (o: any) => o.status === 0
   //       );
   //       this.totalRecords = response.data.total;
@@ -276,18 +272,18 @@ export class AdvertisingManagementComponent {
   isMasterSel!: boolean;
 
   insertIsSelected() {
-    if (this.bannerTable != undefined) {
-      this.bannerTable.forEach((item: any) => {
+    if (this.authorityTable != undefined) {
+      this.authorityTable.forEach((item: any) => {
         item['isSelected'] = false;
       });
-      console.log(this.bannerTable);
+      console.log(this.authorityTable);
     }
   }
 
   checkUncheckAll(isSelected: boolean) {
     console.log(isSelected);
     this.isMasterSel = isSelected; // Set master selection state
-    this.bannerTable.forEach((item: any) => {
+    this.authorityTable.forEach((item: any) => {
       item.isSelected = isSelected;
     });
     this.getCheckedItemList(); // Refresh selected items
@@ -306,7 +302,7 @@ export class AdvertisingManagementComponent {
   }
 
   getCheckedItemList() {
-    this.checkedAttendanceList = this.bannerTable
+    this.checkedAttendanceList = this.authorityTable
       .filter((item: any) => item.isSelected)
       .map((item: any) => item.id);
     console.log(this.checkedAttendanceList);
@@ -344,23 +340,23 @@ export class AdvertisingManagementComponent {
     if (this.checkedAttendanceList.length === 0) {
       return;
     }
-    console.log(this.bannerTable);
+    console.log(this.authorityTable);
     console.log(this.checkedAttendanceList);
     console.log(this.checkedAttendanceList);
     // Determine the status to toggle
-    const status = this.bannerTable.some(
+    const status = this.authorityTable.some(
       (item: any) =>
         this.checkedAttendanceList.includes(item.id) && item.status === 1
     )
       ? 'deactivate'
       : 'activate';
     const activeIds = this.checkedAttendanceList.filter((id: any) => {
-      return this.bannerTable.some(
+      return this.authorityTable.some(
         (item: any) => item.id === id && item.status === 1
       );
     });
     const deactiveIds = this.checkedAttendanceList.filter((id: any) => {
-      return this.bannerTable.some(
+      return this.authorityTable.some(
         (item: any) => item.id === id && item.status === 0
       );
     });
@@ -378,7 +374,7 @@ export class AdvertisingManagementComponent {
     //           this.successName = 'Status Activated';
     //           this.checkedAttendanceList = [];
     //           this.isMasterSel = false; // Uncheck the header checkbox
-    //           this.bannerTable.forEach(
+    //           this.authorityTable.forEach(
     //             (item: any) => (item.isSelected = false)
     //           );
 
@@ -407,23 +403,23 @@ export class AdvertisingManagementComponent {
     if (this.checkedAttendanceList.length === 0) {
       return;
     }
-    console.log(this.bannerTable);
+    console.log(this.authorityTable);
     console.log(this.checkedAttendanceList);
     console.log(this.checkedAttendanceList);
     // Determine the status to toggle
-    const status = this.bannerTable.some(
+    const status = this.authorityTable.some(
       (item: any) =>
         this.checkedAttendanceList.includes(item.id) && item.status === 1
     )
       ? 'deactivate'
       : 'activate';
     const activeIds = this.checkedAttendanceList.filter((id: any) => {
-      return this.bannerTable.some(
+      return this.authorityTable.some(
         (item: any) => item.id === id && item.status === 1
       );
     });
     const deactiveIds = this.checkedAttendanceList.filter((id: any) => {
-      return this.bannerTable.some(
+      return this.authorityTable.some(
         (item: any) => item.id === id && item.status === 0
       );
     });
@@ -441,7 +437,7 @@ export class AdvertisingManagementComponent {
     //           this.successName = 'Status Deactivated';
     //           this.checkedAttendanceList = [];
     //           this.isMasterSel = false; // Uncheck the header checkbox
-    //           this.bannerTable.forEach(
+    //           this.authorityTable.forEach(
     //             (item: any) => (item.isSelected = false)
     //           );
 
@@ -472,7 +468,7 @@ export class AdvertisingManagementComponent {
     }
 
     // Determine the status to toggle
-    const status = this.bannerTable.some(
+    const status = this.authorityTable.some(
       (item: any) =>
         this.checkedAttendanceList.includes(item.id) && item.status === 'active'
     )
@@ -491,7 +487,7 @@ export class AdvertisingManagementComponent {
     //         this.successName = 'Status Changed';
     //         this.checkedAttendanceList = [];
     //         this.isMasterSel = false; // Uncheck the header checkbox
-    //         this.bannerTable.forEach((item: any) => (item.isSelected = false));
+    //         this.authorityTable.forEach((item: any) => (item.isSelected = false));
 
     //         setTimeout(() => {
     //           this.openSecondsuccess = true;
@@ -535,7 +531,7 @@ export class AdvertisingManagementComponent {
     //       this.closeModal(); // Close the delete modal
     //       this.checkedAttendanceList = []; // Clear selected items
     //       this.isMasterSel = false; // Reset "Select All" checkbox
-    //       this.bannerTable.forEach((item: any) => (item.isSelected = false)); // Uncheck all items
+    //       this.authorityTable.forEach((item: any) => (item.isSelected = false)); // Uncheck all items
 
     //       // Display success and refresh table
     //       setTimeout(() => {
@@ -578,24 +574,24 @@ export class AdvertisingManagementComponent {
   // // Bulk activation and bulk deactivation
   // isMasterSel!: boolean;
   // insertIsSelected() {
-  //   if (this.bannerTable != undefined) {
-  //     this.bannerTable.forEach((car: any) => {
+  //   if (this.authorityTable != undefined) {
+  //     this.authorityTable.forEach((car: any) => {
   //       car["isSelected"] = false;
   //     });
-  //     console.log(this.bannerTable);
+  //     console.log(this.authorityTable);
   //   }
   // }
   // checkUncheckAll(isSelected: boolean) {
   //   console.log(isSelected);
   //   if (isSelected) {
-  //     for (var i = 0; i < this.bannerTable.length; i++) {
-  //       console.log(this.bannerTable[i].isSelected);
-  //       this.bannerTable[i].isSelected = isSelected;
+  //     for (var i = 0; i < this.authorityTable.length; i++) {
+  //       console.log(this.authorityTable[i].isSelected);
+  //       this.authorityTable[i].isSelected = isSelected;
   //     }
   //   } else {
-  //     for (var i = 0; i < this.bannerTable.length; i++) {
-  //       console.log(this.bannerTable[i].isSelected);
-  //       this.bannerTable[i].isSelected = isSelected;
+  //     for (var i = 0; i < this.authorityTable.length; i++) {
+  //       console.log(this.authorityTable[i].isSelected);
+  //       this.authorityTable[i].isSelected = isSelected;
   //     }
   //   }
   //   this.getCheckedItemList(isSelected);
@@ -615,8 +611,8 @@ export class AdvertisingManagementComponent {
   // getCheckedItemList(isSelected: boolean) {
   //   this.checkedAttendanceList = [];
   //   if (isSelected) {
-  //     for (var i = 0; i < this.bannerTable.length; i++) {
-  //       this.checkedAttendanceList.push(this.bannerTable[i]);
+  //     for (var i = 0; i < this.authorityTable.length; i++) {
+  //       this.checkedAttendanceList.push(this.authorityTable[i]);
   //     }
   //   }
   //   console.log(this.checkedAttendanceList);
@@ -654,16 +650,16 @@ export class AdvertisingManagementComponent {
   todayDate: string = new Date().toISOString().slice(0, 16);
 
   updateEndDateMin(): void {
-    const startDateControl = this.bannercreate.controls['StartDate'];
-    const endDateControl = this.bannercreate.controls['endDate'];
+    const startDateControl = this.authoritycreate.controls['StartDate'];
+    const endDateControl = this.authoritycreate.controls['endDate'];
     if (startDateControl && endDateControl) {
       endDateControl.setValue(null); // Clear the end date if start date changes
       endDateControl.setErrors(null); // Reset validation errors on end date
     }
   }
   updatentoEndDateMin(): void {
-    const startDateControl = this.bannerupdate.controls['StartDate'];
-    const endDateControl = this.bannerupdate.controls['endDate'];
+    const startDateControl = this.authorityupdate.controls['StartDate'];
+    const endDateControl = this.authorityupdate.controls['endDate'];
     if (startDateControl && endDateControl) {
       endDateControl.setValue(null); // Clear the end date if start date changes
       endDateControl.setErrors(null); // Reset validation errors on end date
@@ -680,13 +676,13 @@ export class AdvertisingManagementComponent {
     const actionMessage = status ? 'activated' : 'deactivated';
 
     this.employeeService
-      .changestatuss(id, status, 'Banner')
+      .changestatuss(id, status, 'Company')
 
       .subscribe((response: any) => {
         console.log(response);
-        if (response.status === 200 || response.status === 201) {
+        if (response.status === 200) {
           this.successName = actionMessage;
-          this.GetBanners();
+          this.Getauthority();
           setTimeout(() => {
             this.openSecondsuccess = true;
             setTimeout(() => {
@@ -697,21 +693,21 @@ export class AdvertisingManagementComponent {
       });
   }
 
-  bannermodal() {
-    this.bannercreateopen = true;
+  authomodal() {
+    this.authoritycreateopen = true;
     this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
   }
   updatebannersmodal() {
-    this.bannerupdateopen = true;
+    this.companyupdateopen = true;
   }
   viewebannersmodal() {
     this.banneviewopen = true;
   }
   closeModal() {
-    this.bannercreateopen = false;
-    this.bannerupdateopen = false;
+    this.authoritycreateopen = false;
+    this.companyupdateopen = false;
     this.banneviewopen = false;
     this.bulkacitve = false;
     this.bulkdecitve = false;
@@ -726,18 +722,38 @@ export class AdvertisingManagementComponent {
   ClickexamviewModalconent(event: Event): void {
     event.stopPropagation();
   }
-
-  searchfun() {}
-  resetsearchbar() {}
+  stateList:any
+  getState() {
+    this.employeeService.GetStates().subscribe((response: any) => {
+      if (response.status === 200) {
+        this.stateList = response.data;
+      } else {
+        console.error('Failed to load states', response);
+      }
+    });
+  }
+  searchfun() {
+    if (this.searchbarform.valid) {
+      this.showreset = true;
+      this.search = this.searchbarform.get('searchbar')?.value;
+      this.Getauthority()
+    }
+    else {
+      this.searchbarform.markAllAsTouched();
+    }
+  }
+  resetsearchbar() {
+    window.location.reload();
+  }
   onTableSizeChange(event: any): void {
     this.tableSize = event.target.value;
     console.log(event.target.value);
     this.page = 1;
-    this.GetBanners();
+    this.Getauthority();
   }
   onTableDataChange(event: any) {
     this.page = event;
-    this.GetBanners();
+    this.Getauthority();
   }
 
   selectedFileNames: string[] = [];
@@ -759,7 +775,7 @@ export class AdvertisingManagementComponent {
   onSingleFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      var bannertype = this.bannercreate.get('BannerType')?.value;
+      var bannertype = this.authoritycreate.get('BannerType')?.value;
       if (bannertype == 'Advertisement') {
         const fileType = file.type;
         const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -869,7 +885,7 @@ export class AdvertisingManagementComponent {
   onSingleFileSelectedU(event: any) {
     const file = event.target.files[0];
     if (file) {
-      var bannertype = this.bannerupdate.get('BannerType')?.value;
+      var bannertype = this.authorityupdate.get('BannerType')?.value;
       if (bannertype == 'Advertisement') {
         const fileType = file.type;
         const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -980,7 +996,7 @@ export class AdvertisingManagementComponent {
     if (file) {
       const maxSizeBytes = 5000000;
       var maxHeight: any;
-      var bannertype = this.bannerview.get('BannerType')?.value;
+      var bannertype = this.authorityview.get('BannerType')?.value;
       if (bannertype == 'Advertisement') {
         // 5MB for the file
         maxHeight = 500;
@@ -1044,11 +1060,12 @@ export class AdvertisingManagementComponent {
   table_heading = [
     {
       heading0: '#',
-      heading1: 'Image',
-      heading2: 'Description',
+      // heading1: 'Image',
+      heading2: 'Authority',
+      heading3: 'State',
       // heading4: 'Date added',
       // heading5: 'Date modified',
-      heading6: 'Status',
+      // heading6: 'Status',
       heading7: 'Action',
     },
   ];
@@ -1073,70 +1090,58 @@ export class AdvertisingManagementComponent {
   // }
   studentdetails: any;
 
-  Createbanner() {
-    if (this.bannercreate.valid) {
+  addauthority() {
+    if (this.authoritycreate.valid) {
       const formData: FormData = new FormData();
-      // formData.append('user_id', this.user_id + '');
-      // formData.append("user_id", '1' + '');
-      // formData.append('type', this.bannercreate.get('BannerType')?.value);
+    
       formData.append(
-        'description',
-        this.bannercreate.get('description')?.value
+        'name',
+        this.authoritycreate.get('authorityname')?.value
       );
-      // if (this.bannercreate.get('BannerType')?.value == 'Advertisement') {
-      //   formData.append(
-      //     'start_time',
-      //     this.bannercreate.get('StartDate')?.value
-      //   );
-      //   formData.append('end_time', this.bannercreate.get('endDate')?.value);
-      // }
+   
+      formData.append(
+        'state_id',
+        this.authoritycreate.get('State')?.value
+      );
+   
 
-      if (this.selectedFiles.length > 0) {
-        const file = this.selectedFiles[0];
-        formData.append('image', file, file.name);
-      }
-      if (
-        this.selectedFileNames.toString().includes('jpeg') ||
-        this.selectedFileNames.toString().includes('jpg') ||
-        this.selectedFileNames.toString().includes('png')
-      ) {
-        this.employeeService
-          .createbanner(formData)
-          .subscribe((response: any) => {
-            console.log(response);
-            if (response.status === 200 || response.status === 201) {
-              this.closeModal();
-              this.successName = 'Banner Created';
-              this.ngOnInit();
-              this.GetBanners();
+     
+       
+        this.employeeService.createauthority(formData).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200 || response.status === 201) {
+            this.closeModal();
+            this.successName = 'Authority Created';
+            this.ngOnInit();
+            this.Getauthority();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
               setTimeout(() => {
-                this.openSecondsuccess = true;
-                setTimeout(() => {
-                  this.openSecondsuccess = false;
-                }, 1800);
-              }, 200);
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+            if (
+              typeof (response.errors ?? response.message) === 'object' &&
+              (response.errors ?? response.message) !== null &&
+              !Array.isArray(response.errors ?? response.message)
+            ) {
+              this.errorMessage = JSON.stringify(
+                response.errors ?? response.message
+              );
             } else {
-              this.submitted = false;
-              if (
-                typeof (response.errors ?? response.message) === 'object' &&
-                (response.errors ?? response.message) !== null &&
-                !Array.isArray(response.errors ?? response.message)
-              ) {
-                this.errorMessage = JSON.stringify(
-                  response.errors ?? response.message
-                );
-              } else {
-                this.errorMessage = response.errors;
-              }
-              alert(this.errorMessage);
+              this.errorMessage = response.errors;
             }
-          });
-      }
+            alert(this.errorMessage);
+          }
+        });
+      
     } else {
       this.submitted = false;
       this.errorMessage = 'please Enter All The Details';
-      this.bannercreate.markAllAsTouched();
-      console.log(this.findInvalidControls(this.bannercreate));
+      this.authoritycreate.markAllAsTouched();
+      console.log(this.findInvalidControls(this.authoritycreate));
     }
   }
 
@@ -1151,71 +1156,56 @@ export class AdvertisingManagementComponent {
     console.log(invalid);
     return invalid;
   }
-
-  Updatebanner() {
-    if (this.bannerupdate.valid) {
+  authorityId:any
+  Updateauthority() {
+    if (this.authorityupdate.valid) {
       const formData: FormData = new FormData();
-
+   
       formData.append(
-        'description',
-        this.bannerupdate.get('description')?.value
+        'name',
+        this.authorityupdate.get('authorityname')?.value
       );
-      formData.append('_method', 'put');
-
-      if (this.selectedFiles.length > 0) {
-        const file = this.selectedFiles[0];
-        formData.append('image', file, file.name);
-      } else {
-        this.submitted = false;
-        this.errorMessage = 'please select file';
-        return;
-      }
-      if (
-        this.selectedFileNames.toString().includes('jpeg') ||
-        this.selectedFileNames.toString().includes('jpg') ||
-        this.selectedFileNames.toString().includes('png')
-      ) {
-        this.employeeService
-          .updatebanner(formData, this.banner_id)
-          .subscribe((response: any) => {
-            console.log(response);
-            if (response.status === 200 || response.status === 201) {
-              this.closeModal();
-              this.successName = 'Banner Updated';
-              this.ngOnInit();
-              this.GetBanners();
+   
+      formData.append(
+        'state_id',
+        this.authorityupdate.get('State')?.value
+      );
+      formData.append("_method", "put");
+        this.employeeService.updateauthority(formData,this.authorityId).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 200 || response.status === 201) {
+            this.closeModal();
+            this.successName = 'Authority Updated';
+            this.ngOnInit();
+            this.Getauthority();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
               setTimeout(() => {
-                this.openSecondsuccess = true;
-                setTimeout(() => {
-                  this.openSecondsuccess = false;
-                }, 1800);
-              }, 200);
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+            if (
+              typeof (response.errors ?? response.message) === 'object' &&
+              (response.errors ?? response.message) !== null &&
+              !Array.isArray(response.errors ?? response.message)
+            ) {
+              this.errorMessage = JSON.stringify(
+                response.errors ?? response.message
+              );
             } else {
-              this.submitted = false;
-              if (
-                typeof (response.errors ?? response.message) === 'object' &&
-                (response.errors ?? response.message) !== null &&
-                !Array.isArray(response.errors ?? response.message)
-              ) {
-                this.errorMessage = JSON.stringify(
-                  response.errors ?? response.message
-                );
-              } else {
-                this.errorMessage = response.errors;
-              }
-              alert(this.errorMessage);
+              this.errorMessage = response.errors;
             }
-          });
-      } else {
-        this.submitted = false;
-        this.errorMessage = 'please select correct file';
-        this.bannerupdate.markAllAsTouched();
-      }
+            alert(this.errorMessage);
+          }
+        });
+      
     } else {
       this.submitted = false;
       this.errorMessage = 'please Enter All The Details';
-      this.bannerupdate.markAllAsTouched();
-      console.log(this.findInvalidControls(this.bannerupdate));
+      this.authorityupdate.markAllAsTouched();
+      console.log(this.findInvalidControls(this.authorityupdate));
     }
   }
 
@@ -1318,502 +1308,70 @@ export class AdvertisingManagementComponent {
     return formattedDate;
   }
 
-  Getbannerbyid() {
-    this.employeeService
-      .getbannerrbyID(this.banner_id)
-      .subscribe((response: any) => {
-        if (response.status === 200) {
-          this.fillformdate(response.data);
-          this.fillviewformdate(response.data);
-        }
-      });
+
+
+
+  GetauthoritybyID() {
+    this.employeeService.getauthobyID(this.authorityId).subscribe((response: any) => {
+      if (response.status === 200 || response.status === 201) {
+
+        this.fillformdate(response.data);
+        this.fillviewformdate(response.data);
+
+      }
+
+    });
   }
 
   async fillformdate(response: any) {
-    this.bannerupdate = this.formBuilder.group({
-      description: [response.description],
-      Website: [response.image, [Validators.required]],
-    });
 
-    var file = await this.createFile(response.image);
-    // if (file) {
-    //   var bannertype = response.type;
-    //   if (bannertype == 'Advertisement') {
-    //     const fileType = file.type;
-    //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      this.authorityupdate = this.formBuilder.group({
+      
+        authorityname: [response.name,[Validators.required]],
+        State: [response.state_id, [Validators.required]],
+      });
+  
 
-    //     if (!validImageTypes.includes(fileType)) {
-    //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //       this.selectedImages = [];
-    //       this.selectedFileNames = [];
-    //       this.selectedFiles = [];
-    //       return;
-    //     }
-    //     const maxSizeBytes = 5000000;
-    //     if (file.size > maxSizeBytes) {
-    //       this.selectedImages = [];
-    //       this.selectedFileNames = [];
-    //       this.selectedFiles = [];
-    //       this.fileSizeError =
-    //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //       return;
-    //     }
+      
+    } 
+   
+    
+    async fillviewformdate(response: any) {
 
-    //     const reader = new FileReader();
-    //     this.selectedFileNames = [file.name];
-    //     this.selectedFiles = [file];
+      this.authorityview = this.formBuilder.group({
+      
+       
+        authorityname: [response.name],
+        State: [response.state.name],
+      });
+  
 
-    //     reader.onload = () => {
-    //       if (typeof reader.result === 'string' || reader.result === null) {
-    //         const id = this.generateUniqueId();
-    //         const imageSrc = reader.result as string;
-    //         const image = new Image();
-    //         image.src = imageSrc;
+  
+      
+    } 
+    
 
-    //         image.onload = () => {
-    //           if (image.width === 1878 && image.height === 281) {
-    //             this.selectedImages = [{ imageSrc, id }];
-    //             this.fileSizeError = '';
-    //           } else {
-    //             this.selectedImages = [];
-    //             this.selectedFileNames = [];
-    //             this.selectedFiles = [];
-    //             this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
-    //           }
-    //         };
-    //       }
-    //     };
-
-    //     reader.readAsDataURL(file);
-    //   } else {
-    //     const maxSizeBytes = 5000000;
-    //     var maxHeight: any;
-    //     const fileType = file.type;
-    //     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-    //     if (!validImageTypes.includes(fileType)) {
-    //       this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //       this.selectedImages = [];
-    //       this.selectedFileNames = [];
-    //       this.selectedFiles = [];
-    //       return;
-    //     }
-
-    //     if (bannertype == 'Advertisement') {
-    //       // 5MB for the file
-    //       maxHeight = 500;
-    //     } else {
-    //       maxHeight = 700;
-    //     }
-    //     if (file.size > maxSizeBytes) {
-    //       this.selectedImages = [];
-    //       this.selectedFileNames = [];
-    //       this.selectedFiles = [];
-    //       this.fileSizeError =
-    //         'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //       return;
-    //     }
-
-    //     const reader = new FileReader();
-    //     this.selectedFileNames = [file.name];
-    //     this.selectedFiles = [file];
-
-    //     reader.onload = () => {
-    //       if (typeof reader.result === 'string' || reader.result === null) {
-    //         const id = this.generateUniqueId();
-    //         const imageSrc = reader.result as string;
-    //         const image = new Image();
-    //         image.src = imageSrc;
-
-    //         image.onload = () => {
-    //           if (image.height > maxHeight) {
-    //             this.selectedImages = [];
-    //             this.selectedFileNames = [];
-    //             this.selectedFiles = [];
-    //             this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-    //           } else {
-    //             this.selectedImages = [{ imageSrc, id }];
-    //             this.fileSizeError = '';
-    //           }
-    //         };
-    //       }
-    //     };
-
-    //     reader.readAsDataURL(file);
-    //   }
-    // }
-    if (file) {
-      const maxSizeBytes = 5000000;
-      var maxHeight: any;
-      const fileType = file.type;
-      const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-      if (!validImageTypes.includes(fileType)) {
-        this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-        this.selectedImages = [];
-        this.selectedFileNames = [];
-        this.selectedFiles = [];
-        return;
-      }
-
-      maxHeight = 700;
-
-      if (file.size > maxSizeBytes) {
-        this.selectedImages = [];
-        this.selectedFileNames = [];
-        this.selectedFiles = [];
-        this.fileSizeError =
-          'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-        return;
-      }
-
-      const reader = new FileReader();
-      this.selectedFileNames = [file.name];
-      this.selectedFiles = [file];
-
-      reader.onload = () => {
-        if (typeof reader.result === 'string' || reader.result === null) {
-          const id = this.generateUniqueId();
-          const imageSrc = reader.result as string;
-          const image = new Image();
-          image.src = imageSrc;
-
-          image.onload = () => {
-            if (image.height > maxHeight) {
-              this.selectedImages = [];
-              this.selectedFileNames = [];
-              this.selectedFiles = [];
-              this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-            } else {
-              this.selectedImages = [{ imageSrc, id }];
-              this.fileSizeError = '';
-            }
-          };
-        }
-      };
-
-      reader.readAsDataURL(file);
-    }
-  }
-
-  async fillviewformdate(response: any) {
-    this.bannerview = this.formBuilder.group({
-      description: [response.description],
-      Website: [response.image, [Validators.required]],
-    });
-
-    var file = await this.createFile(response.image);
-    if (file) {
-      var bannertype = response.type;
-      if (bannertype == 'Advertisement') {
-        const fileType = file.type;
-        const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-        if (!validImageTypes.includes(fileType)) {
-          this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          return;
-        }
-        const maxSizeBytes = 5000000;
-        if (file.size > maxSizeBytes) {
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          this.fileSizeError =
-            'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-          return;
-        }
-
-        const reader = new FileReader();
-        this.selectedFileNames = [file.name];
-        this.selectedFiles = [file];
-
-        reader.onload = () => {
-          if (typeof reader.result === 'string' || reader.result === null) {
-            const id = this.generateUniqueId();
-            const imageSrc = reader.result as string;
-            const image = new Image();
-            image.src = imageSrc;
-
-            image.onload = () => {
-              if (image.width === 1878 && image.height === 281) {
-                this.selectedImages = [{ imageSrc, id }];
-                this.fileSizeError = '';
-              } else {
-                this.selectedImages = [];
-                this.selectedFileNames = [];
-                this.selectedFiles = [];
-                this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
-              }
-            };
-          }
-        };
-
-        reader.readAsDataURL(file);
-      } else {
-        const maxSizeBytes = 5000000;
-        var maxHeight: any;
-        const fileType = file.type;
-        const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-        if (!validImageTypes.includes(fileType)) {
-          this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          return;
-        }
-
-        if (bannertype == 'Advertisement') {
-          // 5MB for the file
-          maxHeight = 500;
-        } else {
-          maxHeight = 700;
-        }
-        if (file.size > maxSizeBytes) {
-          this.selectedImages = [];
-          this.selectedFileNames = [];
-          this.selectedFiles = [];
-          this.fileSizeError =
-            'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-          return;
-        }
-
-        const reader = new FileReader();
-        this.selectedFileNames = [file.name];
-        this.selectedFiles = [file];
-
-        reader.onload = () => {
-          if (typeof reader.result === 'string' || reader.result === null) {
-            const id = this.generateUniqueId();
-            const imageSrc = reader.result as string;
-            const image = new Image();
-            image.src = imageSrc;
-
-            image.onload = () => {
-              if (image.height > maxHeight) {
-                this.selectedImages = [];
-                this.selectedFileNames = [];
-                this.selectedFiles = [];
-                this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-              } else {
-                this.selectedImages = [{ imageSrc, id }];
-                this.fileSizeError = '';
-              }
-            };
-          }
-        };
-
-        reader.readAsDataURL(file);
-      }
-    }
-    // if (file) {
-    //   const maxSizeBytes = 5000000;
-    //   var maxHeight: any;
-    //   const fileType = file.type;
-    //   const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-    //   if (!validImageTypes.includes(fileType)) {
-    //     this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //     this.selectedImages = [];
-    //     this.selectedFileNames = [];
-    //     this.selectedFiles = [];
-    //     return;
-    //   }
-
-    //   maxHeight = 700;
-
-    //   if (file.size > maxSizeBytes) {
-    //     this.selectedImages = [];
-    //     this.selectedFileNames = [];
-    //     this.selectedFiles = [];
-    //     this.fileSizeError =
-    //       'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //     return;
-    //   }
-
-    //   const reader = new FileReader();
-    //   this.selectedFileNames = [file.name];
-    //   this.selectedFiles = [file];
-
-    //   reader.onload = () => {
-    //     if (typeof reader.result === 'string' || reader.result === null) {
-    //       const id = this.generateUniqueId();
-    //       const imageSrc = reader.result as string;
-    //       const image = new Image();
-    //       image.src = imageSrc;
-
-    //       image.onload = () => {
-    //         if (image.height > maxHeight) {
-    //           this.selectedImages = [];
-    //           this.selectedFileNames = [];
-    //           this.selectedFiles = [];
-    //           this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-    //         } else {
-    //           this.selectedImages = [{ imageSrc, id }];
-    //           this.fileSizeError = '';
-    //         }
-    //       };
-    //     }
-    //   };
-
-    //   reader.readAsDataURL(file);
-    // }
-  }
-
-  banner_id: any;
+    
   async OpenEditModal(banner: any) {
-    // this.banneviewopen = false;
-    this.bannerupdateopen = true;
+   // this.banneviewopen = false;
+   this.companyupdateopen = true
     this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
-    this.banner_id = banner.id;
-    this.Getbannerbyid();
-    // try {
-    //   if (!banner || !banner.id) {
-    //     console.error('unit ID is undefined or null.');
-    //     return;
-    //   }
-
-    //   this.bannerupdateopen = true;
-    //   this.bannerupdate = this.formBuilder.group({
-    //     // BannerType: [banner.type, [
-    //     //   Validators.required,
-    //     // ],],
-    //     // BannerType: [banner.type],
-    //     description: [banner.description, [Validators.required]],
-    //     Website: [banner.image, [Validators.required]],
-
-    //     // StartDate: [
-    //     //   this.convertDate24(banner.start_time),
-    //     //   [Validators.required],
-    //     // ],
-    //     // endDate: [this.convertDate24(banner.end_time), [Validators.required]],
-    //   });
-    //   // this.typebannervalidatioupdate(banner.type);
-
-    //   var file = await this.createFile(banner.image);
-    //   if (file) {
-    //     var bannertype = banner.type;
-    //     if (bannertype == 'Advertisement') {
-    //       const fileType = file.type;
-    //       const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-    //       if (!validImageTypes.includes(fileType)) {
-    //         this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //         this.selectedImages = [];
-    //         this.selectedFileNames = [];
-    //         this.selectedFiles = [];
-    //         return;
-    //       }
-    //       const maxSizeBytes = 5000000;
-    //       if (file.size > maxSizeBytes) {
-    //         this.selectedImages = [];
-    //         this.selectedFileNames = [];
-    //         this.selectedFiles = [];
-    //         this.fileSizeError =
-    //           'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //         return;
-    //       }
-
-    //       const reader = new FileReader();
-    //       this.selectedFileNames = [file.name];
-    //       this.selectedFiles = [file];
-
-    //       reader.onload = () => {
-    //         if (typeof reader.result === 'string' || reader.result === null) {
-    //           const id = this.generateUniqueId();
-    //           const imageSrc = reader.result as string;
-    //           const image = new Image();
-    //           image.src = imageSrc;
-
-    //           image.onload = () => {
-    //             if (image.width === 1878 && image.height === 281) {
-    //               this.selectedImages = [{ imageSrc, id }];
-    //               this.fileSizeError = '';
-    //             } else {
-    //               this.selectedImages = [];
-    //               this.selectedFileNames = [];
-    //               this.selectedFiles = [];
-    //               this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
-    //             }
-    //           };
-    //         }
-    //       };
-
-    //       reader.readAsDataURL(file);
-    //     } else {
-    //       const maxSizeBytes = 5000000;
-    //       var maxHeight: any;
-    //       const fileType = file.type;
-    //       const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-
-    //       if (!validImageTypes.includes(fileType)) {
-    //         this.fileSizeError = 'Only PNG , JPEG and JPG formats are allowed.';
-    //         this.selectedImages = [];
-    //         this.selectedFileNames = [];
-    //         this.selectedFiles = [];
-    //         return;
-    //       }
-
-    //       if (bannertype == 'Advertisement') {
-    //         // 5MB for the file
-    //         maxHeight = 500;
-    //       } else {
-    //         maxHeight = 700;
-    //       }
-    //       if (file.size > maxSizeBytes) {
-    //         this.selectedImages = [];
-    //         this.selectedFileNames = [];
-    //         this.selectedFiles = [];
-    //         this.fileSizeError =
-    //           'The selected file exceeds the maximum allowed size (5MB). Please choose a smaller file.';
-    //         return;
-    //       }
-
-    //       const reader = new FileReader();
-    //       this.selectedFileNames = [file.name];
-    //       this.selectedFiles = [file];
-
-    //       reader.onload = () => {
-    //         if (typeof reader.result === 'string' || reader.result === null) {
-    //           const id = this.generateUniqueId();
-    //           const imageSrc = reader.result as string;
-    //           const image = new Image();
-    //           image.src = imageSrc;
-
-    //           image.onload = () => {
-    //             if (image.height > maxHeight) {
-    //               this.selectedImages = [];
-    //               this.selectedFileNames = [];
-    //               this.selectedFiles = [];
-    //               this.fileSizeError = `The selected image dimensions exceed the maximum allowed size`;
-    //             } else {
-    //               this.selectedImages = [{ imageSrc, id }];
-    //               this.fileSizeError = '';
-    //             }
-    //           };
-    //         }
-    //       };
-
-    //       reader.readAsDataURL(file);
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error('An error occurred while opening edit modal:', error);
-    // }
+    this.authorityId = banner.id;
+this.GetauthoritybyID();
+  
   }
 
   async OpenviewModal(banner: any) {
     this.banneviewopen = true;
-    this.selectedImages = [];
+      this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
-    this.banner_id = banner.id;
-    this.Getbannerbyid();
+    this.authorityId = banner.id;
+    this.GetauthoritybyID();
+
+    
   }
 
   async createFile(url: string) {
@@ -1833,36 +1391,36 @@ export class AdvertisingManagementComponent {
     this.selectedImages = [];
     this.selectedFileNames = [];
     this.selectedFiles = [];
-    this.bannercreate.get('StartDate')?.clearValidators();
-    this.bannercreate.get('endDate')?.clearValidators();
+    this.authoritycreate.get('StartDate')?.clearValidators();
+    this.authoritycreate.get('endDate')?.clearValidators();
 
-    if (this.bannercreate.get('BannerType')?.value === 'Advertisement') {
-      this.bannercreate.get('StartDate')?.setValidators(Validators.required);
-      this.bannercreate.get('endDate')?.setValidators(Validators.required);
+    if (this.authoritycreate.get('BannerType')?.value === 'Advertisement') {
+      this.authoritycreate.get('StartDate')?.setValidators(Validators.required);
+      this.authoritycreate.get('endDate')?.setValidators(Validators.required);
     } else {
-      this.bannercreate.get('StartDate')?.clearValidators();
-      this.bannercreate.get('endDate')?.clearValidators();
+      this.authoritycreate.get('StartDate')?.clearValidators();
+      this.authoritycreate.get('endDate')?.clearValidators();
     }
     // Update validation status
 
-    this.bannercreate.get('StartDate')?.updateValueAndValidity();
-    this.bannercreate.get('endDate')?.updateValueAndValidity();
+    this.authoritycreate.get('StartDate')?.updateValueAndValidity();
+    this.authoritycreate.get('endDate')?.updateValueAndValidity();
   }
 
   typebannervalidatioupdate(value: any) {
-    this.bannerupdate.get('StartDate')?.clearValidators();
-    this.bannerupdate.get('endDate')?.clearValidators();
+    this.authorityupdate.get('StartDate')?.clearValidators();
+    this.authorityupdate.get('endDate')?.clearValidators();
 
-    if (this.bannerupdate.get('BannerType')?.value === 'Advertisement') {
-      this.bannerupdate.get('StartDate')?.setValidators(Validators.required);
-      this.bannerupdate.get('endDate')?.setValidators(Validators.required);
+    if (this.authorityupdate.get('BannerType')?.value === 'Advertisement') {
+      this.authorityupdate.get('StartDate')?.setValidators(Validators.required);
+      this.authorityupdate.get('endDate')?.setValidators(Validators.required);
     } else {
-      this.bannerupdate.get('StartDate')?.clearValidators();
-      this.bannerupdate.get('endDate')?.clearValidators();
+      this.authorityupdate.get('StartDate')?.clearValidators();
+      this.authorityupdate.get('endDate')?.clearValidators();
     }
     // Update validation status
 
-    this.bannerupdate.get('StartDate')?.updateValueAndValidity();
-    this.bannerupdate.get('endDate')?.updateValueAndValidity();
+    this.authorityupdate.get('StartDate')?.updateValueAndValidity();
+    this.authorityupdate.get('endDate')?.updateValueAndValidity();
   }
 }

@@ -1,7 +1,6 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root',
@@ -29,28 +28,19 @@ export class JwtService {
 
   saveRoles(roles: any) {
     localStorage.setItem('roles', JSON.stringify(roles));
-}
+  }
 
-getRoles() {
+  getRoles() {
     return JSON.parse(localStorage.getItem('roles') || '[]');
-}
-
+  }
 
   getfirstLoggedIn(): boolean {
     return window.localStorage['isfirstlogin'];
   }
   firstLoggedIn(isfirstlogin: boolean) {
     window.localStorage['isfirstlogin'] =
-    isfirstlogin != undefined ? isfirstlogin : false;
+      isfirstlogin != undefined ? isfirstlogin : false;
   }
-
-
-
-
-
-
-
-
 
   getSession(): string {
     return window.localStorage['Session'];
@@ -66,10 +56,6 @@ getRoles() {
   saveName(name: string) {
     window.localStorage['name'] = name;
   }
-
-
-  
-  
 
   getSessionStartdate(): string {
     return window.localStorage['Sessionstartdate'];
@@ -94,7 +80,17 @@ getRoles() {
   savepanelUserId(userid: Number) {
     window.localStorage['panel_user_id'] = userid;
   }
+  getadminame(): String {
+    return window.localStorage['adminname'];
+  }
 
+  saveadminame(adminname: string) {
+    window.localStorage['adminname'] = adminname;
+  }
+
+  saveAdminToken(Token: String) {
+    window.localStorage['Token'] = Token;
+  }
 
   getpanelPartyId(): Number {
     return window.localStorage['Party_id'];
@@ -104,9 +100,6 @@ getRoles() {
     window.localStorage['Party_id'] = Party_id;
   }
 
-
-
-
   getType(): String {
     return window.localStorage['Type'];
   }
@@ -114,9 +107,6 @@ getRoles() {
   saveType(Type: String) {
     window.localStorage['Type'] = Type;
   }
-
-
-
 
   getToken(): String {
     return window.localStorage['Token'];
@@ -151,10 +141,6 @@ getRoles() {
     window.localStorage['isloggedStudent'] =
       isloggedStudent != undefined ? isloggedStudent : false;
   }
-
-
-
-  
 
   getSessionStartdateStudent(): string {
     return window.localStorage['SessionstartdateStudent'];
@@ -235,9 +221,9 @@ getRoles() {
     window.localStorage.removeItem('Token');
     window.localStorage.removeItem('Session');
     window.localStorage.removeItem('ImageUrl');
-      window.localStorage.removeItem('name');
-      window.localStorage.removeItem('isfirstlogin');
-      
+    window.localStorage.removeItem('name');
+    window.localStorage.removeItem('isfirstlogin');
+
     // window.localStorage.removeItem("isloggedStudent");
   }
 
