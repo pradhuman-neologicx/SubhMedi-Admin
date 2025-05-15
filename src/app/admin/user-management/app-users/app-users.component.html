@@ -123,7 +123,10 @@
             index as i
           "
         >
-          <td>{{ i + 1 }}</td>
+          <!-- <td>{{ i + 1 }}</td> -->
+          <td>
+            {{ (page - 1) * (tableSize != "all" ? tableSize : 0) + i + 1 }}
+          </td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
               {{ users.name }}

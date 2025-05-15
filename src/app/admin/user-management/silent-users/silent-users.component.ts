@@ -220,6 +220,17 @@ export class SilentUsersComponent {
             }, 200);
           } else {
             this.submitted = false;
+            if (
+              typeof (response.errors ?? response.message) === 'object' &&
+              (response.errors ?? response.message) !== null &&
+              !Array.isArray(response.errors ?? response.message)
+            ) {
+              this.errorMessage = JSON.stringify(
+                response.errors ?? response.message
+              );
+            } else {
+              this.errorMessage = response.errors;
+            }
           }
         });
     }
