@@ -1,11 +1,11 @@
 <div class="container mx-auto mb-4">
   <div class="d-flex justify-content-between align-items-center">
-    <h1 class="text-primary table-heading-detail">Silent Users</h1>
+    <h1 class="text-primary table-heading-detail">Pharmacy</h1>
     <button
       class="btn btn-primary main-btnfs px-3 py-2"
       (click)="OpenCreateModal()"
     >
-      Add Users
+      + Add Pharmacy
     </button>
   </div>
 </div>
@@ -92,6 +92,9 @@
             <p class="table-heading table-new-heading">Name</p>
           </th>
           <th>
+            <p class="table-heading table-new-heading">Role</p>
+          </th>
+          <th>
             <p class="table-heading table-new-heading">Email</p>
           </th>
           <th>
@@ -131,6 +134,11 @@
           </td>
           <td>
             <p class="table-detail text-capitalize table-detail-new">
+              {{ users.role || "free user" }}
+            </p>
+          </td>
+          <td>
+            <p class="table-detail text-capitalize table-detail-new">
               {{ users.email }}
             </p>
           </td>
@@ -165,10 +173,9 @@
                 >
                   Edit Details
                 </button>
-                <!-- 
-                <button mat-menu-item (click)="navigateToViewUsers(users.id)">
+                <button mat-menu-item (click)="viewmmodal(users.id)">
                   View Details
-                </button> -->
+                </button>
                 <button mat-menu-item (click)="openDeleteModal(users.id)">
                   Delete
                 </button>
@@ -224,7 +231,7 @@
           <div
             class="card-header bg-white d-flex justify-content-between algin-items-center"
           >
-            <h5 class="modal-title pt-1">Create Silent Users</h5>
+            <h5 class="modal-title pt-1">Create Pharmacy</h5>
             <button
               class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
               type="button"
@@ -236,182 +243,163 @@
 
           <div class="modal-content-width card-body mb-0">
             <div class="row">
-              <div class="col-12 col-md-12 mb-3">
-                <label for="unitsname" class="form-label form-lable-custom">
-                  Name</label
+              <div class="col-lg-12 col-md-6 mb-3">
+                <label for="usernname" class="form-label form-lable-custom"
+                  >Name</label
                 >
                 <input
                   type="text"
                   class="form-control form-input-custom"
-                  formControlName="unitsname"
+                  formControlName="usernname"
                   [ngClass]="{
                     'is-invalid':
-                      unitsformscreate.controls['unitsname'].errors &&
-                      (unitsformscreate.controls['unitsname'].touched ||
-                        unitsformscreate.controls['unitsname'].dirty)
+                      unitsformscreate.controls['usernname'].errors &&
+                      (unitsformscreate.controls['usernname'].touched ||
+                        unitsformscreate.controls['usernname'].dirty)
                   }"
                 />
                 <div
                   class="text-danger error-message"
                   *ngIf="
-                    unitsformscreate.controls['unitsname'].errors &&
-                    (unitsformscreate.controls['unitsname'].touched ||
-                      unitsformscreate.controls['unitsname'].dirty)
+                    unitsformscreate.controls['usernname'].errors &&
+                    (unitsformscreate.controls['usernname'].touched ||
+                      unitsformscreate.controls['usernname'].dirty)
                   "
                 >
                   <p
                     class="fw-light text-danger"
                     *ngIf="
-                      unitsformscreate.controls['unitsname'].errors['required']
+                      unitsformscreate.controls['usernname'].errors['required']
                     "
                   >
                     Name is Requried
                   </p>
                 </div>
               </div>
-              <div class="col-12 col-md-6 mb-3">
-                <label for="unitsemail" class="form-label form-lable-custom">
-                  Email</label
+              <div class="col-lg-12 col-md-6 mb-3">
+                <label for="usernrole" class="form-label form-lable-custom"
+                  >Role</label
                 >
                 <input
-                  type="email"
+                  type="text"
                   class="form-control form-input-custom"
-                  formControlName="unitsemail"
+                  formControlName="usernrole"
                   [ngClass]="{
                     'is-invalid':
-                      unitsformscreate.controls['unitsemail'].errors &&
-                      (unitsformscreate.controls['unitsemail'].touched ||
-                        unitsformscreate.controls['unitsemail'].dirty)
+                      unitsformscreate.controls['usernrole'].errors &&
+                      (unitsformscreate.controls['usernrole'].touched ||
+                        unitsformscreate.controls['usernrole'].dirty)
                   }"
                 />
                 <div
                   class="text-danger error-message"
                   *ngIf="
-                    unitsformscreate.controls['unitsemail'].errors &&
-                    (unitsformscreate.controls['unitsemail'].touched ||
-                      unitsformscreate.controls['unitsemail'].dirty)
+                    unitsformscreate.controls['usernrole'].errors &&
+                    (unitsformscreate.controls['usernrole'].touched ||
+                      unitsformscreate.controls['usernrole'].dirty)
                   "
                 >
                   <p
                     class="fw-light text-danger"
                     *ngIf="
-                      unitsformscreate.controls['unitsemail'].errors['required']
+                      unitsformscreate.controls['usernrole'].errors['required']
+                    "
+                  >
+                    Role is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-6 mb-3">
+                <label for="usernemail" class="form-label form-lable-custom"
+                  >Email</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-input-custom"
+                  formControlName="usernemail"
+                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                  [ngClass]="{
+                    'is-invalid':
+                      unitsformscreate.controls['usernemail'].errors &&
+                      (unitsformscreate.controls['usernemail'].touched ||
+                        unitsformscreate.controls['usernemail'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    unitsformscreate.controls['usernemail'].errors &&
+                    (unitsformscreate.controls['usernemail'].touched ||
+                      unitsformscreate.controls['usernemail'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformscreate.controls['usernemail'].errors['required']
                     "
                   >
                     Email is Requried
                   </p>
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      unitsformscreate.controls['usernemail'].errors['pattern']
+                    "
+                  >
+                    Invalid Email
+                  </p>
                 </div>
               </div>
-              <div class="col-12 col-md-6 mb-3">
-                <label for="unitsnumber" class="form-label form-lable-custom">
-                  Number</label
+              <div class="col-lg-12 col-md-6 mb-3">
+                <label for="usernnumber" class="form-label form-lable-custom"
+                  >Number</label
                 >
                 <input
-                  type="number"
+                  type="text"
                   class="form-control form-input-custom"
-                  formControlName="unitsnumber"
+                  formControlName="usernnumber"
+                  pattern="^[0-9]{10}$"
+                  maxlength="10"
                   [ngClass]="{
                     'is-invalid':
-                      unitsformscreate.controls['unitsnumber'].errors &&
-                      (unitsformscreate.controls['unitsnumber'].touched ||
-                        unitsformscreate.controls['unitsnumber'].dirty)
+                      unitsformscreate.controls['usernnumber'].errors &&
+                      (unitsformscreate.controls['usernnumber'].touched ||
+                        unitsformscreate.controls['usernnumber'].dirty)
                   }"
                 />
                 <div
                   class="text-danger error-message"
                   *ngIf="
-                    unitsformscreate.controls['unitsnumber'].errors &&
-                    (unitsformscreate.controls['unitsnumber'].touched ||
-                      unitsformscreate.controls['unitsnumber'].dirty)
+                    unitsformscreate.controls['usernnumber'].errors &&
+                    (unitsformscreate.controls['usernnumber'].touched ||
+                      unitsformscreate.controls['usernnumber'].dirty)
                   "
                 >
                   <p
                     class="fw-light text-danger"
                     *ngIf="
-                      unitsformscreate.controls['unitsnumber'].errors[
+                      unitsformscreate.controls['usernnumber'].errors[
                         'required'
                       ]
                     "
                   >
                     Number is Requried
                   </p>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 mb-3">
-                <label for="password" class="form-label form-lable-custom">
-                  Password</label
-                >
-                <input
-                  type="password"
-                  class="form-control form-input-custom"
-                  formControlName="password"
-                  [ngClass]="{
-                    'is-invalid':
-                      unitsformscreate.controls['password'].errors &&
-                      (unitsformscreate.controls['password'].touched ||
-                        unitsformscreate.controls['password'].dirty)
-                  }"
-                />
-                <div
-                  class="text-danger error-message"
-                  *ngIf="
-                    unitsformscreate.controls['password'].errors &&
-                    (unitsformscreate.controls['password'].touched ||
-                      unitsformscreate.controls['password'].dirty)
-                  "
-                >
                   <p
                     class="fw-light text-danger"
                     *ngIf="
-                      unitsformscreate.controls['password'].errors['required']
+                      unitsformscreate.controls['usernnumber'].errors['pattern']
                     "
                   >
-                    Password is Requried
-                  </p>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 mb-3">
-                <label
-                  for="confirmpassword"
-                  class="form-label form-lable-custom"
-                >
-                  Confirm Password</label
-                >
-                <input
-                  type="confirmpassword"
-                  class="form-control form-input-custom"
-                  formControlName="confirmpassword"
-                  [ngClass]="{
-                    'is-invalid':
-                      unitsformscreate.controls['confirmpassword'].errors &&
-                      (unitsformscreate.controls['confirmpassword'].touched ||
-                        unitsformscreate.controls['confirmpassword'].dirty)
-                  }"
-                />
-                <div
-                  class="text-danger error-message"
-                  *ngIf="
-                    unitsformscreate.controls['confirmpassword'].errors &&
-                    (unitsformscreate.controls['confirmpassword'].touched ||
-                      unitsformscreate.controls['confirmpassword'].dirty)
-                  "
-                >
-                  <p
-                    class="fw-light text-danger"
-                    *ngIf="
-                      unitsformscreate.controls['confirmpassword'].errors[
-                        'required'
-                      ]
-                    "
-                  >
-                    Confirm Password is Requried
+                    Invalid Number
                   </p>
                 </div>
               </div>
             </div>
             <div class="modal-footer text-end me-4">
               <button
-                class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-100"
+                class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-200"
                 type="button"
                 (click)="closeModal()"
               >
@@ -420,7 +408,7 @@
               <button
                 class="btn btn-primary main-btnfs px-4 py-2"
                 type="button"
-                (click)="createSilentUser()"
+                (click)="createunits()"
               >
                 Create
               </button>
@@ -449,7 +437,7 @@
           <div
             class="card-header bg-white d-flex justify-content-between algin-items-center"
           >
-            <h5 class="modal-title pt-1">Update Slient Users</h5>
+            <h5 class="modal-title pt-1">Update Pharmacy</h5>
             <button
               class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
               type="button"
@@ -461,7 +449,7 @@
 
           <div class="modal-content-width card-body mb-0">
             <div class="row">
-              <div class="col-lg-12 col-md-12 mb-3">
+              <div class="col-12 col-md-6 mb-3">
                 <label for="usernname" class="form-label form-lable-custom"
                   >User Name</label
                 >
@@ -494,7 +482,40 @@
                   </p>
                 </div>
               </div>
-              <div class="col-lg-12 col-md-12 mb-3">
+              <div class="col-12 col-md-6 mb-3">
+                <label for="usernrole" class="form-label form-lable-custom"
+                  >User Role</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-input-custom"
+                  formControlName="usernrole"
+                  [ngClass]="{
+                    'is-invalid':
+                      usersformupdate.controls['usernrole'].errors &&
+                      (usersformupdate.controls['usernrole'].touched ||
+                        usersformupdate.controls['usernrole'].dirty)
+                  }"
+                />
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    usersformupdate.controls['usernrole'].errors &&
+                    (usersformupdate.controls['usernrole'].touched ||
+                      usersformupdate.controls['usernrole'].dirty)
+                  "
+                >
+                  <p
+                    class="fw-light text-danger"
+                    *ngIf="
+                      usersformupdate.controls['usernrole'].errors['required']
+                    "
+                  >
+                    Role is Requried
+                  </p>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
                 <label for="usernemail" class="form-label form-lable-custom"
                   >User Email</label
                 >
@@ -527,7 +548,7 @@
                   </p>
                 </div>
               </div>
-              <div class="col-lg-12 col-md-12 mb-3">
+              <div class="col-12 col-md-6 mb-3">
                 <label for="usernnumber" class="form-label form-lable-custom"
                   >User Number</label
                 >
@@ -563,7 +584,7 @@
             </div>
             <div class="modal-footer text-end me-4">
               <button
-                class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-100"
+                class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-200"
                 type="button"
                 (click)="closeModal()"
               >
@@ -586,7 +607,6 @@
     </div>
   </div>
 </div>
-
 <div
   *ngIf="openSecondsuccess"
   class="your-animation-class modal-container-success"
@@ -606,6 +626,7 @@
     </div>
   </div>
 </div>
+
 <div class="modal deleteConfirmationModal" *ngIf="showDeleteModal">
   <div class="modal-content">
     <h3 class="modal-title">Confirm Deletion</h3>

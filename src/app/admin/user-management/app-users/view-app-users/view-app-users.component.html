@@ -1,6 +1,6 @@
 <div class="container">
   <div class="d-flex justify-content-between algin-items-center">
-    <h1 class="text-primary table-heading-detail">View App Users</h1>
+    <h1 class="text-primary table-heading-detail">View Users Details</h1>
     <div></div>
   </div>
 
@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  <div class="card mt-2">
+  <!-- <div class="card mt-2">
     <div class="card-body">
       <ul
         class="nav nav-pills mainBox nav-justified"
@@ -245,11 +245,6 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- <tr class="odd">
-                        <td valign="top" colspan="7" class="dataTables_empty">
-                          No data available in table
-                        </td>
-                      </tr> -->
                       <tr
                         *ngFor="let doc of userstable.stores; let i = index"
                         [class.odd]="i % 2 === 0"
@@ -283,12 +278,10 @@
                         <td>
                           {{ doc.store_contact }}
                         </td>
-                        <!-- <td>
-                          {{ doc.store_address }}
-                        </td> -->
+                       
                         <td>
                           <p>
-                            <!-- Display description based on toggle -->
+                           
                             {{
                               isExpanded[doc.store_address]
                                 ? doc.store_address ?? ""
@@ -303,7 +296,7 @@
                             >
                           </p>
 
-                          <!-- Conditionally show View More/View Less only if description length > 100 -->
+                          
                           <a
                             *ngIf="(doc.store_address ?? '').length > 25"
                             href="#"
@@ -319,7 +312,7 @@
                           </a>
                         </td>
                         <td>
-                          <!-- {{ doc.store_tag }} -->
+                         
                           <p
                             [ngClass]="{
                               'active-status': doc.store_tag === 'exclusive',
@@ -461,18 +454,7 @@
                         >
                           Rights
                         </th>
-                        <!-- <th
-                          class="sorting sorting_asc"
-                          tabindex="0"
-                          aria-controls="custom_datatable"
-                          rowspan="1"
-                          colspan="1"
-                          style="width: 134.812px"
-                          aria-label="Action: activate to sort column descending"
-                          aria-sort="ascending"
-                        >
-                          Action
-                        </th> -->
+                     
                       </tr>
                     </thead>
                     <tbody>
@@ -499,22 +481,7 @@
                               : doc.rights
                           }}
                         </td>
-                        <!-- <td>
-                          <span
-                            class="badge"
-                            [ngClass]="{
-                              'bg-danger': doc.status === 'Expired',
-                              'bg-success': doc.status === 'Active'
-                            }"
-                          >
-                            {{ doc.status }}
-                          </span>
-                        </td> -->
-                        <!-- <td>
-                          <a [href]="doc.compliance_document" target="_blank">
-                            <i class="fa-solid fa-eye" title="View"></i>
-                          </a>
-                        </td> -->
+                        
                       </tr>
                     </tbody>
                   </table>
@@ -592,14 +559,7 @@
                         >
                           Issued By
                         </th>
-                        <!-- <th
-                          class="sorting_disabled"
-                          rowspan="1"
-                          colspan="1"
-                          style="width: 0px"
-                        >
-                          Days Remaining
-                        </th> -->
+                        
                         <th
                           class="sorting_disabled"
                           rowspan="1"
@@ -635,17 +595,7 @@
                         <td>{{ doc.created_at | date : "yyyy-MM-dd" }}</td>
                         <td>{{ doc.expiry_date }}</td>
                         <td>{{ doc.issued_by }}</td>
-                        <!-- <td>
-                          <span
-                            class="badge"
-                            [ngClass]="{
-                              'bg-danger': doc.status === 'Expired',
-                              'bg-success': doc.status === 'Active'
-                            }"
-                          >
-                            {{ doc.status }}
-                          </span>
-                        </td> -->
+                        
                         <td>
                           <a [href]="doc.compliance_document" target="_blank">
                             <i class="fa-solid fa-eye" title="View"></i>
@@ -659,6 +609,343 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- Other parts of your View App Users page (User ID, User Name, etc.) remain unchanged -->
+  <div class="container mx-auto my-4 px-0">
+    <div class="flex items-center justify-between mb-4">
+      <h5 class="text-lg font-semibold text-gray-800">User Stores</h5>
+      <div class="bg-blue-100 p-3 rounded-full">
+        <i class="fa-solid fa-store-alt text-[#1075bc] text-xl"></i>
+      </div>
+    </div>
+
+    <div *ngIf="userstable?.stores?.length; else noData">
+      <div class="space-y-2">
+        <div
+          *ngFor="let doc of userstable.stores; let i = index"
+          class="border border-gray-200 rounded-lg shadow-sm"
+        >
+          <!-- Accordion Header -->
+          <button
+            (click)="toggleAccordion(i)"
+            class="w-full flex justify-between items-center px-4 py-2 text-left text-gray-700 font-semibold bg-gray-50 hover:bg-gray-100 focus:outline-none"
+            [ngClass]="{ 'bg-gray-100': activeIndex === i }"
+          >
+            <span>{{ doc.agency_name }}</span>
+            <svg
+              class="w-5 h-5 transform transition-transform duration-300"
+              [ngClass]="{ 'rotate-180': activeIndex === i }"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          </button>
+          <!-- Accordion Content -->
+          <div
+            *ngIf="activeIndex === i"
+            class="p-4 bg-white"
+            [@slideIn]="activeIndex === i ? 'show' : 'void'"
+          >
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <strong class="text-gray-600">Store Image:</strong><br />
+                <a [href]="doc.store_image" target="_blank" class="">
+                  <img
+                    *ngIf="doc.store_image"
+                    [src]="doc.store_image"
+                    alt="Store Image"
+                    class="w-3/4 rounded h-32 object-cover"
+                  />
+                </a>
+              </div>
+              <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                <p>
+                  <strong class="text-gray-600">Agency Name:</strong>
+                  {{ doc.agency_name }}
+                </p>
+                <p>
+                  <strong class="text-gray-600">Owner Name:</strong>
+                  {{ doc.owner_name }}
+                </p>
+                <p>
+                  <strong class="text-gray-600">Owner Email:</strong>
+                  {{ doc.owner_email }}
+                </p>
+                <p>
+                  <strong class="text-gray-600">Owner Contact:</strong>
+                  {{ doc.owner_contact_no }}
+                </p>
+                <p>
+                  <strong class="text-gray-600">Store Email:</strong>
+                  {{ doc.store_email }}
+                </p>
+                <p>
+                  <strong class="text-gray-600">Store Contact:</strong>
+                  {{ doc.store_contact }}
+                </p>
+                <p>
+                  <strong class="text-gray-600">Store Address:</strong>
+                  {{ doc.store_address }}
+                </p>
+                <div
+                  class="flex items-center gap-3"
+                  *ngIf="doc.store_tag; else noTag"
+                >
+                  <p>
+                    <strong class="text-gray-600">Store Tag: </strong>
+                    <span
+                      class="inline-block px-2 py-1 text-sm font-medium rounded"
+                      [ngClass]="{
+                        'bg-green-100 text-green-800':
+                          doc.store_tag === 'verified',
+                        'bg-blue-100 text-blue-800':
+                          doc.store_tag === 'exclusive'
+                      }"
+                    >
+                      {{
+                        doc.store_tag === "exclusive" ? "Exclusive" : "Verified"
+                      }}
+                    </span>
+                  </p>
+                  <!-- Status Toggle Button -->
+                  <div class="">
+                    <button
+                      mat-icon-button
+                      class="p-0 text-gray-600 hover:text-gray-800"
+                      [matMenuTriggerFor]="menu"
+                    >
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button
+                        mat-menu-item
+                        *ngIf="
+                          doc.store_tag === 'exclusive';
+                          else inactiveButton
+                        "
+                        (click)="Status(doc.id, 'verified')"
+                      >
+                        Verified
+                      </button>
+                      <ng-template #inactiveButton>
+                        <button
+                          mat-menu-item
+                          (click)="Status(doc.id, 'exclusive')"
+                        >
+                          Exclusive
+                        </button>
+                      </ng-template>
+                    </mat-menu>
+                  </div>
+                </div>
+                <ng-template #noTag>
+                  <p>
+                    <strong class="text-gray-600">Store Tag: </strong>
+                    <span class="text-red-500"> Not Available</span>
+                  </p>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noData>
+      <p class="text-gray-500">No store data available</p>
+    </ng-template>
+  </div>
+  <!-- Store Approvals and License Status -->
+  <div class="grid grid-cols-1 gap-6 mb-8">
+    <!-- Stores Awaiting Approval -->
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="leftBox flex items-center gap-2">
+          <div class="bg-blue-100 p-3 rounded-full">
+            <i class="fa-solid fa-users text-[#1075bc] text-xl"></i>
+          </div>
+          <h5 class="text-lg font-semibold text-gray-800 mb-0">
+            User Employees
+          </h5>
+        </div>
+        <div class="rightBox">
+          <button
+            class="bg-[#1075bc] hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+          >
+            <i class="fa-solid fa-plus mr-2"></i> Add Employee
+          </button>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="personally-identifiable-information bg-gray-50">
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">Sr No</th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">Name</th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">Email</th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Mobile
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">Role</th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Rights
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="border-t"
+              *ngFor="let employees of userstable.employees; let i = index"
+              [class.odd]="i % 2 === 0"
+              [class.even]="i % 2 !== 0"
+            >
+              <td class="px-4 py-2 text-gray-700">{{ i + 1 }}</td>
+              <td class="px-4 py-2 text-gray-700">{{ employees.name }}</td>
+              <td class="px-4 py-2 text-gray-700">{{ employees.email }}</td>
+              <td class="px-4 py-2 text-gray-700">{{ employees.mobile }}</td>
+              <td class="px-4 py-2 text-gray-700">{{ employees.role }}</td>
+              <td class="px-4 py-2 text-gray-700">
+                {{
+                  employees.rights === "view_only"
+                    ? "View Only"
+                    : employees.rights === "compliance_doc"
+                    ? "Compliance Doc"
+                    : employees.rights === "compliance_edit"
+                    ? "Compliance Edit"
+                    : employees.rights
+                }}
+              </td>
+              <td class="py-3">
+                <p class="mb-0">
+                  <button
+                    mat-icon-button
+                    class="p-0"
+                    [matMenuTriggerFor]="menu"
+                  >
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>Edit</button>
+                    <button
+                      mat-menu-item
+                      (click)="
+                        openEmployeeDeleteDialog(employees?.id, employees?.name)
+                      "
+                    >
+                      Delete
+                    </button>
+                  </mat-menu>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- License Expiry -->
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="leftBox flex items-center gap-2">
+          <div class="bg-blue-100 p-3 rounded-full">
+            <i class="fa-solid fa-file-lines text-[#1075bc] text-xl"></i>
+          </div>
+          <h5 class="text-lg font-semibold text-gray-800 mb-0">
+            User Documents
+          </h5>
+        </div>
+        <div class="rightBox">
+          <button
+            class="bg-[#1075bc] hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+          >
+            <i class="fa-solid fa-plus mr-2"></i> Add Document
+          </button>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="bg-gray-50">
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">Sr No</th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                License Number
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Valid From
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Valid To
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Issued By
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                View Document
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="border-t"
+              *ngFor="let license of userstable.licenses; let i = index"
+              [class.odd]="i % 2 === 0"
+              [class.even]="i % 2 !== 0"
+            >
+              <td class="px-4 py-2 text-gray-700">{{ i + 1 }}</td>
+              <td class="px-4 py-2 text-gray-700">
+                {{ license.license_number }}
+              </td>
+              <td class="px-4 py-2 text-gray-700">
+                {{ license.created_at }}
+              </td>
+              <td class="px-4 py-2 text-gray-700">{{ license.expiry_date }}</td>
+              <td class="px-4 py-2 text-gray-700">{{ license.issued_by }}</td>
+              <td>
+                <a [href]="license.compliance_document" target="_blank">
+                  <i class="fa-solid fa-eye" title="View"></i>
+                </a>
+              </td>
+              <td class="py-2">
+                <p class="mb-0">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>Approve</button>
+                    <button
+                      mat-menu-item
+                      (click)="
+                        openDocumentDeleteDialog(
+                          license?.id,
+                          license?.license_number
+                        )
+                      "
+                    >
+                      Delete
+                    </button>
+                  </mat-menu>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -679,6 +966,108 @@
       <p class="text-green-900 text-capitalize mb-0">
         {{ successName }} successfully
       </p>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Employee Modal -->
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  *ngIf="showEmployeeDeleteDialog"
+  (click)="closeDocumentDialog()"
+>
+  <div
+    class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h5 class="text-xl font-bold text-gray-900">Confirm Deletion</h5>
+      <button (click)="closeDocumentDialog()" class="focus:outline-none">
+        <i class="fas fa-times text-gray-500 hover:text-red-600 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="mb-6 space-y-2">
+      <p class="text-lg text-gray-700 font-medium">
+        <span class="text-gray-900">Employee Name: </span>
+        <span class="font-semibold text-blue-700">{{ employeeName }}</span>
+      </p>
+      <p class="text-sm text-gray-700 leading-relaxed">
+        Are you sure you want to delete this employee?
+        <br />
+        <span class="font-semibold text-red-600"
+          >This action cannot be undone.</span
+        >
+      </p>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="flex justify-end gap-3 mt-4">
+      <button
+        class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition"
+        (click)="closeDocumentDialog()"
+      >
+        Cancel
+      </button>
+      <button
+        class="px-4 py-2 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700 transition"
+        (click)="employeeDelete(this.employeeId)"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Document Modal -->
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  *ngIf="showDocumentDeleteDialog"
+  (click)="closeDocumentDialog()"
+>
+  <div
+    class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h5 class="text-2xl font-bold text-gray-900">Confirm Deletion</h5>
+      <button (click)="closeDocumentDialog()" class="focus:outline-none">
+        <i class="fas fa-times text-gray-600 hover:text-red-600 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="mb-6 space-y-2">
+      <p class="text-lg text-gray-700 font-medium">
+        <span class="text-gray-900">License Number: </span>
+        <span class="font-semibold text-blue-700">{{ documentName }}</span>
+      </p>
+      <p class="text-sm text-gray-00 leading-relaxed">
+        Are you sure you want to delete this file?
+        <br />
+        <span class="font-semibold text-red-600"
+          >This action cannot be undone.</span
+        >
+      </p>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="flex justify-end gap-3">
+      <button
+        class="px-4 py-2 rounded-md bg-gray-200 text-gray-800 font-medium hover:bg-gray-300 transition"
+        (click)="closeDocumentDialog()"
+      >
+        Cancel
+      </button>
+      <button
+        class="px-4 py-2 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700 transition"
+        (click)="documentDelete(this.documentListId)"
+      >
+        Delete
+      </button>
     </div>
   </div>
 </div>

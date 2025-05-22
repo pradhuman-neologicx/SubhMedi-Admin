@@ -493,19 +493,30 @@ export class SilentUsersComponent {
     }
   }
 
-  // downloadcourseFile(): void {
-  //   const url = `${environment.coursefile_url}download/course`;
-  //   this.httpClient.get(url, { responseType: 'blob' })
-  //     .subscribe(
-  //       (blob: Blob) => {
-  //         const fileName = 'synthesis_courses.xlsx'; // Specify the file name
-  //         saveAs(blob,fileName);
-  //       },
-  //       (error: any) => {
-  //         console.error('Failed to download the file.', error);
-  //         // Handle error as needed
-  //       }
-  //     );
-  // }
-  downloadcourseFile() {}
+  showDeleteModal = false;
+  deleteError = '';
+  UserIID: any;
+
+  openDeleteModal(userId: any) {
+    console.log('delee clicked');
+    this.UserIID = userId;
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.deleteError = '';
+  }
+
+  confirmDelete() {
+    // this.deleteService.deleteItem(this.itemId).subscribe({
+    //   next: () => {
+    //     this.closeDeleteModal();
+    //     // Optionally refresh data or notify success
+    //   },
+    //   error: (err) => {
+    //     this.deleteError = 'Failed to delete. Please try again.';
+    //   },
+    // });
+  }
 }

@@ -97,6 +97,18 @@ export class SidenavComponent {
             label: 'Silent Users',
             route: 'user-management/silent-users',
           },
+          {
+            index: 2,
+            icon: 'group',
+            label: 'Pharmacy',
+            route: 'user-management/pharmacy',
+          },
+          {
+            index: 2,
+            icon: 'group',
+            label: 'Medical Distributors',
+            route: 'user-management/medical-distributors',
+          },
         ],
       },
       {
@@ -112,16 +124,28 @@ export class SidenavComponent {
         route: 'advertising',
       },
       {
-        index: 4,
+        index: 5,
         icon: 'business',
         label: 'Companies',
         route: 'companies',
       },
       {
-        index: 4,
+        index: 6,
         icon: 'gavel',
         label: 'License Authority',
         route: 'authority',
+      },
+      {
+        index: 7,
+        icon: 'store',
+        label: 'New Shops',
+        route: 'new-shops',
+      },
+      {
+        index: 8,
+        icon: 'unsubscribe',
+        label: 'Unsubscribe',
+        route: 'unsubscribe',
       },
       // {
       //   index: 2,

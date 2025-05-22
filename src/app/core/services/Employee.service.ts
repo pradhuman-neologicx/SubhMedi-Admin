@@ -186,7 +186,55 @@ export class EmployeeService {
       })
     );
   }
+  getShopsApi(tableSize: any, page: any, search: any) {
+    const user_id = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
 
+    let url = 'hold-shops?user_id=' + user_id;
+
+    if (tableSize !== 'all') {
+      url += `&limit=${tableSize}&page=${page}`;
+      if (search && search.length > 0) {
+        url += `&search=${search}`;
+      }
+    } else {
+      if (search && search.length > 0) {
+        url += `&search=${search}`;
+      }
+    }
+
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+
+  storeApproveApi(body: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`approve-shop`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
   createauthority(body: any): Observable<any> {
     // const user = this.jwtService.getpanelUserId();
 

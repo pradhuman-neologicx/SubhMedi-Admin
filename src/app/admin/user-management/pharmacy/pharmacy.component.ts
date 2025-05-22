@@ -11,10 +11,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { units } from 'src/app/core/model-class/employee';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
 import { JwtService } from 'src/app/core/services/jwt.service';
+
 @Component({
-  selector: 'app-app-users',
-  templateUrl: './app-users.component.html',
-  styleUrl: './app-users.component.scss',
+  selector: 'app-pharmacy',
+  templateUrl: './pharmacy.component.html',
+  styleUrl: './pharmacy.component.scss',
 
   animations: [
     trigger('succesfullyMesaage', [
@@ -68,7 +69,7 @@ import { JwtService } from 'src/app/core/services/jwt.service';
     ]),
   ],
 })
-export class AppUsersComponent {
+export class PharmacyComponent {
   FilterForm!: FormGroup;
 
   showreset: any = false;
@@ -491,62 +492,6 @@ export class AppUsersComponent {
     }
   }
 
-  // downloadcourseFile(): void {
-  //   const url = `${environment.coursefile_url}download/course`;
-  //   this.httpClient.get(url, { responseType: 'blob' })
-  //     .subscribe(
-  //       (blob: Blob) => {
-  //         const fileName = 'synthesis_courses.xlsx'; // Specify the file name
-  //         saveAs(blob,fileName);
-  //       },
-  //       (error: any) => {
-  //         console.error('Failed to download the file.', error);
-  //         // Handle error as needed
-  //       }
-  //     );
-  // }
-  downloadcourseFile() {}
-
-  // BulkuploadCourseFun() {
-  //   if (this.Bulkuploadform.valid) {
-  //     const formData: FormData = new FormData();
-  //     if (this.selectedfile != undefined) {
-  //       const file = this.selectedfile;
-  //       formData.append("xlsx", file, file.name);
-  //       console.log(formData);
-
-  //       this.employeeService.BulkuploadCourseapi(formData).subscribe((response: any) => {
-  //         this.errorMessage = ;
-  //         if (response.statusCode === 200 || response.statusCode === 201) {
-  //           console.log(response);
-  //           this.closeModal();
-  //           this.successName = 'Upload Bulk';
-  //           this.openSecondsuccess = true;
-  //           this.removeFile();
-  //           this.ngOnInit();
-  //           this.getNewCourses();
-  //           setTimeout(() => {
-  //             this.openSecondsuccess = true;
-  //             setTimeout(() => {
-  //               this.openSecondsuccess = false;
-  //             }, 1800);
-  //           }, 200);
-
-  //         } else {
-  //           this.submitted = false;
-  //         }
-  //       });
-  //     }
-  //     else {
-  //       console.log("Please Select file");
-  //       // Handle the case where no file is selected or form is invalid
-  //     }
-
-  //   }
-  //   else {
-  //     this.Bulkuploadform.markAllAsTouched();
-  //   }
-  // }
   showDeleteModal = false;
   deleteError = '';
   UserIID: any;

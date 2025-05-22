@@ -224,7 +224,7 @@ export class ViewAppUsersComponent {
   }
   async Status(id: string, tag: any) {
     const actionMessage = 'Status Changed';
-
+    const currentIndex = this.activeIndex;
     this.employeeService
       .changeStoreTag(id, tag, this.appUserID)
 
@@ -233,6 +233,7 @@ export class ViewAppUsersComponent {
         if (response.status === 200 || response.status === 201) {
           this.successName = actionMessage;
           this.GetAppUserfun();
+          this.activeIndex = currentIndex;
           setTimeout(() => {
             this.openSecondsuccess = true;
             setTimeout(() => {
@@ -319,4 +320,65 @@ export class ViewAppUsersComponent {
   }
   submitted: any;
   errorMessage: any;
+  activeIndex: number | null = 0;
+  // Toggle accordion
+  toggleAccordion(index: number): void {
+    this.activeIndex = this.activeIndex === index ? null : index;
+  }
+  showDocumentDeleteDialog = false;
+  showEmployeeDeleteDialog = false;
+  documentName: any;
+  employeeName: any;
+  documentListId: any;
+  employeeId: any;
+  openDocumentDeleteDialog(docId: any, docName: any): void {
+    this.documentListId = docId;
+    console.log('Document ID:', docId);
+    console.log('Document Name:', docName);
+    this.documentName = docName;
+    this.showDocumentDeleteDialog = true;
+  }
+  openEmployeeDeleteDialog(empId: any, empName: any): void {
+    this.employeeId = empId;
+    console.log('Employee ID:', empId);
+    console.log('Employee Name:', empName);
+    this.employeeName = empName;
+    this.showEmployeeDeleteDialog = true;
+  }
+  documentDelete(docId: any): void {
+    this.documentListId = docId;
+    // Call the API to update the user profile
+    // this.employeeService.userHomeDocumentDelete(this.documentListId).subscribe({
+    //   next: (response: any) => {
+    //     if (response.status === 200 || response.status === 201) {
+    //       this.submitted = true;
+    //       this.closeDocumentDialog(); // Add this to close the modal
+    //       this.getdDocumentsByID();
+    //       this.notificationService.show(response.message, 'success', 3000);
+    //     } else {
+    //       this.submitted = false;
+    //       this.notificationService.show(
+    //         'Failed to update the document',
+    //         'error',
+    //         3000
+    //       );
+    //     }
+    //   },
+    //   error: (error: any) => {
+    //     this.submitted = false;
+    //     this.errorMessage = 'Update failed due to server error';
+    //     console.error('Update failed', error);
+    //     this.notificationService.show(
+    //       'Update failed due to server error',
+    //       'error',
+    //       3000
+    //     );
+    //   },
+    // });
+  }
+  employeeDelete(empId: any) {}
+  closeDocumentDialog(): void {
+    this.showDocumentDeleteDialog = false;
+    this.showEmployeeDeleteDialog = false;
+  }
 }

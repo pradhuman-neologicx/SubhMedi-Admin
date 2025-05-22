@@ -1,0 +1,743 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <!-- <div
+    class="bg-gradient-to-r from-red-600 to-pink-600 rounded-xl shadow-lg p-8 mb-8 text-center text-white"
+  >
+    <h1 class="text-4xl font-bold mb-2">Subscription Management</h1>
+    <p class="text-lg opacity-90">
+      Monitor unsubscribed users, expired subscriptions, and approval statuses
+    </p>
+  </div> -->
+  <!-- <h1 class="text-primary table-heading-detail">Unsubscribe Users</h1> -->
+  <!-- <h5 class="text-xl font-bold mb-2">Unsubscribe Users</h5> -->
+  <!-- Tabs Navigation -->
+  <div class="bg-white rounded-xl shadow-md mb-8">
+    <div class="border-b border-gray-200">
+      <nav class="flex -mb-px">
+        <button
+          class="tab-button py-4 px-6 text-sm font-medium focus:outline-none"
+          [ngClass]="{
+            'border-b-2 border-[#1075bc] text-[#1075bc]':
+              activeTab === 'unsubscribed',
+            'text-gray-500 hover:text-gray-700': activeTab !== 'unsubscribed'
+          }"
+          (click)="setActiveTab('unsubscribed')"
+        >
+          Unsubscribed Users
+        </button>
+        <button
+          class="tab-button py-4 px-6 text-sm font-medium focus:outline-none"
+          [ngClass]="{
+            'border-b-2 border-[#1075bc] text-[#1075bc]':
+              activeTab === 'expired',
+            'text-gray-500 hover:text-gray-700': activeTab !== 'expired'
+          }"
+          (click)="setActiveTab('expired')"
+        >
+          Expired Subscriptions
+        </button>
+        <button
+          class="tab-button py-4 px-6 text-sm font-medium focus:outline-none"
+          [ngClass]="{
+            'border-b-2 border-[#1075bc] text-[#1075bc]':
+              activeTab === 'approvals',
+            'text-gray-500 hover:text-gray-700': activeTab !== 'approvals'
+          }"
+          (click)="setActiveTab('approvals')"
+        >
+          Waiting for Approvals
+        </button>
+        <button
+          class="tab-button py-4 px-6 text-sm font-medium focus:outline-none"
+          [ngClass]="{
+            'border-b-2 border-[#1075bc] text-[#1075bc]':
+              activeTab === 'nonApproved',
+            'text-gray-500 hover:text-gray-700': activeTab !== 'nonApproved'
+          }"
+          (click)="setActiveTab('nonApproved')"
+        >
+          Non-Approved Licenses
+        </button>
+      </nav>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="p-6">
+      <!-- Unsubscribed Users with Stores -->
+      <div *ngIf="activeTab === 'unsubscribed'">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">
+            Unsubscribed Users with Registered Stores
+          </h3>
+          <div class="bg-blue-100 p-3 rounded-full">
+            <i class="fa-solid fa-store text-[#1075bc] text-xl"></i>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <div
+            class="d-md-flex justify-content-between align-items-center my-3"
+          >
+            <div class="d-flex align-items-center mb-md-0 mb-2">
+              <span class="me-1 show-entery-text">Show</span>
+              <select
+                class="form-control form-select show-entries-select"
+                (change)="onTableSizeChange($event)"
+              >
+                <option *ngFor="let size of tableSizes" [ngValue]="size">
+                  {{ size }}
+                </option>
+              </select>
+              <span class="ms-1 show-entery-text">entries</span>
+            </div>
+
+            <div class="d-flex align-items-center">
+              <form
+                [formGroup]="searchbarform"
+                class="d-flex align-items-center"
+              >
+                <span class="me-1">Search:</span>
+                <div
+                  [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+                >
+                  <input
+                    type="text"
+                    class="form-control search-user position-relative"
+                    type="text"
+                    autocomplete="off"
+                    formControlName="searchbar"
+                    [ngClass]="{
+                      'is-invalid':
+                        searchbarform.controls['searchbar'].errors &&
+                        (searchbarform.controls['searchbar'].touched ||
+                          searchbarform.controls['searchbar'].dirty)
+                    }"
+                  />
+                  <div
+                    class="text-danger error-message d-block"
+                    *ngIf="
+                      searchbarform.controls['searchbar'].errors &&
+                      (searchbarform.controls['searchbar'].touched ||
+                        searchbarform.controls['searchbar'].dirty)
+                    "
+                  >
+                    <p
+                      class="fw-light text-danger search-required"
+                      *ngIf="
+                        searchbarform.controls['searchbar'].errors['required']
+                      "
+                    >
+                      This is required
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  class="btn btn-primary search-btn ms-2"
+                  (click)="searchfun()"
+                >
+                  <span
+                    ><i
+                      class="fa-solid fa-magnifying-glass form-control-feedback"
+                    ></i
+                  ></span>
+                </button>
+                <button
+                  class="btn btn-primary search-btn ms-2"
+                  (click)="resetsearchbar()"
+                  type="submit"
+                  *ngIf="showreset == true"
+                >
+                  <span
+                    ><i
+                      class="fa-solid fa-rotate-right form-control-feedback"
+                    ></i
+                  ></span>
+                </button>
+              </form>
+            </div>
+          </div>
+          <table class="w-full text-left">
+            <thead>
+              <tr class="bg-gray-50">
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Serial No.
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  User ID
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  User Name
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Store Name
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Unsubscription Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="border-t"
+                *ngFor="
+                  let user of unsubscribedUsersWithStores
+                    | paginate
+                      : {
+                          itemsPerPage:
+                            tableSize != 'all' ? tableSize : totalRecords,
+                          currentPage: page,
+                          totalItems: totalRecords
+                        };
+                  index as i
+                "
+              >
+                <td class="px-4 py-3 text-gray-700">
+                  {{
+                    (page - 1) * (tableSize != "all" ? tableSize : 0) + i + 1
+                  }}
+                </td>
+                <td class="px-4 py-3 text-gray-700">{{ user.id }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.name }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.storeName }}</td>
+                <td class="px-4 py-3 text-gray-700 font-semibold">
+                  {{ user.unsubscriptionDate }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+          >
+            <span class="showalltext"
+              >Showing
+              {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }}
+              to
+              {{
+                tableSize * page <= totalRecords
+                  ? tableSize * page
+                  : totalRecords
+              }}
+              of
+              {{ totalRecords != undefined ? totalRecords : "" }} entries</span
+            >
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              [responsive]="true"
+              (pageChange)="onTableDataChange($event)"
+              target="_top"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users with Recently Expired Subscriptions -->
+      <div *ngIf="activeTab === 'expired'">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">
+            Users with Recently Expired Subscriptions
+          </h3>
+          <div class="bg-red-100 p-3 rounded-full">
+            <i class="fa-solid fa-exclamation-circle text-red-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <div
+            class="d-md-flex justify-content-between align-items-center my-3"
+          >
+            <div class="d-flex align-items-center mb-md-0 mb-2">
+              <span class="me-1 show-entery-text">Show</span>
+              <select
+                class="form-control form-select show-entries-select"
+                (change)="onTableSizeChange($event)"
+              >
+                <option *ngFor="let size of tableSizes" [ngValue]="size">
+                  {{ size }}
+                </option>
+              </select>
+              <span class="ms-1 show-entery-text">entries</span>
+            </div>
+
+            <div class="d-flex align-items-center">
+              <form
+                [formGroup]="searchbarform"
+                class="d-flex align-items-center"
+              >
+                <span class="me-1">Search:</span>
+                <div
+                  [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+                >
+                  <input
+                    type="text"
+                    class="form-control search-user position-relative"
+                    type="text"
+                    autocomplete="off"
+                    formControlName="searchbar"
+                    [ngClass]="{
+                      'is-invalid':
+                        searchbarform.controls['searchbar'].errors &&
+                        (searchbarform.controls['searchbar'].touched ||
+                          searchbarform.controls['searchbar'].dirty)
+                    }"
+                  />
+                  <div
+                    class="text-danger error-message d-block"
+                    *ngIf="
+                      searchbarform.controls['searchbar'].errors &&
+                      (searchbarform.controls['searchbar'].touched ||
+                        searchbarform.controls['searchbar'].dirty)
+                    "
+                  >
+                    <p
+                      class="fw-light text-danger search-required"
+                      *ngIf="
+                        searchbarform.controls['searchbar'].errors['required']
+                      "
+                    >
+                      This is required
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  class="btn btn-primary search-btn ms-2"
+                  (click)="searchfun()"
+                >
+                  <span
+                    ><i
+                      class="fa-solid fa-magnifying-glass form-control-feedback"
+                    ></i
+                  ></span>
+                </button>
+                <button
+                  class="btn btn-primary search-btn ms-2"
+                  (click)="resetsearchbar()"
+                  type="submit"
+                  *ngIf="showreset == true"
+                >
+                  <span
+                    ><i
+                      class="fa-solid fa-rotate-right form-control-feedback"
+                    ></i
+                  ></span>
+                </button>
+              </form>
+            </div>
+          </div>
+          <table class="w-full text-left">
+            <thead>
+              <tr class="bg-gray-50">
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Serial No.
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  User ID
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  User Name
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Subscription Plan
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Expiry Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="border-t"
+                *ngFor="
+                  let user of recentlyExpiredSubscriptions
+                    | paginate
+                      : {
+                          itemsPerPage:
+                            tableSize != 'all' ? tableSize : totalRecords,
+                          currentPage: page,
+                          totalItems: totalRecords
+                        };
+                  index as i
+                "
+              >
+                <td class="px-4 py-3 text-gray-700">
+                  {{
+                    (page - 1) * (tableSize != "all" ? tableSize : 0) + i + 1
+                  }}
+                </td>
+                <td class="px-4 py-3 text-gray-700">{{ user.id }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.name }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.plan }}</td>
+                <td class="px-4 py-3 text-gray-700 font-semibold">
+                  {{ user.expiryDate }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+          >
+            <span class="showalltext"
+              >Showing
+              {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }}
+              to
+              {{
+                tableSize * page <= totalRecords
+                  ? tableSize * page
+                  : totalRecords
+              }}
+              of
+              {{ totalRecords != undefined ? totalRecords : "" }} entries</span
+            >
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              [responsive]="true"
+              (pageChange)="onTableDataChange($event)"
+              target="_top"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Waiting for Approvals -->
+      <div *ngIf="activeTab === 'approvals'">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">
+            Users Waiting for Approvals
+          </h3>
+          <div class="bg-yellow-100 p-3 rounded-full">
+            <i class="fa-solid fa-hourglass-half text-yellow-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <div
+            class="d-md-flex justify-content-between align-items-center my-3"
+          >
+            <div class="d-flex align-items-center mb-md-0 mb-2">
+              <span class="me-1 show-entery-text">Show</span>
+              <select
+                class="form-control form-select show-entries-select"
+                (change)="onTableSizeChange($event)"
+              >
+                <option *ngFor="let size of tableSizes" [ngValue]="size">
+                  {{ size }}
+                </option>
+              </select>
+              <span class="ms-1 show-entery-text">entries</span>
+            </div>
+
+            <div class="d-flex align-items-center">
+              <form
+                [formGroup]="searchbarform"
+                class="d-flex align-items-center"
+              >
+                <span class="me-1">Search:</span>
+                <div
+                  [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+                >
+                  <input
+                    type="text"
+                    class="form-control search-user position-relative"
+                    type="text"
+                    autocomplete="off"
+                    formControlName="searchbar"
+                    [ngClass]="{
+                      'is-invalid':
+                        searchbarform.controls['searchbar'].errors &&
+                        (searchbarform.controls['searchbar'].touched ||
+                          searchbarform.controls['searchbar'].dirty)
+                    }"
+                  />
+                  <div
+                    class="text-danger error-message d-block"
+                    *ngIf="
+                      searchbarform.controls['searchbar'].errors &&
+                      (searchbarform.controls['searchbar'].touched ||
+                        searchbarform.controls['searchbar'].dirty)
+                    "
+                  >
+                    <p
+                      class="fw-light text-danger search-required"
+                      *ngIf="
+                        searchbarform.controls['searchbar'].errors['required']
+                      "
+                    >
+                      This is required
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  class="btn btn-primary search-btn ms-2"
+                  (click)="searchfun()"
+                >
+                  <span
+                    ><i
+                      class="fa-solid fa-magnifying-glass form-control-feedback"
+                    ></i
+                  ></span>
+                </button>
+                <button
+                  class="btn btn-primary search-btn ms-2"
+                  (click)="resetsearchbar()"
+                  type="submit"
+                  *ngIf="showreset == true"
+                >
+                  <span
+                    ><i
+                      class="fa-solid fa-rotate-right form-control-feedback"
+                    ></i
+                  ></span>
+                </button>
+              </form>
+            </div>
+          </div>
+          <table class="w-full text-left">
+            <thead>
+              <tr class="bg-gray-50">
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Serial No.
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  User ID
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  User Name
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Store Name
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Submission Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="border-t"
+                *ngFor="
+                  let user of usersWaitingForApproval
+                    | paginate
+                      : {
+                          itemsPerPage:
+                            tableSize != 'all' ? tableSize : totalRecords,
+                          currentPage: page,
+                          totalItems: totalRecords
+                        };
+                  index as i
+                "
+              >
+                <td class="px-4 py-3 text-gray-700">
+                  {{
+                    (page - 1) * (tableSize != "all" ? tableSize : 0) + i + 1
+                  }}
+                </td>
+                <td class="px-4 py-3 text-gray-700">{{ user.id }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.name }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.storeName }}</td>
+                <td class="px-4 py-3 text-gray-700 font-semibold">
+                  {{ user.submissionDate }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+          >
+            <span class="showalltext"
+              >Showing
+              {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }}
+              to
+              {{
+                tableSize * page <= totalRecords
+                  ? tableSize * page
+                  : totalRecords
+              }}
+              of
+              {{ totalRecords != undefined ? totalRecords : "" }} entries</span
+            >
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              [responsive]="true"
+              (pageChange)="onTableDataChange($event)"
+              target="_top"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users with Non-Approved Licenses -->
+      <div *ngIf="activeTab === 'nonApproved'">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">
+            Users with Non-Approved Licenses
+          </h3>
+          <div class="bg-orange-100 p-3 rounded-full">
+            <i class="fa-solid fa-ban text-orange-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <div
+            class="d-md-flex justify-content-between align-items-center my-3"
+          >
+            <div class="d-flex align-items-center mb-md-0 mb-2">
+              <span class="me-1 show-entery-text">Show</span>
+              <select
+                class="form-control form-select show-entries-select"
+                (change)="onTableSizeChange($event)"
+              >
+                <option *ngFor="let size of tableSizes" [ngValue]="size">
+                  {{ size }}
+                </option>
+              </select>
+              <span class="ms-1 show-entery-text">entries</span>
+            </div>
+
+            <div class="d-flex align-items-center">
+              <form
+                [formGroup]="searchbarform"
+                class="d-flex align-items-center"
+              >
+                <span class="me-1">Search:</span>
+                <div
+                  [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+                >
+                  <input
+                    type="text"
+                    class="form-control search-user position-relative"
+                    type="text"
+                    autocomplete="off"
+                    formControlName="searchbar"
+                    [ngClass]="{
+                      'is-invalid':
+                        searchbarform.controls['searchbar'].errors &&
+                        (searchbarform.controls['searchbar'].touched ||
+                          searchbarform.controls['searchbar'].dirty)
+                    }"
+                  />
+                  <div
+                    class="text-danger error-message d-block"
+                    *ngIf="
+                      searchbarform.controls['searchbar'].errors &&
+                      (searchbarform.controls['searchbar'].touched ||
+                        searchbarform.controls['searchbar'].dirty)
+                    "
+                  >
+                    <p
+                      class="fw-light text-danger search-required"
+                      *ngIf="
+                        searchbarform.controls['searchbar'].errors['required']
+                      "
+                    >
+                      This is required
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  class="btn btn-primary search-btn ms-2"
+                  (click)="searchfun()"
+                >
+                  <span
+                    ><i
+                      class="fa-solid fa-magnifying-glass form-control-feedback"
+                    ></i
+                  ></span>
+                </button>
+                <button
+                  class="btn btn-primary search-btn ms-2"
+                  (click)="resetsearchbar()"
+                  type="submit"
+                  *ngIf="showreset == true"
+                >
+                  <span
+                    ><i
+                      class="fa-solid fa-rotate-right form-control-feedback"
+                    ></i
+                  ></span>
+                </button>
+              </form>
+            </div>
+          </div>
+          <table class="w-full text-left">
+            <thead>
+              <tr class="bg-gray-50">
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Serial No.
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  User ID
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  User Name
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  License ID
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Rejection Date
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Reason
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="border-t"
+                *ngFor="
+                  let user of nonApprovedLicenseUsers
+                    | paginate
+                      : {
+                          itemsPerPage:
+                            tableSize != 'all' ? tableSize : totalRecords,
+                          currentPage: page,
+                          totalItems: totalRecords
+                        };
+                  index as i
+                "
+              >
+                <td class="px-4 py-3 text-gray-700">
+                  {{
+                    (page - 1) * (tableSize != "all" ? tableSize : 0) + i + 1
+                  }}
+                </td>
+                <td class="px-4 py-3 text-gray-700">{{ user.id }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.name }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.licenseId }}</td>
+                <td class="px-4 py-3 text-gray-700 font-semibold">
+                  {{ user.rejectionDate }}
+                </td>
+                <td class="px-4 py-3 text-gray-700">{{ user.reason }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+          >
+            <span class="showalltext"
+              >Showing
+              {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }}
+              to
+              {{
+                tableSize * page <= totalRecords
+                  ? tableSize * page
+                  : totalRecords
+              }}
+              of
+              {{ totalRecords != undefined ? totalRecords : "" }} entries</span
+            >
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              [responsive]="true"
+              (pageChange)="onTableDataChange($event)"
+              target="_top"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

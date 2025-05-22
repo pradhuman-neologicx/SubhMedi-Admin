@@ -153,8 +153,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let banner of bannerTable | paginate: {itemsPerPage: tableSize!='all'?tableSize:totalRecords,
-                    currentPage: page , totalItems: totalRecords};index as i">
+          <tr
+            *ngFor="
+              let banner of bannerTable
+                | paginate
+                  : {
+                      itemsPerPage:
+                        tableSize != 'all' ? tableSize : totalRecords,
+                      currentPage: page,
+                      totalItems: totalRecords
+                    };
+              index as i
+            "
+          >
             <!-- <td>
               <div class="attendance-checkbox p-0">
                 <input
@@ -206,9 +217,14 @@
                 {{ banner.status == 1 ? "active" : "deactive" }} -->
               <!-- </p> -->
 
-              <p [ngClass]="{'active-status':banner.status== 1 ? 1 : 0,'deactive-status':banner.status == 1 ? 0 : 1}">
-                {{ banner.status == 1 ? "active" :
-                "deactive" }}</p>
+              <p
+                [ngClass]="{
+                  'active-status': banner.status == 1 ? 1 : 0,
+                  'deactive-status': banner.status == 1 ? 0 : 1
+                }"
+              >
+                {{ banner.status == 1 ? "active" : "deactive" }}
+              </p>
             </td>
 
             <td>
@@ -218,16 +234,27 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button   mat-menu-item *ngIf="banner.status == 1" (click)="OpenEditModal(banner)">Edit</button>
-                  <button mat-menu-item  (click)="OpenviewModal(banner)">View Details</button>
                   <button
                     mat-menu-item
-                    *ngIf="banner.status == 1; else inactiveButton"  (click)="Status(banner.id,0)"
+                    *ngIf="banner.status == 1"
+                    (click)="OpenEditModal(banner)"
+                  >
+                    Edit
+                  </button>
+                  <button mat-menu-item (click)="OpenviewModal(banner)">
+                    View Details
+                  </button>
+                  <button
+                    mat-menu-item
+                    *ngIf="banner.status == 1; else inactiveButton"
+                    (click)="Status(banner.id, 0)"
                   >
                     Deactivate
                   </button>
                   <ng-template #inactiveButton>
-                    <button mat-menu-item (click)="Status(banner.id,1)">Activate</button>
+                    <button mat-menu-item (click)="Status(banner.id, 1)">
+                      Activate
+                    </button>
                   </ng-template>
                 </mat-menu>
               </p>
@@ -235,13 +262,24 @@
           </tr>
         </tbody>
       </table>
-      <div class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center">
-        <span class="showalltext">Showing
-          {{(tableSize*(page-1))>0?tableSize*(page-1)+1:1}} to
-          {{(tableSize*(page))<=totalRecords?tableSize*(page):totalRecords}} of
-            {{totalRecords!=undefined?totalRecords:""}} entries</span>
-            <pagination-controls previousLabel="Prev" nextLabel="Next" [responsive]=true
-              (pageChange)="onTableDataChange($event)" target="_top"></pagination-controls>
+      <div
+        class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+      >
+        <span class="showalltext"
+          >Showing
+          {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }} to
+          {{
+            tableSize * page <= totalRecords ? tableSize * page : totalRecords
+          }}
+          of {{ totalRecords != undefined ? totalRecords : "" }} entries</span
+        >
+        <pagination-controls
+          previousLabel="Prev"
+          nextLabel="Next"
+          [responsive]="true"
+          (pageChange)="onTableDataChange($event)"
+          target="_top"
+        ></pagination-controls>
       </div>
     </div>
   </div>
@@ -349,19 +387,14 @@
                       bannercreate.controls['description'].errors['required']
                     "
                   >
-                  Banner Description is required
+                    Banner Description is required
                   </p>
                   <!-- <p class="fw-light text-danger" *ngIf="bannercreate.controls['description'].errors['maxlength']">Maximum
                       500 characters allowed</p> -->
                 </div>
               </div>
 
-              <!-- <div
-                class="col-lg-12 col-md-12 mb-3"
-                *ngIf="
-                  bannercreate.controls['BannerType'].value === 'Advertisement'
-                "
-              >
+              <div class="col-lg-12 col-md-12 mb-3">
                 <label for="StartDate" class="form-label admin-form-lable"
                   >Start Date</label
                 >
@@ -399,12 +432,7 @@
                 </div>
               </div>
 
-              <div
-                class="col-lg-12 col-md-12 mb-3"
-                *ngIf="
-                  bannercreate.controls['BannerType'].value === 'Advertisement'
-                "
-              >
+              <div class="col-lg-12 col-md-12 mb-3">
                 <label for="endDate" class="form-label admin-form-lable"
                   >End Date</label
                 >
@@ -437,7 +465,7 @@
                     End Date is required
                   </p>
                 </div>
-              </div> -->
+              </div>
 
               <!-- website banner -->
               <div class="col-lg-12 col-md-12 mb-3">
@@ -572,7 +600,11 @@
             >
               Cancel
             </button>
-            <button class="btn btn-custom-primary px-4 py-2" type="submit" (click)="Createbanner()">
+            <button
+              class="btn btn-custom-primary px-4 py-2"
+              type="submit"
+              (click)="Createbanner()"
+            >
               Create
             </button>
           </div>
@@ -676,7 +708,7 @@
                       bannerupdate.controls['description'].errors['required']
                     "
                   >
-                  Banner Description is required
+                    Banner Description is required
                   </p>
                   <!-- <p class="fw-light text-danger" *ngIf="bannercreate.controls['description'].errors['maxlength']">Maximum
                       500 characters allowed</p> -->
@@ -894,7 +926,11 @@
             >
               Cancel
             </button>
-            <button class="btn btn-custom-primary px-4 py-2" type="submit" (click)="Updatebanner()">
+            <button
+              class="btn btn-custom-primary px-4 py-2"
+              type="submit"
+              (click)="Updatebanner()"
+            >
               Update
             </button>
           </div>
@@ -930,8 +966,6 @@
           </div>
           <div class="modal-content-width card-body mb-0 pb-0">
             <div class="row">
-           
-
               <div class="col-lg-12 col-md-12 mb-3">
                 <label
                   class="d-block text-capitalize form-label admin-form-lable"
@@ -948,55 +982,53 @@
                 </textarea>
               </div>
 
-          
-
-                <!-- website banner -->
-                <div class="col-lg-12 col-md-12 mb-3">
-                  <div class="">
-                    <div class="d-inline-block">
-                      <!-- <p class="d-inline-block mb-0" *ngIf="!selectedFileNames.length">Drop files or</p> -->
-                      <label
-                        for="multiple-files"
-                        class="cursor text-color text-decoration-underline ms-3"
-                      >
-                        <input
-                          type="file"
-                          formControlName="Website"
-                          id="multiple-files"
-                          class="form-control d-none"
-                          accept="image/jpeg, image/jpg, image/png"
-                          [required]="true"
-                          [readOnly]="true"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                  <div
-                    class="image-container position-relative mt-3 d-flex flex-wrap col-lg-5"
-                    *ngIf="selectedImages.length > 0"
-                  >
-                    <div
-                      *ngFor="let image of selectedImages; let i = index"
-                      class="image-box col-lg-12"
+              <!-- website banner -->
+              <div class="col-lg-12 col-md-12 mb-3">
+                <div class="">
+                  <div class="d-inline-block">
+                    <!-- <p class="d-inline-block mb-0" *ngIf="!selectedFileNames.length">Drop files or</p> -->
+                    <label
+                      for="multiple-files"
+                      class="cursor text-color text-decoration-underline ms-3"
                     >
-                      <img
-                        [src]="image.imageSrc"
-                        class="banner-img"
-                        [alt]="'Selected Image ' + (i + 1)"
+                      <input
+                        type="file"
+                        formControlName="Website"
+                        id="multiple-files"
+                        class="form-control d-none"
+                        accept="image/jpeg, image/jpg, image/png"
+                        [required]="true"
+                        [readOnly]="true"
                       />
-                      <p class="image-name text-center text-wrap">
-                        {{ selectedFileNames[i] }}
-                      </p>
-                      <!-- <div class="cross-icon">
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="image-container position-relative mt-3 d-flex flex-wrap col-lg-5"
+                  *ngIf="selectedImages.length > 0"
+                >
+                  <div
+                    *ngFor="let image of selectedImages; let i = index"
+                    class="image-box col-lg-12"
+                  >
+                    <img
+                      [src]="image.imageSrc"
+                      class="banner-img"
+                      [alt]="'Selected Image ' + (i + 1)"
+                    />
+                    <p class="image-name text-center text-wrap">
+                      {{ selectedFileNames[i] }}
+                    </p>
+                    <!-- <div class="cross-icon">
                         <span (click)="removeImage(i)"
                             class="image-remove cursor"><i
                                 class="fa-solid fa-xmark"></i></span>
                     </div> -->
-                    </div>
                   </div>
-                  <!-- <p class="error-message" *ngIf="fileSizeError">{{
-                fileSizeError }}</p> -->
                 </div>
+                <!-- <p class="error-message" *ngIf="fileSizeError">{{
+                fileSizeError }}</p> -->
+              </div>
             </div>
           </div>
           <div class="modal-footer text-end mb-4 me-4">

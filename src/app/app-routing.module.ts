@@ -32,6 +32,10 @@ import { ViewAppUsersComponent } from './admin/user-management/app-users/view-ap
 import { ViewSilentUsersComponent } from './admin/user-management/silent-users/view-silent-users/view-silent-users.component';
 import { CompaniesComponent } from './admin/companies/companies.component';
 import { AuthorityComponent } from './admin/authority/authority.component';
+import { UnsubscribeComponent } from './admin/unsubscribe/unsubscribe.component';
+import { PharmacyComponent } from './admin/user-management/pharmacy/pharmacy.component';
+import { MedicalDistributorsComponent } from './admin/user-management/medical-distributors/medical-distributors.component';
+import { NewShopsComponent } from './admin/new-shops/new-shops.component';
 
 const routes: Routes = [
   {
@@ -153,6 +157,14 @@ const routes: Routes = [
             component: SilentUsersComponent,
           },
           {
+            path: 'pharmacy',
+            component: PharmacyComponent,
+          },
+          {
+            path: 'medical-distributors',
+            component: MedicalDistributorsComponent,
+          },
+          {
             path: 'view-silentusers/:id',
             component: ViewSilentUsersComponent,
           },
@@ -173,6 +185,14 @@ const routes: Routes = [
       {
         path: 'authority',
         component: AuthorityComponent,
+      },
+      {
+        path: 'unsubscribe',
+        component: UnsubscribeComponent,
+      },
+      {
+        path: 'new-shops',
+        component: NewShopsComponent,
       },
 
       {

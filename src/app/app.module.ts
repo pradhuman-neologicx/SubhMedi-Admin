@@ -62,6 +62,10 @@ import { ViewAppUsersComponent } from './admin/user-management/app-users/view-ap
 import { ViewSilentUsersComponent } from './admin/user-management/silent-users/view-silent-users/view-silent-users.component';
 import { CompaniesComponent } from './admin/companies/companies.component';
 import { AuthorityComponent } from './admin/authority/authority.component';
+import { UnsubscribeComponent } from './admin/unsubscribe/unsubscribe.component';
+import { PharmacyComponent } from './admin/user-management/pharmacy/pharmacy.component';
+import { MedicalDistributorsComponent } from './admin/user-management/medical-distributors/medical-distributors.component';
+import { NewShopsComponent } from './admin/new-shops/new-shops.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +116,10 @@ import { AuthorityComponent } from './admin/authority/authority.component';
     ViewSilentUsersComponent,
     CompaniesComponent,
     AuthorityComponent,
+    UnsubscribeComponent,
+    PharmacyComponent,
+    MedicalDistributorsComponent,
+    NewShopsComponent,
   ],
   imports: [
     BrowserModule,
