@@ -158,20 +158,20 @@
               </button>
 
               <mat-menu #menu="matMenu">
-                <button
+                <!-- <button
                   mat-menu-item
                   *ngIf="users.is_active == 1"
                   (click)="OpenEditModal(users)"
                 >
                   Edit Details
-                </button>
+                </button> -->
                 <!-- 
                 <button mat-menu-item (click)="navigateToViewUsers(users.id)">
                   View Details
                 </button> -->
-                <button mat-menu-item (click)="openDeleteModal(users.id)">
+                <!-- <button mat-menu-item (click)="openDeleteModal(users.id)">
                   Delete
-                </button>
+                </button> -->
                 <button
                   mat-menu-item
                   *ngIf="users.is_active == 1; else inactiveButton"

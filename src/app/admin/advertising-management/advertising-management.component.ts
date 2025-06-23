@@ -117,15 +117,15 @@ export class AdvertisingManagementComponent {
     //   searchbar: ["", [Validators.required,]]
     // });
     this.bannercreate = this.formBuilder.group({
-      // BannerType: ['', [Validators.required]],
+      BannerType: ['', [Validators.required]],
       description: [''],
       Website: ['', [Validators.required]],
 
-      StartDate: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
+      StartDate: [''],
+      endDate: [''],
     });
     this.bannerupdate = this.formBuilder.group({
-      // BannerType: [''],
+      BannerType: [''],
       // description: [description, [Validators.required,],],
       description: [''],
       Website: [''],
@@ -134,12 +134,16 @@ export class AdvertisingManagementComponent {
       endDate: [''],
     });
     this.bannerview = this.formBuilder.group({
+      BannerType: [''],
       description: [''],
       Website: [''],
+      StartDate: [''],
+      endDate: [''],
     });
 
     this.GetBanners();
   }
+
   batchfloorList: any = [];
 
   clickedOption(event: any) {
@@ -1072,24 +1076,30 @@ export class AdvertisingManagementComponent {
   //   return `${day}/${month}/${year} ${formattedHours}:${minutes} ${period}`;
   // }
   studentdetails: any;
-
+  bannerTypeCheck: any;
   Createbanner() {
     if (this.bannercreate.valid) {
       const formData: FormData = new FormData();
       // formData.append('user_id', this.user_id + '');
       // formData.append("user_id", '1' + '');
-      // formData.append('type', this.bannercreate.get('BannerType')?.value);
+      const bannerValue =
+        this.bannercreate.get('BannerType')?.value === 'Yes'
+          ? 'advertisement'
+          : 'home';
+
+      formData.append('type', bannerValue);
+
       formData.append(
         'description',
         this.bannercreate.get('description')?.value
       );
-      // if (this.bannercreate.get('BannerType')?.value == 'Advertisement') {
-      //   formData.append(
-      //     'start_time',
-      //     this.bannercreate.get('StartDate')?.value
-      //   );
-      //   formData.append('end_time', this.bannercreate.get('endDate')?.value);
-      // }
+      if (bannerValue == 'advertisement') {
+        formData.append(
+          'start_time',
+          this.bannercreate.get('StartDate')?.value
+        );
+        formData.append('end_time', this.bannercreate.get('endDate')?.value);
+      }
 
       if (this.selectedFiles.length > 0) {
         const file = this.selectedFiles[0];
@@ -1155,7 +1165,14 @@ export class AdvertisingManagementComponent {
   Updatebanner() {
     if (this.bannerupdate.valid) {
       const formData: FormData = new FormData();
+      const bannerValue = this.bannerupdate.get('BannerType')?.value;
 
+      formData.append('type', bannerValue);
+
+      // if (bannerValue == 'Advertisement' || bannerValue == 'Advertisement') {
+      formData.append('start_time', this.bannerupdate.get('StartDate')?.value);
+      formData.append('end_time', this.bannerupdate.get('endDate')?.value);
+      // }
       formData.append(
         'description',
         this.bannerupdate.get('description')?.value
@@ -1318,11 +1335,13 @@ export class AdvertisingManagementComponent {
     return formattedDate;
   }
 
+  bannerType: any;
   Getbannerbyid() {
     this.employeeService
       .getbannerrbyID(this.banner_id)
       .subscribe((response: any) => {
         if (response.status === 200) {
+          this.bannerType = response.data.type;
           this.fillformdate(response.data);
           this.fillviewformdate(response.data);
         }
@@ -1330,9 +1349,24 @@ export class AdvertisingManagementComponent {
   }
 
   async fillformdate(response: any) {
+    const formattedStartTime = response.start_time
+      ? this.convertDate24(response.start_time)
+      : null;
+    const formattedEndTime = response.end_time
+      ? this.convertDate24(response.end_time)
+      : null;
     this.bannerupdate = this.formBuilder.group({
       description: [response.description],
-      Website: [response.image, [Validators.required]],
+      Website: [response.image],
+      BannerType: [response.type],
+      StartDate: [
+        formattedStartTime,
+        response.type === 'advertisement' ? [Validators.required] : [],
+      ],
+      endDate: [
+        formattedEndTime,
+        response.type === 'advertisement' ? [Validators.required] : [],
+      ],
     });
 
     var file = await this.createFile(response.image);
@@ -1495,9 +1529,13 @@ export class AdvertisingManagementComponent {
       reader.readAsDataURL(file);
     }
   }
-
+  bannerTypeView: any;
   async fillviewformdate(response: any) {
+    this.bannerTypeView = response.type;
     this.bannerview = this.formBuilder.group({
+      BannerType: [response.type],
+      endDate: [response.end_time],
+      StartDate: [response.start_time],
       description: [response.description],
       Website: [response.image, [Validators.required]],
     });
@@ -1505,7 +1543,7 @@ export class AdvertisingManagementComponent {
     var file = await this.createFile(response.image);
     if (file) {
       var bannertype = response.type;
-      if (bannertype == 'Advertisement') {
+      if (bannertype == 'advertisement') {
         const fileType = file.type;
         const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
@@ -1537,17 +1575,17 @@ export class AdvertisingManagementComponent {
             const image = new Image();
             image.src = imageSrc;
 
-            image.onload = () => {
-              if (image.width === 1878 && image.height === 281) {
-                this.selectedImages = [{ imageSrc, id }];
-                this.fileSizeError = '';
-              } else {
-                this.selectedImages = [];
-                this.selectedFileNames = [];
-                this.selectedFiles = [];
-                this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
-              }
-            };
+            // image.onload = () => {
+            //   if (image.width === 1878 && image.height === 281) {
+            //     this.selectedImages = [{ imageSrc, id }];
+            //     this.fileSizeError = '';
+            //   } else {
+            //     this.selectedImages = [];
+            //     this.selectedFileNames = [];
+            //     this.selectedFiles = [];
+            //     this.fileSizeError = `The selected image must be 1878 x 281 pixels`;
+            //   }
+            // };
           }
         };
 
@@ -1836,7 +1874,7 @@ export class AdvertisingManagementComponent {
     this.bannercreate.get('StartDate')?.clearValidators();
     this.bannercreate.get('endDate')?.clearValidators();
 
-    if (this.bannercreate.get('BannerType')?.value === 'Advertisement') {
+    if (this.bannercreate.get('BannerType')?.value === 'Yes') {
       this.bannercreate.get('StartDate')?.setValidators(Validators.required);
       this.bannercreate.get('endDate')?.setValidators(Validators.required);
     } else {

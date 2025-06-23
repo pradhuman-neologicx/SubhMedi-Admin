@@ -1,12 +1,12 @@
 <div class="container mx-auto mb-4">
   <div class="d-flex justify-content-between align-items-center">
     <h1 class="text-primary table-heading-detail">Pharmacy</h1>
-    <button
+    <!-- <button
       class="btn btn-primary main-btnfs px-3 py-2"
       (click)="OpenCreateModal()"
     >
       + Add Pharmacy
-    </button>
+    </button> -->
   </div>
 </div>
 
@@ -166,19 +166,19 @@
               </button>
 
               <mat-menu #menu="matMenu">
-                <button
+                <!-- <button
                   mat-menu-item
                   *ngIf="users.is_active == 1"
                   (click)="OpenEditModal(users)"
                 >
                   Edit Details
-                </button>
+                </button> -->
                 <button mat-menu-item (click)="viewmmodal(users.id)">
                   View Details
                 </button>
-                <button mat-menu-item (click)="openDeleteModal(users.id)">
+                <!-- <button mat-menu-item (click)="openDeleteModal(users.id)">
                   Delete
-                </button>
+                </button> -->
                 <button
                   mat-menu-item
                   *ngIf="users.is_active == 1; else inactiveButton"

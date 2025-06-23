@@ -186,7 +186,7 @@ export class EmployeeService {
       })
     );
   }
-  getShopsApi(tableSize: any, page: any, search: any) {
+  getShopsApi(tableSize: any, page: any, search: any, type: any) {
     const user_id = this.jwtService.getpanelUserId();
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
@@ -194,17 +194,18 @@ export class EmployeeService {
       'Content-Type': 'application/json',
     });
 
-    let url = 'hold-shops?user_id=' + user_id;
+    let url = `hold-shops?user_id=${user_id}`;
 
     if (tableSize !== 'all') {
       url += `&limit=${tableSize}&page=${page}`;
-      if (search && search.length > 0) {
-        url += `&search=${search}`;
-      }
-    } else {
-      if (search && search.length > 0) {
-        url += `&search=${search}`;
-      }
+    }
+
+    if (search && search.length > 0) {
+      url += `&search=${search}`;
+    }
+
+    if (type && type.length > 0) {
+      url += `&type=${type}`;
     }
 
     return this.apiservice.get(url, headers).pipe(
@@ -229,6 +230,26 @@ export class EmployeeService {
     }
 
     return this.apiservice.post(`approve-shop`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+  storeLicenseApproveApi(body: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`license-status`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
         this.erromessagefunction(error);
@@ -285,6 +306,23 @@ export class EmployeeService {
     });
 
     var url = `authority/` + authorityId;
+    // Make the POST request to the server
+    return this.apiservice.get(url, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+  getDashboardData(): Observable<any> {
+    // const token = this.jwtService.getToken();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    var url = `get-total-users`;
     // Make the POST request to the server
     return this.apiservice.get(url, headers).pipe(
       tap((error: any) => {
@@ -761,28 +799,60 @@ export class EmployeeService {
       })
     );
   }
-  GetUserApi(user_id: any, tableSize: any, page: any, search: any) {
+  // GetUserApi(user_id: any, tableSize: any, page: any, search: any) {
+  //   const token = this.jwtService.getToken();
+  //   const headers = new HttpHeaders({
+  //     Authorization: `Bearer ${token}`,
+  //     'Content-Type': 'application/json',
+  //   });
+
+  //   var url = '';
+  //   if (tableSize != 'all') {
+  //     url = `app-users?user_id=${user_id}&limit=${tableSize}&page=${page}`;
+  //     if (search != undefined) {
+  //       if (search.length > 0) {
+  //         url = url + '&search=' + search;
+  //       }
+  //     }
+  //   } else {
+  //     url = `app-users?user_id=${user_id}`;
+  //     if (search != undefined) {
+  //       if (search.length > 0) {
+  //         url = url + '&search=' + search;
+  //       }
+  //     }
+  //   }
+
+  //   return this.apiservice.get(url, headers).pipe(
+  //     tap((error: any) => {
+  //       console.log('Response received:', error);
+  //       this.erromessagefunction(error);
+  //     })
+  //   );
+  // }
+  GetUserApi(user_id: any, tableSize: any, page: any, search: any, type: any) {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
 
-    var url = '';
-    if (tableSize != 'all') {
+    let url = '';
+
+    if (tableSize !== 'all') {
       url = `app-users?user_id=${user_id}&limit=${tableSize}&page=${page}`;
-      if (search != undefined) {
-        if (search.length > 0) {
-          url = url + '&search=' + search;
-        }
-      }
     } else {
       url = `app-users?user_id=${user_id}`;
-      if (search != undefined) {
-        if (search.length > 0) {
-          url = url + '&search=' + search;
-        }
-      }
+    }
+
+    // Add search parameter if provided
+    if (search && search.length > 0) {
+      url += `&search=${search}`;
+    }
+
+    // Add type parameter if provided
+    if (type && type.length > 0) {
+      url += `&type=${type}`;
     }
 
     return this.apiservice.get(url, headers).pipe(
@@ -792,6 +862,7 @@ export class EmployeeService {
       })
     );
   }
+
   GetAppUserIdApi(user_id: any) {
     const token = this.jwtService.getToken();
     const headers = new HttpHeaders({

@@ -87,7 +87,7 @@ export class SidenavComponent {
           {
             index: 1,
             icon: 'group',
-            label: 'App Users',
+            label: 'General Users',
             route: 'user-management/app-users',
           },
 
@@ -135,14 +135,14 @@ export class SidenavComponent {
         label: 'License Authority',
         route: 'authority',
       },
+      // {
+      //   index: 7,
+      //   icon: 'store',
+      //   label: 'New Shops',
+      //   route: 'new-shops',
+      // },
       {
         index: 7,
-        icon: 'store',
-        label: 'New Shops',
-        route: 'new-shops',
-      },
-      {
-        index: 8,
         icon: 'unsubscribe',
         label: 'Unsubscribe',
         route: 'unsubscribe',

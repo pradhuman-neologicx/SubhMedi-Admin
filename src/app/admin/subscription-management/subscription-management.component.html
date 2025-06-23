@@ -90,9 +90,9 @@
           <th>
             <p class="table-heading table-new-heading">Name</p>
           </th>
-          <th>
+          <!-- <th>
             <p class="table-heading table-new-heading">Amount (Months)</p>
-          </th>
+          </th> -->
           <th>
             <p class="table-heading table-new-heading">Amount (Yearly)</p>
           </th>
@@ -120,11 +120,11 @@
               {{ users.name }}
             </p>
           </td>
-          <td>
+          <!-- <td>
             <p class="table-detail text-capitalize table-detail-new">
               {{ users.monthly_amount }}
             </p>
-          </td>
+          </td> -->
           <td>
             <p class="table-detail text-capitalize table-detail-new">
               {{ users.yearly_amount }}
@@ -159,7 +159,11 @@
               </button>
 
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="OpenEditModal(users)">
+                <button
+                  mat-menu-item
+                  *ngIf="users.name !== 'Free'"
+                  (click)="OpenEditModal(users)"
+                >
                   Edit Details
                 </button>
                 <button mat-menu-item (click)="openviewModal(users)">
@@ -186,7 +190,50 @@
     </table>
   </div>
 </div>
+<div class="container mt-2">
+  <div class="card border-0 mb-4 py-0 tabel-card">
+    <h5 class="pt-2">Add-On</h5>
+    <table class="table table-hover">
+      <thead class="table-header-trailer">
+        <tr>
+          <th>
+            <p class="table-heading table-new-heading">Sr. No.</p>
+          </th>
+          <!-- <th>
+            <p class="table-heading table-new-heading">Name</p>
+          </th> -->
+          <th>
+            <p class="table-heading table-new-heading">Type</p>
+          </th>
+          <th>
+            <p class="table-heading table-new-heading">Price</p>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let addon of addOnsData; let i = index">
+          <td>{{ i + 1 }}</td>
+          <!-- <td>
+            <p class="table-detail text-capitalize table-detail-new">
+              {{ addon.name }}
+            </p>
+          </td> -->
 
+          <td>
+            <p class="table-detail table-detail-new">
+              {{ addon.type }}
+            </p>
+          </td>
+          <td>
+            <p class="table-detail text-capitalize table-detail-new">
+              {{ addon.price }}
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 <div
   *ngIf="Creatunitopen"
   class="your-animation-class modal-container"
@@ -465,7 +512,7 @@
                   </p>
                 </div>
               </div>
-              <div class="col-12 col-md-6 mb-3">
+              <!-- <div class="col-12 col-md-6 mb-3">
                 <label for="unitsmonth" class="form-label form-lable-custom">
                   Amount (in Months)</label
                 >
@@ -497,8 +544,8 @@
                     Amount is Requried
                   </p>
                 </div>
-              </div>
-              <div class="col-12 col-md-6 mb-3">
+              </div> -->
+              <div class="col-12 mb-3">
                 <label for="unitsyearly" class="form-label form-lable-custom">
                   Amount (in Yearly)</label
                 >
@@ -668,7 +715,7 @@
                   }"
                 />
               </div>
-              <div class="col-12 col-md-6 mb-3">
+              <!-- <div class="col-12 col-md-6 mb-3">
                 <label for="unitsmonth" class="form-label form-lable-custom">
                   Amount (in Months)</label
                 >
@@ -684,8 +731,8 @@
                         unitsformview.controls['unitsmonth'].dirty)
                   }"
                 />
-              </div>
-              <div class="col-12 col-md-6 mb-3">
+              </div> -->
+              <div class="col-12 col-md-12 mb-3">
                 <label for="unitsyearly" class="form-label form-lable-custom">
                   Amount (in Yearly)</label
                 >

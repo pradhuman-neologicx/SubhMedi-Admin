@@ -36,6 +36,10 @@ import { UnsubscribeComponent } from './admin/unsubscribe/unsubscribe.component'
 import { PharmacyComponent } from './admin/user-management/pharmacy/pharmacy.component';
 import { MedicalDistributorsComponent } from './admin/user-management/medical-distributors/medical-distributors.component';
 import { NewShopsComponent } from './admin/new-shops/new-shops.component';
+import { TermsConditionComponent } from './website/terms-condition/terms-condition.component';
+import { HomeComponent } from './website/home/home.component';
+import { PrivacyPolicyComponent } from './website/privacy-policy/privacy-policy.component';
+import { RefundPolicyComponent } from './website/refund-policy/refund-policy.component';
 
 const routes: Routes = [
   {
@@ -224,6 +228,22 @@ const routes: Routes = [
       //   component: StudentComponent,
       // },
     ],
+  },
+  {
+    path: 'terms-conditions',
+    component: TermsConditionComponent,
+  },
+  {
+    path: 'privacy-policy',
+    component: PrivacyPolicyComponent,
+  },
+  {
+    path: 'refund-policy',
+    component: RefundPolicyComponent,
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
   },
 ];
 

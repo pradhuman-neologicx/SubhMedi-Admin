@@ -40,7 +40,7 @@
         <div>
           <p class="text-gray-600 text-sm font-medium">Total Users</p>
           <h3 class="text-2xl font-bold text-gray-800">
-            {{ stats.totalUsers }}
+            {{ dashboardData?.total_users }}
           </h3>
         </div>
       </div>
@@ -57,7 +57,7 @@
         <div>
           <p class="text-gray-600 text-sm font-medium">Total Pharmacies</p>
           <h3 class="text-2xl font-bold text-gray-800">
-            {{ stats.totalPharmacies }}
+            {{ dashboardData?.total_retailers }}
           </h3>
         </div>
       </div>
@@ -73,7 +73,7 @@
         <div>
           <p class="text-gray-600 text-sm font-medium">Total Distributors</p>
           <h3 class="text-2xl font-bold text-gray-800">
-            {{ stats.totalDistributors }}
+            {{ dashboardData?.total_distributors }}
           </h3>
         </div>
       </div>
@@ -89,7 +89,7 @@
         <div>
           <p class="text-gray-600 text-sm font-medium">Silent Users</p>
           <h3 class="text-2xl font-bold text-gray-800">
-            {{ stats.silentUsers }}
+            {{ dashboardData?.total_silent_users }}
           </h3>
         </div>
       </div>
@@ -99,7 +99,7 @@
   <!-- Daily Active Users and New Registrations -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
     <!-- Daily Active Users -->
-    <div class="bg-white rounded-xl shadow-md p-6">
+    <!-- <div class="bg-white rounded-xl shadow-md p-6">
       <h3 class="text-lg font-semibold text-gray-800 mb-4">
         Daily Active Users
       </h3>
@@ -107,7 +107,7 @@
         {{ stats.dailyActiveUsers }}
       </p>
       <p class="text-gray-500 text-sm mt-2">Users active today</p>
-    </div>
+    </div> -->
 
     <!-- Newly Registered Users -->
     <div class="bg-white rounded-xl shadow-md p-6">
@@ -115,14 +115,14 @@
         Newly Registered Users
       </h3>
       <p class="text-3xl font-bold text-green-600">
-        {{ stats.newlyRegisteredUsers }}
+        {{ dashboardData?.new_registered }}
       </p>
       <p class="text-gray-500 text-sm mt-2">Users registered this month</p>
     </div>
   </div>
 
   <!-- Store Approvals and License Status -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+  <div class="grid grid-cols-1 gap-6 mb-8">
     <!-- Stores Awaiting Approval -->
     <div class="bg-white rounded-xl shadow-md p-6">
       <div class="flex items-center justify-between mb-4">
@@ -141,16 +141,35 @@
                 Store Name
               </th>
               <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                Submission Date
+                Address
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Contact
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Action
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr class="border-t" *ngFor="let store of storesAwaitingApproval">
-              <td class="px-4 py-3 text-gray-700">{{ store.name }}</td>
-              <td class="px-4 py-3 text-yellow-600 font-semibold">
-                {{ store.submissionDate }}
+            <tr
+              class="border-t"
+              *ngFor="let store of dashboardData?.hold_shops"
+            >
+              <td class="px-4 py-3 text-gray-700">{{ store.agency_name }}</td>
+              <td class="px-4 py-3 text-gray-700">{{ store.store_address }}</td>
+              <td class="px-4 py-3 text-gray-700">{{ store.store_contact }}</td>
+              <td>
+                <button
+                  class="bg-yellow-100 text-yellow-800 text-sm px-3 py-1 rounded shadow"
+                  (click)="openApproveDialog(store.id)"
+                >
+                  Approval Required
+                </button>
               </td>
+              <!-- <td class="px-4 py-3 text-yellow-600 font-semibold">
+                {{ store.submissionDate }}
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -174,9 +193,7 @@
               <th class="px-4 py-2 text-sm font-medium text-gray-600">
                 License ID
               </th>
-              <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                Pharmacy Name
-              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">Name</th>
               <th class="px-4 py-2 text-sm font-medium text-gray-600">
                 Expiry Date
               </th>
@@ -186,20 +203,29 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="border-t" *ngFor="let license of licenseExpiryAlerts">
-              <td class="px-4 py-3 text-gray-700">{{ license.id }}</td>
+            <tr
+              class="border-t"
+              *ngFor="let license of dashboardData?.expiring_soon"
+            >
               <td class="px-4 py-3 text-gray-700">
-                {{ license.pharmacyName }}
+                {{ license.license_number }}
               </td>
-              <td class="px-4 py-3 text-gray-700">{{ license.expiryDate }}</td>
+              <td class="px-4 py-3 text-gray-700">
+                {{ license?.user?.name }}
+              </td>
+              <td class="px-4 py-3 text-gray-700 w-72">
+                {{ license.expiry_date | date : "yyyy-MM-dd" }}
+              </td>
               <td
                 class="px-4 py-3 font-semibold"
                 [ngClass]="{
-                  'text-red-600': license.status === 'Expired',
-                  'text-orange-600': license.status === 'Expiring Soon'
+                  'text-red-600':
+                    getLicenseStatus(license.expiry_date) === 'Expired',
+                  'text-orange-600':
+                    getLicenseStatus(license.expiry_date) === 'Expiring Soon'
                 }"
               >
-                {{ license.status }}
+                {{ getLicenseStatus(license.expiry_date) }}
               </td>
             </tr>
           </tbody>
@@ -232,3 +258,408 @@
     </p>
   </div>
 </div> -->
+<div
+  *ngIf="banneviewopen"
+  class="your-animation-class modal-container"
+  aria-labelledby="modal-BannerType"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-content modal-content-50" [@fadeIn]>
+    <div (click)="ClickexamModalconent($event)">
+      <form [formGroup]="authorityview">
+        <div class="card">
+          <div
+            class="card-header bg-white d-flex justify-content-between align-items-center"
+          >
+            <h5 class="modal-title pt-1">View Details</h5>
+            <button
+              class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+              type="button"
+              (click)="closeModal()"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="modal-content-width card-body mb-0 pb-0">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="agency_name"
+                  >Agency Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="agency_name"
+                  #agency_name
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="pharmacist_name"
+                  >Pharmacist Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="pharmacist_name"
+                  #pharmacist_name
+                  [readOnly]="true"
+                />
+              </div>
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_name"
+                  >Owner Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_name"
+                  #owner_name
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_email"
+                  >Owner Email</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_email"
+                  #owner_email
+                  [readOnly]="true"
+                />
+              </div>
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_contact_no"
+                  >Owner Contact No</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_contact_no"
+                  #owner_contact_no
+                  [readOnly]="true"
+                />
+              </div>
+              <!-- <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_alt_contact_no"
+                  >Owner Alternate Contact No</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_alt_contact_no"
+                  #owner_alt_contact_no
+                  [readOnly]="true"
+                />
+              </div> -->
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_residential_address"
+                  >Owner Residential Address</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_residential_address"
+                  #owner_residential_address
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="role"
+                  >Role</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="role"
+                  #role
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="gst_no"
+                  >GST Number</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="gst_no"
+                  #gst_no
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="store_address"
+                  >Store Address</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="store_address"
+                  #store_address
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="State"
+                  >State</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="State"
+                  #State
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="city_id"
+                  >City</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="city_id"
+                  #city_id
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="pin_code"
+                  >Pin Code</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="pin_code"
+                  #pin_code
+                  [readOnly]="true"
+                />
+              </div>
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="store_contact"
+                  >Store Contact</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="store_contact"
+                  #store_contact
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="store_email"
+                  >Store Email</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="store_email"
+                  #store_email
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="store_tag"
+                  >Store Tag</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="store_tag"
+                  #store_tag
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="working_type"
+                  >Working Type</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="working_type"
+                  #working_type
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="opening_time"
+                  >Opening Time</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="opening_time"
+                  #opening_time
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="closing_time"
+                  >Closing Time</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="closing_time"
+                  #closing_time
+                  [readOnly]="true"
+                />
+              </div>
+              <!-- <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="working_days"
+                  >Working Days</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="working_days"
+                  #working_days
+                  [readOnly]="true"
+                />
+              </div> -->
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="delivery_service_available"
+                  >Delivery Service Available</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="delivery_service_available"
+                  #delivery_service_available
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="home_delivery_available"
+                  >Home Delivery Available</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="home_delivery_available"
+                  #home_delivery_available
+                  [readOnly]="true"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer text-end mb-4 me-4">
+            <button
+              class="btn btn-secondary main-btnfs px-4 py-2 text-gray-100"
+              type="button"
+              (click)="closeModal()"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Employee Modal -->
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  *ngIf="showApproveDialog"
+  (click)="closeApproveDialog()"
+>
+  <div
+    class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <p class="text-xl font-bold text-gray-900 mb-0">Confirm Approve</p>
+      <button (click)="closeApproveDialog()" class="focus:outline-none">
+        <i class="fas fa-times text-gray-500 hover:text-grey-700 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="mb-6 space-y-2">
+      <!-- <p class="text-lg text-gray-700 font-medium">
+        <span class="text-gray-900">Employee Name: </span>
+        <span class="font-semibold text-blue-700">{{ employeeName }}</span>
+      </p> -->
+      <p class="text-lg text-gray-700 leading-relaxed">
+        Are you sure you want to approve?
+        <br />
+        <span class="">This action cannot be undone.</span>
+      </p>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="flex justify-end gap-3 mt-4">
+      <button
+        class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition"
+        (click)="closeApproveDialog()"
+      >
+        Cancel
+      </button>
+      <button
+        class="px-4 py-2 rounded-md bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+        (click)="shopApprove(this.shopApproveId)"
+      >
+        Approve
+      </button>
+    </div>
+    <p *ngIf="errorMessage" class="text-red-600 text-sm mt-2">
+      {{ errorMessage }}
+    </p>
+  </div>
+</div>

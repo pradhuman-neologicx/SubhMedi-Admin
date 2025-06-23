@@ -172,9 +172,17 @@ export class PharmacyComponent {
   }
 
   search: any;
+  userType: any;
   Getuserfun() {
+    this.userType = 'retailer';
     this.employeeService
-      .GetUserApi(this.user_id, this.tableSize, this.page, this.search)
+      .GetUserApi(
+        this.user_id,
+        this.tableSize,
+        this.page,
+        this.search,
+        this.userType
+      )
       .subscribe((response: any) => {
         if (response.status === 200 || response.status === 201) {
           this.userstable = response.data.records;

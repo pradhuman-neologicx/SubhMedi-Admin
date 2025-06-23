@@ -129,14 +129,14 @@ export class SubscriptionManagementComponent {
 
     this.unitsformscreate = this.formBuilder.group({
       unitsname: ['', [Validators.required]],
-      unitsmonth: ['', [Validators.required]],
+      // unitsmonth: ['', [Validators.required]],
       unitsyearly: ['', [Validators.required]],
       unitsstore: ['', [Validators.required]],
       unitsstaff: ['', [Validators.required]],
     });
     this.unitsformview = this.formBuilder.group({
       unitsname: ['', [Validators.required]],
-      unitsmonth: ['', [Validators.required]],
+      // unitsmonth: ['', [Validators.required]],
       unitsyearly: ['', [Validators.required]],
       unitsstore: ['', [Validators.required]],
       unitsstaff: ['', [Validators.required]],
@@ -164,10 +164,12 @@ export class SubscriptionManagementComponent {
   }
 
   unitstable: any;
+  addOnsData: any;
   Getunitsfun() {
     this.employeeService.GetSubscriptionApi().subscribe((response: any) => {
       if (response.status === 200) {
         this.unitstable = response.data;
+        this.addOnsData = response.add_ons;
         // this.fillformdate(response.data);
       }
     });
@@ -239,10 +241,10 @@ export class SubscriptionManagementComponent {
 
       // Basic Fields
 
-      formData.append(
-        'monthly_amount',
-        this.unitsformupdate.get('unitsmonth')?.value
-      );
+      // formData.append(
+      //   'monthly_amount',
+      //   this.unitsformupdate.get('unitsmonth')?.value
+      // );
       formData.append(
         'yearly_amount',
         this.unitsformupdate.get('unitsyearly')?.value
@@ -296,7 +298,7 @@ export class SubscriptionManagementComponent {
       this.updateunitopen = true;
       this.unitsformupdate = this.formBuilder.group({
         unitsname: [users.name, [Validators.required]],
-        unitsmonth: [users.monthly_amount, [Validators.required]],
+        // unitsmonth: [users.monthly_amount, [Validators.required]],
         unitsyearly: [users.yearly_amount, [Validators.required]],
         unitsstaff: [users.max_staff, [Validators.required]],
         unitsstore: [users.max_store, [Validators.required]],

@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EmployeeService } from 'src/app/core/services/Employee.service';
+import { JwtService } from 'src/app/core/services/jwt.service';
 // import { CourseService } from 'src/app/core/services/course.service';
 // import { DataService } from 'src/app/core/services/data.service';
 // import { JwtService } from 'src/app/core/services/jwt.service';
@@ -84,7 +85,7 @@ export class ViewAppUsersComponent {
     private formBuilder: FormBuilder,
     // private dataService: DataService,
     // private courseService: CourseService,
-    // private jwtService: JwtService,
+    private jwtService: JwtService,
     private router: Router,
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
@@ -101,7 +102,7 @@ export class ViewAppUsersComponent {
   appUserID: any;
   ngOnInit(): void {
     // this.projectiD = this.route.snapshot.paramMap.get('id');
-    // this.userId = this.jwtService.getpanelUserId();
+    this.userId = this.jwtService.getpanelUserId();
     this.CalendarForm = this.formBuilder.group({
       Caledardate: [this.maxDate, [Validators.required]],
     });
@@ -113,7 +114,9 @@ export class ViewAppUsersComponent {
       WorkerType: ['', [Validators.required]],
       Salary: ['', [Validators.required]],
     });
-
+    this.approvalForm = this.formBuilder.group({
+      action: ['', Validators.required],
+    });
     this.GetAppUserfun();
 
     this.GetPartyType();
@@ -234,6 +237,26 @@ export class ViewAppUsersComponent {
           this.successName = actionMessage;
           this.GetAppUserfun();
           this.activeIndex = currentIndex;
+          setTimeout(() => {
+            this.openSecondsuccess = true;
+            setTimeout(() => {
+              this.openSecondsuccess = false;
+            }, 1800);
+          }, 200);
+        }
+      });
+  }
+  async StatusEmp(id: string, status: any) {
+    const actionMessage = status ? 'activated' : 'deactivated';
+
+    this.employeeService
+      .changestatuss(id, status, 'Staff')
+
+      .subscribe((response: any) => {
+        console.log(response);
+        if (response.status === 200 || response.status === 201) {
+          this.successName = actionMessage;
+          this.ngOnInit();
           setTimeout(() => {
             this.openSecondsuccess = true;
             setTimeout(() => {
@@ -380,5 +403,124 @@ export class ViewAppUsersComponent {
   closeDocumentDialog(): void {
     this.showDocumentDeleteDialog = false;
     this.showEmployeeDeleteDialog = false;
+  }
+  // Open the approval dialog
+  shopApproveLicId: any;
+  showApproveDialog = false;
+  showApproveLicenseDialog = false;
+  licenseNo: any;
+  approvalForm!: FormGroup;
+  openApproveLicenseDialog(shopId: any) {
+    this.shopApproveLicId = shopId.id;
+    this.licenseNo = shopId.license_number;
+    this.showApproveLicenseDialog = true;
+    this.errorMessage = '';
+    this.approvalForm.reset();
+  }
+
+  // Close the approval dialog
+  closeApproveLicenseDialog() {
+    this.showApproveLicenseDialog = false;
+    this.approvalForm.reset();
+    this.errorMessage = '';
+  }
+  submitLicApproval() {
+    // Validate shopId and user_id before making API call
+    if (this.approvalForm.valid && this.shopApproveLicId) {
+      if (!this.userId) {
+        this.errorMessage = 'User ID is required. Please log in again.';
+        this.submitted = false;
+        return;
+      }
+
+      const body = {
+        license_id: this.shopApproveLicId,
+        user_id: this.userId,
+        status:
+          this.approvalForm.get('action')?.value === 'approve'
+            ? 'approved'
+            : 'rejected',
+      };
+
+      this.submitted = true; // Set submitted to true during API call
+      this.errorMessage = ''; // Clear previous error message
+
+      this.employeeService.storeLicenseApproveApi(body).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          if (response.status === 200 || response.status === 201) {
+            this.closeApproveLicenseDialog();
+            this.successName = 'Status Upadated';
+            this.ngOnInit();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
+              setTimeout(() => {
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+            if (response.status === 422 && response.errors) {
+              const errors = response.errors;
+              if (
+                errors.user_id &&
+                Array.isArray(errors.user_id) &&
+                errors.user_id.length > 0
+              ) {
+                this.errorMessage = errors.user_id[0];
+              } else {
+                const firstErrorField = Object.keys(errors).find(
+                  (key) => Array.isArray(errors[key]) && errors[key].length > 0
+                );
+                this.errorMessage = firstErrorField
+                  ? errors[firstErrorField][0]
+                  : 'Failed to update status';
+              }
+            } else if (response.errors || response.message) {
+              this.errorMessage = JSON.stringify(
+                response.errors || response.message
+              );
+            } else {
+              this.errorMessage = 'Failed to update status';
+            }
+          }
+        },
+        error: (error: any) => {
+          this.submitted = false;
+          this.errorMessage =
+            error.message || 'An error occurred while update status';
+        },
+      });
+    } else {
+      this.errorMessage = 'Please select an action (Approve or Reject).';
+    }
+  }
+  getCompanyNames(): string {
+    return this.userstable.user.companies?.length
+      ? this.userstable.user.companies.map((c: any) => c.name).join(', ')
+      : 'N/A';
+  }
+
+  getParsedFeatures(): string[] {
+    try {
+      return this.userstable.user.subscription?.features
+        ? JSON.parse(this.userstable.user.subscription.features)
+        : [];
+    } catch {
+      return ['N/A'];
+    }
+  }
+  getAddOns(): string {
+    if (!this.userstable.user?.add_ons?.length) {
+      return 'None';
+    }
+    return this.userstable.user.add_ons
+      .map(
+        (addon: any) =>
+          `Type=${addon.name || `Add-on ${addon.id}`}, quantity=${
+            addon.quantity
+          }, total amount=${addon.total_price}, price=${addon.price}`
+      )
+      .join('; ');
   }
 }

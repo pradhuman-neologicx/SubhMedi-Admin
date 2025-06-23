@@ -138,7 +138,7 @@ export class NewShopsComponent {
       owner_email: [''],
     });
 
-    this.getNewShops();
+    // this.getNewShops();
   }
   batchfloorList: any = [];
 
@@ -154,16 +154,16 @@ export class NewShopsComponent {
 
   search: any;
   newshopsTable: any;
-  getNewShops() {
-    this.employeeService
-      .getShopsApi(this.tableSize, this.page, this.search)
-      .subscribe((response: any) => {
-        if (response.status === 200 || response.status === 201) {
-          this.newshopsTable = response.data.records;
-          this.totalRecords = response.data.total;
-        }
-      });
-  }
+  // getNewShops() {
+  //   this.employeeService
+  //     .getShopsApi(this.tableSize, this.page, this.search)
+  //     .subscribe((response: any) => {
+  //       if (response.status === 200 || response.status === 201) {
+  //         this.newshopsTable = response.data.records;
+  //         this.totalRecords = response.data.total;
+  //       }
+  //     });
+  // }
 
   // Format date function
   formatDateCustom(date: Date): string {
@@ -220,7 +220,7 @@ export class NewShopsComponent {
     if (this.searchbarform.valid) {
       this.showreset = true;
       this.search = this.searchbarform.get('searchbar')?.value;
-      this.getNewShops();
+      // this.getNewShops();
     } else {
       this.searchbarform.markAllAsTouched();
     }
@@ -232,11 +232,11 @@ export class NewShopsComponent {
     this.tableSize = event.target.value;
     console.log(event.target.value);
     this.page = 1;
-    this.getNewShops();
+    // this.getNewShops();
   }
   onTableDataChange(event: any) {
     this.page = event;
-    this.getNewShops();
+    // this.getNewShops();
   }
 
   selectedFileNames: string[] = [];

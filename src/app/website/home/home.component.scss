@@ -1,0 +1,14 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+
+.homeBanner {
+    background-image: url('/assets/home.jpg');
+}
+
+.cta-section {
+    background-image: linear-gradient(rgba(37, 99, 235, 0.5), rgba(37, 99, 235, 0.5)), url('/assets/cta.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 400px;
+    /* Adjust as needed */
+}

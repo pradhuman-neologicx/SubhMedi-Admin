@@ -134,6 +134,15 @@
             <th>
               <p class="table-heading">{{ detail.heading2 }}</p>
             </th>
+            <th>
+              <p class="table-heading">Type</p>
+            </th>
+            <th>
+              <p class="table-heading">Start Date</p>
+            </th>
+            <th>
+              <p class="table-heading">End Date</p>
+            </th>
             <!-- <th>
               <p class="table-heading">{{ detail.heading3 }}</p>
             </th> -->
@@ -198,15 +207,26 @@
             <td>
               <p>{{ banner.description }}</p>
             </td>
-            <!-- <td>
+            <td>
               <p>{{ banner.type }}</p>
-            </td> -->
-            <!-- <td>
-              <p>{{ formatDateCustom(banner.created_at) }}</p>
             </td>
             <td>
-              <p>{{ formatDateCustom(banner.updated_at) }}</p>
-            </td> -->
+              <p *ngIf="banner.start_time; else noStart">
+                {{ banner.start_time | date : "yyyy-MM-dd" }}
+              </p>
+              <ng-template #noStart>
+                <p>N/A</p>
+              </ng-template>
+            </td>
+
+            <td>
+              <p *ngIf="banner.end_time; else noEnd">
+                {{ banner.end_time | date : "yyyy-MM-dd" }}
+              </p>
+              <ng-template #noEnd>
+                <p>N/A</p>
+              </ng-template>
+            </td>
             <td>
               <!-- <p
                 [ngClass]="{
@@ -351,6 +371,52 @@
                   </p>
                 </div>
               </div> -->
+              <div class="col-lg-12 col-md-12 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                >
+                  Advertisement Banner
+                </label>
+
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="bannerYes"
+                    value="Yes"
+                    formControlName="BannerType"
+                    (change)="typebannervalidation($event)"
+                  />
+                  <label class="form-check-label" for="bannerYes">Yes</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="bannerNo"
+                    value="No"
+                    formControlName="BannerType"
+                    (change)="typebannervalidation($event)"
+                  />
+                  <label class="form-check-label" for="bannerNo">No</label>
+                </div>
+
+                <div
+                  class="text-danger error-message"
+                  *ngIf="
+                    bannercreate.get('BannerType')!.invalid &&
+                    (bannercreate.get('BannerType')!.touched ||
+                      bannercreate.get('BannerType')!.dirty)
+                  "
+                >
+                  <small
+                    *ngIf="bannercreate.get('BannerType')!.errors?.['required']"
+                  >
+                    Banner Type is required
+                  </small>
+                </div>
+              </div>
 
               <div class="col-lg-12 col-md-12 mb-3">
                 <label
@@ -394,7 +460,10 @@
                 </div>
               </div>
 
-              <div class="col-lg-12 col-md-12 mb-3">
+              <div
+                *ngIf="bannercreate.get('BannerType')?.value === 'Yes'"
+                class="col-lg-12 col-md-12 mb-3"
+              >
                 <label for="StartDate" class="form-label admin-form-lable"
                   >Start Date</label
                 >
@@ -432,7 +501,10 @@
                 </div>
               </div>
 
-              <div class="col-lg-12 col-md-12 mb-3">
+              <div
+                *ngIf="bannercreate.get('BannerType')?.value === 'Yes'"
+                class="col-lg-12 col-md-12 mb-3"
+              >
                 <label for="endDate" class="form-label admin-form-lable"
                   >End Date</label
                 >
@@ -658,7 +730,7 @@
                   </div>
               </div> -->
 
-              <!-- <div class="col-lg-12 col-md-12 mb-3">
+              <div class="col-lg-12 col-md-12 mb-3">
                 <label
                   class="d-block text-capitalize form-label admin-form-lable"
                   for="BannerType"
@@ -671,7 +743,7 @@
                   formControlName="BannerType"
                   [readOnly]="true"
                 />
-              </div> -->
+              </div>
 
               <div class="col-lg-12 col-md-12 mb-3">
                 <label
@@ -751,11 +823,9 @@
           </div>
         </div> -->
 
-              <!-- <div
+              <div
                 class="col-lg-12 col-md-12 mb-3"
-                *ngIf="
-                  bannerupdate.controls['BannerType'].value === 'Advertisement'
-                "
+                *ngIf="bannerType == 'advertisement'"
               >
                 <label for="StartDate" class="form-label admin-form-lable"
                   >Start Date</label
@@ -796,9 +866,7 @@
 
               <div
                 class="col-lg-12 col-md-12 mb-3"
-                *ngIf="
-                  bannerupdate.controls['BannerType'].value === 'Advertisement'
-                "
+                *ngIf="bannerType == 'advertisement'"
               >
                 <label for="endDate" class="form-label admin-form-lable"
                   >End Date</label
@@ -832,7 +900,7 @@
                     End Date is required
                   </p>
                 </div>
-              </div> -->
+              </div>
               <!-- website banner -->
               <div class="col-lg-12 col-md-12 mb-3">
                 <div class="files-add text-center">
@@ -883,16 +951,18 @@
                 >
                   <div
                     *ngFor="let image of selectedImages; let i = index"
-                    class="image-box col-lg-12"
+                    class="col-lg-12"
                   >
-                    <img
-                      [src]="image.imageSrc"
-                      class="banner-img"
-                      [alt]="'Selected Image ' + (i + 1)"
-                    />
-                    <p class="image-name text-center text-wrap">
-                      {{ selectedFileNames[i] }}
-                    </p>
+                    <div class="flex image-box gap-2">
+                      <img
+                        [src]="image.imageSrc"
+                        class="banner-img"
+                        [alt]="'Selected Image ' + (i + 1)"
+                      />
+                      <p class="image-name text-center text-wrap">
+                        {{ selectedFileNames[i] }}
+                      </p>
+                    </div>
                     <div class="cross-icon">
                       <span (click)="removeImage(i)" class="image-remove cursor"
                         ><i class="fa-solid fa-xmark"></i
@@ -920,7 +990,7 @@
           </div>
           <div class="modal-footer text-end me-4 mb-3">
             <button
-              class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-600"
+              class="btn btn-secondary main-btnfs px-4 py-2 me-4 text-gray-100"
               type="button"
               (click)="closeModal()"
             >
@@ -969,6 +1039,20 @@
               <div class="col-lg-12 col-md-12 mb-3">
                 <label
                   class="d-block text-capitalize form-label admin-form-lable"
+                  for="BannerType"
+                  >Banner Type</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  #BannerType
+                  formControlName="BannerType"
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-12 col-md-12 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
                   for="description"
                   >Description</label
                 >
@@ -981,7 +1065,40 @@
                 >
                 </textarea>
               </div>
-
+              <div
+                class="col-lg-12 col-md-12 mb-3"
+                *ngIf="bannerType == 'advertisement'"
+              >
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="StartDate"
+                  >Start Date</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  #StartDate
+                  formControlName="StartDate"
+                  [readOnly]="true"
+                />
+              </div>
+              <div
+                class="col-lg-12 col-md-12 mb-3"
+                *ngIf="bannerType == 'advertisement'"
+              >
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="endDate"
+                  >End Date</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  #endDate
+                  formControlName="endDate"
+                  [readOnly]="true"
+                />
+              </div>
               <!-- website banner -->
               <div class="col-lg-12 col-md-12 mb-3">
                 <div class="">

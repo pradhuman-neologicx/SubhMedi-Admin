@@ -130,7 +130,14 @@ export class AppUsersComponent {
       usernemail: ['', [Validators.required]],
       usernnumber: ['', [Validators.required]],
     });
-
+    this.userformview = this.formBuilder.group({
+      name: [{ value: '', disabled: true }],
+      email: [{ value: '', disabled: true }],
+      mobile: [{ value: '', disabled: true }],
+      isActive: [{ value: '', disabled: true }],
+      createdAt: [{ value: '', disabled: true }],
+      role: [{ value: '', disabled: true }],
+    });
     this.Getuserfun();
   }
 
@@ -151,6 +158,7 @@ export class AppUsersComponent {
   closeModal() {
     this.Creatunitopen = false;
     this.updateusersopen = false;
+    this.viewunitopen = false;
   }
   navigateToViewUsers(user: any) {
     this.router.navigate(['/user-management/view-users'], {
@@ -171,9 +179,17 @@ export class AppUsersComponent {
   }
 
   search: any;
+  userType: any;
   Getuserfun() {
+    this.userType = 'free_user';
     this.employeeService
-      .GetUserApi(this.user_id, this.tableSize, this.page, this.search)
+      .GetUserApi(
+        this.user_id,
+        this.tableSize,
+        this.page,
+        this.search,
+        this.userType
+      )
       .subscribe((response: any) => {
         if (response.status === 200 || response.status === 201) {
           this.userstable = response.data.records;
@@ -572,5 +588,29 @@ export class AppUsersComponent {
     //     this.deleteError = 'Failed to delete. Please try again.';
     //   },
     // });
+  }
+  viewunitopen: boolean = false;
+  userformview!: FormGroup;
+  currrentClubId: any;
+  generalUserID: any;
+  openviewModal(users: any): void {
+    this.generalUserID = users.id;
+
+    try {
+      if (!users || !users.id) {
+        console.error('unit ID is undefined or null.');
+        return;
+      }
+      this.viewunitopen = true;
+      this.userformview.patchValue({
+        name: users.name || 'N/A',
+        email: users.email || 'N/A',
+        mobile: users.mobile || 'N/A',
+        isActive: users.is_active === 1 ? 'Active' : 'Inactive',
+        role: users.role || 'N/A',
+      });
+    } catch (error) {
+      console.error('An error occurred while opening edit modal:', error);
+    }
   }
 }

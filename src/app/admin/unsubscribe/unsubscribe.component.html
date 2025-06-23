@@ -14,7 +14,7 @@
   <div class="bg-white rounded-xl shadow-md mb-8">
     <div class="border-b border-gray-200">
       <nav class="flex -mb-px">
-        <button
+        <!-- <button
           class="tab-button py-4 px-6 text-sm font-medium focus:outline-none"
           [ngClass]="{
             'border-b-2 border-[#1075bc] text-[#1075bc]':
@@ -24,7 +24,7 @@
           (click)="setActiveTab('unsubscribed')"
         >
           Unsubscribed Users
-        </button>
+        </button> -->
         <button
           class="tab-button py-4 px-6 text-sm font-medium focus:outline-none"
           [ngClass]="{
@@ -64,7 +64,7 @@
     <!-- Tab Content -->
     <div class="p-6">
       <!-- Unsubscribed Users with Stores -->
-      <div *ngIf="activeTab === 'unsubscribed'">
+      <!-- <div *ngIf="activeTab === 'unsubscribed'">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-800">
             Unsubscribed Users with Registered Stores
@@ -163,16 +163,25 @@
                   Serial No.
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  User ID
+                  Image
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  User Name
+                  Agency Name
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Store Name
+                  Owner Name
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Unsubscription Date
+                  Store Address
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Store Contact
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Store Email
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Action
                 </th>
               </tr>
             </thead>
@@ -229,7 +238,7 @@
             ></pagination-controls>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Users with Recently Expired Subscriptions -->
       <div *ngIf="activeTab === 'expired'">
@@ -328,13 +337,19 @@
             <thead>
               <tr class="bg-gray-50">
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Serial No.
+                  Sr No.
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  User ID
+                  Name
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  User Name
+                  Email
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Contact
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Role
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
                   Subscription Plan
@@ -352,9 +367,11 @@
                     | paginate
                       : {
                           itemsPerPage:
-                            tableSize != 'all' ? tableSize : totalRecords,
+                            tableSize != 'all'
+                              ? tableSize
+                              : totalRecordSubscription,
                           currentPage: page,
-                          totalItems: totalRecords
+                          totalItems: totalRecordSubscription
                         };
                   index as i
                 "
@@ -364,11 +381,15 @@
                     (page - 1) * (tableSize != "all" ? tableSize : 0) + i + 1
                   }}
                 </td>
-                <td class="px-4 py-3 text-gray-700">{{ user.id }}</td>
                 <td class="px-4 py-3 text-gray-700">{{ user.name }}</td>
-                <td class="px-4 py-3 text-gray-700">{{ user.plan }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.email }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.mobile }}</td>
+                <td class="px-4 py-3 text-gray-700">{{ user.role }}</td>
+                <td class="px-4 py-3 text-gray-700">
+                  {{ user?.subscription?.name }}
+                </td>
                 <td class="px-4 py-3 text-gray-700 font-semibold">
-                  {{ user.expiryDate }}
+                  {{ user.expires_at | date : "mediumDate" }}
                 </td>
               </tr>
             </tbody>
@@ -381,12 +402,17 @@
               {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }}
               to
               {{
-                tableSize * page <= totalRecords
+                tableSize * page <= totalRecordSubscription
                   ? tableSize * page
-                  : totalRecords
+                  : totalRecordSubscription
               }}
               of
-              {{ totalRecords != undefined ? totalRecords : "" }} entries</span
+              {{
+                totalRecordSubscription != undefined
+                  ? totalRecordSubscription
+                  : ""
+              }}
+              entries</span
             >
             <pagination-controls
               previousLabel="Prev"
@@ -403,7 +429,7 @@
       <div *ngIf="activeTab === 'approvals'">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-800">
-            Users Waiting for Approvals
+            Users Waiting for Store Approvals
           </h3>
           <div class="bg-yellow-100 p-3 rounded-full">
             <i class="fa-solid fa-hourglass-half text-yellow-600 text-xl"></i>
@@ -496,19 +522,28 @@
             <thead>
               <tr class="bg-gray-50">
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Serial No.
+                  Sr No.
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  User ID
+                  Image
+                </th>
+                <!-- <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Agency Name
+                </th> -->
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Owner Name
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  User Name
+                  Store Address
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Store Name
+                  Store Contact
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Submission Date
+                  Store Email
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Action
                 </th>
               </tr>
             </thead>
@@ -529,14 +564,55 @@
               >
                 <td class="px-4 py-3 text-gray-700">
                   {{
-                    (page - 1) * (tableSize != "all" ? tableSize : 0) + i + 1
+                    tableSize * (page - 1) + i + 1 > 0
+                      ? tableSize * (page - 1) + i + 1
+                      : i + 1
                   }}
                 </td>
-                <td class="px-4 py-3 text-gray-700">{{ user.id }}</td>
-                <td class="px-4 py-3 text-gray-700">{{ user.name }}</td>
-                <td class="px-4 py-3 text-gray-700">{{ user.storeName }}</td>
-                <td class="px-4 py-3 text-gray-700 font-semibold">
-                  {{ user.submissionDate }}
+                <td>
+                  <a [href]="user.store_image" target="_blank" class="cursor">
+                    <img
+                      class="admin-banner"
+                      *ngIf="user.store_image != undefined"
+                      [src]="user.store_image"
+                      alt="banner image"
+                    />
+                  </a>
+                </td>
+                <!-- <td class="px-4 py-3 text-gray-700">
+                  <p>{{ user.agency_name }}</p>
+                </td> -->
+                <td class="px-4 py-3 text-gray-700">
+                  <p>{{ user.owner_name }}</p>
+                </td>
+                <td class="px-4 py-3 text-gray-700">
+                  <p>{{ user.store_address }}</p>
+                </td>
+                <td class="px-4 py-3 text-gray-700">
+                  <p>{{ user.store_contact }}</p>
+                </td>
+                <td class="px-4 py-3 text-gray-700">
+                  <p>{{ user.store_email }}</p>
+                </td>
+
+                <td>
+                  <p>
+                    {{ user.action }}
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button
+                        mat-menu-item
+                        (click)="openApproveDialog(user.id)"
+                      >
+                        Approve
+                      </button>
+                      <button mat-menu-item (click)="OpenviewModal(user)">
+                        View Details
+                      </button>
+                    </mat-menu>
+                  </p>
                 </td>
               </tr>
             </tbody>
@@ -664,22 +740,31 @@
             <thead>
               <tr class="bg-gray-50">
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Serial No.
+                  Sr No.
                 </th>
+                <!-- <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Identity Proof
+                </th> -->
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  User ID
+                  Authority Name
                 </th>
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  User Name
-                </th>
+
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
                   License ID
                 </th>
+
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Rejection Date
+                  Expiry Date
                 </th>
                 <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Reason
+                  Status
+                </th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Document
+                </th>
+
+                <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Action
                 </th>
               </tr>
             </thead>
@@ -691,25 +776,81 @@
                     | paginate
                       : {
                           itemsPerPage:
-                            tableSize != 'all' ? tableSize : totalRecords,
+                            tableSize != 'all'
+                              ? tableSize
+                              : totalRecordsLicense,
                           currentPage: page,
-                          totalItems: totalRecords
+                          totalItems: totalRecordsLicense
                         };
                   index as i
                 "
               >
                 <td class="px-4 py-3 text-gray-700">
                   {{
-                    (page - 1) * (tableSize != "all" ? tableSize : 0) + i + 1
+                    tableSize * (page - 1) + i + 1 > 0
+                      ? tableSize * (page - 1) + i + 1
+                      : i + 1
                   }}
                 </td>
-                <td class="px-4 py-3 text-gray-700">{{ user.id }}</td>
-                <td class="px-4 py-3 text-gray-700">{{ user.name }}</td>
-                <td class="px-4 py-3 text-gray-700">{{ user.licenseId }}</td>
-                <td class="px-4 py-3 text-gray-700 font-semibold">
-                  {{ user.rejectionDate }}
+                <!-- <td>
+                  <a
+                    [href]="user.identity_proof"
+                    target="_blank"
+                    class="cursor"
+                  >
+                    <img
+                      class="admin-banner"
+                      *ngIf="user.identity_proof != undefined"
+                      [src]="user.identity_proof"
+                      alt="identity_proof"
+                    />
+                  </a>
+                </td> -->
+                <td class="px-4 py-3 text-gray-700">
+                  {{ user?.authority?.name }}
                 </td>
-                <td class="px-4 py-3 text-gray-700">{{ user.reason }}</td>
+                <td class="px-4 py-3 text-gray-700">
+                  {{ user.license_number }}
+                </td>
+
+                <td class="px-4 py-3 text-gray-700">
+                  {{ user.expiry_date }}
+                </td>
+                <td class="px-4 py-3 text-gray-700 font-semibold">
+                  {{ user.status }}
+                </td>
+                <td class="px-4 py-3 text-gray-700">
+                  <a
+                    [href]="user.compliance_document"
+                    target="_blank"
+                    class="cursor"
+                  >
+                    <i class="fa-solid fa-eye"></i>
+                  </a>
+                </td>
+
+                <td class="px-4 py-3 text-gray-700">
+                  <p>
+                    {{ user.action }}
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button
+                        mat-menu-item
+                        (click)="openApproveLicenseDialog(user.id)"
+                      >
+                        Approve / Reject
+                      </button>
+                      <button
+                        mat-menu-item
+                        (click)="OpenLiecenceviewModal(user)"
+                      >
+                        View Details
+                      </button>
+                    </mat-menu>
+                  </p>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -721,12 +862,13 @@
               {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }}
               to
               {{
-                tableSize * page <= totalRecords
+                tableSize * page <= totalRecordsLicense
                   ? tableSize * page
-                  : totalRecords
+                  : totalRecordsLicense
               }}
               of
-              {{ totalRecords != undefined ? totalRecords : "" }} entries</span
+              {{ totalRecordsLicense != undefined ? totalRecordsLicense : "" }}
+              entries</span
             >
             <pagination-controls
               previousLabel="Prev"
@@ -739,5 +881,639 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div
+  *ngIf="banneviewopen"
+  class="your-animation-class modal-container"
+  aria-labelledby="modal-BannerType"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-content modal-content-50" [@fadeIn]>
+    <div (click)="ClickexamModalconent($event)">
+      <form [formGroup]="authorityview">
+        <div class="card">
+          <div
+            class="card-header bg-white d-flex justify-content-between align-items-center"
+          >
+            <h5 class="modal-title pt-1">View Details</h5>
+            <button
+              class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+              type="button"
+              (click)="closeModal()"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="modal-content-width card-body mb-0 pb-0">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="agency_name"
+                  >Agency Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="agency_name"
+                  #agency_name
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="pharmacist_name"
+                  >Pharmacist Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="pharmacist_name"
+                  #pharmacist_name
+                  [readOnly]="true"
+                />
+              </div>
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_name"
+                  >Owner Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_name"
+                  #owner_name
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_email"
+                  >Owner Email</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_email"
+                  #owner_email
+                  [readOnly]="true"
+                />
+              </div>
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_contact_no"
+                  >Owner Contact No</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_contact_no"
+                  #owner_contact_no
+                  [readOnly]="true"
+                />
+              </div>
+              <!-- <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_alt_contact_no"
+                  >Owner Alternate Contact No</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_alt_contact_no"
+                  #owner_alt_contact_no
+                  [readOnly]="true"
+                />
+              </div> -->
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="owner_residential_address"
+                  >Owner Residential Address</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="owner_residential_address"
+                  #owner_residential_address
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="role"
+                  >Role</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="role"
+                  #role
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="gst_no"
+                  >GST Number</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="gst_no"
+                  #gst_no
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="store_address"
+                  >Store Address</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="store_address"
+                  #store_address
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="State"
+                  >State</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="State"
+                  #State
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="city_id"
+                  >City</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="city_id"
+                  #city_id
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="pin_code"
+                  >Pin Code</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="pin_code"
+                  #pin_code
+                  [readOnly]="true"
+                />
+              </div>
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="store_contact"
+                  >Store Contact</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="store_contact"
+                  #store_contact
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="store_email"
+                  >Store Email</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="store_email"
+                  #store_email
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="store_tag"
+                  >Store Tag</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="store_tag"
+                  #store_tag
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="working_type"
+                  >Working Type</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="working_type"
+                  #working_type
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="opening_time"
+                  >Opening Time</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="opening_time"
+                  #opening_time
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="closing_time"
+                  >Closing Time</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="closing_time"
+                  #closing_time
+                  [readOnly]="true"
+                />
+              </div>
+              <!-- <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="working_days"
+                  >Working Days</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="working_days"
+                  #working_days
+                  [readOnly]="true"
+                />
+              </div> -->
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="delivery_service_available"
+                  >Delivery Service Available</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="delivery_service_available"
+                  #delivery_service_available
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="home_delivery_available"
+                  >Home Delivery Available</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="home_delivery_available"
+                  #home_delivery_available
+                  [readOnly]="true"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer text-end mb-4 me-4">
+            <button
+              class="btn btn-secondary main-btnfs px-4 py-2 text-gray-100"
+              type="button"
+              (click)="closeModal()"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="licenceViewOpen"
+  class="your-animation-class modal-container"
+  aria-labelledby="modal-BannerType"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-content modal-content-50" [@fadeIn]>
+    <div (click)="ClickexamModalconent($event)">
+      <form [formGroup]="licenceView">
+        <div class="card">
+          <div
+            class="card-header bg-white d-flex justify-content-between align-items-center"
+          >
+            <h5 class="modal-title pt-1">View License Details</h5>
+            <button
+              class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+              type="button"
+              (click)="closeModal()"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="modal-content-width card-body mb-0 pb-0">
+            <!-- Image and Document Section -->
+            <div class="row mb-3">
+              <!-- <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="identity_proof"
+                  >Identity Proof</label
+                >
+                <img
+                  [src]="IdProof"
+                  alt="Identity Proof"
+                  class="img-fluid"
+                  style="max-height: 200px; object-fit: contain"
+                />
+              </div> -->
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="compliance_document"
+                  >Compliance Document</label
+                >
+                <a
+                  [href]="complianceDocument"
+                  target="_blank"
+                  class="btn btn-link"
+                  >View Document</a
+                >
+              </div>
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="authority_name"
+                  >Authority Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="authority_name"
+                  #authority_name
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="shop_name"
+                  >Shop Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="shop_name"
+                  #shop_name
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="license_number"
+                  >License Number</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="license_number"
+                  #license_number
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="expiry_date"
+                  >Expiry Date</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="expiry_date"
+                  #expiry_date
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="status"
+                  >Status</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="status"
+                  #status
+                  [readOnly]="true"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer text-end mb-4 me-4">
+            <button
+              class="btn btn-secondary main-btnfs px-4 py-2 text-gray-100"
+              type="button"
+              (click)="closeModal()"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="openSecondsuccess"
+  class="your-animation-class modal-container-success"
+  [@slideIn]
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div>
+    <div
+      class="p-4 d-flex justify-content-between align-items-center success-content"
+    >
+      <span class="icon-success me-2"><i class="fa-solid fa-check"></i></span>
+      <p class="text-green-900 text-capitalize mb-0">
+        {{ successName }} successfully
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Employee Modal -->
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  *ngIf="showApproveDialog"
+  (click)="closeApproveDialog()"
+>
+  <div
+    class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <p class="text-xl font-bold text-gray-900 mb-0">Confirm Approve</p>
+      <button (click)="closeApproveDialog()" class="focus:outline-none">
+        <i class="fas fa-times text-gray-500 hover:text-grey-700 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="mb-6 space-y-2">
+      <!-- <p class="text-lg text-gray-700 font-medium">
+        <span class="text-gray-900">Employee Name: </span>
+        <span class="font-semibold text-blue-700">{{ employeeName }}</span>
+      </p> -->
+      <p class="text-lg text-gray-700 leading-relaxed">
+        Are you sure you want to approve?
+        <br />
+        <span class="">This action cannot be undone.</span>
+      </p>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="flex justify-end gap-3 mt-4">
+      <button
+        class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition"
+        (click)="closeApproveDialog()"
+      >
+        Cancel
+      </button>
+      <button
+        class="px-4 py-2 rounded-md bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+        (click)="shopApprove(this.shopApproveId)"
+      >
+        Approve
+      </button>
+    </div>
+    <p *ngIf="errorMessage" class="text-red-600 text-sm mt-2">
+      {{ errorMessage }}
+    </p>
+  </div>
+</div>
+<!-- Confirmation License Modal -->
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  *ngIf="showApproveLicenseDialog"
+  (click)="closeApproveLicenseDialog()"
+>
+  <div
+    class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <p class="text-xl font-bold text-gray-900 mb-0">Confirm Action</p>
+      <button (click)="closeApproveLicenseDialog()" class="focus:outline-none">
+        <i class="fas fa-times text-gray-500 hover:text-gray-700 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <form [formGroup]="approvalForm" (ngSubmit)="submitLicApproval()">
+      <div class="mb-6 space-y-4">
+        <p class="text-lg text-gray-700 leading-relaxed">
+          Please select an action for this license:
+        </p>
+        <div class="flex align-middle justify-start gap-6">
+          <label class="flex items-center space-x-2">
+            <input
+              type="radio"
+              formControlName="action"
+              value="approve"
+              class="form-radio h-4 w-4 text-green-600"
+            />
+            <span class="text-gray-700">Approve</span>
+          </label>
+          <label class="flex items-center space-x-2">
+            <input
+              type="radio"
+              formControlName="action"
+              value="reject"
+              class="form-radio h-4 w-4 text-red-600"
+            />
+            <span class="text-gray-700">Reject</span>
+          </label>
+        </div>
+        <p class="text-sm text-gray-600">This action cannot be undone.</p>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="flex justify-end gap-3 mt-4">
+        <button
+          type="button"
+          class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition"
+          (click)="closeApproveLicenseDialog()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+          [disabled]="!approvalForm.valid"
+        >
+          Submit
+        </button>
+      </div>
+      <p *ngIf="errorMessage" class="text-red-600 text-sm mt-2">
+        {{ errorMessage }}
+      </p>
+    </form>
   </div>
 </div>
