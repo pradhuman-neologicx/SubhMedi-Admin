@@ -100,6 +100,9 @@
           <th>
             <p class="table-heading table-new-heading">Number</p>
           </th>
+          <th>
+            <p class="table-heading table-new-heading">Password</p>
+          </th>
 
           <th>
             <p class="table-heading table-new-heading">Status</p>
@@ -147,7 +150,11 @@
               {{ users.mobile }}
             </p>
           </td>
-
+          <td>
+            <p class="table-detail text-capitalize table-detail-new">
+              {{ users.plain_password }}
+            </p>
+          </td>
           <td>
             <p
               [ngClass]="{

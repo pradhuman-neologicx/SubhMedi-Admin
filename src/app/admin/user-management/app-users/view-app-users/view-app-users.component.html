@@ -783,7 +783,7 @@
                   <strong class="text-gray-600">Store Address:</strong>
                   {{ doc.store_address }}
                 </p>
-                <div
+                <!-- <div
                   class="flex items-center gap-3"
                   *ngIf="doc.store_tag; else noTag"
                 >
@@ -803,7 +803,7 @@
                       }}
                     </span>
                   </p>
-                  <!-- Status Toggle Button -->
+                  
                   <div class="">
                     <button
                       mat-icon-button
@@ -839,7 +839,43 @@
                     <strong class="text-gray-600">Store Tag: </strong>
                     <span class="text-red-500"> Not Available</span>
                   </p>
-                </ng-template>
+                </ng-template> -->
+                <div class="d-flex align-items-center gap-1">
+                  <div class="d-flex align-items-center">
+                    <strong class="text-muted me-2">Store Tag:</strong>
+                    <span
+                      class="badge fs-6"
+                      [ngClass]="{
+                        'bg-primary text-white': doc?.store_tag === 'exclusive',
+                        'bg-danger text-white': doc?.store_tag !== 'exclusive'
+                      }"
+                    >
+                      {{
+                        doc?.store_tag === "exclusive"
+                          ? "Exclusive"
+                          : "Not Exclusive"
+                      }}
+                    </span>
+                  </div>
+                  <div class="form-check form-switch ms-3">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      [id]="'exclusiveSwitch' + i"
+                      [checked]="doc?.store_tag === 'exclusive'"
+                      (change)="onToggleChange($event, doc.id)"
+                    />
+                    <!-- <label
+                      class="form-check-label text-muted"
+                      [for]="'exclusiveSwitch' + i"
+                    >
+                      {{
+                        doc?.store_tag === "exclusive" ? "Remove" : "Exclusive"
+                      }}
+                    </label> -->
+                  </div>
+                </div>
               </div>
             </div>
           </div>

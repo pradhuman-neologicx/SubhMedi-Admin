@@ -225,6 +225,10 @@ export class ViewAppUsersComponent {
     //   console.log(this.PartTypeList);
     // });
   }
+  onToggleChange(event: Event, id: string): void {
+    const input = event.target as HTMLInputElement;
+    this.Status(id, input.checked ? 'exclusive' : null);
+  }
   async Status(id: string, tag: any) {
     const actionMessage = 'Status Changed';
     const currentIndex = this.activeIndex;
