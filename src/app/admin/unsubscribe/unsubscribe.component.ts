@@ -66,7 +66,8 @@ import {
   ],
 })
 export class UnsubscribeComponent implements OnInit {
-  activeTab: string = 'expired'; // Default to first tab
+  activeTab: string = 'expired';
+  activeSubTab: string = 'stores';
   authoritycreate!: FormGroup;
   authorityupdate!: FormGroup;
   approvalForm!: FormGroup;
@@ -135,25 +136,70 @@ export class UnsubscribeComponent implements OnInit {
     this.approvalForm = this.formBuilder.group({
       action: ['', Validators.required],
     });
-    this.getExpiredSubscriptions();
-    this.getNewShops();
-    this.getApprovedLicenseUsers();
+    this.fetchDataForActiveTab();
+    // this.getNewShops();
+    // this.getApprovedLicenseUsers();
+    // this.getCompanies();
   }
 
+  // setActiveTab(tab: string): void {
+  //   this.activeTab = tab;
+  // }
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+    this.page = 1;
+    this.search = '';
+    this.searchbarform.reset();
+    this.showreset = false;
+    if (tab === 'approvals') {
+      this.activeSubTab = 'stores'; // Default to "stores" sub-tab
+    }
+    this.fetchDataForActiveTab();
   }
-  searchfun() {
+
+  setActiveSubTab(subTab: string): void {
+    this.activeSubTab = subTab;
+    this.page = 1;
+    this.search = '';
+    this.searchbarform.reset();
+    this.showreset = false;
+    this.fetchDataForActiveTab();
+  }
+
+  fetchDataForActiveTab(): void {
+    if (this.activeTab === 'expired') {
+      this.getExpiredSubscriptions();
+    } else if (this.activeTab === 'approvals') {
+      if (this.activeSubTab === 'stores') {
+        this.getNewShops();
+      } else if (this.activeSubTab === 'licenses') {
+        this.getApprovedLicenseUsers();
+      } else if (this.activeSubTab === 'companies') {
+        this.getCompanies();
+      }
+    }
+  }
+  // searchfun() {
+  //   if (this.searchbarform.valid) {
+  //     this.showreset = true;
+  //     this.search = this.searchbarform.get('searchbar')?.value;
+  //     if (this.activeTab === 'expired') {
+  //       this.getExpiredSubscriptions();
+  //     } else if (this.activeTab === 'approvals') {
+  //       this.getNewShops();
+  //     } else if (this.activeTab === 'nonApproved') {
+  //       this.getApprovedLicenseUsers();
+  //     }
+  //   } else {
+  //     this.searchbarform.markAllAsTouched();
+  //   }
+  // }
+  searchfun(): void {
     if (this.searchbarform.valid) {
       this.showreset = true;
       this.search = this.searchbarform.get('searchbar')?.value;
-      if (this.activeTab === 'expired') {
-        this.getExpiredSubscriptions();
-      } else if (this.activeTab === 'approvals') {
-        this.getNewShops();
-      } else if (this.activeTab === 'nonApproved') {
-        this.getApprovedLicenseUsers();
-      }
+      this.page = 1; // Reset to first page on search
+      this.fetchDataForActiveTab();
     } else {
       this.searchbarform.markAllAsTouched();
     }
@@ -165,23 +211,11 @@ export class UnsubscribeComponent implements OnInit {
     this.tableSize = event.target.value;
     console.log(event.target.value);
     this.page = 1;
-    if (this.activeTab === 'expired') {
-      this.getExpiredSubscriptions();
-    } else if (this.activeTab === 'approvals') {
-      this.getNewShops();
-    } else if (this.activeTab === 'nonApproved') {
-      this.getApprovedLicenseUsers();
-    }
+    this.fetchDataForActiveTab();
   }
   onTableDataChange(event: any) {
     this.page = event;
-    if (this.activeTab === 'expired') {
-      this.getExpiredSubscriptions();
-    } else if (this.activeTab === 'approvals') {
-      this.getNewShops();
-    } else if (this.activeTab === 'nonApproved') {
-      this.getApprovedLicenseUsers();
-    }
+    this.fetchDataForActiveTab();
   }
   ClickexamModalconent(event: Event): void {
     event.stopPropagation();
@@ -489,5 +523,104 @@ export class UnsubscribeComponent implements OnInit {
     this.showApproveLicenseDialog = false;
     this.approvalForm.reset();
     this.errorMessage = '';
+  }
+
+  awaitingCompanies: any;
+  totalRecordsCompany: any;
+  getCompanies() {
+    this.userType = 'companies';
+    this.employeeService
+      .getShopsApi(this.tableSize, this.page, this.search, this.userType)
+      .subscribe((response: any) => {
+        if (response.status === 200 || response.status === 201) {
+          this.awaitingCompanies = response.data.records;
+          this.totalRecordsCompany = response.data.total;
+        }
+      });
+  }
+  showApproveCompanyDialog = false; // New variable for company approval dialog
+  shopApproveCompanyId: any;
+  openApproveCompanyDialog(companyId: number) {
+    this.shopApproveCompanyId = companyId;
+    this.showApproveCompanyDialog = true;
+    this.errorMessage = '';
+    this.approvalForm.reset();
+  }
+
+  closeApproveCompanyDialog() {
+    this.showApproveCompanyDialog = false;
+    this.approvalForm.reset();
+    this.errorMessage = '';
+  }
+
+  submitCompanyApproval() {
+    if (this.approvalForm.valid && this.shopApproveCompanyId) {
+      if (!this.user_id) {
+        this.errorMessage = 'User ID is required. Please log in again.';
+        this.submitted = false;
+        return;
+      }
+
+      const body = {
+        id: this.shopApproveCompanyId, // Updated to use company_id
+        user_id: this.user_id,
+        status:
+          this.approvalForm.get('action')?.value === 'approve'
+            ? 'approved'
+            : 'rejected',
+      };
+
+      this.submitted = true;
+      this.errorMessage = '';
+
+      this.employeeService.companyApproveApi(body).subscribe({
+        // Assuming you have a companyApproveApi method in EmployeeService
+        next: (response: any) => {
+          if (response.status === 200 || response.status === 201) {
+            this.closeApproveCompanyDialog();
+            this.successName = 'Company Status Updated';
+            this.ngOnInit();
+            setTimeout(() => {
+              this.openSecondsuccess = true;
+              setTimeout(() => {
+                this.openSecondsuccess = false;
+              }, 1800);
+            }, 200);
+          } else {
+            this.submitted = false;
+            if (response.status === 422 && response.errors) {
+              const errors = response.errors;
+              if (
+                errors.user_id &&
+                Array.isArray(errors.user_id) &&
+                errors.user_id.length > 0
+              ) {
+                this.errorMessage = errors.user_id[0];
+              } else {
+                const firstErrorField = Object.keys(errors).find(
+                  (key) => Array.isArray(errors[key]) && errors[key].length > 0
+                );
+                this.errorMessage = firstErrorField
+                  ? errors[firstErrorField][0]
+                  : 'Failed to update company status';
+              }
+            } else if (response.errors || response.message) {
+              this.errorMessage = JSON.stringify(
+                response.errors || response.message
+              );
+            } else {
+              this.errorMessage = 'Failed to update company status';
+            }
+          }
+        },
+        error: (error: any) => {
+          this.submitted = false;
+          this.errorMessage =
+            error.message || 'An error occurred while updating company status';
+        },
+      });
+    } else {
+      this.errorMessage = 'Please select an action (Approve or Reject).';
+    }
   }
 }

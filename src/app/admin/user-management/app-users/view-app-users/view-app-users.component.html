@@ -840,7 +840,7 @@
                     <span class="text-red-500"> Not Available</span>
                   </p>
                 </ng-template> -->
-                <div class="d-flex align-items-center gap-1">
+                <!-- <div class="d-flex align-items-center gap-1">
                   <div class="d-flex align-items-center">
                     <strong class="text-muted me-2">Store Tag:</strong>
                     <span
@@ -866,16 +866,9 @@
                       [checked]="doc?.store_tag === 'exclusive'"
                       (change)="onToggleChange($event, doc.id)"
                     />
-                    <!-- <label
-                      class="form-check-label text-muted"
-                      [for]="'exclusiveSwitch' + i"
-                    >
-                      {{
-                        doc?.store_tag === "exclusive" ? "Remove" : "Exclusive"
-                      }}
-                    </label> -->
+                  
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -1129,6 +1122,127 @@
                 No license data found.
               </td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Company view -->
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="leftBox flex items-center gap-2">
+          <div class="bg-blue-100 p-3 rounded-full">
+            <i class="fa-solid fa-building text-[#1075bc] text-xl"></i>
+          </div>
+          <h5 class="text-lg font-semibold text-gray-800 mb-0">Company</h5>
+        </div>
+        <!-- <div class="rightBox">
+          <button
+            class="bg-[#1075bc] hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+          >
+            <i class="fa-solid fa-plus mr-2"></i> Add Document
+          </button>
+        </div> -->
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="bg-gray-50">
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">Sr No</th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Company Name
+              </th>
+
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Status
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                View Document
+              </th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">Tag</th>
+              <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let store of userstable?.stores">
+              <tr
+                class="border-t"
+                *ngFor="let company of store.companies; let i = index"
+                [class.odd]="i % 2 === 0"
+                [class.even]="i % 2 !== 0"
+              >
+                <td class="px-4 py-2 text-gray-700">{{ i + 1 }}</td>
+
+                <td class="px-4 py-2 text-gray-700">
+                  {{ company.name }}
+                </td>
+
+                <td class="px-4 py-2 text-gray-700">
+                  {{ company.pivot.is_approved ? "Approved" : "Pending" }}
+                </td>
+
+                <td class="px-4 py-2 text-gray-700">
+                  <ng-container
+                    *ngIf="company.pivot.support_document; else noDoc"
+                  >
+                    <a [href]="company.pivot.support_document" target="_blank">
+                      <i
+                        class="fa-solid fa-eye text-blue-600 hover:text-blue-800"
+                        title="View"
+                      ></i>
+                    </a>
+                  </ng-container>
+                  <ng-template #noDoc>
+                    <span class="text-red-500">Not Available</span>
+                  </ng-template>
+                </td>
+                <td class="px-4 py-2 text-gray-700">
+                  <p
+                    [ngClass]="{
+                      'text-green-600 font-semibold':
+                        company.pivot.is_exclusive === 1,
+                      'text-gray-600': company.pivot.is_exclusive === 0
+                    }"
+                  >
+                    {{ company.pivot.is_exclusive === 1 ? "Exclusive" : "--" }}
+                  </p>
+                </td>
+                <td class="px-4 py-2">
+                  <button
+                    mat-icon-button
+                    class="p-0"
+                    [matMenuTriggerFor]="menu"
+                  >
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+
+                  <mat-menu #menu="matMenu">
+                    <button
+                      mat-menu-item
+                      (click)="
+                        Status(
+                          company.pivot.id,
+                          company.pivot.is_exclusive === 1 ? 0 : 1
+                        )
+                      "
+                    >
+                      {{
+                        company.pivot.is_exclusive === 1
+                          ? "Remove Exclusive"
+                          : "Make Exclusive"
+                      }}
+                    </button>
+                  </mat-menu>
+                </td>
+              </tr>
+            </ng-container>
+
+            <!-- <tr *ngIf="!userstable?.stores?.some(s => s.companies?.length)">
+              <td colspan="5" class="text-center px-4 py-4 text-gray-500">
+                No company data found.
+              </td>
+            </tr> -->
           </tbody>
         </table>
       </div>

@@ -47,7 +47,7 @@
         >
           Waiting for Approvals
         </button>
-        <button
+        <!-- <button
           class="tab-button py-4 px-6 text-sm font-medium focus:outline-none"
           [ngClass]="{
             'border-b-2 border-[#1075bc] text-[#1075bc]':
@@ -57,7 +57,7 @@
           (click)="setActiveTab('nonApproved')"
         >
           Non-Approved Licenses
-        </button>
+        </button> -->
       </nav>
     </div>
 
@@ -427,372 +427,449 @@
 
       <!-- Users Waiting for Approvals -->
       <div *ngIf="activeTab === 'approvals'">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-gray-800">
-            Users Waiting for Store Approvals
-          </h3>
-          <div class="bg-yellow-100 p-3 rounded-full">
-            <i class="fa-solid fa-hourglass-half text-yellow-600 text-xl"></i>
-          </div>
-        </div>
-        <div class="overflow-x-auto">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              [ngClass]="{ active: activeSubTab === 'stores' }"
+              id="pills-store-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-store"
+              type="button"
+              role="tab"
+              aria-controls="pills-store"
+              aria-selected="true"
+              (click)="setActiveSubTab('stores')"
+            >
+              Store Approvals
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              [ngClass]="{ active: activeSubTab === 'licenses' }"
+              id="pills-licenses-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-licenses"
+              type="button"
+              role="tab"
+              aria-controls="pills-licenses"
+              aria-selected="false"
+              (click)="setActiveSubTab('licenses')"
+            >
+              Licenses Approvals
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              [ngClass]="{ active: activeSubTab === 'companies' }"
+              id="pills-company-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-company"
+              type="button"
+              role="tab"
+              aria-controls="pills-company"
+              aria-selected="false"
+              (click)="setActiveSubTab('companies')"
+            >
+              Company Approvals
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
           <div
-            class="d-md-flex justify-content-between align-items-center my-3"
+            class="tab-pane fade"
+            [ngClass]="{ 'show active': activeSubTab === 'stores' }"
+            id="pills-store"
+            role="tabpanel"
+            aria-labelledby="pills-store-tab"
           >
-            <div class="d-flex align-items-center mb-md-0 mb-2">
-              <span class="me-1 show-entery-text">Show</span>
-              <select
-                class="form-control form-select show-entries-select"
-                (change)="onTableSizeChange($event)"
-              >
-                <option *ngFor="let size of tableSizes" [ngValue]="size">
-                  {{ size }}
-                </option>
-              </select>
-              <span class="ms-1 show-entery-text">entries</span>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-800">
+                Users Waiting for Store Approvals
+              </h3>
+              <div class="bg-yellow-100 p-3 rounded-full">
+                <i
+                  class="fa-solid fa-hourglass-half text-yellow-600 text-xl"
+                ></i>
+              </div>
             </div>
-
-            <div class="d-flex align-items-center">
-              <form
-                [formGroup]="searchbarform"
-                class="d-flex align-items-center"
+            <div class="overflow-x-auto">
+              <div
+                class="d-md-flex justify-content-between align-items-center my-3"
               >
-                <span class="me-1">Search:</span>
-                <div
-                  [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
-                >
-                  <input
-                    type="text"
-                    class="form-control search-user position-relative"
-                    type="text"
-                    autocomplete="off"
-                    formControlName="searchbar"
-                    [ngClass]="{
-                      'is-invalid':
-                        searchbarform.controls['searchbar'].errors &&
-                        (searchbarform.controls['searchbar'].touched ||
-                          searchbarform.controls['searchbar'].dirty)
-                    }"
-                  />
-                  <div
-                    class="text-danger error-message d-block"
-                    *ngIf="
-                      searchbarform.controls['searchbar'].errors &&
-                      (searchbarform.controls['searchbar'].touched ||
-                        searchbarform.controls['searchbar'].dirty)
-                    "
+                <div class="d-flex align-items-center mb-md-0 mb-2">
+                  <span class="me-1 show-entery-text">Show</span>
+                  <select
+                    class="form-control form-select show-entries-select"
+                    (change)="onTableSizeChange($event)"
                   >
-                    <p
-                      class="fw-light text-danger search-required"
-                      *ngIf="
-                        searchbarform.controls['searchbar'].errors['required']
-                      "
-                    >
-                      This is required
-                    </p>
-                  </div>
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  <span class="ms-1 show-entery-text">entries</span>
                 </div>
 
-                <button
-                  class="btn btn-primary search-btn ms-2"
-                  (click)="searchfun()"
-                >
-                  <span
-                    ><i
-                      class="fa-solid fa-magnifying-glass form-control-feedback"
-                    ></i
-                  ></span>
-                </button>
-                <button
-                  class="btn btn-primary search-btn ms-2"
-                  (click)="resetsearchbar()"
-                  type="submit"
-                  *ngIf="showreset == true"
-                >
-                  <span
-                    ><i
-                      class="fa-solid fa-rotate-right form-control-feedback"
-                    ></i
-                  ></span>
-                </button>
-              </form>
-            </div>
-          </div>
-          <table class="w-full text-left">
-            <thead>
-              <tr class="bg-gray-50">
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Sr No.
-                </th>
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Image
-                </th>
-                <!-- <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                <div class="d-flex align-items-center">
+                  <form
+                    [formGroup]="searchbarform"
+                    class="d-flex align-items-center"
+                  >
+                    <span class="me-1">Search:</span>
+                    <div
+                      [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+                    >
+                      <input
+                        type="text"
+                        class="form-control search-user position-relative"
+                        type="text"
+                        autocomplete="off"
+                        formControlName="searchbar"
+                        [ngClass]="{
+                          'is-invalid':
+                            searchbarform.controls['searchbar'].errors &&
+                            (searchbarform.controls['searchbar'].touched ||
+                              searchbarform.controls['searchbar'].dirty)
+                        }"
+                      />
+                      <div
+                        class="text-danger error-message d-block"
+                        *ngIf="
+                          searchbarform.controls['searchbar'].errors &&
+                          (searchbarform.controls['searchbar'].touched ||
+                            searchbarform.controls['searchbar'].dirty)
+                        "
+                      >
+                        <p
+                          class="fw-light text-danger search-required"
+                          *ngIf="
+                            searchbarform.controls['searchbar'].errors[
+                              'required'
+                            ]
+                          "
+                        >
+                          This is required
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      class="btn btn-primary search-btn ms-2"
+                      (click)="searchfun()"
+                    >
+                      <span
+                        ><i
+                          class="fa-solid fa-magnifying-glass form-control-feedback"
+                        ></i
+                      ></span>
+                    </button>
+                    <button
+                      class="btn btn-primary search-btn ms-2"
+                      (click)="resetsearchbar()"
+                      type="submit"
+                      *ngIf="showreset == true"
+                    >
+                      <span
+                        ><i
+                          class="fa-solid fa-rotate-right form-control-feedback"
+                        ></i
+                      ></span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <table class="w-full text-left">
+                <thead>
+                  <tr class="bg-gray-50">
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                      Sr No.
+                    </th>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                      Image
+                    </th>
+                    <!-- <th class="px-4 py-2 text-sm font-medium text-gray-600">
                   Agency Name
                 </th> -->
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Owner Name
-                </th>
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Store Address
-                </th>
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Store Contact
-                </th>
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Store Email
-                </th>
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="border-t"
-                *ngFor="
-                  let user of usersWaitingForApproval
-                    | paginate
-                      : {
-                          itemsPerPage:
-                            tableSize != 'all' ? tableSize : totalRecords,
-                          currentPage: page,
-                          totalItems: totalRecords
-                        };
-                  index as i
-                "
-              >
-                <td class="px-4 py-3 text-gray-700">
-                  {{
-                    tableSize * (page - 1) + i + 1 > 0
-                      ? tableSize * (page - 1) + i + 1
-                      : i + 1
-                  }}
-                </td>
-                <td>
-                  <a [href]="user.store_image" target="_blank" class="cursor">
-                    <img
-                      class="admin-banner"
-                      *ngIf="user.store_image != undefined"
-                      [src]="user.store_image"
-                      alt="banner image"
-                    />
-                  </a>
-                </td>
-                <!-- <td class="px-4 py-3 text-gray-700">
-                  <p>{{ user.agency_name }}</p>
-                </td> -->
-                <td class="px-4 py-3 text-gray-700">
-                  <p>{{ user.owner_name }}</p>
-                </td>
-                <td class="px-4 py-3 text-gray-700">
-                  <p>{{ user.store_address }}</p>
-                </td>
-                <td class="px-4 py-3 text-gray-700">
-                  <p>{{ user.store_contact }}</p>
-                </td>
-                <td class="px-4 py-3 text-gray-700">
-                  <p>{{ user.store_email }}</p>
-                </td>
-
-                <td>
-                  <p>
-                    {{ user.action }}
-                    <button mat-icon-button [matMenuTriggerFor]="menu">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu">
-                      <button
-                        mat-menu-item
-                        (click)="openApproveDialog(user.id)"
-                      >
-                        Approve
-                      </button>
-                      <button mat-menu-item (click)="OpenviewModal(user)">
-                        View Details
-                      </button>
-                    </mat-menu>
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div
-            class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
-          >
-            <span class="showalltext"
-              >Showing
-              {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }}
-              to
-              {{
-                tableSize * page <= totalRecords
-                  ? tableSize * page
-                  : totalRecords
-              }}
-              of
-              {{ totalRecords != undefined ? totalRecords : "" }} entries</span
-            >
-            <pagination-controls
-              previousLabel="Prev"
-              nextLabel="Next"
-              [responsive]="true"
-              (pageChange)="onTableDataChange($event)"
-              target="_top"
-            ></pagination-controls>
-          </div>
-        </div>
-      </div>
-
-      <!-- Users with Non-Approved Licenses -->
-      <div *ngIf="activeTab === 'nonApproved'">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-gray-800">
-            Users with Non-Approved Licenses
-          </h3>
-          <div class="bg-orange-100 p-3 rounded-full">
-            <i class="fa-solid fa-ban text-orange-600 text-xl"></i>
-          </div>
-        </div>
-        <div class="overflow-x-auto">
-          <div
-            class="d-md-flex justify-content-between align-items-center my-3"
-          >
-            <div class="d-flex align-items-center mb-md-0 mb-2">
-              <span class="me-1 show-entery-text">Show</span>
-              <select
-                class="form-control form-select show-entries-select"
-                (change)="onTableSizeChange($event)"
-              >
-                <option *ngFor="let size of tableSizes" [ngValue]="size">
-                  {{ size }}
-                </option>
-              </select>
-              <span class="ms-1 show-entery-text">entries</span>
-            </div>
-
-            <div class="d-flex align-items-center">
-              <form
-                [formGroup]="searchbarform"
-                class="d-flex align-items-center"
-              >
-                <span class="me-1">Search:</span>
-                <div
-                  [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
-                >
-                  <input
-                    type="text"
-                    class="form-control search-user position-relative"
-                    type="text"
-                    autocomplete="off"
-                    formControlName="searchbar"
-                    [ngClass]="{
-                      'is-invalid':
-                        searchbarform.controls['searchbar'].errors &&
-                        (searchbarform.controls['searchbar'].touched ||
-                          searchbarform.controls['searchbar'].dirty)
-                    }"
-                  />
-                  <div
-                    class="text-danger error-message d-block"
-                    *ngIf="
-                      searchbarform.controls['searchbar'].errors &&
-                      (searchbarform.controls['searchbar'].touched ||
-                        searchbarform.controls['searchbar'].dirty)
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                      Owner Name
+                    </th>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                      Store Address
+                    </th>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                      Store Contact
+                    </th>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                      Store Email
+                    </th>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="border-t"
+                    *ngFor="
+                      let user of usersWaitingForApproval
+                        | paginate
+                          : {
+                              itemsPerPage:
+                                tableSize != 'all' ? tableSize : totalRecords,
+                              currentPage: page,
+                              totalItems: totalRecords
+                            };
+                      index as i
                     "
                   >
-                    <p
-                      class="fw-light text-danger search-required"
-                      *ngIf="
-                        searchbarform.controls['searchbar'].errors['required']
-                      "
-                    >
-                      This is required
-                    </p>
-                  </div>
-                </div>
+                    <td class="px-4 py-3 text-gray-700">
+                      {{
+                        tableSize * (page - 1) + i + 1 > 0
+                          ? tableSize * (page - 1) + i + 1
+                          : i + 1
+                      }}
+                    </td>
+                    <td>
+                      <a
+                        [href]="user.store_image"
+                        target="_blank"
+                        class="cursor"
+                      >
+                        <img
+                          class="admin-banner"
+                          *ngIf="user.store_image != undefined"
+                          [src]="user.store_image"
+                          alt="banner image"
+                        />
+                      </a>
+                    </td>
+                    <!-- <td class="px-4 py-3 text-gray-700">
+                  <p>{{ user.agency_name }}</p>
+                </td> -->
+                    <td class="px-4 py-3 text-gray-700">
+                      <p>{{ user.owner_name }}</p>
+                    </td>
+                    <td class="px-4 py-3 text-gray-700">
+                      <p>{{ user.store_address }}</p>
+                    </td>
+                    <td class="px-4 py-3 text-gray-700">
+                      <p>{{ user.store_contact }}</p>
+                    </td>
+                    <td class="px-4 py-3 text-gray-700">
+                      <p>{{ user.store_email }}</p>
+                    </td>
 
-                <button
-                  class="btn btn-primary search-btn ms-2"
-                  (click)="searchfun()"
+                    <td>
+                      <p>
+                        {{ user.action }}
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                          <button
+                            mat-menu-item
+                            (click)="openApproveDialog(user.id)"
+                          >
+                            Approve
+                          </button>
+                          <button mat-menu-item (click)="OpenviewModal(user)">
+                            View Details
+                          </button>
+                        </mat-menu>
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div
+                class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+              >
+                <span class="showalltext"
+                  >Showing
+                  {{
+                    tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1
+                  }}
+                  to
+                  {{
+                    tableSize * page <= totalRecords
+                      ? tableSize * page
+                      : totalRecords
+                  }}
+                  of
+                  {{ totalRecords != undefined ? totalRecords : "" }}
+                  entries</span
                 >
-                  <span
-                    ><i
-                      class="fa-solid fa-magnifying-glass form-control-feedback"
-                    ></i
-                  ></span>
-                </button>
-                <button
-                  class="btn btn-primary search-btn ms-2"
-                  (click)="resetsearchbar()"
-                  type="submit"
-                  *ngIf="showreset == true"
-                >
-                  <span
-                    ><i
-                      class="fa-solid fa-rotate-right form-control-feedback"
-                    ></i
-                  ></span>
-                </button>
-              </form>
+                <pagination-controls
+                  previousLabel="Prev"
+                  nextLabel="Next"
+                  [responsive]="true"
+                  (pageChange)="onTableDataChange($event)"
+                  target="_top"
+                ></pagination-controls>
+              </div>
             </div>
           </div>
-          <table class="w-full text-left">
-            <thead>
-              <tr class="bg-gray-50">
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Sr No.
-                </th>
-                <!-- <th class="px-4 py-2 text-sm font-medium text-gray-600">
+          <div
+            class="tab-pane fade"
+            [ngClass]="{ 'show active': activeSubTab === 'licenses' }"
+            id="pills-licenses"
+            role="tabpanel"
+            aria-labelledby="pills-licenses-tab"
+          >
+            <!-- Users with Non-Approved Licenses -->
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">
+                  Users with Pending Licenses
+                </h3>
+                <div class="bg-orange-100 p-3 rounded-full">
+                  <i class="fa-solid fa-ban text-orange-600 text-xl"></i>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <div
+                  class="d-md-flex justify-content-between align-items-center my-3"
+                >
+                  <div class="d-flex align-items-center mb-md-0 mb-2">
+                    <span class="me-1 show-entery-text">Show</span>
+                    <select
+                      class="form-control form-select show-entries-select"
+                      (change)="onTableSizeChange($event)"
+                    >
+                      <option *ngFor="let size of tableSizes" [ngValue]="size">
+                        {{ size }}
+                      </option>
+                    </select>
+                    <span class="ms-1 show-entery-text">entries</span>
+                  </div>
+
+                  <div class="d-flex align-items-center">
+                    <form
+                      [formGroup]="searchbarform"
+                      class="d-flex align-items-center"
+                    >
+                      <span class="me-1">Search:</span>
+                      <div
+                        [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+                      >
+                        <input
+                          type="text"
+                          class="form-control search-user position-relative"
+                          type="text"
+                          autocomplete="off"
+                          formControlName="searchbar"
+                          [ngClass]="{
+                            'is-invalid':
+                              searchbarform.controls['searchbar'].errors &&
+                              (searchbarform.controls['searchbar'].touched ||
+                                searchbarform.controls['searchbar'].dirty)
+                          }"
+                        />
+                        <div
+                          class="text-danger error-message d-block"
+                          *ngIf="
+                            searchbarform.controls['searchbar'].errors &&
+                            (searchbarform.controls['searchbar'].touched ||
+                              searchbarform.controls['searchbar'].dirty)
+                          "
+                        >
+                          <p
+                            class="fw-light text-danger search-required"
+                            *ngIf="
+                              searchbarform.controls['searchbar'].errors[
+                                'required'
+                              ]
+                            "
+                          >
+                            This is required
+                          </p>
+                        </div>
+                      </div>
+
+                      <button
+                        class="btn btn-primary search-btn ms-2"
+                        (click)="searchfun()"
+                      >
+                        <span
+                          ><i
+                            class="fa-solid fa-magnifying-glass form-control-feedback"
+                          ></i
+                        ></span>
+                      </button>
+                      <button
+                        class="btn btn-primary search-btn ms-2"
+                        (click)="resetsearchbar()"
+                        type="submit"
+                        *ngIf="showreset == true"
+                      >
+                        <span
+                          ><i
+                            class="fa-solid fa-rotate-right form-control-feedback"
+                          ></i
+                        ></span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <table class="w-full text-left">
+                  <thead>
+                    <tr class="bg-gray-50">
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Sr No.
+                      </th>
+                      <!-- <th class="px-4 py-2 text-sm font-medium text-gray-600">
                   Identity Proof
                 </th> -->
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Authority Name
-                </th>
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Authority Name
+                      </th>
 
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  License ID
-                </th>
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        License ID
+                      </th>
 
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Expiry Date
-                </th>
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Status
-                </th>
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Document
-                </th>
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Expiry Date
+                      </th>
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Status
+                      </th>
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Document
+                      </th>
 
-                <th class="px-4 py-2 text-sm font-medium text-gray-600">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="border-t"
-                *ngFor="
-                  let user of nonApprovedLicenseUsers
-                    | paginate
-                      : {
-                          itemsPerPage:
-                            tableSize != 'all'
-                              ? tableSize
-                              : totalRecordsLicense,
-                          currentPage: page,
-                          totalItems: totalRecordsLicense
-                        };
-                  index as i
-                "
-              >
-                <td class="px-4 py-3 text-gray-700">
-                  {{
-                    tableSize * (page - 1) + i + 1 > 0
-                      ? tableSize * (page - 1) + i + 1
-                      : i + 1
-                  }}
-                </td>
-                <!-- <td>
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="border-t"
+                      *ngFor="
+                        let user of nonApprovedLicenseUsers
+                          | paginate
+                            : {
+                                itemsPerPage:
+                                  tableSize != 'all'
+                                    ? tableSize
+                                    : totalRecordsLicense,
+                                currentPage: page,
+                                totalItems: totalRecordsLicense
+                              };
+                        index as i
+                      "
+                    >
+                      <td class="px-4 py-3 text-gray-700">
+                        {{
+                          tableSize * (page - 1) + i + 1 > 0
+                            ? tableSize * (page - 1) + i + 1
+                            : i + 1
+                        }}
+                      </td>
+                      <!-- <td>
                   <a
                     [href]="user.identity_proof"
                     target="_blank"
@@ -806,77 +883,352 @@
                     />
                   </a>
                 </td> -->
-                <td class="px-4 py-3 text-gray-700">
-                  {{ user?.authority?.name }}
-                </td>
-                <td class="px-4 py-3 text-gray-700">
-                  {{ user.license_number }}
-                </td>
+                      <td class="px-4 py-3 text-gray-700">
+                        {{ user?.authority?.name }}
+                      </td>
+                      <td class="px-4 py-3 text-gray-700">
+                        {{ user.license_number }}
+                      </td>
 
-                <td class="px-4 py-3 text-gray-700">
-                  {{ user.expiry_date }}
-                </td>
-                <td class="px-4 py-3 text-gray-700 font-semibold">
-                  {{ user.status }}
-                </td>
-                <td class="px-4 py-3 text-gray-700">
+                      <td class="px-4 py-3 text-gray-700">
+                        {{ user.expiry_date }}
+                      </td>
+                      <td class="px-4 py-3 text-gray-700 font-semibold">
+                        {{ user.status }}
+                      </td>
+                      <td class="px-4 py-3 text-gray-700">
+                        <a
+                          [href]="user.compliance_document"
+                          target="_blank"
+                          class="cursor"
+                        >
+                          <i class="fa-solid fa-eye"></i>
+                        </a>
+                      </td>
+
+                      <td class="px-4 py-3 text-gray-700">
+                        <p>
+                          {{ user.action }}
+                          <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+                          <mat-menu #menu="matMenu">
+                            <button
+                              mat-menu-item
+                              (click)="openApproveLicenseDialog(user.id)"
+                            >
+                              Approve / Reject
+                            </button>
+                            <button
+                              mat-menu-item
+                              (click)="OpenLiecenceviewModal(user)"
+                            >
+                              View Details
+                            </button>
+                          </mat-menu>
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+                >
+                  <span class="showalltext"
+                    >Showing
+                    {{
+                      tableSize * (page - 1) > 0
+                        ? tableSize * (page - 1) + 1
+                        : 1
+                    }}
+                    to
+                    {{
+                      tableSize * page <= totalRecordsLicense
+                        ? tableSize * page
+                        : totalRecordsLicense
+                    }}
+                    of
+                    {{
+                      totalRecordsLicense != undefined
+                        ? totalRecordsLicense
+                        : ""
+                    }}
+                    entries</span
+                  >
+                  <pagination-controls
+                    previousLabel="Prev"
+                    nextLabel="Next"
+                    [responsive]="true"
+                    (pageChange)="onTableDataChange($event)"
+                    target="_top"
+                  ></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            [ngClass]="{ 'show active': activeSubTab === 'companies' }"
+            id="pills-company"
+            role="tabpanel"
+            aria-labelledby="pills-company-tab"
+          >
+            <!-- Users with Non-Company  -->
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">
+                  Users with Pending Companies
+                </h3>
+                <div class="bg-orange-100 p-3 rounded-full">
+                  <i class="fa-solid fa-ban text-orange-600 text-xl"></i>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <div
+                  class="d-md-flex justify-content-between align-items-center my-3"
+                >
+                  <div class="d-flex align-items-center mb-md-0 mb-2">
+                    <span class="me-1 show-entery-text">Show</span>
+                    <select
+                      class="form-control form-select show-entries-select"
+                      (change)="onTableSizeChange($event)"
+                    >
+                      <option *ngFor="let size of tableSizes" [ngValue]="size">
+                        {{ size }}
+                      </option>
+                    </select>
+                    <span class="ms-1 show-entery-text">entries</span>
+                  </div>
+
+                  <div class="d-flex align-items-center">
+                    <form
+                      [formGroup]="searchbarform"
+                      class="d-flex align-items-center"
+                    >
+                      <span class="me-1">Search:</span>
+                      <div
+                        [ngClass]="{ 'table-card table': searchbarform.controls['searchbar'].errors?.['required'] && (searchbarform.controls['searchbar'].touched || searchbarform.controls['searchbar'].dirty) }"
+                      >
+                        <input
+                          type="text"
+                          class="form-control search-user position-relative"
+                          type="text"
+                          autocomplete="off"
+                          formControlName="searchbar"
+                          [ngClass]="{
+                            'is-invalid':
+                              searchbarform.controls['searchbar'].errors &&
+                              (searchbarform.controls['searchbar'].touched ||
+                                searchbarform.controls['searchbar'].dirty)
+                          }"
+                        />
+                        <div
+                          class="text-danger error-message d-block"
+                          *ngIf="
+                            searchbarform.controls['searchbar'].errors &&
+                            (searchbarform.controls['searchbar'].touched ||
+                              searchbarform.controls['searchbar'].dirty)
+                          "
+                        >
+                          <p
+                            class="fw-light text-danger search-required"
+                            *ngIf="
+                              searchbarform.controls['searchbar'].errors[
+                                'required'
+                              ]
+                            "
+                          >
+                            This is required
+                          </p>
+                        </div>
+                      </div>
+
+                      <button
+                        class="btn btn-primary search-btn ms-2"
+                        (click)="searchfun()"
+                      >
+                        <span
+                          ><i
+                            class="fa-solid fa-magnifying-glass form-control-feedback"
+                          ></i
+                        ></span>
+                      </button>
+                      <button
+                        class="btn btn-primary search-btn ms-2"
+                        (click)="resetsearchbar()"
+                        type="submit"
+                        *ngIf="showreset == true"
+                      >
+                        <span
+                          ><i
+                            class="fa-solid fa-rotate-right form-control-feedback"
+                          ></i
+                        ></span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <table class="w-full text-left">
+                  <thead>
+                    <tr class="bg-gray-50">
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Sr No.
+                      </th>
+                      <!-- <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                  Identity Proof
+                </th> -->
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Agency Name
+                      </th>
+
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Company Name
+                      </th>
+
+                      <!-- <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Expiry Date
+                      </th>
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Status
+                      </th> -->
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Document
+                      </th>
+
+                      <th class="px-4 py-2 text-sm font-medium text-gray-600">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="border-t"
+                      *ngFor="
+                        let user of awaitingCompanies
+                          | paginate
+                            : {
+                                itemsPerPage:
+                                  tableSize != 'all'
+                                    ? tableSize
+                                    : totalRecordsCompany,
+                                currentPage: page,
+                                totalItems: totalRecordsCompany
+                              };
+                        index as i
+                      "
+                    >
+                      <td class="px-4 py-3 text-gray-700">
+                        {{
+                          tableSize * (page - 1) + i + 1 > 0
+                            ? tableSize * (page - 1) + i + 1
+                            : i + 1
+                        }}
+                      </td>
+                      <!-- <td>
                   <a
-                    [href]="user.compliance_document"
+                    [href]="user.identity_proof"
                     target="_blank"
                     class="cursor"
                   >
-                    <i class="fa-solid fa-eye"></i>
+                    <img
+                      class="admin-banner"
+                      *ngIf="user.identity_proof != undefined"
+                      [src]="user.identity_proof"
+                      alt="identity_proof"
+                    />
                   </a>
-                </td>
+                </td> -->
+                      <td class="px-4 py-3 text-gray-700">
+                        {{ user?.store?.agency_name }}
+                      </td>
+                      <td class="px-4 py-3 text-gray-700">
+                        {{ user.company?.name }}
+                      </td>
 
-                <td class="px-4 py-3 text-gray-700">
-                  <p>
-                    {{ user.action }}
-                    <button mat-icon-button [matMenuTriggerFor]="menu">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu">
-                      <button
-                        mat-menu-item
-                        (click)="openApproveLicenseDialog(user.id)"
-                      >
-                        Approve / Reject
-                      </button>
-                      <button
-                        mat-menu-item
-                        (click)="OpenLiecenceviewModal(user)"
-                      >
-                        View Details
-                      </button>
-                    </mat-menu>
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div
-            class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
-          >
-            <span class="showalltext"
-              >Showing
-              {{ tableSize * (page - 1) > 0 ? tableSize * (page - 1) + 1 : 1 }}
-              to
-              {{
-                tableSize * page <= totalRecordsLicense
-                  ? tableSize * page
-                  : totalRecordsLicense
-              }}
-              of
-              {{ totalRecordsLicense != undefined ? totalRecordsLicense : "" }}
-              entries</span
-            >
-            <pagination-controls
-              previousLabel="Prev"
-              nextLabel="Next"
-              [responsive]="true"
-              (pageChange)="onTableDataChange($event)"
-              target="_top"
-            ></pagination-controls>
+                      <!-- <td class="px-4 py-3 text-gray-700">
+                        {{ user.company?.name }}
+                      </td>
+                      <td class="px-4 py-3 text-gray-700 font-semibold">
+                        {{ user.support_document }}
+                      </td> -->
+                      <td class="px-4 py-3 text-gray-700">
+                        <ng-container
+                          *ngIf="user.support_document; else noDocument"
+                        >
+                          <a
+                            [href]="user.support_document"
+                            target="_blank"
+                            class="cursor"
+                          >
+                            <i class="fa-solid fa-eye"></i>
+                          </a>
+                        </ng-container>
+                        <ng-template #noDocument>
+                          <span class="text-red-500"
+                            >Document Not Available</span
+                          >
+                        </ng-template>
+                      </td>
+
+                      <td class="px-4 py-3 text-gray-700">
+                        <p>
+                          {{ user.action }}
+                          <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+                          <mat-menu #menu="matMenu">
+                            <button
+                              mat-menu-item
+                              (click)="openApproveCompanyDialog(user.id)"
+                            >
+                              Approve / Reject
+                            </button>
+                            <!-- <button
+                              mat-menu-item
+                              (click)="OpenCompanyviewModal(user)"
+                            >
+                              View Details
+                            </button> -->
+                          </mat-menu>
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  class="d-md-flex justify-content-between bottom-0 end-0 py-2 align-items-center"
+                >
+                  <span class="showalltext"
+                    >Showing
+                    {{
+                      tableSize * (page - 1) > 0
+                        ? tableSize * (page - 1) + 1
+                        : 1
+                    }}
+                    to
+                    {{
+                      tableSize * page <= totalRecordsCompany
+                        ? tableSize * page
+                        : totalRecordsCompany
+                    }}
+                    of
+                    {{
+                      totalRecordsCompany != undefined
+                        ? totalRecordsCompany
+                        : ""
+                    }}
+                    entries</span
+                  >
+                  <pagination-controls
+                    previousLabel="Prev"
+                    nextLabel="Next"
+                    [responsive]="true"
+                    (pageChange)="onTableDataChange($event)"
+                    target="_top"
+                  ></pagination-controls>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1237,6 +1589,133 @@
     </div>
   </div>
 </div>
+<!-- <div
+  *ngIf="companyViewOpen"
+  class="your-animation-class modal-container"
+  aria-labelledby="modal-BannerType"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-content modal-content-50" [@fadeIn]>
+    <div (click)="ClickexamModalconent($event)">
+      <form [formGroup]="licenceView">
+        <div class="card">
+          <div
+            class="card-header bg-white d-flex justify-content-between align-items-center"
+          >
+            <h5 class="modal-title pt-1">View Company Details</h5>
+            <button
+              class="btn btn-primary main-btn bg-transparent border-0 pb-0 pt-1 text-black"
+              type="button"
+              (click)="closeModal()"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="modal-content-width card-body mb-0 pb-0">
+            
+            <div class="row mb-3">
+             
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="compliance_document"
+                  >Compliance Document</label
+                >
+                <a
+                  [href]="complianceDocument"
+                  target="_blank"
+                  class="btn btn-link"
+                  >View Document</a
+                >
+              </div>
+
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="authority_name"
+                  >Authority Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="authority_name"
+                  #authority_name
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="shop_name"
+                  >Company Name</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="shop_name"
+                  #shop_name
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="license_number"
+                  >License Number</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="license_number"
+                  #license_number
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="expiry_date"
+                  >Expiry Date</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="expiry_date"
+                  #expiry_date
+                  [readOnly]="true"
+                />
+              </div>
+              <div class="col-lg-6 col-md-6 mb-3">
+                <label
+                  class="d-block text-capitalize form-label admin-form-lable"
+                  for="status"
+                  >Status</label
+                >
+                <input
+                  type="text"
+                  class="d-block form-control form-input-custom"
+                  formControlName="status"
+                  #status
+                  [readOnly]="true"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer text-end mb-4 me-4">
+            <button
+              class="btn btn-secondary main-btnfs px-4 py-2 text-gray-100"
+              type="button"
+              (click)="closeModal()"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->
 <div
   *ngIf="licenceViewOpen"
   class="your-animation-class modal-container"
@@ -1500,6 +1979,77 @@
           type="button"
           class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition"
           (click)="closeApproveLicenseDialog()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+          [disabled]="!approvalForm.valid"
+        >
+          Submit
+        </button>
+      </div>
+      <p *ngIf="errorMessage" class="text-red-600 text-sm mt-2">
+        {{ errorMessage }}
+      </p>
+    </form>
+  </div>
+</div>
+<!-- Confirmation Company Modal -->
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  *ngIf="showApproveCompanyDialog"
+  (click)="closeApproveCompanyDialog()"
+>
+  <div
+    class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <p class="text-xl font-bold text-gray-900 mb-0">Confirm Action</p>
+      <button (click)="closeApproveCompanyDialog()" class="focus:outline-none">
+        <i class="fas fa-times text-gray-500 hover:text-gray-700 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <form [formGroup]="approvalForm" (ngSubmit)="submitCompanyApproval()">
+      <!-- Updated submit function -->
+      <div class="mb-6 space-y-4">
+        <p class="text-lg text-gray-700 leading-relaxed">
+          Please select an action for this Company:
+        </p>
+        <div class="flex align-middle justify-start gap-6">
+          <label class="flex items-center space-x-2">
+            <input
+              type="radio"
+              formControlName="action"
+              value="approve"
+              class="form-radio h-4 w-4 text-green-600"
+            />
+            <span class="text-gray-700">Approve</span>
+          </label>
+          <label class="flex items-center space-x-2">
+            <input
+              type="radio"
+              formControlName="action"
+              value="reject"
+              class="form-radio h-4 w-4 text-red-600"
+            />
+            <span class="text-gray-700">Reject</span>
+          </label>
+        </div>
+        <p class="text-sm text-gray-600">This action cannot be undone.</p>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="flex justify-end gap-3 mt-4">
+        <button
+          type="button"
+          class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition"
+          (click)="closeApproveCompanyDialog()"
         >
           Cancel
         </button>

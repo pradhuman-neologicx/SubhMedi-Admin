@@ -91,7 +91,26 @@ export class EmployeeService {
       tag: tag,
       app_user_id: app_user_id,
     };
-    return this.apiservice.post(`store-tag`, body, headers).pipe(
+    return this.apiservice.post(`company-tag`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+  changeCompanyTag(pivotId: any, is_exclusive: any): Observable<any> {
+    var user = this.jwtService.getpanelUserId();
+    const token = this.jwtService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    const body = {
+      user_id: user,
+      id: pivotId,
+      is_exclusive: is_exclusive,
+    };
+    return this.apiservice.post(`company-tag`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
         this.erromessagefunction(error);
@@ -250,6 +269,26 @@ export class EmployeeService {
     }
 
     return this.apiservice.post(`license-status`, body, headers).pipe(
+      tap((error: any) => {
+        console.log('Response received:', error);
+        this.erromessagefunction(error);
+      })
+    );
+  }
+  companyApproveApi(body: any): Observable<any> {
+    // const user = this.jwtService.getpanelUserId();
+
+    const token = this.jwtService.getToken();
+    let headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Only set Content-Type if body is NOT FormData
+    if (!(body instanceof FormData)) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return this.apiservice.post(`approve-company`, body, headers).pipe(
       tap((error: any) => {
         console.log('Response received:', error);
         this.erromessagefunction(error);

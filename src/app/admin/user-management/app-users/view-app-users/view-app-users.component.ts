@@ -225,16 +225,36 @@ export class ViewAppUsersComponent {
     //   console.log(this.PartTypeList);
     // });
   }
-  onToggleChange(event: Event, id: string): void {
-    const input = event.target as HTMLInputElement;
-    this.Status(id, input.checked ? 'exclusive' : null);
-  }
-  async Status(id: string, tag: any) {
+  // onToggleChange(event: Event, id: string): void {
+  //   const input = event.target as HTMLInputElement;
+  //   this.Status(id, input.checked ? 'exclusive' : null);
+  // }
+  // async Status(id: string, tag: any) {
+  //   const actionMessage = 'Status Changed';
+  //   const currentIndex = this.activeIndex;
+  //   this.employeeService
+  //     .changeStoreTag(id, tag, this.appUserID)
+
+  //     .subscribe((response: any) => {
+  //       console.log(response);
+  //       if (response.status === 200 || response.status === 201) {
+  //         this.successName = actionMessage;
+  //         this.GetAppUserfun();
+  //         this.activeIndex = currentIndex;
+  //         setTimeout(() => {
+  //           this.openSecondsuccess = true;
+  //           setTimeout(() => {
+  //             this.openSecondsuccess = false;
+  //           }, 1800);
+  //         }, 200);
+  //       }
+  //     });
+  // }
+  async Status(pivotId: string, is_exclusive: number) {
     const actionMessage = 'Status Changed';
     const currentIndex = this.activeIndex;
     this.employeeService
-      .changeStoreTag(id, tag, this.appUserID)
-
+      .changeCompanyTag(pivotId, is_exclusive)
       .subscribe((response: any) => {
         console.log(response);
         if (response.status === 200 || response.status === 201) {
@@ -500,9 +520,21 @@ export class ViewAppUsersComponent {
     }
   }
   getCompanyNames(): string {
-    return this.userstable.user.companies?.length
-      ? this.userstable.user.companies.map((c: any) => c.name).join(', ')
-      : 'N/A';
+    if (!this.userstable?.stores?.length) return 'N/A';
+
+    const companyNames: string[] = [];
+
+    this.userstable.stores.forEach((store: any) => {
+      if (store.companies?.length) {
+        store.companies.forEach((company: any) => {
+          if (company.name) {
+            companyNames.push(company.name);
+          }
+        });
+      }
+    });
+
+    return companyNames.length ? companyNames.join(', ') : 'N/A';
   }
 
   getParsedFeatures(): string[] {
