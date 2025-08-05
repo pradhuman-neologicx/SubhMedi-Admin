@@ -98,17 +98,6 @@
 
   <!-- Daily Active Users and New Registrations -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-    <!-- Daily Active Users -->
-    <!-- <div class="bg-white rounded-xl shadow-md p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">
-        Daily Active Users
-      </h3>
-      <p class="text-3xl font-bold text-blue-600">
-        {{ stats.dailyActiveUsers }}
-      </p>
-      <p class="text-gray-500 text-sm mt-2">Users active today</p>
-    </div> -->
-
     <!-- Newly Registered Users -->
     <div class="bg-white rounded-xl shadow-md p-6">
       <h3 class="text-lg font-semibold text-gray-800 mb-4">
@@ -118,6 +107,16 @@
         {{ dashboardData?.new_registered }}
       </p>
       <p class="text-gray-500 text-sm mt-2">Users registered this month</p>
+    </div>
+    <!-- Daily Active Users -->
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        License Awaiting Approval
+      </h3>
+      <p class="text-3xl font-bold text-blue-600">
+        {{ dashboardData.approval_awaiting_licenses }}
+      </p>
+      <p class="text-gray-500 text-sm mt-2">Waiting for clearance</p>
     </div>
   </div>
 

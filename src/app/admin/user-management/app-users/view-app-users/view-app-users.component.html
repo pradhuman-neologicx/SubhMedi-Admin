@@ -871,6 +871,33 @@
                 </div> -->
               </div>
             </div>
+            <div>
+              <strong class="text-gray-600">Additional Documents: </strong
+              ><br />
+              <div
+                *ngIf="doc.additional_documents?.length > 0; else noDocs"
+                class="flex gap-2 mt-2 flex-wrap"
+              >
+                <a
+                  *ngFor="let img of doc.additional_documents"
+                  [href]="img"
+                  target="_blank"
+                  class="block"
+                >
+                  <img
+                    [src]="img"
+                    alt="Store Image"
+                    class="w-12 h-12 rounded object-cover border"
+                  />
+                </a>
+              </div>
+
+              <ng-template #noDocs>
+                <p class="text-sm text-gray-500 mt-2">
+                  No additional documents available.
+                </p>
+              </ng-template>
+            </div>
           </div>
         </div>
       </div>
@@ -1179,14 +1206,12 @@
                 </td>
 
                 <td class="px-4 py-2 text-gray-700">
-                  {{ company.pivot.is_approved ? "Approved" : "Pending" }}
+                  {{ company.is_approved ? "Approved" : "Pending" }}
                 </td>
 
                 <td class="px-4 py-2 text-gray-700">
-                  <ng-container
-                    *ngIf="company.pivot.support_document; else noDoc"
-                  >
-                    <a [href]="company.pivot.support_document" target="_blank">
+                  <ng-container *ngIf="company.support_document; else noDoc">
+                    <a [href]="company.support_document" target="_blank">
                       <i
                         class="fa-solid fa-eye text-blue-600 hover:text-blue-800"
                         title="View"
@@ -1201,11 +1226,11 @@
                   <p
                     [ngClass]="{
                       'text-green-600 font-semibold':
-                        company.pivot.is_exclusive === 1,
-                      'text-gray-600': company.pivot.is_exclusive === 0
+                        company.is_exclusive === 1,
+                      'text-gray-600': company.is_exclusive === 0
                     }"
                   >
-                    {{ company.pivot.is_exclusive === 1 ? "Exclusive" : "--" }}
+                    {{ company.is_exclusive === 1 ? "Exclusive" : "--" }}
                   </p>
                 </td>
                 <td class="px-4 py-2">
@@ -1221,14 +1246,11 @@
                     <button
                       mat-menu-item
                       (click)="
-                        Status(
-                          company.pivot.id,
-                          company.pivot.is_exclusive === 1 ? 0 : 1
-                        )
+                        Status(company.id, company.is_exclusive === 1 ? 0 : 1)
                       "
                     >
                       {{
-                        company.pivot.is_exclusive === 1
+                        company.is_exclusive === 1
                           ? "Remove Exclusive"
                           : "Make Exclusive"
                       }}

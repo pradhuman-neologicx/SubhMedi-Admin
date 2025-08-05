@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit {
     silentUsers: 150,
     dailyActiveUsers: 450,
     newlyRegisteredUsers: 75,
+    approval_awaiting_licenses: 75,
   };
   storesAwaitingApproval = [
     { name: 'HealthPlus Pharmacy', submissionDate: '2025-05-10' },
