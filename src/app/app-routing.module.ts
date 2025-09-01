@@ -44,17 +44,22 @@ import { RefundPolicyComponent } from './website/refund-policy/refund-policy.com
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  { path: 'reset_password/:id/:token', component: OtpComponent },
+  {
+    path: 'admin',
 
     component: LoginpagesComponent,
     children: [
       { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
       { path: 'sign_in', component: SigninComponent },
-      { path: 'reset_password/:id/:token', component: OtpComponent },
       { path: 'forgot_password', component: ForgotPasswordComponent },
     ],
   },
   {
-    path: '',
+    path: 'admin',
 
     component: AdminComponent,
     children: [

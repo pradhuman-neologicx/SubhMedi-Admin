@@ -93,7 +93,7 @@ export class ViewAppUsersComponent {
   ) {
     this.maxDate = new Date();
     const urlDelimitators = new RegExp(/[?//,;&:#$+=]/);
-    this.appUserID = router.url.slice(0).split(urlDelimitators)[3];
+    this.appUserID = router.url.slice(0).split(urlDelimitators)[4];
     console.log(this.appUserID);
   }
 
@@ -170,6 +170,7 @@ export class ViewAppUsersComponent {
   }
   userstable: any;
   GetAppUserfun() {
+    console.log(this.appUserID);
     this.employeeService
       .GetAppUserIdApi(this.appUserID)
       .subscribe((response: any) => {

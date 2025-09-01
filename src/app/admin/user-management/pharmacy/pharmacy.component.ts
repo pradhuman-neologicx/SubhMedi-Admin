@@ -154,7 +154,7 @@ export class PharmacyComponent {
     this.updateusersopen = false;
   }
   navigateToViewUsers(user: any) {
-    this.router.navigate(['/user-management/view-users'], {
+    this.router.navigate(['/admin/user-management/view-users'], {
       state: { userData: user },
     });
   }
@@ -165,7 +165,7 @@ export class PharmacyComponent {
     console.log('id ID:', id);
 
     // Navigate to the desired route with the project_id
-    this.router.navigate(['/user-management/view-users', id], {
+    this.router.navigate(['/admin/user-management/view-users', id], {
       // queryParams: { exam_type: exam_type },
       // queryParams: { action: 'startNow' }
     });

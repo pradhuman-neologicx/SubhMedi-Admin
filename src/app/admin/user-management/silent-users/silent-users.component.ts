@@ -146,7 +146,7 @@ export class SilentUsersComponent {
   userstable: any;
 
   navigateToViewUsers(user: any) {
-    this.router.navigate(['/user-management/view-silentusers'], {
+    this.router.navigate(['/admin/user-management/view-silentusers'], {
       state: { userData: user },
     });
   }

@@ -154,7 +154,7 @@ export class SigninComponent {
               this.jwtService.saveAdminToken(response.token);
               this.jwtService.isLoggedIn(true);
               this.ngOnInit();
-              this.router.navigate(['/dashboard']); // Move the navigation here
+              this.router.navigate(['/admin/dashboard']); // Move the navigation here
             }, 1800); // Wait for 1.8 seconds before navigating
           }, 200); // Initial delay for showing the modal
         } else {

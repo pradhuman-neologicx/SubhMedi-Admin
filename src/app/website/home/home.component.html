@@ -1,26 +1,49 @@
 <app-navbar></app-navbar>
 <div class="min-h-screen bg-gray-50">
   <!-- Hero Section -->
-  <section class="bg-cover bg-center bg-no-repeat text-white py-16 homeBanner">
+  <section class="bg-cover bg-center bg-no-repeat text-white py-20 homeBanner">
     <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
       <div class="md:w-1/2 mx-auto text-center md:text-left">
         <p
-          class="text-2xl md:text-3xl font-bold mb-3 animate__animated animate__fadeIn"
+          class="text-3xl md:text-4xl font-bold mb-3 animate__animated animate__fadeIn"
         >
-          Empowering Healthcare with Reliable Pharma Distribution
+          Empowering Healthcare with Trust & Compliance
         </p>
         <p
           class="text-base mb-5 animate__animated animate__fadeIn animate__delay-1s"
         >
-          Delivering quality medicines and supplies to pharmacies and healthcare
-          providers with efficiency and trust.
+          SubhMedi helps pharmacies and distributors verify licenses, discover
+          trusted partners, and stay compliant effortlessly.
         </p>
-        <a
-          href="/contact"
-          class="inline-block bg-yellow-400 text-gray-900 font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition-colors animate__animated animate__fadeIn animate__delay-2s"
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6"
         >
-          Get in Touch
-        </a>
+          <!-- Google Play Store -->
+          <a
+            href="https://play.google.com/store/apps/details?id=com.neologicx.subhmedi&pli=1"
+            target="_blank"
+            class="animate__animated animate__fadeIn animate__delay-2s"
+          >
+            <img
+              src="/assets/Google_Play_Store.svg"
+              alt="Get it on Google Play"
+              class="h-12"
+            />
+          </a>
+
+          <!-- Apple App Store -->
+          <a
+            href="javascript:void(0)"
+            onclick="alert('Coming soon!')"
+            class="animate__animated animate__fadeIn animate__delay-3s"
+          >
+            <img
+              src="/assets/app-store.svg"
+              alt="Download on the App Store"
+              class="h-12"
+            />
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -28,23 +51,24 @@
   <!-- Company Overview -->
   <section class="py-12">
     <div class="container mx-auto px-4 text-center">
-      <p class="text-2xl font-bold text-gray-800 mb-5">About Our Company</p>
-      <p class="text-base text-gray-600 max-w-3xl mx-auto mb-6">
-        We are a leading pharmaceutical distributor committed to bridging the
-        gap between manufacturers and healthcare providers. With a robust supply
-        chain and a focus on quality, we ensure timely delivery of essential
-        medicines and medical supplies.
+      <p class="text-2xl font-bold text-gray-800 mb-5">About Us</p>
+      <p class="text-base text-gray-700 max-w-3xl mx-auto mb-0">
+        At SubhMedi, we simplify how pharmacies and distributors work together.
+      </p>
+      <p class="text-base text-gray-700 max-w-3xl mx-auto mb-6">
+        Our platform makes sure every connection is verified, compliant, and
+        reliable—so you can focus on patients, not paperwork.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div
           class="p-5 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
         >
-          <i class="fas fa-truck text-blue-600 text-2xl mb-3"></i>
+          <i class="fas fa-map text-blue-600 text-2xl mb-3"></i>
           <p class="text-lg font-semibold text-gray-800 mb-2">
-            Nationwide Delivery
+            Nationwide Access
           </p>
-          <p class="text-sm text-gray-600">
-            Fast and reliable distribution across the country.
+          <p class="text-sm text-gray-700">
+            Connect with verified suppliers and pharmacies across India.
           </p>
         </div>
         <div
@@ -52,19 +76,21 @@
         >
           <i class="fas fa-shield-alt text-blue-600 text-2xl mb-3"></i>
           <p class="text-lg font-semibold text-gray-800 mb-2">
-            Quality Assurance
+            Compliance First
           </p>
-          <p class="text-sm text-gray-600">
-            Strict compliance with industry standards.
+          <p class="text-sm text-gray-700">
+            Automated checks and reminders keep you always audit-ready.
           </p>
         </div>
         <div
           class="p-5 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
         >
           <i class="fas fa-headset text-blue-600 text-2xl mb-3"></i>
-          <p class="text-lg font-semibold text-gray-800 mb-2">24/7 Support</p>
-          <p class="text-sm text-gray-600">
-            Dedicated support for all your needs.
+          <p class="text-lg font-semibold text-gray-800 mb-2">
+            Always Available
+          </p>
+          <p class="text-sm text-gray-700">
+            Easy-to-use digital platform with responsive support.
           </p>
         </div>
       </div>
@@ -85,10 +111,11 @@
           <div class="p-6 text-center">
             <i class="fas fa-warehouse text-blue-600 text-3xl mb-4"></i>
             <p class="text-lg font-semibold text-gray-800 mb-2">
-              Inventory Management
+              Verified Supplier Discovery
             </p>
-            <p class="text-sm text-gray-600">
-              Streamlined inventory solutions for pharmacies and distributors.
+            <p class="text-sm text-gray-700">
+              Find authentic distributors, wholesalers, and manufacturers in
+              seconds.
             </p>
           </div>
         </div>
@@ -99,10 +126,11 @@
           <div class="p-6 text-center">
             <i class="fas fa-pills text-blue-600 text-3xl mb-4"></i>
             <p class="text-lg font-semibold text-gray-800 mb-2">
-              Pharmaceutical Supply
+              Regulatory Compliance Tools
             </p>
-            <p class="text-sm text-gray-600">
-              Wide range of medicines and medical supplies.
+            <p class="text-sm text-gray-700">
+              Stay ahead with license expiry alerts, renewal reminders, and
+              compliance dashboards.
             </p>
           </div>
         </div>
@@ -113,10 +141,11 @@
           <div class="p-6 text-center">
             <i class="fas fa-truck-loading text-blue-600 text-3xl mb-4"></i>
             <p class="text-lg font-semibold text-gray-800 mb-2">
-              Logistics Solutions
+              Trusted Connections
             </p>
-            <p class="text-sm text-gray-600">
-              Efficient and secure delivery systems.
+            <p class="text-sm text-gray-700">
+              Do business only with partners who meet verified regulatory
+              standards.
             </p>
           </div>
         </div>
@@ -127,10 +156,11 @@
           <div class="p-6 text-center">
             <i class="fas fa-file-alt text-blue-600 text-3xl mb-4"></i>
             <p class="text-lg font-semibold text-gray-800 mb-2">
-              Regulatory Compliance
+              Priority Listing & Visibility
             </p>
-            <p class="text-sm text-gray-600">
-              Adhering to all regulatory requirements.
+            <p class="text-sm text-gray-700">
+              Get highlighted as a verified, trusted partner—stand out to more
+              pharmacies and wholesalers.
             </p>
           </div>
         </div>
@@ -150,18 +180,23 @@
         Partner with Us Today
       </h2>
       <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
-        Join our network of trusted partners and experience seamless
-        pharmaceutical distribution with industry-leading support and
-        reliability.
+        Join India’s first compliance-driven pharma network and experience
+        seamless, trusted connections between pharmacies and distributors.
       </p>
       <div class="mt-8 text-xl font-semibold">
         <p>
-          Contact us at:
+          Email us at:
           <a href="mailto:help@subhmedi.com">help&#64;subhmedi.com</a>
+        </p>
+        <p>
+          Contact us at:
+          <a href="tel:9145918181">+91-9145918181</a>
         </p>
       </div>
       <div class="mt-8 text-sm opacity-90">
-        <p>Trusted by over 500+ pharmaceutical companies worldwide</p>
+        <p>
+          Trusted by a growing network of pharmacies & distributors nationwide.
+        </p>
       </div>
     </div>
 

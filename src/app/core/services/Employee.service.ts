@@ -1424,7 +1424,7 @@ export class EmployeeService {
     ) {
       // Log the user out and navigate to sign-in page
       this.jwtService.clearStorage(); // Clear token (implement this method in your JwtService)
-      this.router.navigate(['/sign_in']); // Navigate to home route
+      this.router.navigate(['/admin/sign_in']); // Navigate to home route
       alert(errorMessage); // Show alert with error message
     } else if (error && error.message) {
       // Display error message
